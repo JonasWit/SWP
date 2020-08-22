@@ -1,0 +1,38 @@
+﻿
+<h2>Panel Aktywnego Klienta</h2>
+
+@if (Appvm.ActiveCustomerWithData != null)
+{
+    <div>
+        <h2>All Cases</h2>
+        <RadzenDataList WrapItems="true" AllowPaging="true" Data="@Appvm.ActiveCustomer.Cases" TItem="CaseViewModel">
+            <Template Context="c">
+                <RadzenCard Style="width:300px;" @onclick="(() => Appvm.RedirectToCase(c.Id))">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div>Case Name:</div>
+                            <b>@c.Name</b>
+                            <div>Description:</div>
+                            <b>@c.Description</b>
+                    
+                        </div>
+                    </div>
+                </RadzenCard>
+            </Template>
+        </RadzenDataList>
+    </div>
+}
+else
+{
+    <div>
+        <h2>Żaden klient nie został wybrany.</h2>
+
+    </div>
+}
+
+@code {
+    [Parameter]
+    public LegalSwpApp Appvm { get; set; }
+    [Parameter]
+    public EventCallback<LegalSwpApp> AppvmChanged { get; set; }
+}

@@ -1,0 +1,41 @@
+﻿@using SWP.UI.Components.LegalSwpBlazorComponents.CasesInnerComponents 
+@inject GeneralViewModel generalViewModel
+
+<h2>Sprawy</h2>
+
+@if (Appvm.ActiveCustomerWithData != null)
+{
+    <RadzenButton Click="@(() => Appvm.CasesPanel.SetActivePanel(CasesPanel.Panels.AddCase))" Text="Case Data" Style="margin-bottom: 20px;" />
+    <RadzenButton Click="@(() => Appvm.CasesPanel.SetActivePanel(CasesPanel.Panels.Admin))" Text="Admin" Style="margin-bottom: 20px;" />
+}
+
+@if (Appvm.Loading)
+{
+
+}
+else
+{
+    switch (Appvm.CasesPanel.ActivePanel)
+    {
+        case CasesPanel.Panels.Admin:
+            <h2>Panel Administracyjny</h2>
+            <h2>Zarządzaj sprawami aktywnego klienta (@Appvm.ActiveCustomerWithData.Name)</h2>
+
+            <RadzenDialog />
+            <RadzenNotification />
+            <AdminCasePage @bind-Appvm="Appvm"></AdminCasePage>
+            break;
+        case CasesPanel.Panels.AddCase:
+            <AddCasePage @bind-Appvm="Appvm"></AddCasePage>       
+            break;
+        default:
+            break;
+    }
+}
+
+@code {
+    [Parameter]
+    public LegalSwpApp Appvm { get; set; }
+    [Parameter]
+    public EventCallback<LegalSwpApp> AppvmChanged { get; set; }
+}

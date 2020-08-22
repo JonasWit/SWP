@@ -1,0 +1,15 @@
+﻿@page
+@model SWP.UI.Pages.Applications.IndexModel
+@inject IAuthorizationService authService
+
+<h4>applications</h4>
+
+@if ((await authService.AuthorizeAsync(User, "LegalApplication")).Succeeded)
+{
+    <a asp-page="/LegalSwp/Index">legal app</a>
+}
+
+@if ((await authService.AuthorizeAsync(User, "MedicalApplication")).Succeeded)
+{
+    <a asp-page="/MedicalSwp/Index">medical app</a>
+}

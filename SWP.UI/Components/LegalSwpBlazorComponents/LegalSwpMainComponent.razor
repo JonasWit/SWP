@@ -1,0 +1,100 @@
+﻿@using Microsoft.AspNetCore.Identity;
+@using System.Security.Claims
+@implements IDisposable
+@inject LegalSwpApp legalSwpApp
+
+<div class="sidebar">
+    <div class="top-row pl-4 navbar navbar-dark">
+        <a class="navbar-brand" href="">Legal Firm Management</a>
+        <button class="navbar-toggler" @onclick="legalSwpApp.ToggleNavMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+
+    <div class="@legalSwpApp.NavMenuCssClass" @onclick="legalSwpApp.ToggleNavMenu">
+        <ul class="nav flex-column">
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" @onclick="@(() => legalSwpApp.SetActivePanel(LegalSwpApp.Panels.MyApp))">
+                    <span class="oi oi-list-rich" aria-hidden="true"></span>My Application
+                </NavLink>
+            </li>
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" @onclick="@(() => legalSwpApp.SetActivePanel(LegalSwpApp.Panels.Customers))">
+                    <span class="oi oi-list-rich" aria-hidden="true"></span>Clients
+                </NavLink>
+            </li>
+
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" @onclick="@(() => legalSwpApp.SetActivePanel(LegalSwpApp.Panels.Calendar))">
+                    <span class="oi oi-list-rich" aria-hidden="true"></span>Calendar
+                </NavLink>
+            </li>
+
+            @if (legalSwpApp.ActiveCustomerWithData != null)
+            {
+                <li class="nav-item px-3">
+                    <NavLink class="nav-link" @onclick="@(() => legalSwpApp.SetActivePanel(LegalSwpApp.Panels.Cases))">
+                        <span class="oi oi-list-rich" aria-hidden="true"></span>Cases
+                    </NavLink>
+                </li>
+            }
+
+        </ul>
+    </div>
+</div>
+
+<div class="main">
+    <div class="top-row px-4">
+
+        <h3>Select Client</h3>
+        <Radzen.Blazor.RadzenDropDown AllowClear="true" TValue="string" AllowFiltering="true" Data="@legalSwpApp.Customers" TextProperty="Name" ValueProperty="IdStr" Style="margin-bottom: 20px" Change="@(args => legalSwpApp.ActiveCustomerChange(args))" />
+
+        <RadzenButton Click="@(() => legalSwpApp.ActiveCustomerChange(null))" Text="Clear Active Client" Style="margin-bottom: 20px; width: 150px" />
+
+        @if (legalSwpApp.ActiveCustomer != null)
+        {
+            <a @onclick="@(() => legalSwpApp.SetActivePanel(LegalSwpApp.Panels.Customers))">Active Client: @legalSwpApp.ActiveCustomer.Name</a>
+        }
+        else
+        {
+            <p>No Active Client</p>
+        }
+    </div>
+
+    <div class="content px-4">
+        @switch (legalSwpApp.ActivePanel)
+        {
+            case LegalSwpApp.Panels.Customers:
+                <LegalSwpCustomersComponent @bind-Appvm="legalSwpApp"></LegalSwpCustomersComponent>
+                break;
+            case LegalSwpApp.Panels.Calendar:
+                <LegalSwpCalendarComponent @bind-Appvm="legalSwpApp"></LegalSwpCalendarComponent>
+                break;
+            case LegalSwpApp.Panels.Cases:
+                <LegalSwpCasesComponent @bind-Appvm="legalSwpApp"></LegalSwpCasesComponent>
+                break;
+            case LegalSwpApp.Panels.MyApp:
+                <LegalSwpMyAppComponent @bind-Appvm="legalSwpApp"></LegalSwpMyAppComponent>
+                break;
+            default:
+                <LegalSwpMyAppComponent @bind-Appvm="legalSwpApp"></LegalSwpMyAppComponent>
+                break;
+        }
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string ActiveUserId { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await legalSwpApp.Initialize(ActiveUserId);
+        legalSwpApp.RefreshUI += new EventHandler(RefreshUI);
+    }
+
+    private void RefreshUI(object sender, EventArgs e) => StateHasChanged();
+
+    public void Dispose() => legalSwpApp.RefreshUI -= new EventHandler(RefreshUI);
+
+}

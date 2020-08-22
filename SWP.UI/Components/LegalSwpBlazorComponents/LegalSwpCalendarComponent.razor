@@ -1,0 +1,92 @@
+﻿@using SWP.UI.Components.LegalSwpBlazorComponents.SchedulerInnerComponents
+@inject GeneralViewModel generalViewModel
+
+<h2>Kalendarz</h2>
+
+<div class="row">
+    <div class="col-md-12">
+        <RadzenDialog />
+        <RadzenNotification />
+
+        <RadzenScheduler @ref="Appvm.CalendarPanel.RemindersScheduler" style="height: 768px;" TItem="ReminderViewModel" Data="@Appvm.CalendarPanel.Reminders" StartProperty="Start" EndProperty="End"
+                         TextProperty="CalendarName" SelectedIndex="2"
+                         SlotSelect="@Appvm.CalendarPanel.OnSlotSelect" AppointmentSelect="@Appvm.CalendarPanel.OnAppointmentSelect" AppointmentRender="@Appvm.CalendarPanel.OnAppointmentRender">
+            <RadzenDayView />
+            <RadzenWeekView />
+            <RadzenMonthView />
+        </RadzenScheduler>
+    </div>
+</div>
+
+<div class="row justify-content-center">
+    <RadzenGrid @ref="Appvm.CalendarPanel.RemindersGrid" AllowFiltering="true" AllowPaging="true" PageSize="10" AllowSorting="true"
+                Data="@Appvm.CalendarPanel.Reminders" TItem="ReminderViewModel" RowUpdate="@Appvm.CalendarPanel.OnUpdateReminderRow">
+        <Columns>
+            <RadzenGridColumn Width="100px" TItem="ReminderViewModel" Property="ParentCustomerName" Title="Klient" />
+            <RadzenGridColumn Width="100px" TItem="ReminderViewModel" Property="ParentCaseName" Title="Sprawa" />
+            <RadzenGridColumn TItem="ReminderViewModel" Property="Name" Title="Nazwa">
+                <EditTemplate Context="reminder">
+                    <RadzenTextBox @bind-Value="reminder.Name" Style="width:100%; display: block" Name="Nazwa" />
+                    <RadzenRequiredValidator Text="Nazwa nie może być pusta!" Component="Nazwa" Popup="true" />
+                    <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Nazwa" Popup="true" Style="position: absolute" />
+                </EditTemplate>
+            </RadzenGridColumn>
+            <RadzenGridColumn TItem="ReminderViewModel" Property="Priority" Title="Priorytet">
+                <EditTemplate Context="reminder">
+                    <RadzenDropDown @bind-Value="reminder.Priority" Data="@generalViewModel.Priorities" TextProperty="Number" ValueProperty="Number" Style="width:100%" Name="Priority" />
+                </EditTemplate>
+            </RadzenGridColumn>
+            <RadzenGridColumn TItem="ReminderViewModel" Property="Message" Title="Description">
+                <EditTemplate Context="reminder">
+                    <RadzenTextBox @bind-Value="reminder.Message" Style="width:100%; display: block" Name="Description" />
+                    <RadzenLengthValidator Max="500" Text="Maksymalnie 500 znaków!" Component="Description" Popup="true" Style="position: absolute" />
+                </EditTemplate>
+            </RadzenGridColumn>
+            <RadzenGridColumn TItem="ReminderViewModel" Property="Created" Title="Created">
+                <Template Context="reminder">
+                    @String.Format("{0:d}", reminder.Created)
+                </Template>
+            </RadzenGridColumn>
+            <RadzenGridColumn TItem="ReminderViewModel" Property="Updated" Title="Last Change">
+                <Template Context="reminder">
+                    @String.Format("{0:d}", reminder.Updated)
+                </Template>
+            </RadzenGridColumn>
+            <RadzenGridColumn TItem="ReminderViewModel" Property="UpdatedBy" Title="Użytkownik">
+                <Template Context="reminder">
+                    @reminder.UpdatedBy
+                </Template>
+            </RadzenGridColumn>
+
+            <RadzenGridColumn TItem="ReminderViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="100px">
+                <Template Context="reminder">
+                    <RadzenButton Icon="edit" Size="ButtonSize.Medium" Click="@(args => Appvm.CalendarPanel.EditReminderRow(reminder))">
+                    </RadzenButton>
+                </Template>
+                <EditTemplate Context="reminder">
+                    <RadzenButton Icon="save" Size="ButtonSize.Medium" Click="@((args) => Appvm.CalendarPanel.SaveReminderRow(reminder))">
+                    </RadzenButton>
+                    <RadzenButton Icon="cancel" Size="ButtonSize.Medium" ButtonStyle="ButtonStyle.Secondary" Click="@((args) => Appvm.CalendarPanel.CancelReminderEdit(reminder))">
+                    </RadzenButton>
+                </EditTemplate>
+            </RadzenGridColumn>
+            <RadzenGridColumn TItem="ReminderViewModel" Context="order" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="70px">
+                <Template Context="reminder">
+                    <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Medium" Click="@(async (args) => await Appvm.CalendarPanel.DeleteReminderRow(reminder))">
+                    </RadzenButton>
+                </Template>
+                <EditTemplate Context="reminder">
+                    <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Medium" Click="@(async (args) => await Appvm.CalendarPanel.DeleteReminderRow(reminder))">
+                    </RadzenButton>
+                </EditTemplate>
+            </RadzenGridColumn>
+        </Columns>
+    </RadzenGrid>
+</div>
+
+@code {
+    [Parameter]
+    public LegalSwpApp Appvm { get; set; }
+    [Parameter]
+    public EventCallback<LegalSwpApp> AppvmChanged { get; set; }
+}

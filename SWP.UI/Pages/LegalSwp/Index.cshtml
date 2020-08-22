@@ -1,0 +1,7 @@
+﻿@page
+@using SWP.UI.Components.LegalSwpBlazorComponents.ViewModels 
+@model SWP.UI.Pages.LegalSwp.IndexModel
+
+<app>
+    <component type="typeof(LegalSwpMainComponent)" render-mode="ServerPrerendered" param-ActiveUserId="@(Model.ActiveUserId)" />
+</app>

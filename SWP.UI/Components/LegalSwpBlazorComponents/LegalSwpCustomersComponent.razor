@@ -1,0 +1,288 @@
+﻿@using SWP.UI.Components.LegalSwpBlazorComponents.CustomersInnerComponents
+@inject GeneralViewModel generalViewModel
+
+<h2>Klienci</h2>
+
+@if (Appvm.ActiveCustomer != null)
+{
+    <RadzenButton Click="@(() => Appvm.CustomersPanel.SetActivePanel(CustomersPanel.Panels.Main))" Text="Summary" Style="margin-bottom: 20px;" />
+}
+
+<RadzenButton Click="@(() => Appvm.CustomersPanel.SetActivePanel(CustomersPanel.Panels.Admin))" Text="Admin" Style="margin-bottom: 20px;" />
+
+@if (Appvm.ActiveCustomer != null && Appvm.ActiveCustomerWithData != null)
+{
+    <RadzenButton Click="@(() => Appvm.CustomersPanel.SetActivePanel(CustomersPanel.Panels.Jobs))" Text="Tasks" Style="margin-bottom: 20px;" />
+}
+
+@if (Appvm.Loading)
+{
+
+}
+else
+{
+    switch (Appvm.CustomersPanel.ActivePanel)
+    {
+        case CustomersPanel.Panels.Main:
+            <MainPanelComponent @bind-Appvm="Appvm"></MainPanelComponent>
+            break;
+        case CustomersPanel.Panels.Admin:
+            <h2>Panel Administracyjny</h2>
+            <h2>Zarządzaj swoimi klientami</h2>
+
+            <div>
+                <RadzenTemplateForm Data="@Appvm.CustomersPanel.NewCustomer" Submit="@(async (CreateCustomer.Request args) => { await Appvm.CustomersPanel.SubmitNewCustomer(args); })">
+                    <div class="row">
+                        <RadzenFieldset Text="Nowy Klient">
+                            <div class="row">
+                                <div class="col-md-4 align-items-center d-flex">
+                                    <RadzenLabel Text="Nazwa" />
+                                </div>
+                                <div class="col-md-8 align-items-center d-flex">
+                                    <RadzenTextArea Placeholder="Nazwa..." Style="margin-bottom: 30px; width: 500px;" @bind-Value="Appvm.CustomersPanel.NewCustomer.Name" Name="Nazwa" />
+                                    <RadzenRequiredValidator Component="Nazwa" Text="Name cannot be empty!" Popup="true" Style="position: absolute" />
+                                    <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Nazwa" Popup="true" Style="position: absolute" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4 align-items-center d-flex">
+                                    <RadzenLabel Text="Adres Email" />
+                                </div>
+                                <div class="col-md-8 align-items-center d-flex">
+                                    <RadzenTextBox Placeholder="Adres Email..." Style="margin-bottom: 30px; width: 500px;" @bind-Value="Appvm.CustomersPanel.NewCustomer.Email" Name="Email" />
+                                    <RadzenRequiredValidator Component="Email" Text="Email address cannot be empty!" Popup="true" Style="position: absolute" />
+                                    <RadzenEmailValidator Component="Email" Text="Nieprawidłowy adres Email!" Popup="true" Style="position: absolute" />
+                                    <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Email" Popup="true" Style="position: absolute" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4 align-items-center d-flex">
+                                    <RadzenLabel Text="Telefon" />
+                                </div>
+                                <div class="col-md-8 align-items-center d-flex">
+                                    <RadzenTextBox Placeholder="Telefon..." Style="margin-bottom: 30px; width: 500px;" @bind-Value="Appvm.CustomersPanel.NewCustomer.PhoneNumber" Name="PhoneNumber" />
+                                    <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="PhoneNumber" Popup="true" Style="position: absolute" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4 align-items-center d-flex">
+                                    <RadzenLabel Text="Adres" />
+                                </div>
+                                <div class="col-md-8 align-items-center d-flex">
+                                    <RadzenTextArea Placeholder="Adres..." Style="margin-bottom: 30px; width: 500px;" @bind-Value="Appvm.CustomersPanel.NewCustomer.Address" Name="Address" />
+                                    <RadzenLengthValidator Max="200" Text="Maksymalnie 200 znaków!" Component="Address" Popup="true" Style="position: absolute" />
+                                </div>
+                            </div>
+                            <div class="row justify-content-center">
+                                <div class="d-flex justify-content-center">
+                                    <RadzenButton ButtonType="ButtonType.Submit" Icon="save" Text="Dodaj Klienta" />
+                                </div>
+                            </div>
+                        </RadzenFieldset>
+                    </div>
+                </RadzenTemplateForm>
+            </div>
+
+            <div>
+                <RadzenGrid @ref="Appvm.CustomersPanel.CustomersGrid" AllowFiltering="true" AllowPaging="true" PageSize="10" AllowSorting="true"
+                            Data="@Appvm.Customers" TItem="CustomerViewModel" RowUpdate="@Appvm.CustomersPanel.OnUpdateCustomerRow">
+                    <Columns>
+                        <RadzenGridColumn TItem="CustomerViewModel" Property="Name" Title="Nazwa">
+                            <EditTemplate Context="customer">
+                                <RadzenTextBox @bind-Value="customer.Name" Style="width:100%; display: block" Name="Nazwa" />
+                                <RadzenRequiredValidator Text="Nazwa nie może być pusta!" Component="Nazwa" Popup="true" />
+                                <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Nazwa" Popup="true" />
+                            </EditTemplate>
+                        </RadzenGridColumn>
+                        <RadzenGridColumn TItem="CustomerViewModel" Property="Address" Title="Adres">
+                            <EditTemplate Context="customer">
+                                <RadzenTextBox @bind-Value="customer.Address" Style="width:100%; display: block" Name="Adres" />
+                                <RadzenLengthValidator Max="200" Text="Maksymalnie 200 znaków!" Component="Adres" Popup="true" Style="position: absolute" />
+                            </EditTemplate>
+                        </RadzenGridColumn>
+                        <RadzenGridColumn TItem="CustomerViewModel" Property="Email" Title="Email">
+                            <EditTemplate Context="customer">
+                                <RadzenTextBox @bind-Value="customer.Email" Style="width:100%; display: block" Name="Email" />
+                                <RadzenEmailValidator Component="Email" Text="Nieprawidłowy adres Email!" Popup="true" />
+                                <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Email" Popup="true" Style="position: absolute" />
+                            </EditTemplate>
+                        </RadzenGridColumn>
+                        <RadzenGridColumn TItem="CustomerViewModel" Property="PhoneNumber" Title="Telefon">
+                            <EditTemplate Context="customer">
+                                <RadzenTextBox @bind-Value="customer.PhoneNumber" Style="width:100%; display: block" Name="Telefon" />
+                                <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Telefon" Popup="true" Style="position: absolute" />
+                            </EditTemplate>
+                        </RadzenGridColumn>
+                        <RadzenGridColumn TItem="CustomerViewModel" Property="Created" Title="Created">
+                            <Template Context="customer">
+                                @String.Format("{0:f}", customer.Created)
+                            </Template>
+                        </RadzenGridColumn>
+                        <RadzenGridColumn TItem="CustomerViewModel" Property="Updated" Title="Ostatnia Zmiana">
+                            <Template Context="customer">
+                                @String.Format("{0:f}", customer.Updated)
+                            </Template>
+                        </RadzenGridColumn>
+                        <RadzenGridColumn TItem="CustomerViewModel" Property="UpdatedBy" Title="Użytkownik">
+                            <Template Context="customer">
+                                @customer.UpdatedBy
+                            </Template>
+                        </RadzenGridColumn>
+
+                        <RadzenGridColumn TItem="CustomerViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="100px">
+                            <Template Context="customer">
+                                <RadzenButton Icon="edit" Size="ButtonSize.Medium" Click="@(args => Appvm.CustomersPanel.EditCustomerRow(customer))">
+                                </RadzenButton>
+                            </Template>
+                            <EditTemplate Context="customer">
+                                <RadzenButton Icon="save" Size="ButtonSize.Medium" Click="@((args) => Appvm.CustomersPanel.SaveCustomerRow(customer))">
+                                </RadzenButton>
+                                <RadzenButton Icon="cancel" Size="ButtonSize.Medium" ButtonStyle="ButtonStyle.Secondary" Click="@((args) => Appvm.CustomersPanel.CancelCustomerEdit(customer))">
+                                </RadzenButton>
+                            </EditTemplate>
+                        </RadzenGridColumn>
+                        <RadzenGridColumn TItem="CustomerViewModel" Context="order" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="70px">
+                            <Template Context="customer">
+                                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Medium" Click="@(async (args) => await Appvm.CustomersPanel.DeleteCustomerRow(customer))">
+                                </RadzenButton>
+                            </Template>
+                            <EditTemplate Context="customer">
+                                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Medium" Click="@(async (args) => await Appvm.CustomersPanel.DeleteCustomerRow(customer))">
+                                </RadzenButton>
+                            </EditTemplate>
+                        </RadzenGridColumn>
+                    </Columns>
+                </RadzenGrid>
+            </div>
+
+            break;
+        case CustomersPanel.Panels.Jobs:
+            <h2>Panel Zadań</h2>
+
+
+            @if (Appvm.ActiveCustomerWithData == null)
+            {
+                <h2>In order to see tasks please select a client!</h2>
+            }
+            else
+            {
+                <h2>Zarządzaj zadaniami klienta: @Appvm.ActiveCustomerWithData.Name</h2>
+
+                <div class="row justify-content-center">
+                    <RadzenTemplateForm Data="@Appvm.CustomersPanel.NewCustomerJob" Submit="@(async (CreateCustomerJob.Request args) => { await Appvm.CustomersPanel.SubmitNewCustomerJob(args); })">
+                        <div class="row">
+                            <RadzenFieldset Text="Nowe Zadanie">
+                                <div class="row">
+                                    <div class="col-md-4 align-items-center d-flex">
+                                        <RadzenLabel Text="Nazwa" />
+                                    </div>
+                                    <div class="col-md-8">
+                                        <RadzenTextBox Placeholder="Nazwa..." @bind-Value="Appvm.CustomersPanel.NewCustomerJob.Name" Name="Nazwa" />
+                                        <RadzenRequiredValidator Component="Nazwa" Text="Nazwa nie może być pusta!" Popup="true" />
+                                        <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Nazwa" Popup="true" Style="position: absolute" />
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4 align-items-center d-flex">
+                                        <RadzenLabel Text="Opis" />
+                                    </div>
+                                    <div class="col-md-8">
+                                        <RadzenTextArea Placeholder="Opis..." Style="margin-bottom: 30px" @bind-Value="Appvm.CustomersPanel.NewCustomerJob.Description" Name="Description" />
+                                        <RadzenLengthValidator Max="500" Text="Maksymalnie 500 znaków!" Component="Description" Popup="true" Style="position: absolute" />
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4 align-items-center d-flex">
+                                        <RadzenLabel Text="Priorytet" />
+                                    </div>
+                                    <div class="col-md-8">
+                                        <RadzenDropDown @bind-Value="Appvm.CustomersPanel.NewCustomerJob.Priority" Data="@generalViewModel.Priorities" TextProperty="Number" ValueProperty="Number" Style="width:100%" />
+                                    </div>
+                                </div>
+                                <div class="row justify-content-center">
+                                    <div class="d-flex justify-content-center">
+                                        <RadzenButton ButtonType="ButtonType.Submit" Icon="save" Text="Dodaj Zadanie" />
+                                    </div>
+                                </div>
+                            </RadzenFieldset>
+                        </div>
+                    </RadzenTemplateForm>
+                </div>
+
+                <div class="row justify-content-center">
+                    <RadzenGrid @ref="Appvm.CustomersPanel.CustomersJobsGrid" AllowFiltering="true" AllowPaging="true" PageSize="10" AllowSorting="true"
+                                Data="@Appvm.ActiveCustomerWithData.Jobs" TItem="CustomerJobViewModel" RowUpdate="@Appvm.CustomersPanel.OnUpdateCustomerJobRow">
+                        <Columns>
+                            <RadzenGridColumn TItem="CustomerJobViewModel" Property="Name" Title="Nazwa">
+                                <EditTemplate Context="job">
+                                    <RadzenTextBox @bind-Value="job.Name" Style="width:100%; display: block" Name="Nazwa" />
+                                    <RadzenRequiredValidator Text="Nazwa nie może być pusta!" Component="Nazwa" Popup="true" />
+                                    <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Nazwa" Popup="true" Style="position: absolute" />
+                                </EditTemplate>
+                            </RadzenGridColumn>
+                            <RadzenGridColumn TItem="CustomerJobViewModel" Property="Priority" Title="Priorytet">
+                                <EditTemplate Context="job">
+                                    <RadzenDropDown @bind-Value="job.Priority" Data="@generalViewModel.Priorities" TextProperty="Number" ValueProperty="Number" Style="width:100%" Name="Priority" />
+                                </EditTemplate>
+                            </RadzenGridColumn>
+                            <RadzenGridColumn TItem="CustomerJobViewModel" Property="Description" Title="Description">
+                                <EditTemplate Context="job">
+                                    <RadzenTextArea @bind-Value="job.Description" Style="width:100%; display: block" Name="Description" />
+                                    <RadzenLengthValidator Max="500" Text="Maksymalnie 500 znaków!" Component="Description" Popup="true" Style="position: absolute" />
+                                </EditTemplate>
+                            </RadzenGridColumn>
+                            <RadzenGridColumn TItem="CustomerJobViewModel" Property="Created" Title="Created">
+                                <Template Context="job">
+                                    @String.Format("{0:f}", job.Created)
+                                </Template>
+                            </RadzenGridColumn>
+                            <RadzenGridColumn TItem="CustomerJobViewModel" Property="Updated" Title="Last Change">
+                                <Template Context="job">
+                                    @String.Format("{0:f}", job.Updated)
+                                </Template>
+                            </RadzenGridColumn>
+                            <RadzenGridColumn TItem="CustomerJobViewModel" Property="UpdatedBy" Title="Użytkownik">
+                                <Template Context="job">
+                                    @job.UpdatedBy
+                                </Template>
+                            </RadzenGridColumn>
+
+                            <RadzenGridColumn TItem="CustomerJobViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="100px">
+                                <Template Context="job">
+                                    <RadzenButton Icon="edit" Size="ButtonSize.Medium" Click="@(args => Appvm.CustomersPanel.EditCustomerJobRow(job))">
+                                    </RadzenButton>
+                                </Template>
+                                <EditTemplate Context="job">
+                                    <RadzenButton Icon="save" Size="ButtonSize.Medium" Click="@((args) => Appvm.CustomersPanel.SaveCustomerJobRow(job))">
+                                    </RadzenButton>
+                                    <RadzenButton Icon="cancel" Size="ButtonSize.Medium" ButtonStyle="ButtonStyle.Secondary" Click="@((args) => Appvm.CustomersPanel.CancelCustomerJobEdit(job))">
+                                    </RadzenButton>
+                                </EditTemplate>
+                            </RadzenGridColumn>
+                            <RadzenGridColumn TItem="CustomerJobViewModel" Context="order" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="70px">
+                                <Template Context="job">
+                                    <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Medium" Click="@(async (args) => await Appvm.CustomersPanel.DeleteCustomerJobRow(job))">
+                                    </RadzenButton>
+                                </Template>
+                                <EditTemplate Context="job">
+                                    <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Medium" Click="@(async (args) => await Appvm.CustomersPanel.DeleteCustomerJobRow(job))">
+                                    </RadzenButton>
+                                </EditTemplate>
+                            </RadzenGridColumn>
+                        </Columns>
+                    </RadzenGrid>
+                </div>
+            }
+
+            break;
+        default:
+            break;
+    }
+}
+
+@code {
+    [Parameter]
+    public LegalSwpApp Appvm { get; set; }
+    [Parameter]
+    public EventCallback<LegalSwpApp> AppvmChanged { get; set; }
+}

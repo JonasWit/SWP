@@ -31,9 +31,9 @@
   <ItemGroup>
     <Folder Include="Components\LegalSwpBlazorComponents\Infrastructure\" />
     <Folder Include="Components\MedicalSwpBlazorComponents\ViewModels\" />
-    <Folder Include="wwwroot\DownloadableFiles\" />
     <Folder Include="wwwroot\js\" />
     <Folder Include="wwwroot\Images\" />
+    <Folder Include="wwwroot\DownloadableFiles\" />
   </ItemGroup>
 
 </Project>

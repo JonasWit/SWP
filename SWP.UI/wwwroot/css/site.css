@@ -61,32 +61,36 @@ ul {
         }
 
             .main-nav ul li a {
+                text-decoration:none;
                 padding-bottom: 2px;
             }
 
-            .main-nav ul li a:hover {
-                border-bottom: 2px solid #262626;
-            }
-            .main-nav ul.main-menu {
-                flex: 1;
-                margin-left: 20px;
-            }
+                .main-nav ul li a:hover {
+                    border-bottom: 2px solid #262626;
+                    color: #000;
+                }
+
+        .main-nav ul.main-menu {
+            flex: 1;
+            margin-left: 20px;
+        }
 
 .btn {
     cursor: pointer;
     display: inline-block;
     border: 0;
-    font-weight: bold;
-    padding: 10px 20px;
+    padding: 5px 10px;
     background: #262626;
     color: #fff;
-    font-size: 15px;
+    font-size: 12px;
+    font-weight: bold;
+    
 }
 
-.btn:hover {
-    opacity: 0.9;
-    color: #fff;
-}
+    .btn:hover {
+        opacity: 0.9;
+        color: #fff;
+    }
 
 /*Showcase*/
 
@@ -107,8 +111,8 @@ ul {
     margin-bottom: 40px;
 }
 
-.showcase h2, .showcase p {
-    margin-bottom: 10px;
+    .showcase h2, .showcase p {
+        margin-bottom: 10px;
     }
 
 /* Home cards */
@@ -119,28 +123,29 @@ ul {
     grid-gap: 20px;
 }
 
-.home-cards img {
-    width: 100%;
-    margin-bottom: 20px;
-}
-
-.home-cards h3 {
-    margin-bottom: 5px;
-}
-
-.home-cards a {
-    display: inline-block;
-    padding-top: 10px;
-    color: #0067b8;
-    text-transform: uppercase;
-    font-weight: bold;
-}
-
-    .home-cards a:hover i {
-        margin-left: 10px;
-        
-
+    .home-cards img {
+        width: 100%;
+        margin-bottom: 20px;
     }
+
+    .home-cards h3 {
+        margin-bottom: 5px;
+    }
+
+    .home-cards a {
+        display: inline-block;
+        padding-top: 10px;
+        color: #0067b8;
+        text-transform: uppercase;
+        font-weight: bold;
+    }
+
+
+        .home-cards a:hover i {
+            margin-left: 10px;
+        }
+
+
 
 img:hover {
     opacity: 0.7;

@@ -99,14 +99,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
 
                 if (App.ActiveCustomerWithData != null)
                 {
-                    var caseToUpdate = App.ActiveCustomerWithData.Cases.FirstOrDefault(x => x.Reminders.Any(y => y.Id == result.Id));
-
-                    var caseEntity = getCase.Get(caseToUpdate.Id);
-                    App.ActiveCustomerWithData.Cases.RemoveAll(x => x.Id == caseToUpdate.Id);
-                    App.ActiveCustomerWithData.Cases.Add(caseEntity);
-                    App.ActiveCustomerWithData.Cases = App.ActiveCustomerWithData.Cases.OrderBy(x => x.Name).ToList();
-                    App.ActiveCustomerWithData.Cases.TrimExcess();
-                    App.ActiveCustomerWithData.SelectedCase = caseEntity;
+                    ReloadCase(result.CaseId);
                 }
 
                 // Either call the Reload method or reassign the Data property of the Scheduler

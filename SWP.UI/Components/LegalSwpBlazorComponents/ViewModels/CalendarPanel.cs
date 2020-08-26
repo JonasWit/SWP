@@ -1,6 +1,7 @@
 ﻿using Radzen;
 using Radzen.Blazor;
 using SWP.Application;
+using SWP.Application.LegalSwp.Cases;
 using SWP.Application.LegalSwp.Reminders;
 using SWP.UI.Components.LegalSwpBlazorComponents.SchedulerInnerComponents;
 using SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data;
@@ -16,47 +17,55 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
     {
         private readonly DialogService dialogService;
         private readonly GetReminders getReminders;
+        private readonly GetReminder getReminder;
         private readonly UpdateReminder updateReminder;
         private readonly DeleteReminder deleteReminder;
         private readonly GeneralViewModel generalViewModel;
+        private readonly GetCase getCase;
 
         public LegalSwpApp App { get; private set; }
 
         public CalendarPanel(
             DialogService dialogService,
             GetReminders getReminders,
+            GetReminder getReminder,
             UpdateReminder updateReminder,
             DeleteReminder deleteReminder,
-            GeneralViewModel generalViewModel)
+            GeneralViewModel generalViewModel,
+            GetCase getCase)
         {
             this.dialogService = dialogService;
             this.getReminders = getReminders;
+            this.getReminder = getReminder;
             this.updateReminder = updateReminder;
             this.deleteReminder = deleteReminder;
             this.generalViewModel = generalViewModel;
+            this.getCase = getCase;
         }
 
-        public void Initialize(LegalSwpApp app) => App = app;
+        public void Initialize(LegalSwpApp app)
+        { 
+            App = app;
+            RefreshCalendarData();
+        } 
 
         #region Reminders Calendar
 
         public RadzenScheduler<ReminderViewModel> RemindersScheduler { get; set; }
-        public List<ReminderViewModel> Reminders =>
-            App.ActiveCustomerWithData != null ?
-                App.ActiveCustomerWithData.Cases.SelectMany(x => x.Reminders).ToList() : getReminders.Get(App.User.Profile).Select(x => (ReminderViewModel)x).ToList();
+        public List<ReminderViewModel> Reminders { get; set; }
+
+        public void RefreshCalendarData() => Reminders = getReminders.Get(App.User.Profile).Select(x => (ReminderViewModel)x).ToList();        
 
         public async Task OnSlotSelect(SchedulerSlotSelectEventArgs args)
         {
-            ReminderViewModel result = await dialogService.OpenAsync<AddReminderPage>("Add Reminder",
-                new Dictionary<string, object> { { "Start", args.Start }, { "End", args.End } });
+            //ReminderViewModel result = await dialogService.OpenAsync<AddReminderPage>("Add Reminder",
+            //    new Dictionary<string, object> { { "Start", args.Start }, { "End", args.End } });
 
-            if (result != null)
-            {
-
-
-                // Either call the Reload method or reassign the Data property of the Scheduler
-                await RemindersScheduler.Reload();
-            }
+            //if (result != null)
+            //{
+            //    // Either call the Reload method or reassign the Data property of the Scheduler
+            //    await RemindersScheduler.Reload();
+            //}
         }
 
         public async Task OnAppointmentSelect(SchedulerAppointmentSelectEventArgs<ReminderViewModel> args)
@@ -68,7 +77,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
                 if (!result.Active)
                 {
                     await deleteReminder.Delete(result.Id);
-                    //reminders.RemoveAll(x => x.Id == result.Id);
+                    RefreshCalendarData();
                 }
                 else
                 {
@@ -85,12 +94,34 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
                         UpdatedBy = App.User.UserName
                     });
 
-                    //reminders = _getReminders.Get(User.Profile).Select(x => (ReminderViewModel)x).ToList();
+                    RefreshCalendarData();
+                }
+
+                if (App.ActiveCustomerWithData != null)
+                {
+                    var caseToUpdate = App.ActiveCustomerWithData.Cases.FirstOrDefault(x => x.Reminders.Any(y => y.Id == result.Id));
+
+                    var caseEntity = getCase.Get(caseToUpdate.Id);
+                    App.ActiveCustomerWithData.Cases.RemoveAll(x => x.Id == caseToUpdate.Id);
+                    App.ActiveCustomerWithData.Cases.Add(caseEntity);
+                    App.ActiveCustomerWithData.Cases = App.ActiveCustomerWithData.Cases.OrderBy(x => x.Name).ToList();
+                    App.ActiveCustomerWithData.Cases.TrimExcess();
+                    App.ActiveCustomerWithData.SelectedCase = caseEntity;
                 }
 
                 // Either call the Reload method or reassign the Data property of the Scheduler
                 await RemindersScheduler.Reload();
             }
+        }
+
+        public void ReloadCase(int id)
+        {
+            var caseEntity = getCase.Get(id);
+            App.ActiveCustomerWithData.Cases.RemoveAll(x => x.Id == id);
+            App.ActiveCustomerWithData.Cases.Add(caseEntity);
+            App.ActiveCustomerWithData.Cases = App.ActiveCustomerWithData.Cases.OrderBy(x => x.Name).ToList();
+            App.ActiveCustomerWithData.Cases.TrimExcess();
+            App.ActiveCustomerWithData.SelectedCase = caseEntity;
         }
 
         public void OnAppointmentRender(SchedulerAppointmentRenderEventArgs<ReminderViewModel> args)
@@ -109,40 +140,5 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
         }
 
         #endregion
-
-        #region Reminders Grid
-
-        public RadzenGrid<ReminderViewModel> RemindersGrid { get; set; }
-
-        public void EditReminderRow(ReminderViewModel reminder)
-        {
-        }
-
-        public async Task OnUpdateReminderRow(ReminderViewModel reminder)
-        {
-
-        }
-
-        public void SaveReminderRow(ReminderViewModel reminder)
-        {
-
-        }
-
-        public void CancelReminderEdit(ReminderViewModel reminder)
-        {
-
-        }
-
-        public async Task DeleteReminderRow(ReminderViewModel reminder)
-        {
-
-        }
-
-
-
-
-
-        #endregion
-
     }
 }

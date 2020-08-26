@@ -17,6 +17,9 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data
         public int CaseId { get; set; }
         public bool IsDeadline { get; set; }
 
+        public string UpdatedDescription => $"Updated on {Updated} by {UpdatedBy}";
+        public string CreatedDescription => $"Created on {Created}";
+
         public DateTime Start { get; set; }
         public DateTime End { get; set; }
 

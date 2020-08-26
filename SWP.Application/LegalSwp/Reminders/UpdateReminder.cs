@@ -19,6 +19,7 @@ namespace SWP.Application.LegalSwp.Reminders
 
             reminderEntity.IsDeadline = request.IsDeadline;
             reminderEntity.Name = request.Name;
+            reminderEntity.Active = true;
             reminderEntity.Priority = request.Priority;
             reminderEntity.Updated = DateTime.Now;
             reminderEntity.UpdatedBy = request.UpdatedBy;

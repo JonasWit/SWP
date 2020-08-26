@@ -7,7 +7,7 @@ namespace SWP.Domain.Enums
     public enum ApplicationType
     { 
         LegalSwp = 0,
-        ManagerSwp = 1,
+        MedicalSwp = 1,
     }
 
     public enum RoleType

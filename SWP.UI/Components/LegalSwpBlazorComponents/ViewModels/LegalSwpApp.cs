@@ -16,7 +16,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
         private readonly GetCustomers getCustomers;
         private readonly UserManager<IdentityUser> userManager;
 
-        public event EventHandler RefreshUI;
+        public event EventHandler CallStateHasChanged;
 
         public CalendarPanel CalendarPanel { get; }
         public CasesPanel CasesPanel { get; }
@@ -105,7 +105,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
             SetActivePanel(LegalSwpApp.Panels.Cases);
             CasesPanel.SetActivePanel(CasesPanel.Panels.Admin);
             ActiveCustomerWithData.SelectedCase = ActiveCustomerWithData.Cases.FirstOrDefault(x => x.Id == id);
-            RefreshUI?.Invoke(this, null);
+            CallStateHasChanged?.Invoke(this, null);
         }
         public void SetActivePanel(Panels panel) => ActivePanel = panel;
 
@@ -183,7 +183,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
             }
             finally
             {
-                RefreshUI?.Invoke(this, null);
+                CallStateHasChanged?.Invoke(this, null);
             }
         }
 

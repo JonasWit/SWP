@@ -90,11 +90,11 @@
     protected override async Task OnInitializedAsync()
     {
         await legalSwpApp.Initialize(ActiveUserId);
-        legalSwpApp.RefreshUI += new EventHandler(RefreshUI);
+        legalSwpApp.CallStateHasChanged += new EventHandler(CallStateHasChanged);
     }
 
-    private void RefreshUI(object sender, EventArgs e) => StateHasChanged();
+    private void CallStateHasChanged(object sender, EventArgs e) => StateHasChanged();
 
-    public void Dispose() => legalSwpApp.RefreshUI -= new EventHandler(RefreshUI);
+    public void Dispose() => legalSwpApp.CallStateHasChanged -= new EventHandler(CallStateHasChanged);
 
 }

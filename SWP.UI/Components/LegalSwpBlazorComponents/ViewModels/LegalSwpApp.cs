@@ -24,6 +24,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
         public MyAppPanel MyAppPanel { get; }
         public string ActiveUserId { get; private set; }
         public bool Loading { get; set; }
+        public bool Initialized { get; set; }
 
         public LegalSwpApp(
             GetCustomer getCustomer,
@@ -32,7 +33,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
             CalendarPanel calendarPanel,
             CasesPanel casesPanel,
             CustomersPanel customersPanel,
-            MyAppPanel myAppPanel)      
+            MyAppPanel myAppPanel)
         {
             this.getCustomer = getCustomer;
             this.getCustomers = getCustomers;
@@ -46,23 +47,30 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
 
         public async Task Initialize(string activeUserId)
         {
-            ActiveUserId = activeUserId;
-
-            User.User = await userManager.FindByIdAsync(ActiveUserId);
-            User.Claims = await userManager.GetClaimsAsync(User.User) as List<Claim>;
-            User.Roles = await userManager.GetRolesAsync(User.User) as List<string>;
-
-            Customers = getCustomers.GetCustomersWithoutData(User.Profile)?.Select(x => (CustomerViewModel)x).ToList();
-            ActiveCustomer = Customers.FirstOrDefault();
-
-            //For the first run
-            if (ActiveCustomer != null)
+            if (Initialized)
             {
-                ActiveCustomerWithData = getCustomer.Get(ActiveCustomer.Id, User.Profile);
+                return;
             }
+            else
+            {
+                ActiveUserId = activeUserId;
 
-            RefreshCustomers();
-            InitializePanels();
+                User.User = await userManager.FindByIdAsync(ActiveUserId);
+                User.Claims = await userManager.GetClaimsAsync(User.User) as List<Claim>;
+                User.Roles = await userManager.GetRolesAsync(User.User) as List<string>;
+
+                Customers = getCustomers.GetCustomersWithoutData(User.Profile)?.Select(x => (CustomerViewModel)x).ToList();
+                ActiveCustomer = Customers.FirstOrDefault();
+
+                //For the first run
+                if (ActiveCustomer != null)
+                {
+                    ActiveCustomerWithData = getCustomer.Get(ActiveCustomer.Id, User.Profile);
+                }
+
+                RefreshCustomers();
+                InitializePanels();
+            }
         }
 
         private void InitializePanels()

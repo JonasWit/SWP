@@ -17,7 +17,6 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
     {
         private readonly DialogService dialogService;
         private readonly GetReminders getReminders;
-        private readonly GetReminder getReminder;
         private readonly UpdateReminder updateReminder;
         private readonly DeleteReminder deleteReminder;
         private readonly GeneralViewModel generalViewModel;
@@ -36,7 +35,6 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
         {
             this.dialogService = dialogService;
             this.getReminders = getReminders;
-            this.getReminder = getReminder;
             this.updateReminder = updateReminder;
             this.deleteReminder = deleteReminder;
             this.generalViewModel = generalViewModel;
@@ -55,18 +53,6 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
         public List<ReminderViewModel> Reminders { get; set; }
 
         public void RefreshCalendarData() => Reminders = getReminders.Get(App.User.Profile).Select(x => (ReminderViewModel)x).ToList();        
-
-        public async Task OnSlotSelect(SchedulerSlotSelectEventArgs args)
-        {
-            //ReminderViewModel result = await dialogService.OpenAsync<AddReminderPage>("Add Reminder",
-            //    new Dictionary<string, object> { { "Start", args.Start }, { "End", args.End } });
-
-            //if (result != null)
-            //{
-            //    // Either call the Reload method or reassign the Data property of the Scheduler
-            //    await RemindersScheduler.Reload();
-            //}
-        }
 
         public async Task OnAppointmentSelect(SchedulerAppointmentSelectEventArgs<ReminderViewModel> args)
         {

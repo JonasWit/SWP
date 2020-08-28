@@ -15,6 +15,8 @@ namespace SWP.Application.LegalSwp.Customers
         public GetCustomers(ILegalSwpManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
 
         public List<Customer> GetCustomersWithData(string claim) => legalSwpManager.GetCustomers(claim, x => x);
-        public List<Customer> GetCustomersWithoutData(string claim) => legalSwpManager.GetCustomersWithoutCases(claim, x => x);
+        public List<Customer> GetCustomersWithoutData(string claim) => legalSwpManager.GetCustomersWithoutCases(claim);
+        public IEnumerable<int> GetCustomerCasesIds(int id) => legalSwpManager.GetCustomerCasesIds(id);
+        public int? CountJobsPerCustomer(int id) => legalSwpManager.CountJobsPerCustomer(id);
     }
 }

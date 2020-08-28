@@ -13,14 +13,12 @@ namespace SWP.Domain.Infrastructure
         TResult GetCustomer<TResult>(int id, string claim, Func<Customer, TResult> selector);
         TResult GetCustomerWithoutCases<TResult>(int id, string claim, Func<Customer, TResult> selector);
         List<TResult> GetCustomers<TResult>(string claim, Func<Customer, TResult> selector);
-        List<TResult> GetCustomersWithoutCases<TResult>(string claim, Func<Customer, TResult> selector);
+        List<Customer> GetCustomersWithoutCases(string claim);
 
         Task<int> CreateCustomer(Customer customer);
         Task<int> UpdateCustomer(Customer customer);
         Task<int> DeleteCustomer(int id);
         Task<int> DeleteProfileCustomers(string profileClaim);
-
-        int CountCustomers();
 
         #endregion
 
@@ -68,6 +66,19 @@ namespace SWP.Domain.Infrastructure
         Task<int> CreateNote(int caseId, Note note);
         Task<int> UpdateNote(Note note);
         Task<int> DeleteNote(int id);
+
+        #endregion
+
+        #region Statistics
+
+        int CountCustomers();
+        int CountCasesPerCustomer(int customerId);
+        int CountJobsPerCustomer(int customerId);
+        IEnumerable<int> GetCustomerCasesIds(int customerId);
+
+        int CountRemindersPerCase(int caseId);
+        int CountDeadlineRemindersPerCase(int caseId);
+        int CountNotesPerCase(int caseId);
 
         #endregion
 

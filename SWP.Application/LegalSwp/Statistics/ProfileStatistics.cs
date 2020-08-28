@@ -1,46 +1,71 @@
-﻿using SWP.Domain.Infrastructure;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿//using SWP.Application.LegalSwp.Cases;
+//using SWP.Application.LegalSwp.Customers;
+//using System.Collections.Generic;
 
-namespace SWP.Application.LegalSwp.Statistics
-{
-    [TransientService]
-    public class ProfileStatistics
-    {
-        private readonly ILegalSwpManager legalSwpManager;
-        public ProfileStatistics(ILegalSwpManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
+//namespace SWP.Application.LegalSwp.Statistics
+//{
+//    [TransientService]
+//    public class ProfileStatistics
+//    {
+//        private readonly GetCustomers getCustomers;
+//        private readonly GetCases getCases;
 
-        public Response CountCasesPerCustomer(string claim)
-        {
-            var customersWithData = legalSwpManager.GetCustomers(claim, x => x);
+//        public ProfileStatistics(GetCustomers getCustomers, GetCases getCases)
+//        {
+//            this.getCustomers = getCustomers;
+//            this.getCases = getCases;
+//        }
 
+//        public Response Get([FromService] GetCustomers string profile)
+//        {
+//            var customers = getCustomers.GetCustomersWithoutData(profile);
+//            var response = new Response();
 
+//            foreach (var customer in customers)
+//            {
+//                var customerStatistic = new Response.CustomerStatistic();
+//                var customerCases = getCustomers.GetCustomerCasesIds(customer.Id) ?? new List<int>();
 
+//                customerStatistic.Jobs = getCustomers.CountJobsPerCustomer(customer.Id) ?? 0;
 
+//                if (customerCases != null)
+//                {
+//                    foreach (var cs in customerCases)
+//                    {
+//                        customerStatistic.Cases.Add(new Response.CaseStatistic
+//                        {
+//                            Id = cs,
+//                            Deadlines = getCases.CountDeadlineRemindersPerCase(cs) ?? 0,
+//                            Reminders = getCases.CountRemindersPerCase(cs) ?? 0,
+//                        });
+//                    } 
+//                }
 
-            return new Response();
-        }
+//                response.Customers.Add(customerStatistic);
+//            }
 
-        public class Response
-        {
-            public string ProfileName { get; set; }
+//            return response;
+//        }
 
-            public List<StatisticRecord> CustomerCases { get; set; }
-            public Dictionary<string, StatisticRecord> CustomerJobs { get; set; }
+//        public class Response
+//        {
+//            public string ProfileName { get; set; }
 
-            public class StatisticRecord
-            { 
-                public string ItemName { get; set; }
-                public int Count { get; set; }                       
-            }
+//            public List<CustomerStatistic> Customers { get; set; } = new List<CustomerStatistic>();
 
+//            public class CustomerStatistic
+//            {
+//                public int Id { get; set; }
+//                public int Jobs { get; set; }
+//                public List<CaseStatistic> Cases { get; set; } = new List<CaseStatistic>();
+//            }
 
-
-
-        }
-
-
-
-    }
-}
+//            public class CaseStatistic
+//            {
+//                public int Id { get; set; }
+//                public int Reminders { get; set; }
+//                public int Deadlines { get; set; }
+//            }
+//        }
+//    }
+//}

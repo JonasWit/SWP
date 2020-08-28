@@ -1,14 +1,8 @@
-﻿using Radzen;
-using Radzen.Blazor;
-using SWP.Application;
-using SWP.Application.LegalSwp.Cases;
+﻿using Radzen.Blazor;
 using SWP.Application.LegalSwp.Customers;
 using SWP.Application.LegalSwp.Jobs;
-using SWP.Application.LegalSwp.Reminders;
 using SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels

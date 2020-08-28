@@ -155,7 +155,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
 
             }
 
-            CasesGrid.Reload();
+            await CasesGrid.Reload();
         }
 
         public void ActiveCaseChange(object value)
@@ -254,7 +254,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
 
             }
 
-            NotesGrid.Reload();
+            await NotesGrid.Reload();
         }
 
         #endregion
@@ -283,6 +283,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
                 });
 
                 ReloadCase(App.ActiveCustomerWithData.SelectedCase.Id);
+                App.CalendarPanel.RefreshCalendarData();
 
                 // Either call the Reload method or reassign the Data property of the Scheduler
                 await CasesScheduler.Reload();

@@ -1,5 +1,4 @@
-﻿using SWP.Application;
-using SWP.Application.LegalSwp.Cases;
+﻿using SWP.Application.LegalSwp.Cases;
 using SWP.Application.LegalSwp.Customers;
 using System.Collections.Generic;
 
@@ -17,7 +16,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
             this.getCases = getCases;
         }
 
-        public Response Get(string profile)
+        public Response GetStatistics(string profile)
         {
             var customers = getCustomers.GetCustomersWithoutData(profile);
             var response = new Response();

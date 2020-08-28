@@ -29,7 +29,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
      
         public void RefreshStatistics()
         {
-            var test = profileStatistics.Get(App.User.Profile);
+            var test = profileStatistics.GetStatistics(App.User.Profile);
 
 
 

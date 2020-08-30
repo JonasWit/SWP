@@ -27,7 +27,8 @@ namespace SWP.UI
             services.AddHttpContextAccessor();
 
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(configuration.GetConnectionString("DevConnection")));
+                options.UseSqlServer(configuration.GetConnectionString("DevConnection")),
+                ServiceLifetime.Transient);
 
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddRoles<IdentityRole>()

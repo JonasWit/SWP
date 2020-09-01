@@ -13,3 +13,8 @@ https://www.pexels.com/photo/photo-of-person-holding-mobile-phone-3183153/
 https://unsplash.com/photos/DzqeB43HfnE
 
 https://unsplash.com/photos/q10VITrVYUM
+<span>Photo by <a href="https://unsplash.com/@tingeyinjurylawfirm?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Tingey Injury Law Firm</a> on <a href="https://unsplash.com/?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Unsplash</a></span>
+
+https://www.pexels.com/photo/computer-desk-laptop-stethoscope-48604/
+
+https://www.pexels.com/photo/internet-screen-security-protection-60504/

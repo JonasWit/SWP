@@ -13,7 +13,7 @@ body {
     color: #000;
     font-size: 15px;
     line-height: 1.5;
-    padding-top: 65px;
+    padding-top: ;
 }
 /* 
 a.navbar-brand {
@@ -44,7 +44,6 @@ ul {
     align-items: center;
     justify-content: space-between;
     height: 60px;
-    padding: 20px 0;
     font-size: 13px;
 }
 
@@ -57,7 +56,7 @@ ul {
     }
 
         .main-nav ul li {
-            padding: 0 10px;
+            padding: 0 20px;
         }
 
             .main-nav ul li a {
@@ -214,3 +213,20 @@ body {
 /*  line-height: 60px;  Vertically center the text there 
 }
 */
+
+
+.card-img-top {
+    height: 180px;
+}
+
+.color-font {
+    color: #0067b8;
+    font-weight: bold;
+}
+
+.instr-1 {
+    border-bottom: solid;
+    border-bottom-color: #0067b8;
+    border-bottom-width: 2px;
+    padding-bottom: 5px;
+}

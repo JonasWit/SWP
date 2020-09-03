@@ -52,10 +52,11 @@ namespace SWP.DataBase.Managers
                 .AsNoTracking()
                 .ToList();
 
-        public Task<int> CreateCustomer(Customer customer)
+        public async Task<Customer> CreateCustomer(Customer customer)
         {
             context.Customers.Add(customer);
-            return context.SaveChangesAsync();
+            await context.SaveChangesAsync();
+            return customer;
         }
 
         public Task<int> UpdateCustomer(Customer customer)

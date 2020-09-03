@@ -14,7 +14,7 @@ namespace SWP.Application.LegalSwp.Customers
         private readonly ILegalSwpManager legalSwpManager;
         public CreateCustomer(ILegalSwpManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
 
-        public Task<int> Do(Request request) => legalSwpManager.CreateCustomer(new Customer
+        public Task<Customer> Do(Request request) => legalSwpManager.CreateCustomer(new Customer
         {
             Name = request.Name,
             ProfileClaim = request.ProfileClaim,

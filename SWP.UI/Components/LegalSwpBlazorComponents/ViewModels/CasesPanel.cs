@@ -270,7 +270,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
             {
                 result.UpdatedBy = App.User.UserName;
 
-                await createReminder.Create(App.ActiveCustomerWithData.SelectedCase.Id, new CreateReminder.Request
+                var newReminder = await createReminder.Create(App.ActiveCustomerWithData.SelectedCase.Id, new CreateReminder.Request
                 {
                     Active = true,
                     IsDeadline = result.IsDeadline,
@@ -282,9 +282,12 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
                     UpdatedBy = result.UpdatedBy
                 });
 
-                ReloadCase(App.ActiveCustomerWithData.SelectedCase.Id);
-                App.CalendarPanel.RefreshCalendarData();
+                App.ActiveCustomerWithData.SelectedCase.Reminders.Add(newReminder);
+                App.CalendarPanel.Reminders.Add(newReminder);
 
+                //ReloadCase(App.ActiveCustomerWithData.SelectedCase.Id);
+
+                //App.CalendarPanel.RefreshCalendarData();
                 // Either call the Reload method or reassign the Data property of the Scheduler
                 await CasesScheduler.Reload();
             }
@@ -300,11 +303,13 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
                 {
                     await deleteReminder.Delete(result.Id);
                     App.ActiveCustomerWithData.SelectedCase.Reminders.RemoveAll(x => x.Id == result.Id);
-                    ReloadCase(App.ActiveCustomerWithData.SelectedCase.Id);
+                    App.CalendarPanel.Reminders.RemoveAll(x => x.Id == result.Id);
+
+                    //ReloadCase(App.ActiveCustomerWithData.SelectedCase.Id);
                 }
                 else
                 {
-                    await updateReminder.Update(new UpdateReminder.Request
+                    var updatedReminder = await updateReminder.Update(new UpdateReminder.Request
                     {
                         Id = result.Id,
                         IsDeadline = result.IsDeadline,
@@ -318,7 +323,12 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
                     });
 
                     App.ActiveCustomerWithData.SelectedCase.Reminders.RemoveAll(x => x.Id == result.Id);
-                    ReloadCase(App.ActiveCustomerWithData.SelectedCase.Id);
+                    App.ActiveCustomerWithData.SelectedCase.Reminders.Add(updatedReminder);
+
+                    App.CalendarPanel.Reminders.RemoveAll(x => x.Id == result.Id);
+                    App.CalendarPanel.Reminders.Add(updatedReminder);
+
+                    //ReloadCase(App.ActiveCustomerWithData.SelectedCase.Id);
                 }
 
                 // Either call the Reload method or reassign the Data property of the Scheduler

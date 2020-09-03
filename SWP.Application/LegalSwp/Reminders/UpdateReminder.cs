@@ -1,4 +1,5 @@
 ﻿using SWP.Domain.Infrastructure;
+using SWP.Domain.Models.SWPLegal;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -13,7 +14,7 @@ namespace SWP.Application.LegalSwp.Reminders
         private readonly ILegalSwpManager legalSwpManager;
         public UpdateReminder(ILegalSwpManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
 
-        public Task<int> Update(Request request)
+        public Task<Reminder> Update(Request request)
         {
             var reminderEntity = legalSwpManager.GetReminder(request.Id, x => x);
 

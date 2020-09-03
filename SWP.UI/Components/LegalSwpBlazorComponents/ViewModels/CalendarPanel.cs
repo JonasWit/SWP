@@ -1,4 +1,5 @@
-﻿using Radzen;
+﻿using Org.BouncyCastle.Math.EC.Rfc7748;
+using Radzen;
 using Radzen.Blazor;
 using SWP.Application;
 using SWP.Application.LegalSwp.Cases;
@@ -42,17 +43,17 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
         }
 
         public void Initialize(LegalSwpApp app)
-        { 
+        {
             App = app;
             RefreshCalendarData();
-        } 
+        }
 
         #region Reminders Calendar
 
         public RadzenScheduler<ReminderViewModel> RemindersScheduler { get; set; }
         public List<ReminderViewModel> Reminders { get; set; }
 
-        public void RefreshCalendarData() => Reminders = getReminders.Get(App.User.Profile).Select(x => (ReminderViewModel)x).ToList();        
+        public void RefreshCalendarData() => Reminders = getReminders.Get(App.User.Profile).Select(x => (ReminderViewModel)x).ToList();
 
         public async Task OnAppointmentSelect(SchedulerAppointmentSelectEventArgs<ReminderViewModel> args)
         {
@@ -63,11 +64,21 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
                 if (!result.Active)
                 {
                     await deleteReminder.Delete(result.Id);
-                    RefreshCalendarData();
+                    Reminders.RemoveAll(x => x.Id == result.Id);
+
+                    if (App.ActiveCustomerWithData != null)
+                    {
+                        var c = App.ActiveCustomerWithData.Cases.FirstOrDefault(x => x.Reminders.Any(y => y.Id == result.Id));
+
+                        if (c != null)
+                        {
+                            c.Reminders.RemoveAll(x => x.Id == result.Id);
+                        }
+                    }
                 }
                 else
                 {
-                    await updateReminder.Update(new UpdateReminder.Request
+                    var updatedEntity = await updateReminder.Update(new UpdateReminder.Request
                     {
                         Id = result.Id,
                         IsDeadline = result.IsDeadline,
@@ -80,13 +91,25 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
                         UpdatedBy = App.User.UserName
                     });
 
-                    RefreshCalendarData();
+                    Reminders.RemoveAll(x => x.Id == updatedEntity.Id);
+                    Reminders.Add(updatedEntity);
+
+                    if (App.ActiveCustomerWithData != null)
+                    {
+                        var c = App.ActiveCustomerWithData.Cases.FirstOrDefault(x => x.Reminders.Any(y => y.Id == result.Id));
+
+                        if (c != null)
+                        {
+                            c.Reminders.RemoveAll(x => x.Id == result.Id);
+                            c.Reminders.Add(updatedEntity);
+                        }
+                    }
                 }
 
-                if (App.ActiveCustomerWithData != null)
-                {
-                    ReloadCase(result.CaseId);
-                }
+                //if (App.ActiveCustomerWithData != null)
+                //{
+                //    ReloadCase(result.CaseId);
+                //}
 
                 // Either call the Reload method or reassign the Data property of the Scheduler
                 await RemindersScheduler.Reload();

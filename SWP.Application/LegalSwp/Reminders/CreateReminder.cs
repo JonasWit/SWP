@@ -14,7 +14,7 @@ namespace SWP.Application.LegalSwp.Reminders
         private readonly ILegalSwpManager legalSwpManager;
         public CreateReminder(ILegalSwpManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
 
-        public Task<int> Create(int caseId, Request request) =>
+        public Task<Reminder> Create(int caseId, Request request) =>
             legalSwpManager.CreateReminder(caseId, new Reminder
             {
                 Name = request.Name,

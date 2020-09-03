@@ -50,8 +50,8 @@ namespace SWP.Domain.Infrastructure
         List<Reminder> GetReminders(string profile);
         List<Reminder> GetRemindersForCustomer(int customerId);
 
-        Task<int> CreateReminder(int caseId, Reminder reminder);
-        Task<int> UpdateReminder(Reminder reminder);
+        Task<Reminder> CreateReminder(int caseId, Reminder reminder);
+        Task<Reminder> UpdateReminder(Reminder reminder);
         Task<int> DeleteReminder(int id);
 
         Task<int> CountReminders();

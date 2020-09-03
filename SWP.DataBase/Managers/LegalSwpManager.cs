@@ -151,17 +151,19 @@ namespace SWP.DataBase.Managers
                 .SelectMany(x => x.Cases.SelectMany(x => x.Reminders))
                 .ToList();
 
-        public Task<int> CreateReminder(int caseId, Reminder reminder)
+        public async Task<Reminder> CreateReminder(int caseId, Reminder reminder)
         {
             var caseEntity = GetCase(caseId, x => x);
             caseEntity.Reminders.Add(reminder);
-            return context.SaveChangesAsync();
+            await context.SaveChangesAsync();
+            return reminder;
         }
 
-        public Task<int> UpdateReminder(Reminder reminder)
+        public async Task<Reminder> UpdateReminder(Reminder reminder)
         {
             context.Reminders.Update(reminder);
-            return context.SaveChangesAsync();
+            await context.SaveChangesAsync();
+            return reminder;
         }
 
         public Task<int> DeleteReminder(int id)

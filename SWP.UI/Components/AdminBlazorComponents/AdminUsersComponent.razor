@@ -241,7 +241,7 @@
             vm.ErrorMessage = "User does not have this claim!";
         }
 
-        claimsGrid.Reload();
+        await claimsGrid.Reload();
     }
 
     private async Task AddApplicationClaim()

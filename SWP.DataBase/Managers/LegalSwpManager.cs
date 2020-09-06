@@ -52,11 +52,11 @@ namespace SWP.DataBase.Managers
                 .AsNoTracking()
                 .ToList();
 
-        public async Task<Customer> CreateCustomer(Customer customer)
+        public Task<Customer> CreateCustomer(Customer customer)
         {
             context.Customers.Add(customer);
-            await context.SaveChangesAsync();
-            return customer;
+            context.SaveChangesAsync();
+            return Task.FromResult(customer);
         }
 
         public Task<int> UpdateCustomer(Customer customer)
@@ -151,19 +151,19 @@ namespace SWP.DataBase.Managers
                 .SelectMany(x => x.Cases.SelectMany(x => x.Reminders))
                 .ToList();
 
-        public async Task<Reminder> CreateReminder(int caseId, Reminder reminder)
+        public Task<Reminder> CreateReminder(int caseId, Reminder reminder)
         {
             var caseEntity = GetCase(caseId, x => x);
             caseEntity.Reminders.Add(reminder);
-            await context.SaveChangesAsync();
-            return reminder;
+            context.SaveChangesAsync();
+            return Task.FromResult(reminder);
         }
 
-        public async Task<Reminder> UpdateReminder(Reminder reminder)
+        public Task<Reminder> UpdateReminder(Reminder reminder)
         {
             context.Reminders.Update(reminder);
-            await context.SaveChangesAsync();
-            return reminder;
+            context.SaveChangesAsync();
+            return Task.FromResult(reminder);
         }
 
         public Task<int> DeleteReminder(int id)
@@ -268,11 +268,6 @@ namespace SWP.DataBase.Managers
                 .FirstOrDefault(x => x.Id == customerId).Cases
                 .Select(y => y.Id)
                 .ToList();
-
-
-        
-
-    
 
         #endregion
     }

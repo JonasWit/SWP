@@ -115,7 +115,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
                 App.Loading = false;
             }
 
-            CustomersGrid.Reload();
+            await CustomersGrid.Reload();
         }
 
         public async Task SubmitNewCustomer(CreateCustomer.Request arg)
@@ -232,7 +232,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
                 App.Loading = false;
             }
 
-            CustomersGrid.Reload();
+            await CustomersGrid.Reload();
         }
 
         #endregion

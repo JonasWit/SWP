@@ -17,6 +17,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
         private readonly UserManager<IdentityUser> userManager;
 
         public event EventHandler CallStateHasChanged;
+        public event EventHandler ActiveCustomerChanged;
 
         public CalendarPanel CalendarPanel { get; }
         public CasesPanel CasesPanel { get; }
@@ -203,6 +204,8 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
                 ActiveCustomer = null;
                 ActiveCustomerWithData = null;
             }
+
+            ActiveCustomerChanged?.Invoke(this, null);
         }
 
         #endregion

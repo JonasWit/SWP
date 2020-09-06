@@ -9,15 +9,17 @@ using SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
 namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
 {
     [UITransientService]
-    public class CalendarPanel
+    public class CalendarPanel : IDisposable
     {
         private readonly DialogService dialogService;
         private readonly GetReminders getReminders;
+        private readonly GetReminder getReminder;
         private readonly UpdateReminder updateReminder;
         private readonly DeleteReminder deleteReminder;
         private readonly GeneralViewModel generalViewModel;
@@ -36,6 +38,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
         {
             this.dialogService = dialogService;
             this.getReminders = getReminders;
+            this.getReminder = getReminder;
             this.updateReminder = updateReminder;
             this.deleteReminder = deleteReminder;
             this.generalViewModel = generalViewModel;
@@ -46,6 +49,17 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
         {
             App = app;
             RefreshCalendarData();
+            SubscribeToEvents();
+        }
+
+        private void SubscribeToEvents()
+        {
+            App.ActiveCustomerChanged += new EventHandler(ActiveCustomerHasChanged);
+        }
+
+        private void UnsobscribeEvents()
+        {
+            App.ActiveCustomerChanged -= new EventHandler(ActiveCustomerHasChanged);
         }
 
         #region Reminders Calendar
@@ -139,6 +153,18 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
                 var scheme = generalViewModel.PrioritiesColors.FirstOrDefault(x => x.Number == args.Data.Priority);
                 args.Attributes["style"] = $"background: {scheme?.BackgroundColor}; color: {scheme?.TextColor};";
             }
+        }
+
+        private void ActiveCustomerHasChanged(object sender, EventArgs e)
+        { 
+            //todo: show proper cases
+        
+        
+        }
+
+        public void Dispose()
+        {
+            UnsobscribeEvents();
         }
 
         #endregion

@@ -14,12 +14,12 @@ namespace SWP.UI.Controllers
     [ApiKeyAuth]
     public class LicensesController : ControllerBase
     {
-        [HttpPost("ValidateLicense")]
-        public async Task<ValidateLicense.Response> RunCrawlers([FromBody] ValidateLicense.Request request)
-        {
-            var response = new ValidateLicense.Response();
+        //[HttpPost("ValidateLicense")]
+        //public async Task<ValidateLicense.Response> RunCrawlers([FromBody] ValidateLicense.Request request)
+        //{
+        //    var response = new ValidateLicense.Response();
 
-            return response;
-        }
+        //    return response;
+        //}
     }
 }

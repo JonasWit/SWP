@@ -16,9 +16,6 @@ namespace SWP.UI.Services
 
         public Task SendEmailAsync(string email, string subject, string message) => Execute(subject, message, email);
 
-        public Task Execute(string subject, string message, string email)
-        {
-            return emailService.SendAsync(email, subject, message);
-        }
+        public Task Execute(string subject, string message, string email) => emailService.SendAsync(email, subject, message);
     }
 }

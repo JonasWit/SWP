@@ -63,7 +63,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
 
             try
             {
-                await updateCustomer.Update(new UpdateCustomer.Request
+                var result = await updateCustomer.Update(new UpdateCustomer.Request
                 {
                     Id = customer.Id,
                     Active = customer.Active,
@@ -75,7 +75,15 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
                     UpdatedBy = App.User.UserName
                 });
 
-                App.RefreshCustomers();
+                if (App.ActiveCustomer.Id == result.Id)
+                {
+                    App.ActiveCustomer = result;
+                }
+                else
+                {
+                    App.Customers.RemoveAll(x => x.Id == result.Id);
+                    App.Customers.Add(result);
+                }
             }
             catch (Exception ex)
             {

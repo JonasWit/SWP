@@ -95,7 +95,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
         public CustomerViewModel ActiveCustomerWithData { get; set; }
         public UserModel User { get; set; } = new UserModel();
         public Panels ActivePanel { get; set; } = Panels.MyApp;
-        public IEnumerable<CustomerViewModel> Customers { get; set; } = new List<CustomerViewModel>();
+        public List<CustomerViewModel> Customers { get; set; } = new List<CustomerViewModel>();
         public void RedirectToCase(int id)
         {
             if (!ActiveCustomerWithData.Cases.Any(x => x.Id == id))

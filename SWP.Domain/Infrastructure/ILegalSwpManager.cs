@@ -16,7 +16,7 @@ namespace SWP.Domain.Infrastructure
         List<Customer> GetCustomersWithoutCases(string claim);
 
         Task<Customer> CreateCustomer(Customer customer);
-        Task<int> UpdateCustomer(Customer customer);
+        Task<Customer> UpdateCustomer(Customer customer);
         Task<int> DeleteCustomer(int id);
         Task<int> DeleteProfileCustomers(string profileClaim);
 

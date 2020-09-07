@@ -16,6 +16,5 @@ namespace SWP.UI.Pages.Marketing.PasswordManager
         }
 
         public IActionResult OnGetDownloadFile() => File("/DownloadableFiles/PasswordManager.exe", MediaTypeNames.Application.Octet, "PasswordManager.exe");
-
     }
 }

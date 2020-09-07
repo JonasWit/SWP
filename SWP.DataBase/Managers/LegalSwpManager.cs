@@ -59,10 +59,11 @@ namespace SWP.DataBase.Managers
             return Task.FromResult(customer);
         }
 
-        public Task<int> UpdateCustomer(Customer customer)
+        public Task<Customer> UpdateCustomer(Customer customer)
         {
             context.Customers.Update(customer);
-            return context.SaveChangesAsync();
+            context.SaveChangesAsync();
+            return Task.FromResult(customer);
         }
 
         public Task<int> DeleteCustomer(int id)

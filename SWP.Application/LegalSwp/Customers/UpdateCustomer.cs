@@ -1,4 +1,5 @@
 ﻿using SWP.Domain.Infrastructure;
+using SWP.Domain.Models.SWPLegal;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
@@ -10,7 +11,7 @@ namespace SWP.Application.LegalSwp.Customers
         private readonly ILegalSwpManager legalSwpManager;
         public UpdateCustomer(ILegalSwpManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
 
-        public Task<int> Update(Request request)
+        public Task<Customer> Update(Request request)
         {
             var record = legalSwpManager.GetCustomer(request.Id, request.ProfileClaim, x => x);
 

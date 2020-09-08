@@ -36,10 +36,5 @@ namespace SWP.Domain.Models.SWPLegal
         [MaxLength(50)]
         [Required]
         public string UpdatedBy { get; set; }
-
-
-
-
-
     }
 }

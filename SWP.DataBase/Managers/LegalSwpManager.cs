@@ -4,6 +4,7 @@ using SWP.Domain.Models.SWPLegal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 
@@ -119,13 +120,18 @@ namespace SWP.DataBase.Managers
             return c;
         }
 
-        public Task<int> UpdateCase(Case c)
+        public async Task<Case> UpdateCase(Case c)
         {
             context.Cases.Update(c);
-            return context.SaveChangesAsync();
+            await context.SaveChangesAsync();
+            return c;
         }
 
         public int CountCases(int customerId) => context.Cases.Count(x => x.CustomerId == customerId);
+
+        public string GetCaseParentName(int id) => context.Customers.Where(x => x.Cases.Any(y => y.Id == id)).Select(x => x.Name).FirstOrDefault();
+
+        public string GetCaseName(int id) => context.Cases.Where(x => x.Id == id).Select(y => y.Name).FirstOrDefault();
 
         #endregion
 

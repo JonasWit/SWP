@@ -1,4 +1,5 @@
-﻿using Radzen;
+﻿using Org.BouncyCastle.Math.EC.Rfc7748;
+using Radzen;
 using Radzen.Blazor;
 using SWP.Application;
 using SWP.Application.LegalSwp.Cases;
@@ -117,7 +118,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
         {
             try
             {
-                await updateCase.Update(new UpdateCase.Request
+                var result = await updateCase.Update(new UpdateCase.Request
                 {
                     Id = c.Id,
                     CaseType = c.CaseType,
@@ -127,7 +128,11 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
                     UpdatedBy = App.User.UserName
                 });
 
-                App.RefreshCustomerWithData();
+                if (App.ActiveCustomer != null)
+                {
+                    App.ActiveCustomerWithData.Cases.RemoveAll(x => x.Id == result.Id);
+                    App.ActiveCustomerWithData.Cases.Add(result);
+                }
             }
             catch (Exception ex)
             {

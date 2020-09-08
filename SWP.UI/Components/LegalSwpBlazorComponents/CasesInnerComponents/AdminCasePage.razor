@@ -2,24 +2,24 @@
 <RadzenGrid @ref="Appvm.CasesPanel.CasesGrid" AllowFiltering="true" AllowPaging="true" PageSize="5" AllowSorting="true"
             Data="@Appvm.ActiveCustomerWithData.Cases" TItem="CaseViewModel" RowUpdate="@Appvm.CasesPanel.OnUpdateCaseRow">
     <Columns>
-        <RadzenGridColumn TItem="CaseViewModel" Property="Name" Title="Nazwa">
+        <RadzenGridColumn TItem="CaseViewModel" Property="Name" Title="Case Name">
             <EditTemplate Context="c">
                 <RadzenTextBox @bind-Value="c.Name" Style="width:100%; display: block" Name="Nazwa" />
                 <RadzenRequiredValidator Text="Nazwa nie może być pusta!" Component="Nazwa" Popup="true" />
                 <RadzenLengthValidator Max="50" Text="Max 50 characters!" Component="Nazwa" Popup="true" />
             </EditTemplate>
         </RadzenGridColumn>
-        <RadzenGridColumn TItem="CaseViewModel" Property="Signature" Title="Sygnatura">
+        <RadzenGridColumn TItem="CaseViewModel" Property="Signature" Title="Signature">
             <EditTemplate Context="c">
                 <RadzenTextBox @bind-Value="c.Signature" Style="width:100%; display: block" Name="Sygnatura" />
             </EditTemplate>
         </RadzenGridColumn>
-        <RadzenGridColumn TItem="CaseViewModel" Property="CaseType" Title="Typ sprawy">
+        <RadzenGridColumn TItem="CaseViewModel" Property="CaseType" Title="Type">
             <EditTemplate Context="c">
                 <RadzenTextBox @bind-Value="c.CaseType" Style="width:100%; display: block" Name="Typ sprawy" />
             </EditTemplate>
         </RadzenGridColumn>
-        <RadzenGridColumn TItem="CaseViewModel" Property="Description" Title="Opis">
+        <RadzenGridColumn TItem="CaseViewModel" Property="Description" Title="Description">
             <EditTemplate Context="c">
                 <Radzen.Blazor.RadzenTextArea @bind-Value="c.Description" Style="width:100%; display: block" Name="Description" />
                 <RadzenLengthValidator Max="500" Text="Max 500 characters!" Component="Description" Popup="true" />
@@ -35,7 +35,7 @@
                 @String.Format("{0:f}", c.Updated)
             </Template>
         </RadzenGridColumn>
-        <RadzenGridColumn TItem="CaseViewModel" Property="UpdatedBy" Title="Użytkownik">
+        <RadzenGridColumn TItem="CaseViewModel" Property="UpdatedBy" Title="Last Updated By">
             <Template Context="c">
                 @c.UpdatedBy
             </Template>

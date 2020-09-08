@@ -35,11 +35,12 @@ namespace SWP.Domain.Infrastructure
         TResult GetCase<TResult>(int id, Func<Case, TResult> selector);
         TResult GetCaseWithoutData<TResult>(int id, Func<Case, TResult> selector);
         TResult GetCases<TResult>(string profile, Func<Case, TResult> selector);
+        string GetCaseParentName(int id);
+        string GetCaseName(int id);
 
         Task<Case> CreateCase(int customerId, string profile, Case c);
-        Task<int> UpdateCase(Case c);
+        Task<Case> UpdateCase(Case c);
         Task<int> DeleteCase(int id);
-
         int CountCases(int customerId);
 
         #endregion

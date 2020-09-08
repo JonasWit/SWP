@@ -19,7 +19,6 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
     {
         private readonly DialogService dialogService;
         private readonly GetReminders getReminders;
-        private readonly GetReminder getReminder;
         private readonly UpdateReminder updateReminder;
         private readonly DeleteReminder deleteReminder;
         private readonly GeneralViewModel generalViewModel;
@@ -30,7 +29,6 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
         public CalendarPanel(
             DialogService dialogService,
             GetReminders getReminders,
-            GetReminder getReminder,
             UpdateReminder updateReminder,
             DeleteReminder deleteReminder,
             GeneralViewModel generalViewModel,
@@ -38,7 +36,6 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
         {
             this.dialogService = dialogService;
             this.getReminders = getReminders;
-            this.getReminder = getReminder;
             this.updateReminder = updateReminder;
             this.deleteReminder = deleteReminder;
             this.generalViewModel = generalViewModel;
@@ -67,11 +64,21 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
         public RadzenScheduler<ReminderViewModel> RemindersScheduler { get; set; }
         public List<ReminderViewModel> Reminders { get; set; }
 
-        public void RefreshCalendarData() => Reminders = getReminders.Get(App.User.Profile).Select(x => (ReminderViewModel)x).ToList();
+        public void RefreshCalendarData()
+        {
+            if (App.ActiveCustomer != null)
+            {
+                Reminders = getReminders.Get(App.ActiveCustomer.Id).Select(x => (ReminderViewModel)x).ToList();
+            }
+            else
+            {
+                Reminders = getReminders.Get(App.User.Profile).Select(x => (ReminderViewModel)x).ToList();
+            }
+        }
 
         public async Task OnAppointmentSelect(SchedulerAppointmentSelectEventArgs<ReminderViewModel> args)
         {
-            ReminderViewModel result = await dialogService.OpenAsync<EditReminderPage>($"Edit Reminder for Case: {args.Data.ParentCaseName}", new Dictionary<string, object> { { "Reminder", args.Data } });
+            ReminderViewModel result = await dialogService.OpenAsync<EditReminderPage>($"Customer: {getCase.GetCaseParentName(args.Data.CaseId)} Case: {getCase.GetCaseName(args.Data.CaseId)}", new Dictionary<string, object> { { "Reminder", args.Data } });
 
             if (result != null)
             {
@@ -130,16 +137,6 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
             }
         }
 
-        public void ReloadCase(int id)
-        {
-            var caseEntity = getCase.Get(id);
-            App.ActiveCustomerWithData.Cases.RemoveAll(x => x.Id == id);
-            App.ActiveCustomerWithData.Cases.Add(caseEntity);
-            App.ActiveCustomerWithData.Cases = App.ActiveCustomerWithData.Cases.OrderBy(x => x.Name).ToList();
-            App.ActiveCustomerWithData.Cases.TrimExcess();
-            App.ActiveCustomerWithData.SelectedCase = caseEntity;
-        }
-
         public void OnAppointmentRender(SchedulerAppointmentRenderEventArgs<ReminderViewModel> args)
         {
             // Never call StateHasChanged in AppointmentRender - would lead to infinite loop
@@ -155,12 +152,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
             }
         }
 
-        private void ActiveCustomerHasChanged(object sender, EventArgs e)
-        { 
-            //todo: show proper cases
-        
-        
-        }
+        private void ActiveCustomerHasChanged(object sender, EventArgs e) => RefreshCalendarData();
 
         public void Dispose()
         {

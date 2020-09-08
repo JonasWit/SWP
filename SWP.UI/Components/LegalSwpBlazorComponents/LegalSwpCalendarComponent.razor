@@ -9,7 +9,7 @@
         <RadzenNotification />
 
         <RadzenScheduler @ref="Appvm.CalendarPanel.RemindersScheduler" style="height: 768px;" TItem="ReminderViewModel" Data="@Appvm.CalendarPanel.Reminders" StartProperty="Start" EndProperty="End"
-                         TextProperty="CalendarName" SelectedIndex="2" AppointmentSelect="@Appvm.CalendarPanel.OnAppointmentSelect" AppointmentRender="@Appvm.CalendarPanel.OnAppointmentRender">
+                         TextProperty="Name" SelectedIndex="2" AppointmentSelect="@Appvm.CalendarPanel.OnAppointmentSelect" AppointmentRender="@Appvm.CalendarPanel.OnAppointmentRender">
             <RadzenDayView />
             <RadzenWeekView />
             <RadzenMonthView />

@@ -9,7 +9,6 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data
         public string Name { get; set; }
         public string ParentCaseName { get; set; }
         public string ParentCustomerName { get; set; }
-        public string CalendarName => $"Client: {ParentCustomerName}, Case: {ParentCaseName}, Name: {Name}";
         public string Message { get; set; }
         public bool Active { get; set; }
         public int Priority { get; set; }

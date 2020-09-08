@@ -1,4 +1,5 @@
 ﻿using SWP.Domain.Infrastructure;
+using SWP.Domain.Models.SWPLegal;
 using System;
 using System.Threading.Tasks;
 
@@ -10,7 +11,7 @@ namespace SWP.Application.LegalSwp.Cases
         private readonly ILegalSwpManager legalSwpManager;
         public UpdateCase(ILegalSwpManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
 
-        public Task<int> Update(Request request)
+        public Task<Case> Update(Request request)
         {
             var c = legalSwpManager.GetCase(request.Id, x => x);
 

@@ -93,9 +93,13 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
             try
             {
                 NewCase.UpdatedBy = App.User.UserName;
-                await createCase.Create(App.ActiveCustomerWithData.Id, App.User.Profile, NewCase);
+                var result = await createCase.Create(App.ActiveCustomerWithData.Id, App.User.Profile, NewCase);
                 NewCase = new CreateCase.Request();
-                App.RefreshCustomerWithData();
+
+                if (App.ActiveCustomer != null)
+                {
+                    App.ActiveCustomerWithData.Cases.Add(result);
+                }
             }
             catch (Exception ex)
             {

@@ -36,7 +36,7 @@ namespace SWP.Domain.Infrastructure
         TResult GetCaseWithoutData<TResult>(int id, Func<Case, TResult> selector);
         TResult GetCases<TResult>(string profile, Func<Case, TResult> selector);
 
-        Task<int> CreateCase(int customerId, string profile, Case c);
+        Task<Case> CreateCase(int customerId, string profile, Case c);
         Task<int> UpdateCase(Case c);
         Task<int> DeleteCase(int id);
 

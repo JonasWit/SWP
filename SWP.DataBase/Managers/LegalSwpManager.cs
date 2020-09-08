@@ -52,18 +52,18 @@ namespace SWP.DataBase.Managers
                 .AsNoTracking()
                 .ToList();
 
-        public Task<Customer> CreateCustomer(Customer customer)
+        public async Task<Customer> CreateCustomer(Customer customer)
         {
             context.Customers.Add(customer);
-            context.SaveChangesAsync();
-            return Task.FromResult(customer);
+            await context.SaveChangesAsync();
+            return customer;
         }
 
-        public Task<Customer> UpdateCustomer(Customer customer)
+        public async Task<Customer> UpdateCustomer(Customer customer)
         {
             context.Customers.Update(customer);
-            context.SaveChangesAsync();
-            return Task.FromResult(customer);
+            await context.SaveChangesAsync();
+            return customer;
         }
 
         public Task<int> DeleteCustomer(int id)
@@ -111,11 +111,12 @@ namespace SWP.DataBase.Managers
             return context.SaveChangesAsync();
         }
 
-        public Task<int> CreateCase(int customerId, string profile, Case c)
+        public async Task<Case> CreateCase(int customerId, string profile, Case c)
         {
             var customerEntity = GetCustomer(customerId, profile, x => x);
             customerEntity.Cases.Add(c);
-            return context.SaveChangesAsync();
+            await context.SaveChangesAsync();
+            return c;
         }
 
         public Task<int> UpdateCase(Case c)
@@ -152,19 +153,19 @@ namespace SWP.DataBase.Managers
                 .SelectMany(x => x.Cases.SelectMany(x => x.Reminders))
                 .ToList();
 
-        public Task<Reminder> CreateReminder(int caseId, Reminder reminder)
+        public async Task<Reminder> CreateReminder(int caseId, Reminder reminder)
         {
             var caseEntity = GetCase(caseId, x => x);
             caseEntity.Reminders.Add(reminder);
-            context.SaveChangesAsync();
-            return Task.FromResult(reminder);
+            await context.SaveChangesAsync();
+            return reminder;
         }
 
-        public Task<Reminder> UpdateReminder(Reminder reminder)
+        public async Task<Reminder> UpdateReminder(Reminder reminder)
         {
             context.Reminders.Update(reminder);
-            context.SaveChangesAsync();
-            return Task.FromResult(reminder);
+            await context.SaveChangesAsync();
+            return reminder;
         }
 
         public Task<int> DeleteReminder(int id)

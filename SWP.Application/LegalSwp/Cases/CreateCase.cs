@@ -13,7 +13,7 @@ namespace SWP.Application.LegalSwp.Cases
         private readonly ILegalSwpManager legalSwpManager;
         public CreateCase(ILegalSwpManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
 
-        public Task<int> Create(int customerId, string profile, Request request) => 
+        public Task<Case> Create(int customerId, string profile, Request request) => 
             legalSwpManager.CreateCase(customerId, profile, new Case
             { 
                 Name = request.Name,

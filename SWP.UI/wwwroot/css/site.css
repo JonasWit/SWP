@@ -91,6 +91,24 @@ ul {
         color: #fff;
     }
 
+.download {
+    cursor: pointer;
+    display: inline-block;
+    border: 0;
+    border-radius: 8px;
+    padding: 8px 20px;
+    background: #262626;
+    color: #fff;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+    .download:hover {
+        opacity: 0.9;
+        color: #fff;
+        text-decoration: none;
+    }
+
 /*Showcase*/
 
 .showcase {

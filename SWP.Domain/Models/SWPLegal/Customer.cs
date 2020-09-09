@@ -1,14 +1,12 @@
-﻿using System;
+﻿using SWP.Domain.Models.BaseClasses;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace SWP.Domain.Models.SWPLegal
 {
-    public class Customer
+    public class Customer : BaseModel
     {
-        [Key]
-        public int Id { get; set; }
-
         [MaxLength(50)]
         [Required]
         public string Name { get; set; }
@@ -31,13 +29,5 @@ namespace SWP.Domain.Models.SWPLegal
         public List<Case> Cases { get; set; }
 
         public List<CustomerJob> Jobs { get; set; }
-
-        public DateTime Created { get; set; }
-
-        public DateTime Updated { get; set; }
-
-        [MaxLength(50)]
-        [Required]
-        public string UpdatedBy { get; set; }
     }
 }

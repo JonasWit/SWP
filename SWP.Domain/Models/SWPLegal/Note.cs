@@ -1,13 +1,11 @@
-﻿using System;
+﻿using SWP.Domain.Models.BaseClasses;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace SWP.Domain.Models.SWPLegal
 {
-    public class Note
+    public class Note : BaseModel
     {
-        [Key]
-        public int Id { get; set; }
-
         [MaxLength(50)]
         [Required]
         public string Name { get; set; }
@@ -22,13 +20,5 @@ namespace SWP.Domain.Models.SWPLegal
         public int CaseId { get; set; }
 
         public Case Case { get; set; }
-
-        public DateTime Created { get; set; }
-
-        public DateTime Updated { get; set; }
-
-        [MaxLength(50)]
-        [Required]
-        public string UpdatedBy { get; set; }
     }
 }

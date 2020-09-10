@@ -130,8 +130,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
 
                 if (App.ActiveCustomer != null)
                 {
-                    App.ActiveCustomerWithData.Cases.RemoveAll(x => x.Id == result.Id);
-                    App.ActiveCustomerWithData.Cases.Add(result);
+                    App.ActiveCustomerWithData.Cases[App.ActiveCustomerWithData.Cases.FindIndex(x => x.Id == result.Id)] = result;
                 }
             }
             catch (Exception ex)
@@ -202,9 +201,10 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
             try
             {
                 NewNote.UpdatedBy = App.User.UserName;
-                await createNote.Create(App.ActiveCustomerWithData.SelectedCase.Id, NewNote);
+                var result = await createNote.Create(App.ActiveCustomerWithData.SelectedCase.Id, NewNote);
                 NewNote = new CreateNote.Request();
-                App.RefreshCustomerWithData();
+
+                App.ActiveCustomerWithData.SelectedCase.Notes.Add(result);
             }
             catch (Exception ex)
             {
@@ -222,7 +222,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
         {
             try
             {
-                await updateNote.Update(new UpdateNote.Request
+                var result = await updateNote.Update(new UpdateNote.Request
                 {
                     Id = note.Id,
                     Message = note.Message,
@@ -231,7 +231,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
                     UpdatedBy = App.User.UserName
                 });
 
-                App.RefreshCustomerWithData();
+                App.ActiveCustomerWithData.SelectedCase.Notes[App.ActiveCustomerWithData.SelectedCase.Notes.FindIndex(x => x.Id == result.Id)] = result;
             }
             catch (Exception ex)
             {
@@ -331,13 +331,8 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
                         UpdatedBy = App.User.UserName
                     });
 
-                    App.ActiveCustomerWithData.SelectedCase.Reminders.RemoveAll(x => x.Id == result.Id);
-                    App.ActiveCustomerWithData.SelectedCase.Reminders.Add(updatedReminder);
-
-                    App.CalendarPanel.Reminders.RemoveAll(x => x.Id == result.Id);
-                    App.CalendarPanel.Reminders.Add(updatedReminder);
-
-                    //ReloadCase(App.ActiveCustomerWithData.SelectedCase.Id);
+                    App.ActiveCustomerWithData.SelectedCase.Reminders[App.ActiveCustomerWithData.SelectedCase.Reminders.FindIndex(x => x.Id == result.Id)] = result;
+                    App.CalendarPanel.Reminders[App.CalendarPanel.Reminders.FindIndex(x => x.Id == result.Id)] = result;
                 }
 
                 // Either call the Reload method or reassign the Data property of the Scheduler

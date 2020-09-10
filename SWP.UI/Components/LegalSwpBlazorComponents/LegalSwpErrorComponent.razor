@@ -1,0 +1,20 @@
+﻿
+
+<h3>LegalSwpErrorComponent</h3>
+
+
+<p>@Appvm.ErrorPage.Exception</p>
+
+
+
+<RadzenButton>Refresh Application</RadzenButton>
+
+
+
+
+@code {
+    [Parameter]
+    public LegalSwpApp Appvm { get; set; }
+    [Parameter]
+    public EventCallback<LegalSwpApp> AppvmChanged { get; set; }
+}

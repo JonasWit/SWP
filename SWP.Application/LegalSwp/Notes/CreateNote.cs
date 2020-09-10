@@ -14,7 +14,7 @@ namespace SWP.Application.LegalSwp.Notes
         private readonly ILegalSwpManager legalSwpManager;
         public CreateNote(ILegalSwpManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
 
-        public Task<int> Create(int caseId, Request request) =>
+        public Task<Note> Create(int caseId, Request request) =>
             legalSwpManager.CreateNote(caseId, new Note
             {
                 Name = request.Name,

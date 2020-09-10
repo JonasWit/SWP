@@ -64,8 +64,8 @@ namespace SWP.Domain.Infrastructure
         Note GetNote(int id);
         List<Note> GetNotesForCase(int caseId);
 
-        Task<int> CreateNote(int caseId, Note note);
-        Task<int> UpdateNote(Note note);
+        Task<Note> CreateNote(int caseId, Note note);
+        Task<Note> UpdateNote(Note note);
         Task<int> DeleteNote(int id);
 
         #endregion

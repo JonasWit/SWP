@@ -21,6 +21,8 @@ namespace SWP.UI
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection @this)
         {
+            #region Add Services from the Application Project
+
             var transientServiceType = typeof(TransientService);
             var scopedServiceType = typeof(ScopedService);
 
@@ -40,7 +42,11 @@ namespace SWP.UI
             foreach (var service in scopedServices)
             {
                 @this.AddScoped(service);
-            }
+            } 
+
+            #endregion
+
+            #region Add Services from the UI Project
 
             var uiTransientServiceType = typeof(UITransientService);
             var uiScopedServiceType = typeof(UIScopedService);
@@ -61,7 +67,9 @@ namespace SWP.UI
             foreach (var service in uiScopedServices)
             {
                 @this.AddScoped(service);
-            }
+            } 
+
+            #endregion
 
             @this.AddTransient<ILegalSwpManager, LegalSwpManager>();
             @this.AddTransient<IMedicalSwpManager, MedicalSwpManager>();

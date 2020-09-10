@@ -197,17 +197,19 @@ namespace SWP.DataBase.Managers
                 .Where(x => x.CaseId == caseId)
                 .ToList();
 
-        public Task<int> CreateNote(int caseId, Note note)
+        public async Task<Note> CreateNote(int caseId, Note note)
         {
             var caseEntity = GetCase(caseId, x => x);
             caseEntity.Notes.Add(note);
-            return context.SaveChangesAsync();
+            await context.SaveChangesAsync();
+            return note;
         }
 
-        public Task<int> UpdateNote(Note note)
+        public async Task<Note> UpdateNote(Note note)
         {
             context.Notes.Update(note);
-            return context.SaveChangesAsync();
+            await context.SaveChangesAsync();
+            return note;
         }
 
         public Task<int> DeleteNote(int id)

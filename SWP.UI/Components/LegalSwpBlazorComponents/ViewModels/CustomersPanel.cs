@@ -81,8 +81,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
                 }
                 else
                 {
-                    App.Customers.RemoveAll(x => x.Id == result.Id);
-                    App.Customers.Add(result);
+                    App.Customers[App.Customers.FindIndex(x => x.Id == result.Id)] = result;
                 }
             }
             catch (Exception ex)

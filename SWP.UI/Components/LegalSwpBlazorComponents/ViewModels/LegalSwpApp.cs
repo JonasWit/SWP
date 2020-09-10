@@ -23,6 +23,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
         public CasesPanel CasesPanel { get; }
         public CustomersPanel CustomersPanel { get; }
         public MyAppPanel MyAppPanel { get; }
+        public ErrorPage ErrorPage { get; }
         public string ActiveUserId { get; private set; }
         public bool Loading { get; set; }
         public bool Initialized { get; set; }
@@ -34,7 +35,8 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
             CalendarPanel calendarPanel,
             CasesPanel casesPanel,
             CustomersPanel customersPanel,
-            MyAppPanel myAppPanel)
+            MyAppPanel myAppPanel,
+            ErrorPage errorPage)
         {
             this.getCustomer = getCustomer;
             this.getCustomers = getCustomers;
@@ -44,6 +46,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
             CasesPanel = casesPanel;
             CustomersPanel = customersPanel;
             MyAppPanel = myAppPanel;
+            ErrorPage = errorPage;
         }
 
         public async Task Initialize(string activeUserId)
@@ -80,6 +83,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
             CasesPanel.Initialize(this);
             CustomersPanel.Initialize(this);
             MyAppPanel.Initialize(this);
+            ErrorPage.Initialize(this);
         }
 
         #region Main Component
@@ -90,6 +94,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
             Calendar = 1,
             Cases = 2,
             MyApp = 3,
+            ErrorPage = 4
         }
 
         public CustomerViewModel ActiveCustomerWithData { get; set; }
@@ -109,6 +114,8 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
             CallStateHasChanged?.Invoke(this, null);
         }
         public void SetActivePanel(Panels panel) => ActivePanel = panel;
+
+        public void ForceRefresh() => CallStateHasChanged?.Invoke(this, null);
 
         #region NavBar
 
@@ -178,9 +185,9 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
                     ActiveCustomer = Customers.FirstOrDefault(x => x.Id == ActiveCustomer.Id);
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                ErrorPage.DisplayMessage(ex);
             }
             finally
             {

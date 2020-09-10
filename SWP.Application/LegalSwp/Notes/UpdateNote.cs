@@ -1,4 +1,5 @@
 ﻿using SWP.Domain.Infrastructure;
+using SWP.Domain.Models.SWPLegal;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -13,7 +14,7 @@ namespace SWP.Application.LegalSwp.Notes
         private readonly ILegalSwpManager legalSwpManager;
         public UpdateNote(ILegalSwpManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
 
-        public Task<int> Update(Request request)
+        public Task<Note> Update(Request request)
         {
             var note = legalSwpManager.GetNote(request.Id);
 

@@ -110,7 +110,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
             try
             {
                 await deleteCustomer.Delete(customer.Id);
-                App.RefreshCustomers();
+                //todo check if needed maybe just remove from list
                 App.RefreshCustomers();
             }
             catch (Exception ex)

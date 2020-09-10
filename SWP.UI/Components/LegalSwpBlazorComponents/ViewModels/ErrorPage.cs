@@ -18,6 +18,13 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
         {
             Exception = ex;
             App.SetActivePanel(LegalSwpApp.Panels.ErrorPage);
+            RefreshApp();
+        }
+
+        public void DismissMessage()
+        {
+            App.SetActivePanel(LegalSwpApp.Panels.MyApp);
+            RefreshApp();
         }
 
         public void RefreshApp() => App.ForceRefresh();

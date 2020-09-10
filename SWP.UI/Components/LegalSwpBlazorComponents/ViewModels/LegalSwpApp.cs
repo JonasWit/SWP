@@ -101,6 +101,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
         public UserModel User { get; set; } = new UserModel();
         public Panels ActivePanel { get; set; } = Panels.MyApp;
         public List<CustomerViewModel> Customers { get; set; } = new List<CustomerViewModel>();
+
         public void RedirectToCase(int id)
         {
             if (!ActiveCustomerWithData.Cases.Any(x => x.Id == id))
@@ -113,9 +114,22 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
             ActiveCustomerWithData.SelectedCase = ActiveCustomerWithData.Cases.FirstOrDefault(x => x.Id == id);
             CallStateHasChanged?.Invoke(this, null);
         }
+
         public void SetActivePanel(Panels panel) => ActivePanel = panel;
 
         public void ForceRefresh() => CallStateHasChanged?.Invoke(this, null);
+
+        public void ThrowTestException()
+        {
+            try
+            {
+                throw new Exception("Test Exception - Ups!");
+            }
+            catch (Exception ex)
+            {
+                ErrorPage.DisplayMessage(ex);
+            }
+        }
 
         #region NavBar
 

@@ -10,25 +10,25 @@
                     AllowPaging="true"
                     PageSize="5"
                     AllowSorting="true"
-                    Data="@vm.Users"
-                    TItem="AdminUsersComponentViewModel.UserModel"
-                    Value="@vm.SelectedUser"
-                    RowSelect="@(args => RowSelected(args))">
+                    Data="@App.UsersPage.Users"
+                    TItem="App.UsersPage.UserModel"
+                    Value="@App.UsersPage.SelectedUser"
+                    RowSelect="@(args => App.UsersPage.RowSelected(args))">
             <Columns>
-                <RadzenGridColumn TItem="AdminUsersComponentViewModel.UserModel" Property="Name" Title="User Name" />
-                <RadzenGridColumn TItem="AdminUsersComponentViewModel.UserModel" Property="Email" Title="Email" />
-                <RadzenGridColumn TItem="AdminUsersComponentViewModel.UserModel" Property="UserRole" Title="Role" />
+                <RadzenGridColumn TItem="App.UsersPage.UserModel" Property="Name" Title="User Name" />
+                <RadzenGridColumn TItem="App.UsersPage.UserModel" Property="Email" Title="Email" />
+                <RadzenGridColumn TItem="App.UsersPage.UserModel" Property="UserRole" Title="Role" />
             </Columns>
         </RadzenGrid>
     </div>
     <div class="col-md-6">
         <RadzenCard Style="margin-bottom:20px">
-            Active User: <b>@vm.SelectedUser?.Name</b>
+            Active User: <b>@App.UsersPage.SelectedUser?.Name</b>
         </RadzenCard>
         <RadzenTabs>
             <Tabs>
                 <RadzenTabsItem Text="Roles">
-                    <RadzenRadioButtonList @bind-Value="selectedRole" TValue="int" Change="@((args) => RoleChanged(args))">
+                    <RadzenRadioButtonList @bind-Value="App.UsersPage.SelectedRole" TValue="int" Change="@((args) => App.UsersPage.RoleChanged(args))">
                         <Items>
                             <RadzenRadioButtonListItem Text="Administrators" Value="0" />
                             <RadzenRadioButtonListItem Text="Users" Value="1" />
@@ -38,24 +38,24 @@
                 <RadzenTabsItem Text="Claims">
 
                     <h3>Application Claims</h3>
-                    <RadzenGrid @ref="claimsGrid"
+                    <RadzenGrid @ref="App.UsersPage.ClaimsGrid"
                                 AllowFiltering="true"
                                 AllowPaging="true"
                                 PageSize="5"
                                 AllowSorting="true"
                                 EditMode="DataGridEditMode.Single"
-                                Data="@vm.SelectedUser.Claims" TItem="Claim">
+                                Data="@App.UsersPage.SelectedUser.Claims" TItem="Claim">
                         <Columns>
                             <RadzenGridColumn Width="100px" TItem="Claim" Property="Type" Title="Type" />
                             <RadzenGridColumn Width="100px" TItem="Claim" Property="Value" Title="Value" />
 
                             <RadzenGridColumn TItem="Claim" Context="claim" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="70px">
                                 <Template Context="claim">
-                                    <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@(async args => await DeleteClaimRow(claim))">
+                                    <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@(async args => await App.UsersPage.DeleteClaimRow(claim))">
                                     </RadzenButton>
                                 </Template>
                                 <EditTemplate Context="claim">
-                                    <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@(async args => await DeleteClaimRow(claim))">
+                                    <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@(async args => await App.UsersPage.DeleteClaimRow(claim))">
                                     </RadzenButton>
                                 </EditTemplate>
                             </RadzenGridColumn>
@@ -65,12 +65,12 @@
                     <h3>Application Claims</h3>
                     <RadzenDropDown AllowClear="true" TValue="string"
                                     FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" FilterOperator="StringFilterOperator.StartsWith" AllowFiltering="true"
-                                    Data="@vm.Claims" @bind-Value="selectedApplicationClaim" Style="margin-bottom: 20px" />
-                    <RadzenButton Click="@(async () => await AddApplicationClaim())" Text="Add Application Claim" Style="margin-bottom: 20px; width: 150px" />
+                                    Data="@App.UsersPage.Claims" @bind-Value="App.UsersPage.SelectedApplicationClaim" Style="margin-bottom: 20px" />
+                    <RadzenButton Click="@(async () => await App.UsersPage.AddApplicationClaim())" Text="Add Application Claim" Style="margin-bottom: 20px; width: 150px" />
 
                     <h3>Profile Claim Name</h3>
-                    <RadzenTextBox @bind-Value="@profileClaimName" MaxLength="50" Style="margin-bottom: 20px" />
-                    <RadzenButton Click="@(async () => await AddProfileClaim())" Text="Add Profile Claim" Style="margin-bottom: 20px; width: 150px" />
+                    <RadzenTextBox @bind-Value="@App.UsersPage.ProfileClaimName" MaxLength="50" Style="margin-bottom: 20px" />
+                    <RadzenButton Click="@(async () => await App.UsersPage.AddProfileClaim())" Text="Add Profile Claim" Style="margin-bottom: 20px; width: 150px" />
 
                 </RadzenTabsItem>
                 <RadzenTabsItem Text="Profiles">
@@ -87,246 +87,7 @@
 
 @code {
     [Parameter]
-    public string ActiveUserId { get; set; }
-
-    int selectedRole = 1;
-    string selectedApplicationClaim = "";
-    string profileClaimName = "";
-
-    RadzenGrid<Claim> claimsGrid;
-
-    private AdminUsersComponentViewModel vm = new AdminUsersComponentViewModel();
-
-    protected override async Task OnInitializedAsync()
-    {
-        vm.SelectedUser = await GetUser(ActiveUserId);
-        await GetUsers();
-        selectedRole = vm.SelectedUser.UserRoleInt;
-    }
-
-    private async Task<AdminUsersComponentViewModel.UserModel> GetUser(string Id)
-    {
-        var user = await _userManager.FindByIdAsync(Id);
-        var claims = await _userManager.GetClaimsAsync(user) as List<Claim>;
-        var role = await _userManager.GetRolesAsync(user) as List<string>;
-
-        return new AdminUsersComponentViewModel.UserModel
-        {
-            Name = user.UserName,
-            Email = user.Email,
-            Id = user.Id,
-            Claims = claims,
-            UserRole = (RoleType)Enum.Parse(typeof(RoleType), role.First(), true),
-        };
-    }
-
-    public async Task GetUsers()
-    {
-        vm.ErrorMessage = "";
-
-        vm.Users = new List<AdminUsersComponentViewModel.UserModel>();
-
-        var users = _userManager.Users.Select(x => new IdentityUser
-        {
-            Id = x.Id,
-            UserName = x.UserName,
-            Email = x.Email,
-            PasswordHash = "*****"
-        }).ToList();
-
-        foreach (var user in users)
-        {
-            vm.Users.Add(await GetUser(user.Id));
-        }
-    }
-
-    private void RowSelected(object args)
-    {
-        vm.SelectedUser = (AdminUsersComponentViewModel.UserModel)args;
-        selectedRole = vm.SelectedUser.UserRoleInt;
-    }
-
-    private async Task RoleChanged(int input)
-    {
-        if (vm.Loading) return;
-        else vm.Loading = true;
-
-        try
-        {
-            var userIdentity = await _userManager.FindByIdAsync(vm.SelectedUser.Id);
-            var selectedUserRoles = await _userManager.GetRolesAsync(userIdentity) as List<string>;
-
-            foreach (var role in selectedUserRoles)
-            {
-                await _userManager.RemoveFromRoleAsync(userIdentity, role);
-            }
-
-            await _userManager.AddToRoleAsync(userIdentity, ((RoleType)input).ToString());
-            await GetUsers();
-            await GetUser(vm.SelectedUser.Id);
-        }
-        catch (Exception ex)
-        {
-            throw;
-        }
-        finally
-        {
-            vm.Loading = false;
-        }
-    }
-
-    private async Task ApplicationProfileChanged(int input)
-    {
-        if (vm.Loading) return;
-        else vm.Loading = true;
-
-        try
-        {
-            var userIdentity = await _userManager.FindByIdAsync(vm.SelectedUser.Id);
-            var selectedUserRoles = await _userManager.GetRolesAsync(userIdentity) as List<string>;
-
-            foreach (var role in selectedUserRoles)
-            {
-                await _userManager.RemoveFromRoleAsync(userIdentity, role);
-            }
-
-            await _userManager.AddToRoleAsync(userIdentity, ((RoleType)input).ToString());
-            await GetUsers();
-        }
-        catch (Exception ex)
-        {
-
-            throw;
-        }
-        finally
-        {
-            vm.Loading = false;
-        }
-    }
-
-    private async Task DeleteClaimRow(Claim claim)
-    {
-        if (vm.Loading) return;
-        else vm.Loading = true;
-
-        if (claim.Type == "Root")
-        {
-            vm.Loading = false;
-            return;
-        }
-
-        if (vm.SelectedUser.Claims.Any(x => x.Value == claim.Value))
-        {
-            try
-            {
-                var userIdentity = await _userManager.FindByIdAsync(vm.SelectedUser.Id);
-                var deletedClaim = vm.SelectedUser.Claims.FirstOrDefault(x => x.Value == claim.Value);
-                var result = await _userManager.RemoveClaimAsync(userIdentity, deletedClaim);
-
-                if (result.Succeeded)
-                {
-                    await GetUsers();
-                    vm.SelectedUser = await GetUser(vm.SelectedUser.Id);
-                }
-                else
-                {
-                    vm.ErrorMessage = "Issue when deleting claim!";
-                }
-            }
-            catch (Exception ex)
-            {
-                vm.ErrorMessage = ex.Message;
-            }
-            finally
-            {
-                vm.Loading = false;
-            }
-        }
-        else
-        {
-            vm.ErrorMessage = "User does not have this claim!";
-        }
-
-        await claimsGrid.Reload();
-    }
-
-    private async Task AddApplicationClaim()
-    {
-        if (vm.Loading) return;
-        else vm.Loading = true;
-
-        if (!vm.SelectedUser.Claims.Any(x => x.Value == selectedApplicationClaim) &&
-            !string.IsNullOrEmpty(selectedApplicationClaim))
-        {
-            try
-            {
-                var userIdentity = await _userManager.FindByIdAsync(vm.SelectedUser.Id);
-                var newClaim = new Claim(ClaimType.Application.ToString(), selectedApplicationClaim);
-                var result = await _userManager.AddClaimAsync(userIdentity, newClaim);
-
-                if (result.Succeeded)
-                {
-                    await GetUsers();
-                    vm.SelectedUser = await GetUser(vm.SelectedUser.Id);
-                }
-                else
-                {
-                    throw new Exception("Issue when adding claim!");
-                }
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
-            finally
-            {
-                vm.Loading = false;
-            }
-        }
-        else
-        {
-            vm.Loading = false;
-        }
-    }
-
-    private async Task AddProfileClaim()
-    {
-        if (vm.Loading) return;
-        else vm.Loading = true;
-
-        if (!vm.SelectedUser.Claims.Any(x => x.Value == profileClaimName) &&
-            !string.IsNullOrEmpty(profileClaimName))
-        {
-            try
-            {
-                var userIdentity = await _userManager.FindByIdAsync(vm.SelectedUser.Id);
-                var newClaim = new Claim(ClaimType.Profile.ToString(), profileClaimName);
-                var result = await _userManager.AddClaimAsync(userIdentity, newClaim);
-
-                if (result.Succeeded)
-                {
-                    await GetUsers();
-                    vm.SelectedUser = await GetUser(vm.SelectedUser.Id);
-                }
-                else
-                {
-                    throw new Exception("Issue when adding claim!");
-                }
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
-            finally
-            {
-                vm.Loading = false;
-            }
-        }
-        else
-        {
-            vm.Loading = false;
-        }
-    }
-
-
+    public AdminBlazorApp App { get; set; }
+    [Parameter]
+    public EventCallback<AdminBlazorApp> AppChanged { get; set; }
 }

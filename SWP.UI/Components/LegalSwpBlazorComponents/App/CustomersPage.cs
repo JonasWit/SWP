@@ -33,7 +33,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             CreateCustomer createCustomer,
             CreateCustomerJob createCustomerJob,
             DeleteCustomerJob deleteCustomerJob,
-            UpdateCustomerJob updateCustomerJob) 
+            UpdateCustomerJob updateCustomerJob)
         {
             this.deleteCustomer = deleteCustomer;
             this.updateCustomer = updateCustomer;
@@ -43,7 +43,11 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             this.updateCustomerJob = updateCustomerJob;
         }
 
-        public override void Initialize(BlazorAppBase app) => App = app as LegalBlazorApp;
+        public override Task Initialize(BlazorAppBase app)
+        {
+            App = app as LegalBlazorApp;
+            return Task.CompletedTask;
+        }
 
         public Panels ActivePanel { get; set; }
         public void SetActivePanel(Panels panel) => ActivePanel = panel;

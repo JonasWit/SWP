@@ -1,19 +1,17 @@
 ﻿@implements IDisposable
-@inject AdminBlazorApp adminBlazorApp
+@inject AdminBlazorApp App
 
 <header>
     <h2>Admin Panel</h2>
-    <RadzenButton @onclick="@(() => vm.SetActivePanel(AdminMainComponentViewModel.Panels.Users))">Users Management</RadzenButton>
+    <RadzenButton @onclick="@(() => App.SetActivePanel(AdminBlazorApp.Panels.Users))">Users Management</RadzenButton>
 </header>
 
 <main>
     <div>
-        @switch (vm.ActivePanel)
+        @switch (App.ActivePanel)
         {
-            case AdminMainComponentViewModel.Panels.Users:
-                <AdminUsersComponent ActiveUserId="@ActiveUserId"></AdminUsersComponent>
-                break;
-            case AdminMainComponentViewModel.Panels.Licenses:
+            case AdminBlazorApp.Panels.Users:
+                <AdminUsersComponent @bind-App="App"></AdminUsersComponent>
                 break;
             default:
                 break;
@@ -29,16 +27,12 @@
 
     protected override async Task OnInitializedAsync()
     {
-        //await adminBlazorApp.Initialize(ActiveUserId);
-        //adminBlazorApp.CallStateHasChanged += new EventHandler(CallStateHasChanged);
+        await App.Initialize(ActiveUserId);
+        App.CallStateHasChanged += new EventHandler(CallStateHasChanged);
     }
 
-    //private void CallStateHasChanged(object sender, EventArgs e) => StateHasChanged();
+    private void CallStateHasChanged(object sender, EventArgs e) => StateHasChanged();
 
-    public void Dispose() { }
+    public void Dispose() => App.CallStateHasChanged -= new EventHandler(CallStateHasChanged);
 
-    //public void Dispose() => adminBlazorApp.CallStateHasChanged -= new EventHandler(CallStateHasChanged);
-
-
-    private AdminMainComponentViewModel vm = new AdminMainComponentViewModel();
 }

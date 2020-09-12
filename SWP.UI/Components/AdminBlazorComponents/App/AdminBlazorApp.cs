@@ -13,10 +13,27 @@ namespace SWP.UI.Components.AdminBlazorComponents.App
     {
         private readonly UserManager<IdentityUser> userManager;
 
-        public AdminBlazorApp(UserManager<IdentityUser> userManager)
+        public UsersPage UsersPage { get; }
+
+        public AdminBlazorApp(
+            UserManager<IdentityUser> userManager,
+            UsersPage usersPage)
         {
             this.userManager = userManager;
+
+            UsersPage = usersPage;
         }
+
+        public Panels ActivePanel { get; private set; } = Panels.Users;
+
+        public void SetActivePanel(Panels panel) => ActivePanel = panel;
+
+        public enum Panels
+        {
+            Users = 0,
+        }
+
+        public void ForceRefresh() => OnCallStateHasChanged(null);
 
         public override async Task Initialize(string activeUserId)
         {
@@ -32,13 +49,13 @@ namespace SWP.UI.Components.AdminBlazorComponents.App
                 User.Claims = await userManager.GetClaimsAsync(User.User) as List<Claim>;
                 User.Roles = await userManager.GetRolesAsync(User.User) as List<string>;
 
-                InitializePanels();
+                await InitializePanels();
             }
         }
 
-        private void InitializePanels()
+        private async Task InitializePanels()
         {
-
+            await UsersPage.Initialize(this);
         }
 
 

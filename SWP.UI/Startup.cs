@@ -30,7 +30,7 @@ namespace SWP.UI
                 options.UseSqlServer(configuration.GetConnectionString("DevConnection")),
                 ServiceLifetime.Transient);
 
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
+            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 

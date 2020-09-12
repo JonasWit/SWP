@@ -66,7 +66,12 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             SetActivePanel(Panels.Admin);
         }
 
-        public override void Initialize(BlazorAppBase app) => App = app as LegalBlazorApp;
+        public override Task Initialize(BlazorAppBase app)
+        {
+            App = app as LegalBlazorApp;
+            return Task.CompletedTask;
+        }
+
         public CreateCase.Request NewCase { get; set; } = new CreateCase.Request();
         public CreateNote.Request NewNote { get; set; } = new CreateNote.Request();
         public RadzenGrid<CaseViewModel> CasesGrid { get; set; }
@@ -138,7 +143,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             }
             finally
             {
-   
+
             }
         }
 

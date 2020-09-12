@@ -13,7 +13,11 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
         public LegalBlazorApp App { get; private set; }
 
-        public override void Initialize(BlazorAppBase app) => App = app as LegalBlazorApp;
+        public override Task Initialize(BlazorAppBase app)
+        {
+            App = app as LegalBlazorApp;
+            return Task.CompletedTask;
+        }
 
         public void DisplayMessage(Exception ex)
         {

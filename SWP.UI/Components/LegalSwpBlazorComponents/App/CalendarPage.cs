@@ -44,11 +44,12 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             this.getCase = getCase;
         }
 
-        public override void Initialize(BlazorAppBase app)
+        public override Task Initialize(BlazorAppBase app)
         {
             App = app as LegalBlazorApp;
             RefreshCalendarData();
             SubscribeToEvents();
+            return Task.CompletedTask;
         }
 
         private void SubscribeToEvents()

@@ -110,7 +110,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         }
 
         public CustomerViewModel ActiveCustomerWithData { get; set; }
-        public Panels ActivePanel { get; set; } = Panels.MyApp;
+        public Panels ActivePanel { get; private set; } = Panels.MyApp;
         public List<CustomerViewModel> Customers { get; set; } = new List<CustomerViewModel>();
 
         public void RedirectToCase(int id)

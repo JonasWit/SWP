@@ -1,6 +1,6 @@
 ﻿using SWP.UI.BlazorApp;
 using SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data;
-
+using System.Threading.Tasks;
 
 namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 {
@@ -17,12 +17,12 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             this.profileStatistics = profileStatistics;
         }
 
-        public override void Initialize(BlazorAppBase app)
+        public override Task Initialize(BlazorAppBase app)
         { 
             App = app as LegalBlazorApp;
             RefreshStatistics();
+            return Task.CompletedTask;
         }
-
      
         public void RefreshStatistics()
         {

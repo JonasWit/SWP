@@ -1,7 +1,10 @@
-﻿namespace SWP.UI.BlazorApp
+﻿using System.Threading.Tasks;
+
+namespace SWP.UI.BlazorApp
 {
     public abstract class BlazorPageBase
     {
-        public abstract void Initialize(BlazorAppBase app);
+        public abstract Task Initialize(BlazorAppBase app);
+
     }
 }

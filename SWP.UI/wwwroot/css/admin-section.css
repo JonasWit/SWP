@@ -1,2 +1,29 @@
 ﻿body {
+    display: grid;
+    height: 100vh;
+    grid-template-rows: auto 1fr auto;
 }
+
+header {
+    background: lightpink;
+    padding: 2rem;
+}
+
+main {
+    background: coral;
+}
+
+footer {
+    background: wheat;
+    padding: 2rem;
+    text-align: center;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+}
+
+body {
+    font-family: system-ui, sans-serif;
+}
+

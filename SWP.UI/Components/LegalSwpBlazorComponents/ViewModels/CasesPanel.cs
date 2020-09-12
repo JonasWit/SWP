@@ -5,6 +5,7 @@ using SWP.Application;
 using SWP.Application.LegalSwp.Cases;
 using SWP.Application.LegalSwp.Notes;
 using SWP.Application.LegalSwp.Reminders;
+using SWP.UI.BlazorApp;
 using SWP.UI.Components.LegalSwpBlazorComponents.SchedulerInnerComponents;
 using SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data;
 using System;
@@ -15,7 +16,7 @@ using System.Threading.Tasks;
 namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
 {
     [UITransientService]
-    public class CasesPanel
+    public class CasesPanel : BlazorPageBase
     {
         public enum Panels
         {
@@ -67,7 +68,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
             SetActivePanel(Panels.Admin);
         }
 
-        public void Initialize(LegalSwpApp app) => App = app;
+        public override void Initialize(BlazorAppBase app) => App = app as LegalSwpApp;
         public CreateCase.Request NewCase { get; set; } = new CreateCase.Request();
         public CreateNote.Request NewNote { get; set; } = new CreateNote.Request();
         public RadzenGrid<CaseViewModel> CasesGrid { get; set; }

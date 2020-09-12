@@ -4,6 +4,7 @@ using Radzen.Blazor;
 using SWP.Application;
 using SWP.Application.LegalSwp.Cases;
 using SWP.Application.LegalSwp.Reminders;
+using SWP.UI.BlazorApp;
 using SWP.UI.Components.LegalSwpBlazorComponents.SchedulerInnerComponents;
 using SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data;
 using System;
@@ -15,7 +16,7 @@ using System.Threading.Tasks;
 namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
 {
     [UITransientService]
-    public class CalendarPanel : IDisposable
+    public class CalendarPanel : BlazorPageBase, IDisposable
     {
         private readonly DialogService dialogService;
         private readonly GetReminders getReminders;
@@ -42,9 +43,9 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
             this.getCase = getCase;
         }
 
-        public void Initialize(LegalSwpApp app)
+        public override void Initialize(BlazorAppBase app)
         {
-            App = app;
+            App = app as LegalSwpApp;
             RefreshCalendarData();
             SubscribeToEvents();
         }
@@ -54,7 +55,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
             App.ActiveCustomerChanged += new EventHandler(ActiveCustomerHasChanged);
         }
 
-        private void UnsobscribeEvents()
+        private void UnsubscribeEvents()
         {
             App.ActiveCustomerChanged -= new EventHandler(ActiveCustomerHasChanged);
         }
@@ -156,7 +157,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
 
         public void Dispose()
         {
-            UnsobscribeEvents();
+            UnsubscribeEvents();
         }
 
         #endregion

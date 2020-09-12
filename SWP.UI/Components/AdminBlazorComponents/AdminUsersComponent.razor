@@ -209,6 +209,12 @@
         if (vm.Loading) return;
         else vm.Loading = true;
 
+        if (claim.Type == "Root")
+        {
+            vm.Loading = false;
+            return;
+        }
+
         if (vm.SelectedUser.Claims.Any(x => x.Value == claim.Value))
         {
             try

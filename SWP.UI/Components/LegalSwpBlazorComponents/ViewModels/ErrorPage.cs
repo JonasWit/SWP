@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SWP.UI.BlazorApp;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -6,13 +7,13 @@ using System.Threading.Tasks;
 namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
 {
     [UITransientService]
-    public class ErrorPage
+    public class ErrorPage : BlazorPageBase
     {
         public Exception Exception { get; private set; }
 
         public LegalSwpApp App { get; private set; }
 
-        public void Initialize(LegalSwpApp app) => App = app;
+        public override void Initialize(BlazorAppBase app) => App = app as LegalSwpApp;
 
         public void DisplayMessage(Exception ex)
         {

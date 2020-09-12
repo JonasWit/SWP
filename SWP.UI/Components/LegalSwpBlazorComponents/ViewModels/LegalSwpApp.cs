@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using SWP.Application.LegalSwp.Customers;
+using SWP.UI.BlazorApp;
 using SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data;
 using System;
 using System.Collections.Generic;
@@ -10,13 +11,12 @@ using System.Threading.Tasks;
 namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
 {
     [UITransientService]
-    public class LegalSwpApp
+    public class LegalSwpApp : BlazorAppBase
     {
         private readonly GetCustomer getCustomer;
         private readonly GetCustomers getCustomers;
         private readonly UserManager<IdentityUser> userManager;
 
-        public event EventHandler CallStateHasChanged;
         public event EventHandler ActiveCustomerChanged;
 
         public CalendarPanel CalendarPanel { get; }
@@ -24,9 +24,21 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
         public CustomersPanel CustomersPanel { get; }
         public MyAppPanel MyAppPanel { get; }
         public ErrorPage ErrorPage { get; }
-        public string ActiveUserId { get; private set; }
-        public bool Loading { get; set; }
-        public bool Initialized { get; set; }
+
+        private CustomerViewModel activeCustomer;
+
+        public CustomerViewModel ActiveCustomer
+        {
+            get => activeCustomer; 
+            set
+            {
+                activeCustomer = value;
+                if (activeCustomer != null)
+                {
+                    ActiveCustomerWithData = getCustomer.Get(activeCustomer.Id, User.Profile);
+                }
+            }
+        }
 
         public LegalSwpApp(
             GetCustomer getCustomer,
@@ -49,7 +61,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
             ErrorPage = errorPage;
         }
 
-        public async Task Initialize(string activeUserId)
+        public override async Task Initialize(string activeUserId)
         {
             if (Initialized)
             {
@@ -98,7 +110,6 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
         }
 
         public CustomerViewModel ActiveCustomerWithData { get; set; }
-        public UserModel User { get; set; } = new UserModel();
         public Panels ActivePanel { get; set; } = Panels.MyApp;
         public List<CustomerViewModel> Customers { get; set; } = new List<CustomerViewModel>();
 
@@ -112,12 +123,12 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
             SetActivePanel(LegalSwpApp.Panels.Cases);
             CasesPanel.SetActivePanel(CasesPanel.Panels.Admin);
             ActiveCustomerWithData.SelectedCase = ActiveCustomerWithData.Cases.FirstOrDefault(x => x.Id == id);
-            CallStateHasChanged?.Invoke(this, null);
+            OnCallStateHasChanged(null);
         }
 
         public void SetActivePanel(Panels panel) => ActivePanel = panel;
 
-        public void ForceRefresh() => CallStateHasChanged?.Invoke(this, null);
+        public void ForceRefresh() => OnCallStateHasChanged(null);
 
         public void ThrowTestException()
         {
@@ -140,21 +151,6 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
         public void ToggleNavMenu() => collapseNavMenu = !collapseNavMenu;
 
         #endregion
-
-        private CustomerViewModel activeCustomer;
-
-        public CustomerViewModel ActiveCustomer
-        {
-            get { return activeCustomer; }
-            set
-            {
-                activeCustomer = value;
-                if (activeCustomer != null)
-                {
-                    ActiveCustomerWithData = getCustomer.Get(activeCustomer.Id, User.Profile);
-                }
-            }
-        }
 
         public void RefreshCustomerWithData()
         {
@@ -205,7 +201,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
             }
             finally
             {
-                CallStateHasChanged?.Invoke(this, null);
+                OnCallStateHasChanged(null);
             }
         }
 

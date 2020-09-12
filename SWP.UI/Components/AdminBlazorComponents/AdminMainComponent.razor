@@ -1,31 +1,14 @@
-﻿
+﻿@implements IDisposable
+@inject AdminBlazorApp adminBlazorApp
 
-<div class="sidebar">
-    <div class="top-row pl-4 navbar navbar-dark">
-        <a class="navbar-brand" href="">Kancelaria</a>
-        <button class="navbar-toggler" @onclick="vm.ToggleNavMenu">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-    </div>
+<header>
+    <h2>Admin Panel</h2>
+    <RadzenButton @onclick="@(() => vm.SetActivePanel(AdminMainComponentViewModel.Panels.Users))">Users Management</RadzenButton>
+</header>
 
-    <div class="@vm.NavMenuCssClass" @onclick="vm.ToggleNavMenu">
-        <ul class="nav flex-column">
-            <li class="nav-item px-3">
-                <NavLink class="nav-link" @onclick="@(() => vm.SetActivePanel(AdminMainComponentViewModel.Panels.Users))">
-                    <span class="oi oi-list-rich" aria-hidden="true"></span>Users
-                </NavLink>
-            </li>
-        </ul>
-    </div>
-</div>
-
-<div class="main">
-    <div class="top-row px-4">
-        <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
-    </div>
-
-    <div class="content px-4">
-        @switch(vm.ActivePanel)
+<main>
+    <div>
+        @switch (vm.ActivePanel)
         {
             case AdminMainComponentViewModel.Panels.Users:
                 <AdminUsersComponent ActiveUserId="@ActiveUserId"></AdminUsersComponent>
@@ -36,11 +19,24 @@
                 break;
         }
     </div>
-</div>
+</main>
+
+<footer>Footer Content — Header.com 2020</footer>
 
 @code {
     [Parameter]
     public string ActiveUserId { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await adminBlazorApp.Initialize(ActiveUserId);
+        adminBlazorApp.CallStateHasChanged += new EventHandler(CallStateHasChanged);
+    }
+
+    private void CallStateHasChanged(object sender, EventArgs e) => StateHasChanged();
+
+    public void Dispose() => adminBlazorApp.CallStateHasChanged -= new EventHandler(CallStateHasChanged);
+
 
     private AdminMainComponentViewModel vm = new AdminMainComponentViewModel();
 }

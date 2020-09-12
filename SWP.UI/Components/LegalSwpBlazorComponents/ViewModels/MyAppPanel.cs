@@ -1,10 +1,11 @@
-﻿using SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data;
+﻿using SWP.UI.BlazorApp;
+using SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data;
 
 
 namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
 {
     [UITransientService]
-    public class MyAppPanel
+    public class MyAppPanel : BlazorPageBase
     {
         private readonly ProfileStatistics profileStatistics;
 
@@ -16,9 +17,9 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
             this.profileStatistics = profileStatistics;
         }
 
-        public void Initialize(LegalSwpApp app)
+        public override void Initialize(BlazorAppBase app)
         { 
-            App = app;
+            App = app as LegalSwpApp;
             RefreshStatistics();
         }
 

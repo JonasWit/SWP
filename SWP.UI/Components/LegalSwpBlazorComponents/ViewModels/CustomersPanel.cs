@@ -1,6 +1,7 @@
 ﻿using Radzen.Blazor;
 using SWP.Application.LegalSwp.Customers;
 using SWP.Application.LegalSwp.Jobs;
+using SWP.UI.BlazorApp;
 using SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data;
 using System;
 using System.Threading.Tasks;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
 {
     [UITransientService]
-    public class CustomersPanel
+    public class CustomersPanel : BlazorPageBase
     {
         public enum Panels
         {
@@ -42,7 +43,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
             this.updateCustomerJob = updateCustomerJob;
         }
 
-        public void Initialize(LegalSwpApp app) => App = app;
+        public override void Initialize(BlazorAppBase app) => App = app as LegalSwpApp;
 
         public Panels ActivePanel { get; set; }
         public void SetActivePanel(Panels panel) => ActivePanel = panel;

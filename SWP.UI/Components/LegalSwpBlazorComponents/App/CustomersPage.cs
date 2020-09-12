@@ -87,7 +87,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             }
             catch (Exception ex)
             {
-                throw;
+                App.ErrorPage.DisplayMessage(ex);
             }
             finally
             {
@@ -116,7 +116,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             }
             catch (Exception ex)
             {
-                throw;
+                App.ErrorPage.DisplayMessage(ex);
             }
             finally
             {
@@ -143,7 +143,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             }
             catch (Exception ex)
             {
-                throw;
+                App.ErrorPage.DisplayMessage(ex);
             }
             finally
             {

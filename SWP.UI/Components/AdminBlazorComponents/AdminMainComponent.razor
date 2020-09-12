@@ -3,11 +3,12 @@
 
 <header>
     <h2>Admin Panel</h2>
+
     <RadzenButton @onclick="@(() => App.SetActivePanel(AdminBlazorApp.Panels.Users))">Users Management</RadzenButton>
 </header>
 
-<main>
-    <div>
+
+    <div class="container-fluid">
         @switch (App.ActivePanel)
         {
             case AdminBlazorApp.Panels.Users:
@@ -17,7 +18,7 @@
                 break;
         }
     </div>
-</main>
+
 
 <footer>Footer Content — Header.com 2020</footer>
 
@@ -34,5 +35,4 @@
     private void CallStateHasChanged(object sender, EventArgs e) => StateHasChanged();
 
     public void Dispose() => App.CallStateHasChanged -= new EventHandler(CallStateHasChanged);
-
 }

@@ -4,8 +4,8 @@
 @inject RoleManager<IdentityRole> _roleManager
 
 
-<div class="row">
-    <div class="col-md-6">
+<div class="row m-2">
+    <div class="col-md-6 m-2">
         <RadzenGrid AllowFiltering="true"
                     AllowPaging="true"
                     PageSize="5"
@@ -21,7 +21,7 @@
             </Columns>
         </RadzenGrid>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-6 m-2">
         <RadzenCard Style="margin-bottom:20px">
             Active User: <b>@App.UsersPage.SelectedUser?.Name</b>
         </RadzenCard>

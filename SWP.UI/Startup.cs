@@ -9,11 +9,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NETCore.MailKit.Extensions;
 using NETCore.MailKit.Infrastructure.Internal;
-using Radzen;
 using SWP.DataBase;
 using SWP.UI.Services;
-using System;
-using System.Net.Http;
 
 namespace SWP.UI
 {

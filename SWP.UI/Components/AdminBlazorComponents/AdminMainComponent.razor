@@ -3,8 +3,7 @@
 
 <header>
     <h2>Admin Panel</h2>
-
-    <RadzenButton @onclick="@(() => App.SetActivePanel(AdminBlazorApp.Panels.Users))">Users Management</RadzenButton>
+    <RadzenButton Icon="supervised_user_circle" Click="@(() => App.SetActivePanel(AdminBlazorApp.Panels.Users))" Text="Users Management"/>
 </header>
 
 

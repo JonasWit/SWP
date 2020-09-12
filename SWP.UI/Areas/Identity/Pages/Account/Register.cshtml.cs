@@ -62,8 +62,8 @@ namespace SWP.UI.Areas.Identity.Pages.Account
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
 
-            [Display(Name = "Accept regulamin?")]
-            public bool AcceptRegulamin { get; set; }
+            [Display(Name = "Akceptuję regulamin i warunki korzytania z serwisu.")]
+            public bool RulesAccepted { get; set; }
         }
 
         public async Task OnGetAsync(string returnUrl = null)
@@ -76,6 +76,12 @@ namespace SWP.UI.Areas.Identity.Pages.Account
         {
             returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+
+            if (!Input.RulesAccepted)
+            {
+                return Page();
+            }
+
             if (ModelState.IsValid)
             {
                 var user = new IdentityUser { UserName = Input.Email, Email = Input.Email };

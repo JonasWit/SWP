@@ -1,6 +1,6 @@
 ﻿<h3>AddCasePage</h3>
 
-<RadzenTemplateForm Data="@Appvm.CasesPanel.NewCase" Submit="@(async (CreateCase.Request args) => { await Appvm.CasesPanel.CreateNewCase(args); })">
+<RadzenTemplateForm Data="@App.CasesPanel.NewCase" Submit="@(async (CreateCase.Request args) => { await App.CasesPanel.CreateNewCase(args); })">
     <div class="row">
         <RadzenFieldset Text="Nowa Sprawa">
             <div class="row">
@@ -8,7 +8,7 @@
                     <RadzenLabel Text="Nazwa" />
                 </div>
                 <div class="col-md-8">
-                    <RadzenTextBox Placeholder="Nazwa Srawy..." Style="margin-bottom: 30px" @bind-Value="Appvm.CasesPanel.NewCase.Name" Name="Name" />
+                    <RadzenTextBox Placeholder="Nazwa Srawy..." Style="margin-bottom: 30px" @bind-Value="App.CasesPanel.NewCase.Name" Name="Name" />
                     <RadzenRequiredValidator Component="Name" Text="Name cannot be empty!" Popup="true" />
                     <RadzenLengthValidator Max="50" Text="Max 50 characters!" Component="Name" Popup="true" />
                 </div>
@@ -18,7 +18,7 @@
                     <RadzenLabel Text="Sygnatura" />
                 </div>
                 <div class="col-md-8">
-                    <RadzenTextBox Placeholder="Sygnatura..." Style="margin-bottom: 30px" @bind-Value="Appvm.CasesPanel.NewCase.Signature" Name="Signature" />
+                    <RadzenTextBox Placeholder="Sygnatura..." Style="margin-bottom: 30px" @bind-Value="App.CasesPanel.NewCase.Signature" Name="Signature" />
                 </div>
             </div>
             <div class="row">
@@ -26,7 +26,7 @@
                     <RadzenLabel Text="opis" />
                 </div>
                 <div class="col-md-8">
-                    <RadzenTextArea Placeholder="Opis..." Style="margin-bottom: 30px" @bind-Value="Appvm.CasesPanel.NewCase.Description" Name="Description" />
+                    <RadzenTextArea Placeholder="Opis..." Style="margin-bottom: 30px" @bind-Value="App.CasesPanel.NewCase.Description" Name="Description" />
                     <RadzenLengthValidator Max="500" Text="Max 500 characters!" Component="Description" Popup="true" />
                 </div>
             </div>
@@ -35,7 +35,7 @@
                     <RadzenLabel Text="Typ Sprawy" />
                 </div>
                 <div class="col-md-8">
-                    <RadzenTextArea Placeholder="Typ Sprawy..." Style="margin-bottom: 30px" @bind-Value="Appvm.CasesPanel.NewCase.CaseType" Name="CaseType" />
+                    <RadzenTextArea Placeholder="Typ Sprawy..." Style="margin-bottom: 30px" @bind-Value="App.CasesPanel.NewCase.CaseType" Name="CaseType" />
                 </div>
             </div>
         </RadzenFieldset>
@@ -47,11 +47,11 @@
     </div>
 </RadzenTemplateForm>
 
-<RadzenButton Click="Appvm.ThrowTestException"/>
+<RadzenButton Click="App.ThrowTestException"/>
 
 @code {
     [Parameter]
-    public LegalSwpApp Appvm { get; set; }
+    public LegalBlazorApp App { get; set; }
     [Parameter]
-    public EventCallback<LegalSwpApp> AppvmChanged { get; set; }
+    public EventCallback<LegalBlazorApp> AppChanged { get; set; }
 }

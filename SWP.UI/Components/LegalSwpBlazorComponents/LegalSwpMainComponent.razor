@@ -1,43 +1,43 @@
 ﻿@implements IDisposable
-@inject LegalSwpApp legalSwpApp
+@inject LegalBlazorApp App
 
 <div class="sidebar">
     <div class="top-row pl-4 navbar navbar-dark">
         <a class="navbar-brand" href="">Legal Firm Management</a>
-        <button class="navbar-toggler" @onclick="legalSwpApp.ToggleNavMenu">
+        <button class="navbar-toggler" @onclick="App.ToggleNavMenu">
             <span class="navbar-toggler-icon"></span>
         </button>
     </div>
 
-    <div class="@legalSwpApp.NavMenuCssClass" @onclick="legalSwpApp.ToggleNavMenu">
+    <div class="@App.NavMenuCssClass" @onclick="App.ToggleNavMenu">
         <ul class="nav flex-column">
             <li class="nav-item px-3">
-                <NavLink class="nav-link" @onclick="@(() => legalSwpApp.SetActivePanel(LegalSwpApp.Panels.MyApp))">
+                <NavLink class="nav-link" @onclick="@(() => App.SetActivePanel(LegalBlazorApp.Panels.MyApp))">
                     <span class="oi oi-list-rich" aria-hidden="true"></span>My Application
                 </NavLink>
             </li>
             <li class="nav-item px-3">
-                <NavLink class="nav-link" @onclick="@(() => legalSwpApp.SetActivePanel(LegalSwpApp.Panels.Customers))">
+                <NavLink class="nav-link" @onclick="@(() => App.SetActivePanel(LegalBlazorApp.Panels.Customers))">
                     <span class="oi oi-list-rich" aria-hidden="true"></span>Clients
                 </NavLink>
             </li>
 
             <li class="nav-item px-3">
-                <NavLink class="nav-link" @onclick="@(() => legalSwpApp.SetActivePanel(LegalSwpApp.Panels.Calendar))">
+                <NavLink class="nav-link" @onclick="@(() => App.SetActivePanel(LegalBlazorApp.Panels.Calendar))">
                     <span class="oi oi-list-rich" aria-hidden="true"></span>Calendar
                 </NavLink>
             </li>
 
             <li class="nav-item px-3">
-                <NavLink class="nav-link" @onclick="@(() => legalSwpApp.SetActivePanel(LegalSwpApp.Panels.ErrorPage))">
+                <NavLink class="nav-link" @onclick="@(() => App.SetActivePanel(LegalBlazorApp.Panels.ErrorPage))">
                     <span class="oi oi-list-rich" aria-hidden="true"></span>Error Page For TESTS!
                 </NavLink>
             </li>
 
-            @if (legalSwpApp.ActiveCustomerWithData != null)
+            @if (App.ActiveCustomerWithData != null)
             {
                 <li class="nav-item px-3">
-                    <NavLink class="nav-link" @onclick="@(() => legalSwpApp.SetActivePanel(LegalSwpApp.Panels.Cases))">
+                    <NavLink class="nav-link" @onclick="@(() => App.SetActivePanel(LegalBlazorApp.Panels.Cases))">
                         <span class="oi oi-list-rich" aria-hidden="true"></span>Cases
                     </NavLink>
                 </li>
@@ -51,13 +51,13 @@
     <div class="top-row px-4">
 
         <h3>Select Client</h3>
-        <Radzen.Blazor.RadzenDropDown AllowClear="true" TValue="string" AllowFiltering="true" Data="@legalSwpApp.Customers" TextProperty="Name" ValueProperty="IdStr" Style="margin-bottom: 20px" Change="@(args => legalSwpApp.ActiveCustomerChange(args))" />
+        <Radzen.Blazor.RadzenDropDown AllowClear="true" TValue="string" AllowFiltering="true" Data="@App.Customers" TextProperty="Name" ValueProperty="IdStr" Style="margin-bottom: 20px" Change="@(args => App.ActiveCustomerChange(args))" />
 
-        <RadzenButton Click="@(() => legalSwpApp.ActiveCustomerChange(null))" Text="Clear Active Client" Style="margin-bottom: 20px; width: 150px" />
+        <RadzenButton Click="@(() => App.ActiveCustomerChange(null))" Text="Clear Active Client" Style="margin-bottom: 20px; width: 150px" />
 
-        @if (legalSwpApp.ActiveCustomer != null)
+        @if (App.ActiveCustomer != null)
         {
-            <a @onclick="@(() => legalSwpApp.SetActivePanel(LegalSwpApp.Panels.Customers))">Active Client: @legalSwpApp.ActiveCustomer.Name</a>
+            <a @onclick="@(() => App.SetActivePanel(LegalBlazorApp.Panels.Customers))">Active Client: @App.ActiveCustomer.Name</a>
         }
         else
         {
@@ -66,25 +66,25 @@
     </div>
 
     <div class="content px-4">
-        @switch (legalSwpApp.ActivePanel)
+        @switch (App.ActivePanel)
         {
-            case LegalSwpApp.Panels.Customers:
-                <LegalSwpCustomersComponent @bind-Appvm="legalSwpApp"/>
+            case LegalBlazorApp.Panels.Customers:
+                <LegalSwpCustomersComponent @bind-App="App"/>
                 break;
-            case LegalSwpApp.Panels.Calendar:
-                <LegalSwpCalendarComponent @bind-Appvm="legalSwpApp"/>
+            case LegalBlazorApp.Panels.Calendar:
+                <LegalSwpCalendarComponent @bind-App="App"/>
                 break;
-            case LegalSwpApp.Panels.Cases:
-                <LegalSwpCasesComponent @bind-Appvm="legalSwpApp"/>
+            case LegalBlazorApp.Panels.Cases:
+                <LegalSwpCasesComponent @bind-App="App"/>
                 break;
-            case LegalSwpApp.Panels.MyApp:
-                <LegalSwpMyAppComponent @bind-Appvm="legalSwpApp"/>
+            case LegalBlazorApp.Panels.MyApp:
+                <LegalSwpMyAppComponent @bind-App="App"/>
                 break;
-            case LegalSwpApp.Panels.ErrorPage:
-                <LegalSwpErrorComponent @bind-Appvm="legalSwpApp"/>
+            case LegalBlazorApp.Panels.ErrorPage:
+                <LegalSwpErrorComponent @bind-App="App"/>
                 break;
             default:
-                <LegalSwpMyAppComponent @bind-Appvm="legalSwpApp"/>
+                <LegalSwpMyAppComponent @bind-App="App"/>
                 break;
         }
     </div>
@@ -96,11 +96,11 @@
 
     protected override async Task OnInitializedAsync()
     {
-        await legalSwpApp.Initialize(ActiveUserId);
-        legalSwpApp.CallStateHasChanged += new EventHandler(CallStateHasChanged);
+        await App.Initialize(ActiveUserId);
+        App.CallStateHasChanged += new EventHandler(CallStateHasChanged);
     }
 
     private void CallStateHasChanged(object sender, EventArgs e) => StateHasChanged();
 
-    public void Dispose() => legalSwpApp.CallStateHasChanged -= new EventHandler(CallStateHasChanged);
+    public void Dispose() => App.CallStateHasChanged -= new EventHandler(CallStateHasChanged);
 }

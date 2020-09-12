@@ -29,13 +29,15 @@
 
     protected override async Task OnInitializedAsync()
     {
-        await adminBlazorApp.Initialize(ActiveUserId);
-        adminBlazorApp.CallStateHasChanged += new EventHandler(CallStateHasChanged);
+        //await adminBlazorApp.Initialize(ActiveUserId);
+        //adminBlazorApp.CallStateHasChanged += new EventHandler(CallStateHasChanged);
     }
 
-    private void CallStateHasChanged(object sender, EventArgs e) => StateHasChanged();
+    //private void CallStateHasChanged(object sender, EventArgs e) => StateHasChanged();
 
-    public void Dispose() => adminBlazorApp.CallStateHasChanged -= new EventHandler(CallStateHasChanged);
+    public void Dispose() { }
+
+    //public void Dispose() => adminBlazorApp.CallStateHasChanged -= new EventHandler(CallStateHasChanged);
 
 
     private AdminMainComponentViewModel vm = new AdminMainComponentViewModel();

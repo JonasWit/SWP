@@ -4,27 +4,27 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
+namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 {
     [UITransientService]
     public class ErrorPage : BlazorPageBase
     {
         public Exception Exception { get; private set; }
 
-        public LegalSwpApp App { get; private set; }
+        public LegalBlazorApp App { get; private set; }
 
-        public override void Initialize(BlazorAppBase app) => App = app as LegalSwpApp;
+        public override void Initialize(BlazorAppBase app) => App = app as LegalBlazorApp;
 
         public void DisplayMessage(Exception ex)
         {
             Exception = ex;
-            App.SetActivePanel(LegalSwpApp.Panels.ErrorPage);
+            App.SetActivePanel(LegalBlazorApp.Panels.ErrorPage);
             RefreshApp();
         }
 
         public void DismissMessage()
         {
-            App.SetActivePanel(LegalSwpApp.Panels.MyApp);
+            App.SetActivePanel(LegalBlazorApp.Panels.MyApp);
             RefreshApp();
         }
 

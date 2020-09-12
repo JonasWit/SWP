@@ -1,7 +1,5 @@
-﻿using Org.BouncyCastle.Math.EC.Rfc7748;
-using Radzen;
+﻿using Radzen;
 using Radzen.Blazor;
-using SWP.Application;
 using SWP.Application.LegalSwp.Cases;
 using SWP.Application.LegalSwp.Notes;
 using SWP.Application.LegalSwp.Reminders;
@@ -13,10 +11,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
+namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 {
     [UITransientService]
-    public class CasesPanel : BlazorPageBase
+    public class CasesPage : BlazorPageBase
     {
         public enum Panels
         {
@@ -37,9 +35,9 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
         private readonly DeleteNote deleteNote;
         private readonly UpdateNote updateNote;
 
-        public LegalSwpApp App { get; private set; }
+        public LegalBlazorApp App { get; private set; }
 
-        public CasesPanel(
+        public CasesPage(
             DialogService dialogService,
             CreateReminder createReminder,
             UpdateReminder updateReminder,
@@ -68,7 +66,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
             SetActivePanel(Panels.Admin);
         }
 
-        public override void Initialize(BlazorAppBase app) => App = app as LegalSwpApp;
+        public override void Initialize(BlazorAppBase app) => App = app as LegalBlazorApp;
         public CreateCase.Request NewCase { get; set; } = new CreateCase.Request();
         public CreateNote.Request NewNote { get; set; } = new CreateNote.Request();
         public RadzenGrid<CaseViewModel> CasesGrid { get; set; }
@@ -314,8 +312,6 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
                     await deleteReminder.Delete(result.Id);
                     App.ActiveCustomerWithData.SelectedCase.Reminders.RemoveAll(x => x.Id == result.Id);
                     App.CalendarPanel.Reminders.RemoveAll(x => x.Id == result.Id);
-
-                    //ReloadCase(App.ActiveCustomerWithData.SelectedCase.Id);
                 }
                 else
                 {

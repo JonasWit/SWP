@@ -1,13 +1,13 @@
 ﻿
 <h2>Panel Aktywnego Klienta</h2>
 
-@if (Appvm.ActiveCustomerWithData != null)
+@if (App.ActiveCustomerWithData != null)
 {
     <div>
         <h2>All Cases</h2>
-        <RadzenDataList WrapItems="true" AllowPaging="true" Data="@Appvm.ActiveCustomerWithData.Cases" TItem="CaseViewModel">
+        <RadzenDataList WrapItems="true" AllowPaging="true" Data="@App.ActiveCustomerWithData.Cases" TItem="CaseViewModel">
             <Template Context="c">
-                <RadzenCard Style="width:300px;" @onclick="(() => Appvm.RedirectToCase(c.Id))">
+                <RadzenCard Style="width:300px;" @onclick="(() => App.RedirectToCase(c.Id))">
                     <div class="row">
                         <div class="col-md-6">
                             <div>Case Name:</div>
@@ -32,7 +32,7 @@ else
 
 @code {
     [Parameter]
-    public LegalSwpApp Appvm { get; set; }
+    public LegalBlazorApp App { get; set; }
     [Parameter]
-    public EventCallback<LegalSwpApp> AppvmChanged { get; set; }
+    public EventCallback<LegalBlazorApp> AppChanged { get; set; }
 }

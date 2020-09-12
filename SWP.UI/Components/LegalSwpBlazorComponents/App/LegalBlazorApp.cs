@@ -8,10 +8,10 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
+namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 {
     [UITransientService]
-    public class LegalSwpApp : BlazorAppBase
+    public class LegalBlazorApp : BlazorAppBase
     {
         private readonly GetCustomer getCustomer;
         private readonly GetCustomers getCustomers;
@@ -19,10 +19,10 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
 
         public event EventHandler ActiveCustomerChanged;
 
-        public CalendarPanel CalendarPanel { get; }
-        public CasesPanel CasesPanel { get; }
-        public CustomersPanel CustomersPanel { get; }
-        public MyAppPanel MyAppPanel { get; }
+        public CalendarPage CalendarPanel { get; }
+        public CasesPage CasesPanel { get; }
+        public CustomersPage CustomersPanel { get; }
+        public MyAppPage MyAppPanel { get; }
         public ErrorPage ErrorPage { get; }
 
         private CustomerViewModel activeCustomer;
@@ -40,14 +40,14 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
             }
         }
 
-        public LegalSwpApp(
+        public LegalBlazorApp(
             GetCustomer getCustomer,
             GetCustomers getCustomers,
             UserManager<IdentityUser> userManager,
-            CalendarPanel calendarPanel,
-            CasesPanel casesPanel,
-            CustomersPanel customersPanel,
-            MyAppPanel myAppPanel,
+            CalendarPage calendarPanel,
+            CasesPage casesPanel,
+            CustomersPage customersPanel,
+            MyAppPage myAppPanel,
             ErrorPage errorPage)
         {
             this.getCustomer = getCustomer;
@@ -120,8 +120,8 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
                 return;
             }
 
-            SetActivePanel(LegalSwpApp.Panels.Cases);
-            CasesPanel.SetActivePanel(CasesPanel.Panels.Admin);
+            SetActivePanel(LegalBlazorApp.Panels.Cases);
+            CasesPanel.SetActivePanel(CasesPage.Panels.Admin);
             ActiveCustomerWithData.SelectedCase = ActiveCustomerWithData.Cases.FirstOrDefault(x => x.Id == id);
             OnCallStateHasChanged(null);
         }

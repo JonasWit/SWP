@@ -8,8 +8,8 @@
         <RadzenDialog />
         <RadzenNotification />
 
-        <RadzenScheduler @ref="Appvm.CalendarPanel.RemindersScheduler" style="height: 768px;" TItem="ReminderViewModel" Data="@Appvm.CalendarPanel.Reminders" StartProperty="Start" EndProperty="End"
-                         TextProperty="Name" SelectedIndex="2" AppointmentSelect="@Appvm.CalendarPanel.OnAppointmentSelect" AppointmentRender="@Appvm.CalendarPanel.OnAppointmentRender">
+        <RadzenScheduler @ref="App.CalendarPanel.RemindersScheduler" style="height: 768px;" TItem="ReminderViewModel" Data="@App.CalendarPanel.Reminders" StartProperty="Start" EndProperty="End"
+                         TextProperty="Name" SelectedIndex="2" AppointmentSelect="@App.CalendarPanel.OnAppointmentSelect" AppointmentRender="@App.CalendarPanel.OnAppointmentRender">
             <RadzenDayView />
             <RadzenWeekView />
             <RadzenMonthView />
@@ -19,7 +19,7 @@
 
 @code {
     [Parameter]
-    public LegalSwpApp Appvm { get; set; }
+    public LegalBlazorApp App { get; set; }
     [Parameter]
-    public EventCallback<LegalSwpApp> AppvmChanged { get; set; }
+    public EventCallback<LegalBlazorApp> AppChanged { get; set; }
 }

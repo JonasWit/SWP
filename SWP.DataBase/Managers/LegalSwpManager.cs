@@ -243,12 +243,12 @@ namespace SWP.DataBase.Managers
                 .Select(selector)
                 .FirstOrDefault();
 
-        public Task<int> UpdateCustomerJob(CustomerJob job)
+        public async Task<CustomerJob> UpdateCustomerJob(CustomerJob job)
         {
             context.CustomerJobs.Update(job);
-            return context.SaveChangesAsync();
+            await context.SaveChangesAsync();
+            return job;
         }
-
 
         #endregion
 

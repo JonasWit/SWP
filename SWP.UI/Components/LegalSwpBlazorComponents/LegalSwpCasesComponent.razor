@@ -3,30 +3,30 @@
 
 <h2>Sprawy</h2>
 
-@if (Appvm.ActiveCustomerWithData != null)
+@if (App.ActiveCustomerWithData != null)
 {
-    <RadzenButton Click="@(() => Appvm.CasesPanel.SetActivePanel(CasesPanel.Panels.AddCase))" Text="Case Data" Style="margin-bottom: 20px;" />
-    <RadzenButton Click="@(() => Appvm.CasesPanel.SetActivePanel(CasesPanel.Panels.Admin))" Text="Admin" Style="margin-bottom: 20px;" />
+    <RadzenButton Click="@(() => App.CasesPanel.SetActivePanel(CasesPage.Panels.AddCase))" Text="Case Data" Style="margin-bottom: 20px;" />
+    <RadzenButton Click="@(() => App.CasesPanel.SetActivePanel(CasesPage.Panels.Admin))" Text="Admin" Style="margin-bottom: 20px;" />
 }
 
-@if (Appvm.Loading)
+@if (App.Loading)
 {
 
 }
 else
 {
-    switch (Appvm.CasesPanel.ActivePanel)
+    switch (App.CasesPanel.ActivePanel)
     {
-        case CasesPanel.Panels.Admin:
+        case CasesPage.Panels.Admin:
             <h2>Panel Administracyjny</h2>
-            <h2>Zarządzaj sprawami aktywnego klienta (@Appvm.ActiveCustomerWithData.Name)</h2>
+            <h2>Zarządzaj sprawami aktywnego klienta (@App.ActiveCustomerWithData.Name)</h2>
 
             <RadzenDialog />
             <RadzenNotification />
-            <AdminCasePage @bind-Appvm="Appvm"></AdminCasePage>
+            <AdminCasePage @bind-App="App"></AdminCasePage>
             break;
-        case CasesPanel.Panels.AddCase:
-            <AddCasePage @bind-Appvm="Appvm"></AddCasePage>       
+        case CasesPage.Panels.AddCase:
+            <AddCasePage @bind-App="App"></AddCasePage>       
             break;
         default:
             break;
@@ -35,7 +35,7 @@ else
 
 @code {
     [Parameter]
-    public LegalSwpApp Appvm { get; set; }
+    public LegalBlazorApp App { get; set; }
     [Parameter]
-    public EventCallback<LegalSwpApp> AppvmChanged { get; set; }
+    public EventCallback<LegalBlazorApp> AppChanged { get; set; }
 }

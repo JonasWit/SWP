@@ -6,10 +6,10 @@ using SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data;
 using System;
 using System.Threading.Tasks;
 
-namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
+namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 {
     [UITransientService]
-    public class CustomersPanel : BlazorPageBase
+    public class CustomersPage : BlazorPageBase
     {
         public enum Panels
         {
@@ -25,9 +25,9 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
         private readonly DeleteCustomerJob deleteCustomerJob;
         private readonly UpdateCustomerJob updateCustomerJob;
 
-        public LegalSwpApp App { get; private set; }
+        public LegalBlazorApp App { get; private set; }
 
-        public CustomersPanel(
+        public CustomersPage(
             DeleteCustomer deleteCustomer,
             UpdateCustomer updateCustomer,
             CreateCustomer createCustomer,
@@ -43,7 +43,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
             this.updateCustomerJob = updateCustomerJob;
         }
 
-        public override void Initialize(BlazorAppBase app) => App = app as LegalSwpApp;
+        public override void Initialize(BlazorAppBase app) => App = app as LegalBlazorApp;
 
         public Panels ActivePanel { get; set; }
         public void SetActivePanel(Panels panel) => ActivePanel = panel;
@@ -172,7 +172,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
             }
             catch (Exception ex)
             {
-                throw;
+                App.ErrorPage.DisplayMessage(ex);
             }
             finally
             {
@@ -189,7 +189,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
 
             try
             {
-                await updateCustomerJob.Update(new UpdateCustomerJob.Request
+                var result = await updateCustomerJob.Update(new UpdateCustomerJob.Request
                 {
                     Id = customerJob.Id,
                     Active = customerJob.Active,
@@ -200,11 +200,11 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
                     UpdatedBy = App.User.UserName
                 });
 
-                App.RefreshCustomerWithData();
+                App.ActiveCustomerWithData.Jobs[App.ActiveCustomerWithData.Jobs.FindIndex(x => x.Id == result.Id)] = result;
             }
             catch (Exception ex)
             {
-                throw;
+                App.ErrorPage.DisplayMessage(ex);
             }
             finally
             {
@@ -233,7 +233,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
             }
             catch (Exception ex)
             {
-                throw;
+                App.ErrorPage.DisplayMessage(ex);
             }
             finally
             {

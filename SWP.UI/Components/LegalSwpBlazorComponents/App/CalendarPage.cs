@@ -13,10 +13,10 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
-namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
+namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 {
     [UITransientService]
-    public class CalendarPanel : BlazorPageBase, IDisposable
+    public class CalendarPage : BlazorPageBase, IDisposable
     {
         private readonly DialogService dialogService;
         private readonly GetReminders getReminders;
@@ -25,10 +25,11 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
         private readonly GeneralViewModel generalViewModel;
         private readonly GetCase getCase;
 
-        public LegalSwpApp App { get; private set; }
+        public LegalBlazorApp App { get; private set; }
 
-        public CalendarPanel(
+        public CalendarPage(
             DialogService dialogService,
+
             GetReminders getReminders,
             UpdateReminder updateReminder,
             DeleteReminder deleteReminder,
@@ -45,7 +46,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
 
         public override void Initialize(BlazorAppBase app)
         {
-            App = app as LegalSwpApp;
+            App = app as LegalBlazorApp;
             RefreshCalendarData();
             SubscribeToEvents();
         }

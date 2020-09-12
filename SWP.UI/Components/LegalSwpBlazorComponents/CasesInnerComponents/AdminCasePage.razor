@@ -1,6 +1,6 @@
 ﻿
-<RadzenGrid @ref="Appvm.CasesPanel.CasesGrid" AllowFiltering="true" AllowPaging="true" PageSize="5" AllowSorting="true"
-            Data="@Appvm.ActiveCustomerWithData.Cases" TItem="CaseViewModel" RowUpdate="@Appvm.CasesPanel.OnUpdateCaseRow">
+<RadzenGrid @ref="App.CasesPanel.CasesGrid" AllowFiltering="true" AllowPaging="true" PageSize="5" AllowSorting="true"
+            Data="@App.ActiveCustomerWithData.Cases" TItem="CaseViewModel" RowUpdate="@App.CasesPanel.OnUpdateCaseRow">
     <Columns>
         <RadzenGridColumn TItem="CaseViewModel" Property="Name" Title="Case Name">
             <EditTemplate Context="c">
@@ -43,52 +43,52 @@
 
         <RadzenGridColumn TItem="CaseViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="100px" Title="Show Details">
             <Template Context="c">
-                <RadzenButton Icon="reply" Size="ButtonSize.Medium" ButtonStyle="ButtonStyle.Secondary" Click="@(args => Appvm.CasesPanel.ActiveCaseChange(c))">
+                <RadzenButton Icon="reply" Size="ButtonSize.Medium" ButtonStyle="ButtonStyle.Secondary" Click="@(args => App.CasesPanel.ActiveCaseChange(c))">
                 </RadzenButton>
             </Template>
         </RadzenGridColumn>
 
         <RadzenGridColumn TItem="CaseViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="100px" Title="Edit">
             <Template Context="c">
-                <RadzenButton Icon="edit" Size="ButtonSize.Medium" Click="@(args => Appvm.CasesPanel.EditCaseRow(c))">
+                <RadzenButton Icon="edit" Size="ButtonSize.Medium" Click="@(args => App.CasesPanel.EditCaseRow(c))">
                 </RadzenButton>
             </Template>
             <EditTemplate Context="c">
-                <RadzenButton Icon="save" Size="ButtonSize.Medium" Click="@((args) => Appvm.CasesPanel.SaveCaseRow(c))">
+                <RadzenButton Icon="save" Size="ButtonSize.Medium" Click="@((args) => App.CasesPanel.SaveCaseRow(c))">
                 </RadzenButton>
-                <RadzenButton Icon="cancel" Size="ButtonSize.Medium" ButtonStyle="ButtonStyle.Secondary" Click="@((args) => Appvm.CasesPanel.CancelEditCaseRow(c))">
+                <RadzenButton Icon="cancel" Size="ButtonSize.Medium" ButtonStyle="ButtonStyle.Secondary" Click="@((args) => App.CasesPanel.CancelEditCaseRow(c))">
                 </RadzenButton>
             </EditTemplate>
         </RadzenGridColumn>
         <RadzenGridColumn TItem="CaseViewModel" Context="order" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="70px" Title="Delete">
             <Template Context="c">
-                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Medium" Click="@(async (args) => await Appvm.CasesPanel.DeleteCaseRow(c))">
+                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Medium" Click="@(async (args) => await App.CasesPanel.DeleteCaseRow(c))">
                 </RadzenButton>
             </Template>
             <EditTemplate Context="c">
-                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Medium" Click="@(async (args) => await Appvm.CasesPanel.DeleteCaseRow(c))">
+                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Medium" Click="@(async (args) => await App.CasesPanel.DeleteCaseRow(c))">
                 </RadzenButton>
             </EditTemplate>
         </RadzenGridColumn>
     </Columns>
 </RadzenGrid>
 
-@if (Appvm.ActiveCustomerWithData.SelectedCase == null)
+@if (App.ActiveCustomerWithData.SelectedCase == null)
 {
     <h3>Brak aktywnej sprawy</h3>
 }
 else
 {
-    <h3>Aktywna sprawa - @Appvm.ActiveCustomerWithData.SelectedCase.Name</h3>
+    <h3>Aktywna sprawa - @App.ActiveCustomerWithData.SelectedCase.Name</h3>
 
     <RadzenTabs>
         <Tabs>
             <RadzenTabsItem Text="Calendar">
                 <div class="row">
                     <div class="col-md-6">
-                        <RadzenScheduler @ref="Appvm.CasesPanel.CasesScheduler" style="height: 768px;" TItem="ReminderViewModel" Data="@Appvm.ActiveCustomerWithData.SelectedCase.Reminders" StartProperty="Start" EndProperty="End"
+                        <RadzenScheduler @ref="App.CasesPanel.CasesScheduler" style="height: 768px;" TItem="ReminderViewModel" Data="@App.ActiveCustomerWithData.SelectedCase.Reminders" StartProperty="Start" EndProperty="End"
                                          TextProperty="Name" SelectedIndex="2"
-                                         SlotSelect="@Appvm.CasesPanel.OnSlotSelect" AppointmentSelect="@Appvm.CasesPanel.OnAppointmentSelect" AppointmentRender="@Appvm.CasesPanel.OnAppointmentRender">
+                                         SlotSelect="@App.CasesPanel.OnSlotSelect" AppointmentSelect="@App.CasesPanel.OnAppointmentSelect" AppointmentRender="@App.CasesPanel.OnAppointmentRender">
                             <RadzenDayView />
                             <RadzenWeekView />
                             <RadzenMonthView />
@@ -97,18 +97,18 @@ else
 
                     <RadzenCard Style="margin-bottom:20px">
                         Company:
-                        <b>@Appvm.ActiveCustomerWithData.SelectedCase.Name</b>
+                        <b>@App.ActiveCustomerWithData.SelectedCase.Name</b>
 
                         <div class="row">
                             <div class="col-md-6">
                                 <div>Selected Case:</div>
-                                <b>@Appvm.ActiveCustomerWithData.SelectedCase.Name</b>
+                                <b>@App.ActiveCustomerWithData.SelectedCase.Name</b>
                             </div>
                             <div class="col-md-6">
                                 <div>Signature:</div>
-                                <b>@Appvm.ActiveCustomerWithData.SelectedCase?.Signature</b>
+                                <b>@App.ActiveCustomerWithData.SelectedCase?.Signature</b>
                                 <div style="margin-top:20px">Description:</div>
-                                <b>@Appvm.ActiveCustomerWithData.SelectedCase?.Description</b>
+                                <b>@App.ActiveCustomerWithData.SelectedCase?.Description</b>
                             </div>
                         </div>
                     </RadzenCard>
@@ -116,17 +116,17 @@ else
             </RadzenTabsItem>
             <RadzenTabsItem Text="Notes">
                 <div class="row">
-                    <RadzenTemplateForm Data="@Appvm.CasesPanel.NewNote" Submit="@(async (CreateNote.Request args) => { await Appvm.CasesPanel.CreateNewNote(args); })">
+                    <RadzenTemplateForm Data="@App.CasesPanel.NewNote" Submit="@(async (CreateNote.Request args) => { await App.CasesPanel.CreateNewNote(args); })">
                         <div class="row">
                             <RadzenFieldset Text="Add New Note">
                                 <div class="row">
                                     <div class="col-md-4">
-                                        <RadzenTextBox Placeholder="Note Title..." Style="margin-bottom: 30px" @bind-Value="Appvm.CasesPanel.NewNote.Name" Name="Name" />
+                                        <RadzenTextBox Placeholder="Note Title..." Style="margin-bottom: 30px" @bind-Value="App.CasesPanel.NewNote.Name" Name="Name" />
                                         <RadzenRequiredValidator Component="Name" Text="Name cannot be empty!" Popup="true" />
                                         <RadzenLengthValidator Max="50" Text="Max 50 characters!" Component="Name" Popup="true" />
                                     </div>
                                     <div class="col-md-6">
-                                        <RadzenTextArea Placeholder="Message..." Style="margin-bottom: 30px" @bind-Value="Appvm.CasesPanel.NewNote.Message" Name="Message" />
+                                        <RadzenTextArea Placeholder="Message..." Style="margin-bottom: 30px" @bind-Value="App.CasesPanel.NewNote.Message" Name="Message" />
                                         <RadzenLengthValidator Max="500" Text="Max 500 characters!" Component="Message" Popup="true" />
                                     </div>
                                     <div class="col-md-2">
@@ -139,8 +139,8 @@ else
                 </div>
                 <div class="row">
                     <div class="col-md-8">
-                        <RadzenGrid @ref="Appvm.CasesPanel.NotesGrid" AllowFiltering="true" AllowPaging="true" PageSize="10" AllowSorting="true"
-                                    Data="@Appvm.ActiveCustomerWithData.SelectedCase.Notes" TItem="NoteViewModel" RowUpdate="@Appvm.CasesPanel.OnUpdateNoteRow">
+                        <RadzenGrid @ref="App.CasesPanel.NotesGrid" AllowFiltering="true" AllowPaging="true" PageSize="10" AllowSorting="true"
+                                    Data="@App.ActiveCustomerWithData.SelectedCase.Notes" TItem="NoteViewModel" RowUpdate="@App.CasesPanel.OnUpdateNoteRow">
                             <Columns>
                                 <RadzenGridColumn TItem="NoteViewModel" Property="Name" Title="Name">
                                     <EditTemplate Context="note">
@@ -172,29 +172,29 @@ else
                                 </RadzenGridColumn>
                                 <RadzenGridColumn TItem="NoteViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="100px">
                                     <Template Context="note">
-                                        <RadzenButton Icon="reply" Size="ButtonSize.Medium" ButtonStyle="ButtonStyle.Secondary" Click="@(args => Appvm.CasesPanel.ActiveNoteChange(note))">
+                                        <RadzenButton Icon="reply" Size="ButtonSize.Medium" ButtonStyle="ButtonStyle.Secondary" Click="@(args => App.CasesPanel.ActiveNoteChange(note))">
                                         </RadzenButton>
                                     </Template>
                                 </RadzenGridColumn>
                                 <RadzenGridColumn TItem="NoteViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="100px">
                                     <Template Context="note">
-                                        <RadzenButton Icon="edit" Size="ButtonSize.Medium" Click="@(args => Appvm.CasesPanel.EditNoteRow(note))">
+                                        <RadzenButton Icon="edit" Size="ButtonSize.Medium" Click="@(args => App.CasesPanel.EditNoteRow(note))">
                                         </RadzenButton>
                                     </Template>
                                     <EditTemplate Context="note">
-                                        <RadzenButton Icon="save" Size="ButtonSize.Medium" Click="@((args) => Appvm.CasesPanel.SaveNoteRow(note))">
+                                        <RadzenButton Icon="save" Size="ButtonSize.Medium" Click="@((args) => App.CasesPanel.SaveNoteRow(note))">
                                         </RadzenButton>
-                                        <RadzenButton Icon="cancel" Size="ButtonSize.Medium" ButtonStyle="ButtonStyle.Secondary" Click="@((args) => Appvm.CasesPanel.CancelEditNoteRow(note))">
+                                        <RadzenButton Icon="cancel" Size="ButtonSize.Medium" ButtonStyle="ButtonStyle.Secondary" Click="@((args) => App.CasesPanel.CancelEditNoteRow(note))">
                                         </RadzenButton>
                                     </EditTemplate>
                                 </RadzenGridColumn>
                                 <RadzenGridColumn TItem="NoteViewModel" Context="order" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="70px">
                                     <Template Context="note">
-                                        <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Medium" Click="@(async (args) => await Appvm.CasesPanel.DeleteNoteRow (note))">
+                                        <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Medium" Click="@(async (args) => await App.CasesPanel.DeleteNoteRow (note))">
                                         </RadzenButton>
                                     </Template>
                                     <EditTemplate Context="note">
-                                        <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Medium" Click="@(async (args) => await Appvm.CasesPanel.DeleteNoteRow(note))">
+                                        <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Medium" Click="@(async (args) => await App.CasesPanel.DeleteNoteRow(note))">
                                         </RadzenButton>
                                     </EditTemplate>
                                 </RadzenGridColumn>
@@ -202,16 +202,16 @@ else
                         </RadzenGrid>
                     </div>
                     <div class="col-md-4">
-                        @if (Appvm.ActiveCustomerWithData.SelectedCase != null &&
-                           Appvm.ActiveCustomerWithData.SelectedCase.SelectedNote != null)
+                        @if (App.ActiveCustomerWithData.SelectedCase != null &&
+                           App.ActiveCustomerWithData.SelectedCase.SelectedNote != null)
                         {
                             <RadzenCard Style="margin-bottom:20px">
                                 Note:
-                                <b>@Appvm.ActiveCustomerWithData.SelectedCase.SelectedNote.Name</b>
+                                <b>@App.ActiveCustomerWithData.SelectedCase.SelectedNote.Name</b>
                             </RadzenCard>
                             <RadzenCard Style="margin-bottom:20px">
                                 Details:
-                                <b>@Appvm.ActiveCustomerWithData.SelectedCase.SelectedNote.Message</b>
+                                <b>@App.ActiveCustomerWithData.SelectedCase.SelectedNote.Message</b>
                             </RadzenCard>
                         }
                     </div>
@@ -223,7 +223,7 @@ else
 
 @code {
     [Parameter]
-    public LegalSwpApp Appvm { get; set; }
+    public LegalBlazorApp App { get; set; }
     [Parameter]
-    public EventCallback<LegalSwpApp> AppvmChanged { get; set; }
+    public EventCallback<LegalBlazorApp> AppChanged { get; set; }
 }

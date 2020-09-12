@@ -2,7 +2,7 @@
 using SWP.Application.LegalSwp.Customers;
 using System.Collections.Generic;
 
-namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels
+namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 {
     [UITransientService]
     public class ProfileStatistics

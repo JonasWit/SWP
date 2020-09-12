@@ -1,4 +1,5 @@
 ﻿using SWP.Domain.Infrastructure;
+using SWP.Domain.Models.SWPLegal;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -12,7 +13,7 @@ namespace SWP.Application.LegalSwp.Jobs
         private readonly ILegalSwpManager legalSwpManager;
         public UpdateCustomerJob(ILegalSwpManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
 
-        public Task<int> Update(Request request)
+        public Task<CustomerJob> Update(Request request)
         {
             var job = legalSwpManager.GetCustomerJob(request.Id, x => x);
 

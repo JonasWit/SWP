@@ -24,7 +24,7 @@ namespace SWP.Domain.Infrastructure
 
         #region Jobs
 
-        Task<int> CreateCustomerJob(int customerId, string profile, CustomerJob job);
+        Task<CustomerJob> CreateCustomerJob(int customerId, string profile, CustomerJob job);
         Task<int> DeleteCustomerJob(int id);
         Task<CustomerJob> UpdateCustomerJob(CustomerJob job);
         TResult GetCustomerJob<TResult>(int id, Func<CustomerJob, TResult> selector);

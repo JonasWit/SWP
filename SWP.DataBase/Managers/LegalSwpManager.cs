@@ -223,11 +223,12 @@ namespace SWP.DataBase.Managers
 
         #region Job
 
-        public Task<int> CreateCustomerJob(int customerId, string profile, CustomerJob job)
+        public async Task<CustomerJob> CreateCustomerJob(int customerId, string profile, CustomerJob job)
         {
             var cs = GetCustomer(customerId, profile, x => x);
             cs.Jobs.Add(job);
-            return context.SaveChangesAsync();
+            await context.SaveChangesAsync();
+            return job;
         }
 
         public Task<int> DeleteCustomerJob(int id)

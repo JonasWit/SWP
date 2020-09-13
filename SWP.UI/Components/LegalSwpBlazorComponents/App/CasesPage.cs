@@ -101,18 +101,13 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
                 var result = await createCase.Create(App.ActiveCustomerWithData.Id, App.User.Profile, NewCase);
                 NewCase = new CreateCase.Request();
 
-                if (App.ActiveCustomer != null)
-                {
-                    App.ActiveCustomerWithData.Cases.Add(result);
-                }
+                App.ActiveCustomerWithData.Cases.Add(result);
+                await CasesGrid.Reload();
+                App.ShowNotification(NotificationSeverity.Success, "Success!", $"Case: {result.Name} has been added.", 2000);
             }
             catch (Exception ex)
             {
                 throw;
-            }
-            finally
-            {
-
             }
         }
 
@@ -132,18 +127,13 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
                     UpdatedBy = App.User.UserName
                 });
 
-                if (App.ActiveCustomer != null)
-                {
-                    App.ActiveCustomerWithData.Cases[App.ActiveCustomerWithData.Cases.FindIndex(x => x.Id == result.Id)] = result;
-                }
+                App.ActiveCustomerWithData.Cases[App.ActiveCustomerWithData.Cases.FindIndex(x => x.Id == result.Id)] = result;
+                await CasesGrid.Reload();
+                App.ShowNotification(NotificationSeverity.Success, "Success!", $"Case: {result.Name} has been updated.", 2000);
             }
             catch (Exception ex)
             {
                 throw;
-            }
-            finally
-            {
-
             }
         }
 
@@ -156,18 +146,16 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             try
             {
                 await deleteCase.Delete(c.Id);
-                App.RefreshCustomers();
+
+                App.ActiveCustomerWithData.Cases.RemoveAll(x => x.Id == c.Id);
+                await CasesGrid.Reload();
+                App.ShowNotification(NotificationSeverity.Warning, "Success!", $"Case: {c.Name} has been deleted.", 2000);
+
             }
             catch (Exception ex)
             {
                 throw;
             }
-            finally
-            {
-
-            }
-
-            await CasesGrid.Reload();
         }
 
         public void ActiveCaseChange(object value)
@@ -209,14 +197,12 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
                 NewNote = new CreateNote.Request();
 
                 App.ActiveCustomerWithData.SelectedCase.Notes.Add(result);
+                await NotesGrid.Reload();
+                App.ShowNotification(NotificationSeverity.Success, "Success!", $"Note: {result.Name} has been added.", 2000);
             }
             catch (Exception ex)
             {
                 throw;
-            }
-            finally
-            {
-
             }
         }
 
@@ -236,14 +222,12 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
                 });
 
                 App.ActiveCustomerWithData.SelectedCase.Notes[App.ActiveCustomerWithData.SelectedCase.Notes.FindIndex(x => x.Id == result.Id)] = result;
+                await NotesGrid.Reload();
+                App.ShowNotification(NotificationSeverity.Success, "Success!", $"Note: {result.Name} has been updated.", 2000);
             }
             catch (Exception ex)
             {
                 throw;
-            }
-            finally
-            {
-
             }
         }
 
@@ -256,18 +240,14 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             try
             {
                 await deleteNote.Delete(note.Id);
-                App.RefreshCustomers();
+                App.ActiveCustomerWithData.SelectedCase.Notes.RemoveAll(x => x.Id == note.Id);
+                await NotesGrid.Reload();
+                App.ShowNotification(NotificationSeverity.Warning, "Success!", $"Note: {note.Name} has been deleted.", 2000);
             }
             catch (Exception ex)
             {
                 throw;
             }
-            finally
-            {
-
-            }
-
-            await NotesGrid.Reload();
         }
 
         #endregion
@@ -297,12 +277,8 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
                 App.ActiveCustomerWithData.SelectedCase.Reminders.Add(newReminder);
                 App.CalendarPanel.Reminders.Add(newReminder);
-
-                //ReloadCase(App.ActiveCustomerWithData.SelectedCase.Id);
-
-                //App.CalendarPanel.RefreshCalendarData();
-                // Either call the Reload method or reassign the Data property of the Scheduler
                 await CasesScheduler.Reload();
+                App.ShowNotification(NotificationSeverity.Success, "Success!", $"Reminder: {newReminder.Name} has been added.", 2000);
             }
         }
 
@@ -317,6 +293,9 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
                     await deleteReminder.Delete(result.Id);
                     App.ActiveCustomerWithData.SelectedCase.Reminders.RemoveAll(x => x.Id == result.Id);
                     App.CalendarPanel.Reminders.RemoveAll(x => x.Id == result.Id);
+
+                    await CasesScheduler.Reload();
+                    App.ShowNotification(NotificationSeverity.Warning, "Success!", $"Reminder: {result.Name} has been deleted.", 2000);
                 }
                 else
                 {
@@ -335,10 +314,10 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
                     App.ActiveCustomerWithData.SelectedCase.Reminders[App.ActiveCustomerWithData.SelectedCase.Reminders.FindIndex(x => x.Id == result.Id)] = result;
                     App.CalendarPanel.Reminders[App.CalendarPanel.Reminders.FindIndex(x => x.Id == result.Id)] = result;
-                }
 
-                // Either call the Reload method or reassign the Data property of the Scheduler
-                await CasesScheduler.Reload();
+                    await CasesScheduler.Reload();
+                    App.ShowNotification(NotificationSeverity.Success, "Success!", $"Reminder: {result.Name} has been updated.", 2000);
+                }
             }
         }
 

@@ -1,4 +1,5 @@
-﻿using Radzen.Blazor;
+﻿using Radzen;
+using Radzen.Blazor;
 using SWP.Application.LegalSwp.Customers;
 using SWP.Application.LegalSwp.Jobs;
 using SWP.UI.BlazorApp;
@@ -24,6 +25,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         private readonly CreateCustomerJob createCustomerJob;
         private readonly DeleteCustomerJob deleteCustomerJob;
         private readonly UpdateCustomerJob updateCustomerJob;
+        private readonly GetCustomers getCustomers;
 
         public LegalBlazorApp App { get; private set; }
 
@@ -33,7 +35,8 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             CreateCustomer createCustomer,
             CreateCustomerJob createCustomerJob,
             DeleteCustomerJob deleteCustomerJob,
-            UpdateCustomerJob updateCustomerJob)
+            UpdateCustomerJob updateCustomerJob,
+            GetCustomers getCustomers)
         {
             this.deleteCustomer = deleteCustomer;
             this.updateCustomer = updateCustomer;
@@ -41,6 +44,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             this.createCustomerJob = createCustomerJob;
             this.deleteCustomerJob = deleteCustomerJob;
             this.updateCustomerJob = updateCustomerJob;
+            this.getCustomers = getCustomers;
         }
 
         public override Task Initialize(BlazorAppBase app)
@@ -63,9 +67,6 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
         public async Task OnUpdateCustomerRow(CustomerViewModel customer)
         {
-            if (App.Loading) return;
-            else App.Loading = true;
-
             try
             {
                 var result = await updateCustomer.Update(new UpdateCustomer.Request
@@ -88,14 +89,13 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
                 {
                     App.Customers[App.Customers.FindIndex(x => x.Id == result.Id)] = result;
                 }
+
+                await CustomersGrid.Reload();
+                App.ShowNotification(NotificationSeverity.Success, "Success!", $"Customer: {result.Name} has been updated.", 2000);
             }
             catch (Exception ex)
             {
                 App.ErrorPage.DisplayMessage(ex);
-            }
-            finally
-            {
-                App.Loading = false;
             }
         }
 
@@ -109,49 +109,37 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
         public async Task DeleteCustomerRow(CustomerViewModel customer)
         {
-            if (App.Loading) return;
-            else App.Loading = true;
-
             try
             {
                 await deleteCustomer.Delete(customer.Id);
-                //todo check if needed maybe just remove from list
-                App.RefreshCustomers();
+                App.Customers.RemoveAll(x => x.Id == customer.Id);
+
+                await CustomersGrid.Reload();
+                App.ShowNotification(NotificationSeverity.Warning, "Success!", $"Customer: {customer.Name} has been deleted.", 2000);
             }
             catch (Exception ex)
             {
                 App.ErrorPage.DisplayMessage(ex);
             }
-            finally
-            {
-                App.Loading = false;
-            }
-
-            await CustomersGrid.Reload();
         }
 
         public async Task SubmitNewCustomer(CreateCustomer.Request arg)
         {
-            if (App.Loading) return;
-            else App.Loading = true;
-
             NewCustomer.ProfileClaim = App.User.Profile;
             NewCustomer.UpdatedBy = App.User.UserName;
 
             try
             {
-                await createCustomer.Do(NewCustomer);
-
+                var result = await createCustomer.Do(NewCustomer);
                 NewCustomer = new CreateCustomer.Request();
-                App.RefreshCustomers();
+
+                App.Customers.Add(result);
+                await CustomersGrid.Reload();
+                App.ShowNotification(NotificationSeverity.Success, "Success!", $"Customer: {result.Name} has been added.", 2000);
             }
             catch (Exception ex)
             {
                 App.ErrorPage.DisplayMessage(ex);
-            }
-            finally
-            {
-                App.Loading = false;
             }
         }
 
@@ -161,18 +149,22 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
         public async Task SubmitNewCustomerJob(CreateCustomerJob.Request arg)
         {
-            if (App.Loading) return;
-            else App.Loading = true;
-
             try
             {
                 NewCustomerJob.ProfileClaim = App.User.Profile;
                 NewCustomerJob.CustomerId = App.ActiveCustomer.Id;
                 NewCustomerJob.UpdatedBy = App.User.UserName;
 
-                await createCustomerJob.Create(NewCustomerJob);
+                var result = await createCustomerJob.Create(NewCustomerJob);
                 NewCustomerJob = new CreateCustomerJob.Request();
-                App.RefreshCustomers();
+
+                if (App.ActiveCustomerWithData != null)
+                {
+                    App.ActiveCustomerWithData.Jobs.Add(result);
+                }
+
+                await CustomersJobsGrid.Reload();
+                App.ShowNotification(NotificationSeverity.Success, "Success!", $"Task: {result.Name} has been created.", 2000);
             }
             catch (Exception ex)
             {
@@ -180,7 +172,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             }
             finally
             {
-                App.Loading = false;
+
             }
         }
 
@@ -205,6 +197,8 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
                 });
 
                 App.ActiveCustomerWithData.Jobs[App.ActiveCustomerWithData.Jobs.FindIndex(x => x.Id == result.Id)] = result;
+                await CustomersJobsGrid.Reload();
+                App.ShowNotification(NotificationSeverity.Success, "Success!", $"Task: {result.Name} has been updated.", 2000);
             }
             catch (Exception ex)
             {
@@ -232,8 +226,14 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             try
             {
                 await deleteCustomerJob.Delete(customerJob.Id);
-                App.RefreshCustomers();
-                App.RefreshCustomers();
+
+                if (App.ActiveCustomerWithData != null)
+                {
+                    App.ActiveCustomerWithData.Jobs.RemoveAll(x => x.Id == customerJob.Id);
+                }
+
+                await CustomersJobsGrid.Reload();
+                App.ShowNotification(NotificationSeverity.Warning, "Success!", $"Task: {customerJob.Name} has been deleted.", 2000);
             }
             catch (Exception ex)
             {
@@ -244,7 +244,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
                 App.Loading = false;
             }
 
-            await CustomersGrid.Reload();
+
         }
 
         #endregion

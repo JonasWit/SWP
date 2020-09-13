@@ -99,6 +99,9 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
                             c.Reminders.RemoveAll(x => x.Id == result.Id);
                         }
                     }
+
+                    await RemindersScheduler.Reload();
+                    App.ShowNotification(NotificationSeverity.Warning, "Success!", $"Reminder: {result.Name} has been deleted.", 2000);
                 }
                 else
                 {
@@ -128,15 +131,10 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
                             c.Reminders.Add(updatedEntity);
                         }
                     }
+
+                    await RemindersScheduler.Reload();
+                    App.ShowNotification(NotificationSeverity.Success, "Success!", $"Reminder: {result.Name} has been updated.", 2000);
                 }
-
-                //if (App.ActiveCustomerWithData != null)
-                //{
-                //    ReloadCase(result.CaseId);
-                //}
-
-                // Either call the Reload method or reassign the Data property of the Scheduler
-                await RemindersScheduler.Reload();
             }
         }
 

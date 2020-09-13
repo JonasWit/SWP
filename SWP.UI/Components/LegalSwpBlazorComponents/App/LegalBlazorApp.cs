@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Radzen;
 using SWP.Application.LegalSwp.Customers;
 using SWP.UI.BlazorApp;
 using SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -16,6 +18,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         private readonly GetCustomer getCustomer;
         private readonly GetCustomers getCustomers;
         private readonly UserManager<IdentityUser> userManager;
+        private readonly NotificationService notificationService;
 
         public event EventHandler ActiveCustomerChanged;
 
@@ -50,11 +53,13 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             CustomersPage customersPanel,
             MyAppPage myAppPanel,
             ErrorPage errorPage,
-            NoProfileWarning noProfileWarning)
+            NoProfileWarning noProfileWarning,
+            NotificationService notificationService)
         {
             this.getCustomer = getCustomer;
             this.getCustomers = getCustomers;
             this.userManager = userManager;
+            this.notificationService = notificationService;
 
             CalendarPanel = calendarPanel;
             CasesPanel = casesPanel;
@@ -134,6 +139,9 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
         public void ForceRefresh() => OnCallStateHasChanged(null);
 
+        public void ShowNotification(NotificationSeverity severity, string summary, string detail, int duration) => 
+            notificationService.Notify(new NotificationMessage() { Severity = severity, Summary = summary, Detail = detail, Duration = duration });
+        
         public void ThrowTestException()
         {
             try

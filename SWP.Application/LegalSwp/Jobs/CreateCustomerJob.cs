@@ -14,7 +14,7 @@ namespace SWP.Application.LegalSwp.Jobs
         private readonly ILegalSwpManager legalSwpManager;
         public CreateCustomerJob(ILegalSwpManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
 
-        public Task<int> Create(Request request) => 
+        public Task<CustomerJob> Create(Request request) => 
             legalSwpManager.CreateCustomerJob(request.CustomerId, request.ProfileClaim, new CustomerJob
             {
                 Active = true,

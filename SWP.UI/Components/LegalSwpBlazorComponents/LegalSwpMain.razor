@@ -1,4 +1,5 @@
 ﻿@implements IDisposable
+@inject NotificationService notificationService
 @inject LegalBlazorApp App
 
 
@@ -69,6 +70,7 @@
         </div>
 
         <div class="content px-4">
+            <RadzenNotification />
             @switch (App.ActivePanel)
             {
                 case LegalBlazorApp.Panels.Customers:
@@ -95,7 +97,7 @@
 }
 else
 {
-    <LegalSwpNoProfileWarning/>
+    <LegalSwpNoProfileWarning />
 }
 
 @code {

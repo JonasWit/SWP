@@ -10,17 +10,6 @@ header {
     padding: 2rem;
 }
 
-
-footer {
-    background: darkgray;
-    padding: 2rem;
-    text-align: center;
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-}
-
 body {
     font-family: system-ui, sans-serif;
 }

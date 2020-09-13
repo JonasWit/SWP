@@ -1,0 +1,42 @@
+﻿@implements IDisposable
+@inject AdminBlazorApp App
+
+<header>
+    <h2>Admin Panel</h2>
+    <RadzenButton Icon="supervised_user_circle" Click="@(() => App.SetActivePanel(AdminBlazorApp.Panels.Users))" Text="Users Management" />
+    <RadzenButton Icon="storage" Click="@(() => App.SetActivePanel(AdminBlazorApp.Panels.Database))" Text="Data Base" />
+    <RadzenButton Icon="analytics" Click="@(() => App.SetActivePanel(AdminBlazorApp.Panels.Applications))" Text="App Statistics" />
+</header>
+
+
+<div class="container-fluid">
+    @switch (App.ActivePanel)
+    {
+        case AdminBlazorApp.Panels.Users:
+            <AdminUsers @bind-App="App"/>
+            break;
+        case AdminBlazorApp.Panels.Database:
+            <AdminDatabase @bind-App="App"/>
+            break;
+        case AdminBlazorApp.Panels.Applications:
+            <AdminApplications @bind-App="App"/>
+            break;
+        default:
+            break;
+    }
+</div>
+
+@code {
+    [Parameter]
+    public string ActiveUserId { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await App.Initialize(ActiveUserId);
+        App.CallStateHasChanged += new EventHandler(CallStateHasChanged);
+    }
+
+    private void CallStateHasChanged(object sender, EventArgs e) => StateHasChanged();
+
+    public void Dispose() => App.CallStateHasChanged -= new EventHandler(CallStateHasChanged);
+}

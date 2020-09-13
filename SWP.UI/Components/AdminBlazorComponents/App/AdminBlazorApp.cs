@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using SWP.UI.BlazorApp;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -14,14 +12,23 @@ namespace SWP.UI.Components.AdminBlazorComponents.App
         private readonly UserManager<IdentityUser> userManager;
 
         public UsersPage UsersPage { get; }
+        public DatabasePage DatabasePage { get; }
+        public ErrorPage ErrorPage { get; }
+        public ApplicationsPage ApplicationsPage { get; }
 
         public AdminBlazorApp(
             UserManager<IdentityUser> userManager,
-            UsersPage usersPage)
+            UsersPage usersPage,
+            DatabasePage databasePage,
+            ErrorPage errorPage,
+            ApplicationsPage applicationsPage)
         {
             this.userManager = userManager;
 
             UsersPage = usersPage;
+            DatabasePage = databasePage;
+            ErrorPage = errorPage;
+            ApplicationsPage = applicationsPage;
         }
 
         public Panels ActivePanel { get; private set; } = Panels.Users;
@@ -31,6 +38,9 @@ namespace SWP.UI.Components.AdminBlazorComponents.App
         public enum Panels
         {
             Users = 0,
+            Error = 1,
+            Database = 2,
+            Applications = 3
         }
 
         public void ForceRefresh() => OnCallStateHasChanged(null);
@@ -56,6 +66,9 @@ namespace SWP.UI.Components.AdminBlazorComponents.App
         private async Task InitializePanels()
         {
             await UsersPage.Initialize(this);
+            await DatabasePage.Initialize(this);
+            await ErrorPage.Initialize(this);
+            await ApplicationsPage.Initialize(this);
         }
 
 

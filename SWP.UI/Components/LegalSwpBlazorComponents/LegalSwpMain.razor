@@ -1,0 +1,114 @@
+﻿@implements IDisposable
+@inject LegalBlazorApp App
+
+
+@if (App.User.Profile != null)
+{
+    <div class="sidebar">
+        <div class="top-row pl-4 navbar navbar-dark">
+            <a class="navbar-brand" href="">Legal Firm Management</a>
+            <button class="navbar-toggler" @onclick="App.ToggleNavMenu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
+
+        <div class="@App.NavMenuCssClass" @onclick="App.ToggleNavMenu">
+            <ul class="nav flex-column">
+                <li class="nav-item px-3">
+                    <NavLink class="nav-link" @onclick="@(() => App.SetActivePanel(LegalBlazorApp.Panels.MyApp))">
+                        <span class="oi oi-list-rich" aria-hidden="true"></span>My Application
+                    </NavLink>
+                </li>
+                <li class="nav-item px-3">
+                    <NavLink class="nav-link" @onclick="@(() => App.SetActivePanel(LegalBlazorApp.Panels.Customers))">
+                        <span class="oi oi-list-rich" aria-hidden="true"></span>Clients
+                    </NavLink>
+                </li>
+
+                <li class="nav-item px-3">
+                    <NavLink class="nav-link" @onclick="@(() => App.SetActivePanel(LegalBlazorApp.Panels.Calendar))">
+                        <span class="oi oi-list-rich" aria-hidden="true"></span>Calendar
+                    </NavLink>
+                </li>
+
+                <li class="nav-item px-3">
+                    <NavLink class="nav-link" @onclick="@(() => App.SetActivePanel(LegalBlazorApp.Panels.ErrorPage))">
+                        <span class="oi oi-list-rich" aria-hidden="true"></span>Error Page For TESTS!
+                    </NavLink>
+                </li>
+
+                @if (App.ActiveCustomerWithData != null)
+                {
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" @onclick="@(() => App.SetActivePanel(LegalBlazorApp.Panels.Cases))">
+                            <span class="oi oi-list-rich" aria-hidden="true"></span>Cases
+                        </NavLink>
+                    </li>
+                }
+
+            </ul>
+        </div>
+    </div>
+
+    <div class="main">
+        <div class="top-row px-4">
+
+            <h3>Select Client</h3>
+            <Radzen.Blazor.RadzenDropDown AllowClear="true" TValue="string" AllowFiltering="true" Data="@App.Customers" TextProperty="Name" ValueProperty="IdStr" Style="margin-bottom: 20px" Change="@(args => App.ActiveCustomerChange(args))" />
+
+            <RadzenButton Click="@(() => App.ActiveCustomerChange(null))" Text="Clear Active Client" Style="margin-bottom: 20px; width: 150px" />
+
+            @if (App.ActiveCustomer != null)
+            {
+                <a @onclick="@(() => App.SetActivePanel(LegalBlazorApp.Panels.Customers))">Active Client: @App.ActiveCustomer.Name</a>
+            }
+            else
+            {
+                <p>No Active Client</p>
+            }
+        </div>
+
+        <div class="content px-4">
+            @switch (App.ActivePanel)
+            {
+                case LegalBlazorApp.Panels.Customers:
+                    <LegalSwpCustomers @bind-App="App" />
+                    break;
+                case LegalBlazorApp.Panels.Calendar:
+                    <LegalSwpCalendar @bind-App="App" />
+                    break;
+                case LegalBlazorApp.Panels.Cases:
+                    <LegalSwpCases @bind-App="App" />
+                    break;
+                case LegalBlazorApp.Panels.MyApp:
+                    <LegalSwpMyApp @bind-App="App" />
+                    break;
+                case LegalBlazorApp.Panels.ErrorPage:
+                    <LegalSwpError @bind-App="App" />
+                    break;
+                default:
+                    <LegalSwpMyApp @bind-App="App" />
+                    break;
+            }
+        </div>
+    </div>
+}
+else
+{
+    <LegalSwpNoProfileWarning/>
+}
+
+@code {
+    [Parameter]
+    public string ActiveUserId { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await App.Initialize(ActiveUserId);
+        App.CallStateHasChanged += new EventHandler(CallStateHasChanged);
+    }
+
+    private void CallStateHasChanged(object sender, EventArgs e) => StateHasChanged();
+
+    public void Dispose() => App.CallStateHasChanged -= new EventHandler(CallStateHasChanged);
+}

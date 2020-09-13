@@ -24,6 +24,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         public CustomersPage CustomersPanel { get; }
         public MyAppPage MyAppPanel { get; }
         public ErrorPage ErrorPage { get; }
+        public NoProfileWarning NoProfileWarning { get; }
 
         private CustomerViewModel activeCustomer;
 
@@ -48,7 +49,8 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             CasesPage casesPanel,
             CustomersPage customersPanel,
             MyAppPage myAppPanel,
-            ErrorPage errorPage)
+            ErrorPage errorPage,
+            NoProfileWarning noProfileWarning)
         {
             this.getCustomer = getCustomer;
             this.getCustomers = getCustomers;
@@ -59,6 +61,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             CustomersPanel = customersPanel;
             MyAppPanel = myAppPanel;
             ErrorPage = errorPage;
+            NoProfileWarning = noProfileWarning;
         }
 
         public override async Task Initialize(string activeUserId)
@@ -96,9 +99,8 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             CustomersPanel.Initialize(this);
             MyAppPanel.Initialize(this);
             ErrorPage.Initialize(this);
+            NoProfileWarning.Initialize(this);
         }
-
-        #region Main Component
 
         public enum Panels
         {
@@ -141,16 +143,6 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
                 ErrorPage.DisplayMessage(ex);
             }
         }
-
-        #region NavBar
-
-        public bool collapseNavMenu = true;
-
-        public string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
-
-        public void ToggleNavMenu() => collapseNavMenu = !collapseNavMenu;
-
-        #endregion
 
         public void RefreshCustomerWithData()
         {
@@ -224,8 +216,5 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
             ActiveCustomerChanged?.Invoke(this, null);
         }
-
-        #endregion
-
     }
 }

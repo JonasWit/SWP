@@ -248,13 +248,5 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         }
 
         #endregion
-
-
-
-
-
-
-
-
     }
 }

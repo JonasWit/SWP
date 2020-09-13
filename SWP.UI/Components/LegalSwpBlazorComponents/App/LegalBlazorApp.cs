@@ -102,6 +102,8 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             NoProfileWarning.Initialize(this);
         }
 
+        #region Main Component
+
         public enum Panels
         {
             Customers = 0,
@@ -143,6 +145,16 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
                 ErrorPage.DisplayMessage(ex);
             }
         }
+
+        #region NavBar
+
+        public bool collapseNavMenu = true;
+
+        public string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+        public void ToggleNavMenu() => collapseNavMenu = !collapseNavMenu;
+
+        #endregion
 
         public void RefreshCustomerWithData()
         {
@@ -216,5 +228,8 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
             ActiveCustomerChanged?.Invoke(this, null);
         }
+
+        #endregion
+
     }
 }

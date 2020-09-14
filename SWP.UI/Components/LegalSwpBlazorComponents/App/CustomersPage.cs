@@ -81,7 +81,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
                     UpdatedBy = App.User.UserName
                 });
 
-                if (App.ActiveCustomer.Id == result.Id)
+                if (App.ActiveCustomer != null && App.ActiveCustomer.Id == result.Id)
                 {
                     App.ActiveCustomer = result;
                 }

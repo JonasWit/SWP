@@ -57,7 +57,7 @@
             <h3>Select Client</h3>
             <Radzen.Blazor.RadzenDropDown AllowClear="true" TValue="string" AllowFiltering="true" Data="@App.Customers" TextProperty="Name" ValueProperty="IdStr" Style="margin-bottom: 20px" Change="@(args => App.ActiveCustomerChange(args))" />
 
-            <RadzenButton Click="@(() => App.ActiveCustomerChange(null))" Text="Clear Active Client" Style="margin-bottom: 20px; width: 150px" />
+            @*<RadzenButton Click="@(() => App.ActiveCustomerChange(null))" Text="Clear Active Client" Style="margin-bottom: 20px; width: 150px" />*@
 
             @if (App.ActiveCustomer != null)
             {

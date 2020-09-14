@@ -84,15 +84,15 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
                 User.Roles = await userManager.GetRolesAsync(User.User) as List<string>;
 
                 Customers = getCustomers.GetCustomersWithoutData(User.Profile)?.Select(x => (CustomerViewModel)x).ToList();
-                ActiveCustomer = Customers.FirstOrDefault();
+                //ActiveCustomer = Customers.FirstOrDefault();
 
                 //For the first run
-                if (ActiveCustomer != null)
-                {
-                    ActiveCustomerWithData = getCustomer.Get(ActiveCustomer.Id, User.Profile);
-                }
+                //if (ActiveCustomer != null)
+                //{
+                //    ActiveCustomerWithData = getCustomer.Get(ActiveCustomer.Id, User.Profile);
+                //}
 
-                RefreshCustomers();
+                //RefreshCustomers();
                 InitializePanels();
             }
         }

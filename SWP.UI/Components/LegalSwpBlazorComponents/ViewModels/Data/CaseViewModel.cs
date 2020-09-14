@@ -25,6 +25,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data
         public DateTime Created { get; set; }
         public DateTime Updated { get; set; }
         public string UpdatedBy { get; set; }
+        public string CreatedBy { get; set; }
 
 
         public static implicit operator CaseViewModel(Case input) =>
@@ -41,7 +42,8 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data
                 CustomerId = input.CustomerId,
                 Created = input.Created,
                 Updated = input.Updated,
-                UpdatedBy = input.UpdatedBy
+                UpdatedBy = input.UpdatedBy,
+                CreatedBy = input.CreatedBy
             };
     }
 }

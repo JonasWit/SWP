@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace SWP.DataBase.Migrations
 {
-    public partial class InitialDBCreation : Migration
+    public partial class Init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -52,15 +52,16 @@ namespace SWP.DataBase.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    Created = table.Column<DateTime>(nullable: false),
+                    Updated = table.Column<DateTime>(nullable: false),
+                    UpdatedBy = table.Column<string>(maxLength: 50, nullable: false),
+                    CreatedBy = table.Column<string>(maxLength: 50, nullable: false),
                     Name = table.Column<string>(maxLength: 50, nullable: false),
                     Active = table.Column<bool>(nullable: false),
                     ProfileClaim = table.Column<string>(maxLength: 50, nullable: false),
                     Address = table.Column<string>(maxLength: 200, nullable: true),
                     Email = table.Column<string>(maxLength: 50, nullable: true),
-                    PhoneNumber = table.Column<string>(maxLength: 50, nullable: true),
-                    Created = table.Column<DateTime>(nullable: false),
-                    Updated = table.Column<DateTime>(nullable: false),
-                    UpdatedBy = table.Column<string>(maxLength: 50, nullable: false)
+                    PhoneNumber = table.Column<string>(maxLength: 50, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -87,15 +88,16 @@ namespace SWP.DataBase.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    Created = table.Column<DateTime>(nullable: false),
+                    Updated = table.Column<DateTime>(nullable: false),
+                    UpdatedBy = table.Column<string>(maxLength: 50, nullable: false),
+                    CreatedBy = table.Column<string>(maxLength: 50, nullable: false),
                     Name = table.Column<string>(maxLength: 50, nullable: false),
                     Surname = table.Column<string>(maxLength: 50, nullable: false),
                     PhoneNumber = table.Column<string>(maxLength: 50, nullable: false),
                     PESEL = table.Column<int>(maxLength: 50, nullable: false),
                     Email = table.Column<string>(maxLength: 50, nullable: true),
-                    AppointmentId = table.Column<int>(nullable: false),
-                    Created = table.Column<DateTime>(nullable: false),
-                    Updated = table.Column<DateTime>(nullable: false),
-                    UpdatedBy = table.Column<string>(maxLength: 50, nullable: false)
+                    AppointmentId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -214,16 +216,17 @@ namespace SWP.DataBase.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    Created = table.Column<DateTime>(nullable: false),
+                    Updated = table.Column<DateTime>(nullable: false),
+                    UpdatedBy = table.Column<string>(maxLength: 50, nullable: false),
+                    CreatedBy = table.Column<string>(maxLength: 50, nullable: false),
                     Name = table.Column<string>(maxLength: 50, nullable: false),
                     Signature = table.Column<string>(maxLength: 100, nullable: true),
                     CaseType = table.Column<string>(maxLength: 100, nullable: true),
                     Description = table.Column<string>(maxLength: 500, nullable: true),
                     Active = table.Column<bool>(nullable: false),
                     Priority = table.Column<int>(nullable: false),
-                    CustomerId = table.Column<int>(nullable: false),
-                    Created = table.Column<DateTime>(nullable: false),
-                    Updated = table.Column<DateTime>(nullable: false),
-                    UpdatedBy = table.Column<string>(maxLength: 50, nullable: false)
+                    CustomerId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -242,14 +245,15 @@ namespace SWP.DataBase.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    Created = table.Column<DateTime>(nullable: false),
+                    Updated = table.Column<DateTime>(nullable: false),
+                    UpdatedBy = table.Column<string>(maxLength: 50, nullable: false),
+                    CreatedBy = table.Column<string>(maxLength: 50, nullable: false),
                     Name = table.Column<string>(maxLength: 50, nullable: false),
                     Description = table.Column<string>(maxLength: 500, nullable: true),
                     Active = table.Column<bool>(nullable: false),
                     Priority = table.Column<int>(nullable: false),
-                    CustomerId = table.Column<int>(nullable: false),
-                    Created = table.Column<DateTime>(nullable: false),
-                    Updated = table.Column<DateTime>(nullable: false),
-                    UpdatedBy = table.Column<string>(maxLength: 50, nullable: false)
+                    CustomerId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -314,15 +318,16 @@ namespace SWP.DataBase.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    Created = table.Column<DateTime>(nullable: false),
+                    Updated = table.Column<DateTime>(nullable: false),
+                    UpdatedBy = table.Column<string>(maxLength: 50, nullable: false),
+                    CreatedBy = table.Column<string>(maxLength: 50, nullable: false),
                     Name = table.Column<string>(maxLength: 50, nullable: false),
                     Message = table.Column<string>(maxLength: 500, nullable: true),
                     MedicalNotes = table.Column<string>(maxLength: 1000, nullable: true),
                     PatientId = table.Column<int>(nullable: false),
                     Start = table.Column<DateTime>(nullable: false),
-                    End = table.Column<DateTime>(nullable: false),
-                    Created = table.Column<DateTime>(nullable: false),
-                    Updated = table.Column<DateTime>(nullable: false),
-                    UpdatedBy = table.Column<string>(maxLength: 50, nullable: false)
+                    End = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -341,14 +346,15 @@ namespace SWP.DataBase.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    Created = table.Column<DateTime>(nullable: false),
+                    Updated = table.Column<DateTime>(nullable: false),
+                    UpdatedBy = table.Column<string>(maxLength: 50, nullable: false),
+                    CreatedBy = table.Column<string>(maxLength: 50, nullable: false),
                     Name = table.Column<string>(maxLength: 50, nullable: false),
                     Message = table.Column<string>(maxLength: 500, nullable: true),
                     Active = table.Column<bool>(nullable: false),
                     Priority = table.Column<int>(nullable: false),
-                    CaseId = table.Column<int>(nullable: false),
-                    Created = table.Column<DateTime>(nullable: false),
-                    Updated = table.Column<DateTime>(nullable: false),
-                    UpdatedBy = table.Column<string>(maxLength: 50, nullable: false)
+                    CaseId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -367,6 +373,10 @@ namespace SWP.DataBase.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    Created = table.Column<DateTime>(nullable: false),
+                    Updated = table.Column<DateTime>(nullable: false),
+                    UpdatedBy = table.Column<string>(maxLength: 50, nullable: false),
+                    CreatedBy = table.Column<string>(maxLength: 50, nullable: false),
                     Name = table.Column<string>(maxLength: 50, nullable: false),
                     Message = table.Column<string>(maxLength: 500, nullable: true),
                     Active = table.Column<bool>(nullable: false),
@@ -374,10 +384,7 @@ namespace SWP.DataBase.Migrations
                     IsDeadline = table.Column<bool>(nullable: false),
                     CaseId = table.Column<int>(nullable: false),
                     Start = table.Column<DateTime>(nullable: false),
-                    End = table.Column<DateTime>(nullable: false),
-                    Created = table.Column<DateTime>(nullable: false),
-                    Updated = table.Column<DateTime>(nullable: false),
-                    UpdatedBy = table.Column<string>(maxLength: 50, nullable: false)
+                    End = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {

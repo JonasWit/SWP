@@ -17,5 +17,9 @@ namespace SWP.Domain.Models.BaseClasses
         [MaxLength(50)]
         [Required]
         public string UpdatedBy { get; set; }
+
+        [MaxLength(50)]
+        [Required]
+        public string CreatedBy { get; set; }
     }
 }

@@ -25,6 +25,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data
         public DateTime Created { get; set; }
         public DateTime Updated { get; set; }
         public string UpdatedBy { get; set; }
+        public string CreatedBy { get; set; }
 
         public static implicit operator ReminderViewModel(Reminder input) =>
             new ReminderViewModel
@@ -42,7 +43,8 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data
                 End = input.End,
                 IsDeadline = input.IsDeadline,
                 ParentCaseName = input.Case?.Name,
-                ParentCustomerName = input.Case?.Customer?.Name
+                ParentCustomerName = input.Case?.Customer?.Name,
+                CreatedBy = input.CreatedBy
             };
 
         public static implicit operator Reminder(ReminderViewModel input) =>
@@ -59,7 +61,8 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data
                 UpdatedBy = input.UpdatedBy,
                 Start = input.Start,
                 End = input.End,
-                IsDeadline = input.IsDeadline
+                IsDeadline = input.IsDeadline,
+                CreatedBy = input.CreatedBy
             };
     }
 }

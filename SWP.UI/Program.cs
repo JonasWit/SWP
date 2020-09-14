@@ -36,7 +36,7 @@ namespace SWP.UI
                         Email = "witviers@gmail.com"
                     };
 
-                    userManager.CreateAsync(creatorUser, "Abc32167#").GetAwaiter().GetResult();
+                    userManager.CreateAsync(creatorUser, "xyzAbc32167#").GetAwaiter().GetResult();
                     creatorUser.EmailConfirmed = true;
 
                     var creatorClaim = new Claim("Root", "Creator");

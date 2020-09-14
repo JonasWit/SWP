@@ -23,7 +23,8 @@ namespace SWP.Application.LegalSwp.Notes
                 Active = true,
                 Created = DateTime.Now,
                 Updated = DateTime.Now,
-                UpdatedBy = request.UpdatedBy
+                UpdatedBy = request.UpdatedBy,
+                CreatedBy = request.UpdatedBy
             });
 
         public class Request

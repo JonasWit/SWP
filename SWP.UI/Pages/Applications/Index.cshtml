@@ -2,14 +2,107 @@
 @model SWP.UI.Pages.Applications.IndexModel
 @inject IAuthorizationService authService
 
-<h4>applications</h4>
+
+<h4>Informacje o aktywnych licencjach</h4>
+
+@foreach (var license in Model.Licenses)
+{
+    <div>
+        <p>Użytkownik: @Model.User.Identity.Name</p>
+        <p>Aktywna licencja: @license</p>
+        <p><a asp-page="/Applications/Help">Aktywny Profil dla tej aplikacji</a>: @Model.UserData.Profile</p>
+    </div>
+}
+
+
+<h2>Witaj!</h2>
+<h4 class="mt-3 mb-5">Zalogowano jako <span class="user-name">@Model.User.Identity.Name</span>.</h4>
 
 @if ((await authService.AuthorizeAsync(User, "LegalApplication")).Succeeded)
 {
-    <a asp-page="/Applications/LegalSwp/Index">legal app</a>
+    <div class="card app-card shadow-lg p-3 mb-5 bg-white rounded">
+        <h5 class="text-center mt-5 mb-3">Twoja Kancelaria</h5>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-4 text-left">
+                    <p>Użytkownik: </p>
+                    <p>Liczba użytkowników:</p>
+                    <p>Ważność licencji:</p>
+
+                </div>
+                <div class="col-4 text-left">
+
+                    <div>
+                        <p>@Model.User.Identity.Name</p>
+
+                    </div>
+
+                    <p>7</p>
+                    <p>01/10/2022</p>
+
+                </div>
+                <div class="col-4">
+                    <p ><a class="btn-2" asp-page="/Applications/LegalSwp/Index">Przejdź do aplikacji<img src="" /></a></p>
+                    <p><a asp-page="/Applications/Help">Aktywny Profil dla tej aplikacji</a>: @Model.UserData.Profile</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
 }
 
 @if ((await authService.AuthorizeAsync(User, "MedicalApplication")).Succeeded)
 {
-    <a asp-page="/Applications/MedicalSwp/Index">medical app</a>
+    <div class="card app-card mt-4 shadow-lg p-3 mb-5 bg-white rounded">
+        <h5 class="text-center mt-5 mb-3">Gabinet</h5>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-4 text-left">
+                    <p>Użytkownik: </p>
+                    <p>Liczba użytkowników:</p>
+                    <p>Ważność licencji:</p>
+
+                </div>
+                <div class="col-4 text-left">
+
+                    <div>
+                        <p>@Model.User.Identity.Name</p>
+
+                    </div>
+
+                    <p>7</p>
+                    <p>01/10/2022</p>
+
+                </div>
+                <div class="col-4">
+                    <p><a asp-page="/Applications/MedicalSwp/Index">Gabinet</a></p>
+                    <p><a asp-page="/Applications/Help">Aktywny Profil dla tej aplikacji</a>: @Model.UserData.Profile</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+
+
+
 }

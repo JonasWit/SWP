@@ -35,11 +35,9 @@
                     @if (User.Identity.IsAuthenticated && (User.IsInRole("Administrators") || User.IsInRole("Users")))
                     {
                         <li>
-                            <a asp-page="/Applications/Index">Aplikacje</a>
+                            <a asp-page="/Applications/Index">Moje Aplikacje</a>
                         </li>
-                        <li>
-                            <a asp-page="/Applications/Licenses">Moje Licencje</a>
-                        </li>
+                        
                     }
 
                     @if (User.Identity.IsAuthenticated && User.IsInRole("Administrators"))

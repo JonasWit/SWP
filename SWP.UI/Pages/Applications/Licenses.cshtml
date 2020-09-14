@@ -3,15 +3,6 @@
 @inject IAuthorizationService authService
 
 
-<h4>Informacje o aktywnych licencjach</h4>
 
-@foreach (var license in Model.Licenses)
-{
-    <div>
-        <p>Użytkownik: @Model.User.Identity.Name</p>
-        <p>Aktywna licencja: @license</p>
-        <p><a asp-page="/Applications/Help">Aktywny Profil dla tej aplikacji</a>: @Model.UserData.Profile</p>
-    </div>
-}
 
 

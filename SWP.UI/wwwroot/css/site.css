@@ -250,9 +250,31 @@ body {
 }
 
 .product-card {
-    height: 1300px;
+    height: 1500px;
     width: 800px;
 
 }
+
+.user-name {
+    color: #0067b8;
+}
+
+.btn-2 {
+    cursor: pointer;
+    display: inline-block;
+    border: solid;
+    border-radius: 12px;
+    padding: 5px 45px;
+    background: #0067b8;
+    color: #fff;
+    font-size: 16px;
+    ;
+}
+
+    .btn-2:hover {
+        opacity: 0.9;
+        color: #fff;
+        text-decoration:none;
+    }
 
 

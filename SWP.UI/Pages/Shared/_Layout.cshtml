@@ -29,21 +29,22 @@
                     <li>
                         <a asp-page="/Marketing/Products">Produkty</a>
                     </li>
-                    <li>
-                        <a asp-page="/Marketing/Contact">Kontakt</a>
-                    </li>
+
                     @if (User.Identity.IsAuthenticated && (User.IsInRole("Administrators") || User.IsInRole("Users")))
                     {
                         <li>
                             <a asp-page="/Applications/Index">Moje Aplikacje</a>
                         </li>
-                        
+
                     }
 
                     @if (User.Identity.IsAuthenticated && User.IsInRole("Administrators"))
                     {
                         <li>
                             <a asp-page="/Admin/Index">Admin</a>
+                        </li>
+                        <li>
+                            <a asp-page="/Marketing/Contact">Kontakt</a>
                         </li>
                     }
                 </ul>
@@ -62,48 +63,8 @@
                     </ul>
             </div>
         </nav>
+        <hr />
     </div>
-    <!--   <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3 main-nav">
-           <div class="container">
-               <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">SWP</a>
-               <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                       aria-expanded="false" aria-label="Toggle navigation">
-                   <span class="navbar-toggler-icon"></span>
-               </button>
-               <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                   <partial name="_LoginPartial" />
-                   <ul class="navbar-nav flex-grow-1">
-                       <li class="nav-item">
-                           <a class="nav-link text-dark" asp-page="/Index">Strona Główna</a>
-                       </li>
-                       <li class="nav-item">
-                           <a class="nav-link text-dark" asp-page="/Marketing/Index">Oferta</a>
-                       </li>
-                       <li class="nav-item">
-                           <a class="nav-link text-dark" asp-page="/Privacy">Polityka Prywatności</a>
-                       </li>
-
-                       @if (User.Identity.IsAuthenticated && (User.IsInRole("Administrators") || User.IsInRole("Users")))
-                       {
-                           <li class="nav-item">
-                               <a class="nav-link text-dark" asp-page="/Applications/Index">Aplikacje</a>
-                           </li>
-                           <li class="nav-item">
-                               <a class="nav-link text-dark" asp-page="/Applications/Licenses">Moje Licencje</a>
-                           </li>
-                       }
-
-                       @if (User.Identity.IsAuthenticated && User.IsInRole("Administrators"))
-                       {
-                           <li class="nav-item">
-                               <a class="nav-link text-dark" asp-page="/Admin/Index">Admin</a>
-                           </li>
-                       }
-
-                   </ul>
-               </div>
-           </div>
-       </nav> -->
 
     <div class="container">
         <partial name="_CookieConsentPartial" />
@@ -114,11 +75,11 @@
 
     <footer class="border-top footer text-muted">
         <div class="container-fluid">
-            <div class="text-center mt-2">
+            <div class="text-center mt-5">
                 &copy; @DateTime.Now.Year - SWP.UI - <a asp-page="/Privacy">Polityka Prywatności</a>
                 <div class="text-center mt-2"><a href="http://www.webcouple.pl/">By WebCouple</a></div>
             </div>
-            </div>
+        </div>
     </footer>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

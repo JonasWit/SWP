@@ -87,9 +87,14 @@ else
                 <div class="row">
                     <div class="col-md-6">
                         <RadzenScheduler @ref="App.CasesPanel.CasesScheduler" style="height: 768px;" TItem="ReminderViewModel" Data="@App.ActiveCustomerWithData.SelectedCase.Reminders" StartProperty="Start" EndProperty="End" TextProperty="Name" SelectedIndex="2" SlotSelect="@App.CasesPanel.OnSlotSelect" AppointmentSelect="@App.CasesPanel.OnAppointmentSelect" AppointmentRender="@App.CasesPanel.OnAppointmentRender" TodayText="Dzisiaj">
-                            <RadzenDayView Text="Dzień" StartTime="@(new TimeSpan(0, 0, 0))" EndTime="@(new TimeSpan(24, 0, 0))" />
-                            <RadzenWeekView Text="Tydzień" />
-                            <RadzenMonthView Text="Miesiąc" />
+                            <Template Context="data">
+                                <strong>@data.Name</strong>
+                            </Template>
+                            <ChildContent>
+                                <RadzenDayView Text="Dzień" StartTime="@(new TimeSpan(0, 0, 0))" EndTime="@(new TimeSpan(24, 0, 0))" />
+                                <RadzenWeekView Text="Tydzień" StartTime="@(new TimeSpan(0, 0, 0))" EndTime="@(new TimeSpan(24, 0, 0))"  />
+                                <RadzenMonthView Text="Miesiąc" />
+                            </ChildContent>
                         </RadzenScheduler>
                     </div>
 

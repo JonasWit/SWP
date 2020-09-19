@@ -8,10 +8,15 @@
         <RadzenDialog />
         <RadzenNotification />
 
-        <RadzenScheduler @ref="App.CalendarPanel.RemindersScheduler" style="height: 768px;" TItem="ReminderViewModel" Data="@App.CalendarPanel.Reminders" StartProperty="Start" EndProperty="End" TextProperty="Name" SelectedIndex="2" AppointmentSelect="@App.CalendarPanel.OnAppointmentSelect"  TodayText="Dzisiaj" AppointmentRender="@App.CalendarPanel.OnAppointmentRender">
-            <RadzenDayView Text="Dzień" StartTime="@(new TimeSpan(0, 0, 0))" EndTime="@(new TimeSpan(24, 0, 0))" />
-            <RadzenWeekView Text="Tydzień" />
-            <RadzenMonthView Text="Miesiąc" />
+        <RadzenScheduler @ref="App.CalendarPanel.RemindersScheduler" style="height: 768px;" TItem="ReminderViewModel" Data="@App.CalendarPanel.Reminders" StartProperty="Start" EndProperty="End" TextProperty="Name" SelectedIndex="2" AppointmentSelect="@App.CalendarPanel.OnAppointmentSelect" TodayText="Dzisiaj" AppointmentRender="@App.CalendarPanel.OnAppointmentRender">
+            <Template Context="data">
+                <strong>@data.Name</strong>
+            </Template>
+            <ChildContent>
+                <RadzenDayView Text="Dzień" StartTime="@(new TimeSpan(0, 0, 0))" EndTime="@(new TimeSpan(24, 0, 0))" />
+                <RadzenWeekView Text="Tydzień" StartTime="@(new TimeSpan(0, 0, 0))" EndTime="@(new TimeSpan(24, 0, 0))"  />
+                <RadzenMonthView Text="Miesiąc" />
+            </ChildContent>
         </RadzenScheduler>
     </div>
 </div>

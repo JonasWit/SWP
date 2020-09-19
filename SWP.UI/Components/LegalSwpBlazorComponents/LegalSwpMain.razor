@@ -5,60 +5,62 @@
 
 @if (App.User.Profile != null)
 {
-    <div class="sidebar">
-        <div class="text-center">
-            <img class="mt-4 mb-4" src="/Images/icons8-courthouse-80.png" />
-        </div>
+<div class="sidebar">
+    <div class="text-center">
+        <img class="mt-4 mb-4" src="/Images/icons8-courthouse-80.png" />
+    </div>
+    <div class="input-group">
         <div>
-            <ul class="nav flex-column">
-                <li class="nav-item px-3">
-
-                    <NavLink class="nav-link" @onclick="@(() => App.SetActivePanel(LegalBlazorApp.Panels.MyApp))">
-                        <i><img src="/Images/icons8-application-window-36.png" /></i>
-                        My Application
-                    </NavLink>
-                </li>
-                <li class="nav-item px-3">
-                    <NavLink class="nav-link" @onclick="@(() => App.SetActivePanel(LegalBlazorApp.Panels.Customers))">
-                        <i><img src="/Images/icons8-reception-36.png" /></i> Clients
-                    </NavLink>
-                </li>
-
-                <li class="nav-item px-3">
-                    <NavLink class="nav-link" @onclick="@(() => App.SetActivePanel(LegalBlazorApp.Panels.Calendar))">
-                        <i><img src="/Images/icons8-calendar-12-36.png" /></i> Calendar
-                    </NavLink>
-                </li>
-
-                <li class="nav-item px-3">
-                    <NavLink class="nav-link" @onclick="@(() => App.SetActivePanel(LegalBlazorApp.Panels.ErrorPage))">
-                        Error Page For TESTS!
-                    </NavLink>
-                </li>
-
-                @if (App.ActiveCustomerWithData != null)
-                {
-                    <li class="nav-item px-3">
-                        <NavLink class="nav-link" @onclick="@(() => App.SetActivePanel(LegalBlazorApp.Panels.Cases))">
-                            <i><img src="/Images/icons8-business-report-36.png" /></i> Cases
-                        </NavLink>
-                    </li>
-                }
-
-            </ul>
+            <label class="px-3">Client Name</label>
         </div>
-        <div class="input-group">
-            <div>
-                <label class="px-3">Client Name</label>
-            </div>
 
-            <Radzen.Blazor.RadzenDropDown AllowClear="true" TValue="string" AllowFiltering="true" Data="@App.Customers" TextProperty="Name" ValueProperty="IdStr" Style="margin-bottom: 20px; width: 180px;" Change="@(args => App.ActiveCustomerChange(args))" />
+        <Radzen.Blazor.RadzenDropDown AllowClear="true" TValue="string" AllowFiltering="true" Data="@App.Customers" TextProperty="Name" ValueProperty="IdStr" Style="margin-bottom: 20px; width: 180px;" Change="@(args => App.ActiveCustomerChange(args))" />
 
-        </div>
-        <p class="explain px-3">Select a Client Name to access all related cases</p>
+    </div>
+    <p class="explain px-3">Select a Client Name to access all related cases</p>
+
+    <div>
+        <ul class="nav flex-column">
+            <li class="nav-item px-3">
+
+                <NavLink class="nav-link" @onclick="@(() => App.SetActivePanel(LegalBlazorApp.Panels.MyApp))">
+                    <i><img src="/Images/icons8-application-window-36.png" /></i>
+                    My Application
+                </NavLink>
+            </li>
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" @onclick="@(() => App.SetActivePanel(LegalBlazorApp.Panels.Customers))">
+                    <i><img src="/Images/icons8-reception-36.png" /></i> Clients
+                </NavLink>
+            </li>
+
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" @onclick="@(() => App.SetActivePanel(LegalBlazorApp.Panels.Calendar))">
+                    <i><img src="/Images/icons8-calendar-12-36.png" /></i> Calendar
+                </NavLink>
+            </li>
+
+            <li class="nav-item px-3">
+                <NavLink class="nav-link" @onclick="@(() => App.SetActivePanel(LegalBlazorApp.Panels.ErrorPage))">
+                    Error Page For TESTS!
+                </NavLink>
+            </li>
+
+            @if (App.ActiveCustomerWithData != null)
+            {
+                <li class="nav-item px-3">
+                    <NavLink class="nav-link" @onclick="@(() => App.SetActivePanel(LegalBlazorApp.Panels.Cases))">
+                        <i><img src="/Images/icons8-business-report-36.png" /></i> Cases
+                    </NavLink>
+                </li>
+            }
+
+        </ul>
     </div>
 
-    <div class="main">
+</div>
+
+    <div class="not-sidebar px-5 ml-4 mt-5">
         <RadzenNotification />
         @switch (App.ActivePanel)
         {

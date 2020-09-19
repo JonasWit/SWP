@@ -2,6 +2,7 @@
 
 namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data
 {
+    [UITransientService]
     public class GeneralViewModel
     {
         public string DeadlineColor => "#DC143C";
@@ -10,6 +11,8 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data
         {
             public int Number { get; set; }
         }
+
+        //todo: dodac consty na polskie nazwy kolumn
 
         public class PriorityColor
         {

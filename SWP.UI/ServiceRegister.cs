@@ -77,7 +77,6 @@ namespace SWP.UI
 
             @this.AddScoped<DialogService>();
             @this.AddScoped<NotificationService>();
-            @this.AddTransient<GeneralViewModel>();
 
             //@this.AddTransient<CasesPanel>();
             //@this.AddTransient<CalendarPanel>();

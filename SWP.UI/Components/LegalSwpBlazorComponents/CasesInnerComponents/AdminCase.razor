@@ -1,6 +1,6 @@
 ﻿
-<RadzenGrid @ref="App.CasesPanel.CasesGrid" AllowFiltering="true" AllowPaging="true" PageSize="5" AllowSorting="true"
-            Data="@App.ActiveCustomerWithData.Cases" TItem="CaseViewModel" RowUpdate="@App.CasesPanel.OnUpdateCaseRow">
+<RadzenGrid @ref="App.CasesPage.CasesGrid" AllowFiltering="true" AllowPaging="true" PageSize="5" AllowSorting="true"
+            Data="@App.ActiveCustomerWithData.Cases" TItem="CaseViewModel" RowUpdate="@App.CasesPage.OnUpdateCaseRow">
     <Columns>
         <RadzenGridColumn TItem="CaseViewModel" Property="Name" Title="Case Name">
             <EditTemplate Context="c">
@@ -43,30 +43,30 @@
 
         <RadzenGridColumn TItem="CaseViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="100px" Title="Show Details">
             <Template Context="c">
-                <RadzenButton Icon="reply" Size="ButtonSize.Medium" ButtonStyle="ButtonStyle.Secondary" Click="@(args => App.CasesPanel.ActiveCaseChange(c))">
+                <RadzenButton Icon="reply" Size="ButtonSize.Medium" ButtonStyle="ButtonStyle.Secondary" Click="@(args => App.CasesPage.ActiveCaseChange(c))">
                 </RadzenButton>
             </Template>
         </RadzenGridColumn>
 
         <RadzenGridColumn TItem="CaseViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="100px" Title="Edit">
             <Template Context="c">
-                <RadzenButton Icon="edit" Size="ButtonSize.Medium" Click="@(args => App.CasesPanel.EditCaseRow(c))">
+                <RadzenButton Icon="edit" Size="ButtonSize.Medium" Click="@(args => App.CasesPage.EditCaseRow(c))">
                 </RadzenButton>
             </Template>
             <EditTemplate Context="c">
-                <RadzenButton Icon="save" Size="ButtonSize.Medium" Click="@((args) => App.CasesPanel.SaveCaseRow(c))">
+                <RadzenButton Icon="save" Size="ButtonSize.Medium" Click="@((args) => App.CasesPage.SaveCaseRow(c))">
                 </RadzenButton>
-                <RadzenButton Icon="cancel" Size="ButtonSize.Medium" ButtonStyle="ButtonStyle.Secondary" Click="@((args) => App.CasesPanel.CancelEditCaseRow(c))">
+                <RadzenButton Icon="cancel" Size="ButtonSize.Medium" ButtonStyle="ButtonStyle.Secondary" Click="@((args) => App.CasesPage.CancelEditCaseRow(c))">
                 </RadzenButton>
             </EditTemplate>
         </RadzenGridColumn>
         <RadzenGridColumn TItem="CaseViewModel" Context="order" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="70px" Title="Delete">
             <Template Context="c">
-                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Medium" Click="@(async (args) => await App.CasesPanel.DeleteCaseRow(c))">
+                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Medium" Click="@(async (args) => await App.CasesPage.DeleteCaseRow(c))">
                 </RadzenButton>
             </Template>
             <EditTemplate Context="c">
-                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Medium" Click="@(async (args) => await App.CasesPanel.DeleteCaseRow(c))">
+                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Medium" Click="@(async (args) => await App.CasesPage.DeleteCaseRow(c))">
                 </RadzenButton>
             </EditTemplate>
         </RadzenGridColumn>
@@ -86,7 +86,7 @@ else
             <RadzenTabsItem Text="Calendar">
                 <div class="row">
                     <div class="col-md-6">
-                        <RadzenScheduler @ref="App.CasesPanel.CasesScheduler" style="height: 768px;" TItem="ReminderViewModel" Data="@App.ActiveCustomerWithData.SelectedCase.Reminders" StartProperty="Start" EndProperty="End" TextProperty="Name" SelectedIndex="2" SlotSelect="@App.CasesPanel.OnSlotSelect" AppointmentSelect="@App.CasesPanel.OnAppointmentSelect" AppointmentRender="@App.CasesPanel.OnAppointmentRender" TodayText="Dzisiaj">
+                        <RadzenScheduler @ref="App.CasesPage.CasesScheduler" style="height: 768px;" TItem="ReminderViewModel" Data="@App.ActiveCustomerWithData.SelectedCase.Reminders" StartProperty="Start" EndProperty="End" TextProperty="Name" SelectedIndex="2" SlotSelect="@App.CasesPage.OnSlotSelect" AppointmentSelect="@App.CasesPage.OnAppointmentSelect" AppointmentRender="@App.CasesPage.OnAppointmentRender" TodayText="Dzisiaj">
                             <Template Context="data">
                                 <strong>@data.Name</strong>
                             </Template>

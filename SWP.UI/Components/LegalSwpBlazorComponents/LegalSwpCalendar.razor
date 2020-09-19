@@ -8,7 +8,7 @@
         <RadzenDialog />
         <RadzenNotification />
 
-        <RadzenScheduler @ref="App.CalendarPanel.RemindersScheduler" style="height: 768px;" TItem="ReminderViewModel" Data="@App.CalendarPanel.Reminders" StartProperty="Start" EndProperty="End" TextProperty="Name" SelectedIndex="2" AppointmentSelect="@App.CalendarPanel.OnAppointmentSelect" TodayText="Dzisiaj" AppointmentRender="@App.CalendarPanel.OnAppointmentRender">
+        <RadzenScheduler @ref="App.CalendarPage.RemindersScheduler" style="height: 768px;" TItem="ReminderViewModel" Data="@App.CalendarPage.Reminders" StartProperty="Start" EndProperty="End" TextProperty="Name" SelectedIndex="2" AppointmentSelect="@App.CalendarPage.OnAppointmentSelect" TodayText="Dzisiaj" AppointmentRender="@App.CalendarPage.OnAppointmentRender">
             <Template Context="data">
                 <strong>@data.Name</strong>
             </Template>

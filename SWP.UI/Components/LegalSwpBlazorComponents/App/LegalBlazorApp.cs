@@ -22,10 +22,10 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
         public event EventHandler ActiveCustomerChanged;
 
-        public CalendarPage CalendarPanel { get; }
-        public CasesPage CasesPanel { get; }
-        public CustomersPage CustomersPanel { get; }
-        public MyAppPage MyAppPanel { get; }
+        public CalendarPage CalendarPage { get; }
+        public CasesPage CasesPage { get; }
+        public CustomersPage CustomersPage { get; }
+        public MyAppPage MyAppPage { get; }
         public ErrorPage ErrorPage { get; }
         public NoProfileWarning NoProfileWarning { get; }
 
@@ -61,10 +61,10 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             this.userManager = userManager;
             this.notificationService = notificationService;
 
-            CalendarPanel = calendarPanel;
-            CasesPanel = casesPanel;
-            CustomersPanel = customersPanel;
-            MyAppPanel = myAppPanel;
+            CalendarPage = calendarPanel;
+            CasesPage = casesPanel;
+            CustomersPage = customersPanel;
+            MyAppPage = myAppPanel;
             ErrorPage = errorPage;
             NoProfileWarning = noProfileWarning;
         }
@@ -99,10 +99,10 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
         private void InitializePanels()
         {
-            CalendarPanel.Initialize(this);
-            CasesPanel.Initialize(this);
-            CustomersPanel.Initialize(this);
-            MyAppPanel.Initialize(this);
+            CalendarPage.Initialize(this);
+            CasesPage.Initialize(this);
+            CustomersPage.Initialize(this);
+            MyAppPage.Initialize(this);
             ErrorPage.Initialize(this);
             NoProfileWarning.Initialize(this);
         }
@@ -130,7 +130,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             }
 
             SetActivePanel(LegalBlazorApp.Panels.Cases);
-            CasesPanel.SetActivePanel(CasesPage.Panels.Admin);
+            CasesPage.SetActivePanel(CasesPage.Panels.Admin);
             ActiveCustomerWithData.SelectedCase = ActiveCustomerWithData.Cases.FirstOrDefault(x => x.Id == id);
             OnCallStateHasChanged(null);
         }

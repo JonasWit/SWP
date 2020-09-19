@@ -1,5 +1,7 @@
 ﻿using SWP.UI.BlazorApp;
 using SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data;
+using SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data.Statistics;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace SWP.UI.Components.LegalSwpBlazorComponents.App
@@ -10,7 +12,8 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         private readonly ProfileStatistics profileStatistics;
 
         public LegalBlazorApp App { get; private set; }
-        public StatisticsViewModel Statistics { get; private set; }
+
+        public List<DataItem> CustomersCases { get; set; } = new List<DataItem>();
 
         public MyAppPage(ProfileStatistics profileStatistics)
         {
@@ -26,15 +29,16 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
      
         public void RefreshStatistics()
         {
-            var test = profileStatistics.GetStatistics(App.User.Profile);
+            var statistics = profileStatistics.GetStatistics(App.User.Profile);
 
-
-
-
-
+            foreach (var customer in statistics.Customers)
+            {
+                CustomersCases.Add(new DataItem 
+                { 
+                    Category = customer.Name,
+                    Number = customer.Cases.Count
+                });
+            }
         }
-
-
-
     }
 }

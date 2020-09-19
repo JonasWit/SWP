@@ -5,14 +5,14 @@
 
 @if (App.ActiveCustomer != null)
 {
-    <RadzenButton Click="@(() => App.CustomersPanel.SetActivePanel(CustomersPage.Panels.Main))" Text="Summary" Style="margin-bottom: 20px;" />
+    <RadzenButton Click="@(() => App.CustomersPage.SetActivePanel(CustomersPage.Panels.Main))" Text="Summary" Style="margin-bottom: 20px;" />
 }
 
-<RadzenButton Click="@(() => App.CustomersPanel.SetActivePanel(CustomersPage.Panels.Admin))" Text="Admin" Style="margin-bottom: 20px;" />
+<RadzenButton Click="@(() => App.CustomersPage.SetActivePanel(CustomersPage.Panels.Admin))" Text="Admin" Style="margin-bottom: 20px;" />
 
 @if (App.ActiveCustomer != null && App.ActiveCustomerWithData != null)
 {
-    <RadzenButton Click="@(() => App.CustomersPanel.SetActivePanel(CustomersPage.Panels.Jobs))" Text="Tasks" Style="margin-bottom: 20px;" />
+    <RadzenButton Click="@(() => App.CustomersPage.SetActivePanel(CustomersPage.Panels.Jobs))" Text="Tasks" Style="margin-bottom: 20px;" />
 }
 
 @if (App.ActiveCustomer == null)
@@ -21,7 +21,7 @@
 }
 else
 {
-    switch (App.CustomersPanel.ActivePanel)
+    switch (App.CustomersPage.ActivePanel)
     {
         case CustomersPage.Panels.Main:
             <MainPanel @bind-App="App"></MainPanel>

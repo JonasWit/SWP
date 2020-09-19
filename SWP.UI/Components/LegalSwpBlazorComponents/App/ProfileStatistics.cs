@@ -16,6 +16,12 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             this.getCases = getCases;
         }
 
+        public class DataItem
+        {
+            public string Quarter { get; set; }
+            public double Revenue { get; set; }
+        }
+
         public Response GetStatistics(string profile)
         {
             var customers = getCustomers.GetCustomersWithoutData(profile);
@@ -23,7 +29,11 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
             foreach (var customer in customers)
             {
-                var customerStatistic = new Response.CustomerStatistic();
+                var customerStatistic = new Response.CustomerStatistic
+                {
+                    Name = customer.Name
+                };
+
                 var customerCases = getCustomers.GetCustomerCasesIds(customer.Id);
 
                 customerStatistic.Jobs = getCustomers.CountJobsPerCustomer(customer.Id) ?? 0;
@@ -57,6 +67,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             public class CustomerStatistic
             {
                 public int Id { get; set; }
+                public string Name { get; set; }
                 public int Jobs { get; set; }
                 public List<CaseStatistic> Cases { get; set; } = new List<CaseStatistic>();
             }
@@ -64,6 +75,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             public class CaseStatistic
             {
                 public int Id { get; set; }
+                public string Name { get; set; }
                 public int Reminders { get; set; }
                 public int Deadlines { get; set; }
                 public int Notes { get; set; }

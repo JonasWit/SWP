@@ -1,14 +1,14 @@
-﻿<RadzenTemplateForm Data="@App.CasesPanel.NewNote" Submit="@(async (CreateNote.Request args) => { await App.CasesPanel.CreateNewNote(args); })">
+﻿<RadzenTemplateForm Data="@App.CasesPage.NewNote" Submit="@(async (CreateNote.Request args) => { await App.CasesPage.CreateNewNote(args); })">
     <div class="row">
         <RadzenFieldset Text="Add New Note">
             <div class="row">
                 <div class="col-md-4">
-                    <RadzenTextBox Placeholder="Note Title..." Style="margin-bottom: 30px" @bind-Value="App.CasesPanel.NewNote.Name" Name="Name" />
+                    <RadzenTextBox Placeholder="Note Title..." Style="margin-bottom: 30px" @bind-Value="App.CasesPage.NewNote.Name" Name="Name" />
                     <RadzenRequiredValidator Component="Name" Text="Name cannot be empty!" Popup="true" />
                     <RadzenLengthValidator Max="50" Text="Max 50 characters!" Component="Name" Popup="true" />
                 </div>
                 <div class="col-md-6">
-                    <RadzenTextArea Placeholder="Message..." Style="margin-bottom: 30px" @bind-Value="App.CasesPanel.NewNote.Message" Name="Message" />
+                    <RadzenTextArea Placeholder="Message..." Style="margin-bottom: 30px" @bind-Value="App.CasesPage.NewNote.Message" Name="Message" />
                     <RadzenLengthValidator Max="500" Text="Max 500 characters!" Component="Message" Popup="true" />
                 </div>
                 <div class="col-md-2">

@@ -276,7 +276,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
                 });
 
                 App.ActiveCustomerWithData.SelectedCase.Reminders.Add(newReminder);
-                App.CalendarPanel.Reminders.Add(newReminder);
+                App.CalendarPage.Reminders.Add(newReminder);
                 await CasesScheduler.Reload();
                 App.ShowNotification(NotificationSeverity.Success, "Success!", $"Reminder: {newReminder.Name} has been added.", 2000);
             }
@@ -292,7 +292,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
                 {
                     await deleteReminder.Delete(result.Id);
                     App.ActiveCustomerWithData.SelectedCase.Reminders.RemoveAll(x => x.Id == result.Id);
-                    App.CalendarPanel.Reminders.RemoveAll(x => x.Id == result.Id);
+                    App.CalendarPage.Reminders.RemoveAll(x => x.Id == result.Id);
 
                     await CasesScheduler.Reload();
                     App.ShowNotification(NotificationSeverity.Warning, "Success!", $"Reminder: {result.Name} has been deleted.", 2000);
@@ -313,7 +313,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
                     });
 
                     App.ActiveCustomerWithData.SelectedCase.Reminders[App.ActiveCustomerWithData.SelectedCase.Reminders.FindIndex(x => x.Id == result.Id)] = result;
-                    App.CalendarPanel.Reminders[App.CalendarPanel.Reminders.FindIndex(x => x.Id == result.Id)] = result;
+                    App.CalendarPage.Reminders[App.CalendarPage.Reminders.FindIndex(x => x.Id == result.Id)] = result;
 
                     await CasesScheduler.Reload();
                     App.ShowNotification(NotificationSeverity.Success, "Success!", $"Reminder: {result.Name} has been updated.", 2000);

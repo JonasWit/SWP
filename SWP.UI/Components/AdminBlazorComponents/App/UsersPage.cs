@@ -294,7 +294,19 @@ namespace SWP.UI.Components.AdminBlazorComponents.App
             }
         }
 
+        public async Task LockUser()
+        { 
+                //todo: wiadomo
+        
+        
+        }
 
+        public async Task UnlockUser()
+        {
+            //todo: wiadomo
+
+
+        }
 
 
     }

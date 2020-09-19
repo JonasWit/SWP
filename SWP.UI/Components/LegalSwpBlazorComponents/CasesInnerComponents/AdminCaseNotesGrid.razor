@@ -1,0 +1,68 @@
+﻿<RadzenGrid @ref="App.CasesPanel.NotesGrid" AllowFiltering="true" AllowPaging="true" PageSize="10" AllowSorting="true"
+            Data="@App.ActiveCustomerWithData.SelectedCase.Notes" TItem="NoteViewModel" RowUpdate="@App.CasesPanel.OnUpdateNoteRow">
+    <Columns>
+        <RadzenGridColumn TItem="NoteViewModel" Property="Name" Title="Name">
+            <EditTemplate Context="note">
+                <RadzenTextBox @bind-Value="note.Name" Style="width:100%; display: block" Name="Name" />
+                <RadzenRequiredValidator Component="Name" Text="Name cannot be empty!" Popup="true" />
+                <RadzenLengthValidator Max="50" Text="Max 50 characters!" Component="Name" Popup="true" />
+            </EditTemplate>
+        </RadzenGridColumn>
+        <RadzenGridColumn TItem="NoteViewModel" Property="Message" Title="Message">
+            <EditTemplate Context="note">
+                <RadzenTextArea @bind-Value="note.Message" Style="width:100%; display: block" Name="Message" />
+                <RadzenLengthValidator Max="500" Text="Max 500 characters!" Component="Message" Popup="true" />
+            </EditTemplate>
+        </RadzenGridColumn>
+        <RadzenGridColumn TItem="NoteViewModel" Property="Created" Title="Created">
+            <Template Context="note">
+                @String.Format("{0:f}", note.Created)
+            </Template>
+        </RadzenGridColumn>
+        <RadzenGridColumn TItem="NoteViewModel" Property="Updated" Title="Last Change">
+            <Template Context="note">
+                @String.Format("{0:f}", note.Updated)
+            </Template>
+        </RadzenGridColumn>
+        <RadzenGridColumn TItem="NoteViewModel" Property="UpdatedBy" Title="Użytkownik">
+            <Template Context="note">
+                @note.UpdatedBy
+            </Template>
+        </RadzenGridColumn>
+        <RadzenGridColumn TItem="NoteViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="100px">
+            <Template Context="note">
+                <RadzenButton Icon="reply" Size="ButtonSize.Medium" ButtonStyle="ButtonStyle.Secondary" Click="@(args => App.CasesPanel.ActiveNoteChange(note))">
+                </RadzenButton>
+            </Template>
+        </RadzenGridColumn>
+        <RadzenGridColumn TItem="NoteViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="100px">
+            <Template Context="note">
+                <RadzenButton Icon="edit" Size="ButtonSize.Medium" Click="@(args => App.CasesPanel.EditNoteRow(note))">
+                </RadzenButton>
+            </Template>
+            <EditTemplate Context="note">
+                <RadzenButton Icon="save" Size="ButtonSize.Medium" Click="@((args) => App.CasesPanel.SaveNoteRow(note))">
+                </RadzenButton>
+                <RadzenButton Icon="cancel" Size="ButtonSize.Medium" ButtonStyle="ButtonStyle.Secondary" Click="@((args) => App.CasesPanel.CancelEditNoteRow(note))">
+                </RadzenButton>
+            </EditTemplate>
+        </RadzenGridColumn>
+        <RadzenGridColumn TItem="NoteViewModel" Context="order" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="70px">
+            <Template Context="note">
+                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Medium" Click="@(async (args) => await App.CasesPanel.DeleteNoteRow (note))">
+                </RadzenButton>
+            </Template>
+            <EditTemplate Context="note">
+                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Medium" Click="@(async (args) => await App.CasesPanel.DeleteNoteRow(note))">
+                </RadzenButton>
+            </EditTemplate>
+        </RadzenGridColumn>
+    </Columns>
+</RadzenGrid>
+
+@code {
+    [Parameter]
+    public LegalBlazorApp App { get; set; }
+    [Parameter]
+    public EventCallback<LegalBlazorApp> AppChanged { get; set; }
+}

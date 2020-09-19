@@ -7,6 +7,17 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data
     {
         public string DeadlineColor => "#DC143C";
 
+        public const string Customer = "Klient";
+        public const string Case = "Klient";
+        public const string Reminder = "Przypomnienie";
+        public const string Deadline = "Termin";
+        public const string CreatedBy = "Stworzone";
+        public const string UpdatedBy = "Ostania Zmiana";
+
+        public const string Day = "Dzień";
+        public const string Week = "Tydzień";
+        public const string Month = "Miesiąc";
+
         public class Priority
         {
             public int Number { get; set; }

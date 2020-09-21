@@ -43,10 +43,17 @@
         <RadzenTabs>
             <Tabs>
                 <RadzenTabsItem Text="Dodaj Nową Pozycję">
+                    <h3>SelectBar with single selection</h3>
+                    <RadzenSelectBar @bind-Value="App.FinancePage.CashMovementDirection" TValue="int" Style="margin-bottom: 20px;">
+                        <Items>
+                            <RadzenSelectBarItem Text="Wpływ" Value="1"/>
+                            <RadzenSelectBarItem Text="Wydatek" Value="0"/>
+                        </Items>
+                    </RadzenSelectBar>
 
 
 
-
+                    <RadzenButton Click="App.FinancePage.AddCashMovement" ButtonStyle="ButtonStyle.Secondary" Text="Dodaj Pozycję"></RadzenButton>
                 </RadzenTabsItem>
                 <RadzenTabsItem Text="Statystyki">
 

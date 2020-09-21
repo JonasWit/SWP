@@ -15,8 +15,8 @@ namespace SWP.Domain.Infrastructure
         List<TResult> GetClients<TResult>(string profile, Func<Client, TResult> selector);
         List<Client> GetClientsWithoutCases(string profile);
 
-        Task<Client> CreateClient(Client Client);
-        Task<Client> UpdateClient(Client Client);
+        Task<Client> CreateClient(Client client);
+        Task<Client> UpdateClient(Client client);
         Task<int> DeleteClient(int id);
         Task<int> DeleteProfileClients(string profile);
 
@@ -24,7 +24,7 @@ namespace SWP.Domain.Infrastructure
 
         #region Jobs
 
-        Task<ClientJob> CreateClientJob(int ClientId, string profile, ClientJob job);
+        Task<ClientJob> CreateClientJob(int clientId, string profile, ClientJob job);
         Task<int> DeleteClientJob(int id);
         Task<ClientJob> UpdateClientJob(ClientJob job);
         TResult GetClientJob<TResult>(int id, Func<ClientJob, TResult> selector);
@@ -38,10 +38,10 @@ namespace SWP.Domain.Infrastructure
         string GetCaseParentName(int id);
         string GetCaseName(int id);
 
-        Task<Case> CreateCase(int ClientId, string profile, Case c);
+        Task<Case> CreateCase(int clientId, string profile, Case c);
         Task<Case> UpdateCase(Case c);
         Task<int> DeleteCase(int id);
-        int CountCases(int ClientId);
+        int CountCases(int clientId);
 
         #endregion
 
@@ -49,7 +49,10 @@ namespace SWP.Domain.Infrastructure
 
         TResult GetReminder<TResult>(int id, Func<Reminder, TResult> selector);
         List<Reminder> GetReminders(string profile);
-        List<Reminder> GetRemindersForClient(int ClientId);
+        List<Reminder> GetRemindersForClient(int clientId);
+
+        List<Reminder> GetUpcomingReminders(int clientId, DateTime startDate);
+        List<Reminder> GetUpcomingReminders(string profile, DateTime startDate);
 
         Task<Reminder> CreateReminder(int caseId, Reminder reminder);
         Task<Reminder> UpdateReminder(Reminder reminder);
@@ -73,9 +76,9 @@ namespace SWP.Domain.Infrastructure
         #region Statistics
 
         int CountClients();
-        int CountCasesPerClient(int ClientId);
-        int CountJobsPerClient(int ClientId);
-        IEnumerable<int> GetClientCasesIds(int ClientId);
+        int CountCasesPerClient(int clientId);
+        int CountJobsPerClient(int clientId);
+        IEnumerable<int> GetClientCasesIds(int clientId);
 
         int CountRemindersPerCase(int caseId);
         int CountDeadlineRemindersPerCase(int caseId);
@@ -86,8 +89,8 @@ namespace SWP.Domain.Infrastructure
         #region Cash Movements
 
         CashMovement GetCashMovement(int id);
-        List<CashMovement> GetCashMovementsForClient(int ClientId);
-        Task<CashMovement> CreateCashMovement(int ClientId, CashMovement cashMovement);
+        List<CashMovement> GetCashMovementsForClient(int clientId);
+        Task<CashMovement> CreateCashMovement(int clientId, CashMovement cashMovement);
         Task<CashMovement> UpdateCashMovement(CashMovement cashMovement);
         Task<int> DeleteCashMovement(int id);
 

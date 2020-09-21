@@ -54,18 +54,18 @@ namespace SWP.DataBase.Managers
                 .AsNoTracking()
                 .ToList();
 
-        public async Task<Client> CreateClient(Client Client)
+        public async Task<Client> CreateClient(Client client)
         {
-            context.Clients.Add(Client);
+            context.Clients.Add(client);
             await context.SaveChangesAsync();
-            return Client;
+            return client;
         }
 
-        public async Task<Client> UpdateClient(Client Client)
+        public async Task<Client> UpdateClient(Client client)
         {
-            context.Clients.Update(Client);
+            context.Clients.Update(client);
             await context.SaveChangesAsync();
-            return Client;
+            return client;
         }
 
         public Task<int> DeleteClient(int id)
@@ -77,7 +77,7 @@ namespace SWP.DataBase.Managers
         public Task<int> DeleteProfileClients(string profile)
         {
             var Clients = GetClients(profile, x => x.Id);
-            context.Clients.RemoveRange(context.Clients.Where(x => Clients.Contains(x.Id)));
+            context.Clients.RemoveRange(context.Clients.Where(x => clients.Contains(x.Id)));
             return context.SaveChangesAsync();
         }
 
@@ -113,9 +113,9 @@ namespace SWP.DataBase.Managers
             return context.SaveChangesAsync();
         }
 
-        public async Task<Case> CreateCase(int ClientId, string profile, Case c)
+        public async Task<Case> CreateCase(int clientId, string profile, Case c)
         {
-            var ClientEntity = GetClient(ClientId, profile, x => x);
+            var ClientEntity = GetClient(clientId, profile, x => x);
             ClientEntity.Cases.Add(c);
             await context.SaveChangesAsync();
             return c;
@@ -128,7 +128,7 @@ namespace SWP.DataBase.Managers
             return c;
         }
 
-        public int CountCases(int ClientId) => context.Cases.Count(x => x.ClientId == ClientId);
+        public int CountCases(int clientId) => context.Cases.Count(x => x.ClientId == clientId);
 
         public string GetCaseParentName(int id) => context.Clients.Where(x => x.Cases.Any(y => y.Id == id)).Select(x => x.Name).FirstOrDefault();
 
@@ -152,9 +152,9 @@ namespace SWP.DataBase.Managers
                 .SelectMany(x => x.Cases.SelectMany(x => x.Reminders))
                 .ToList();
 
-        public List<Reminder> GetRemindersForClient(int ClientId) =>
+        public List<Reminder> GetRemindersForClient(int clientId) =>
             context.Clients
-                .Where(x => x.Id == ClientId)
+                .Where(x => x.Id == clientId)
                 .Include(x => x.Cases)
                     .ThenInclude(y => y.Reminders)
                 .SelectMany(x => x.Cases.SelectMany(x => x.Reminders))
@@ -186,6 +186,24 @@ namespace SWP.DataBase.Managers
         {
             throw new NotImplementedException();
         }
+
+        public List<Reminder> GetUpcomingReminders(int clientId, DateTime startDate) => 
+            context.Clients
+                .Where(x => x.Id == clientId)
+                .Include(x => x.Cases)
+                    .ThenInclude(y => y.Reminders)
+                .SelectMany(x => x.Cases.SelectMany(x => x.Reminders))
+                .Where(x => x.Start <= startDate)
+                .ToList();
+
+        public List<Reminder> GetUpcomingReminders(string profile, DateTime startDate) =>
+            context.Clients
+                .Where(x => x.ProfileClaim == profile)
+                .Include(x => x.Cases)
+                    .ThenInclude(y => y.Reminders)
+                .SelectMany(x => x.Cases.SelectMany(x => x.Reminders))
+                .Where(x => x.Start <= startDate)
+                .ToList();
 
         #endregion
 

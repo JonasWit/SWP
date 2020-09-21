@@ -15,6 +15,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         private readonly CreateCashMovement createCashMovement;
 
         public LegalBlazorApp App { get; private set; }
+        public int CashMovementDirection { get; set; }
 
         public FinancePage(
             CreateCashMovement createCashMovement)
@@ -30,10 +31,16 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
         public RadzenGrid<CashMovementViewModel> CashMovementGrid { get; set; }
 
+        public void AddCashMovement()
+        { 
+        
+        
+        
+        }
 
-        public void EditCashMovementRow(CashMovementViewModel Client) => CashMovementGrid.EditRow(Client);
+        public void EditCashMovementRow(CashMovementViewModel cash) => CashMovementGrid.EditRow(cash);
 
-        public async Task OnUpdateCashMovementRow(CashMovementViewModel Client)
+        public async Task OnUpdateCashMovementRow(CashMovementViewModel cash)
         {
             try
             {
@@ -67,15 +74,15 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             }
         }
 
-        public void SaveCashMovementRow(CashMovementViewModel Client) => CashMovementGrid.UpdateRow(Client);
+        public void SaveCashMovementRow(CashMovementViewModel cash) => CashMovementGrid.UpdateRow(cash);
 
-        public void CancelCashMovementEdit(CashMovementViewModel Client)
+        public void CancelCashMovementEdit(CashMovementViewModel cash)
         {
             //ClientsGrid.CancelEditRow(Client);
             //App.RefreshClients();
         }
 
-        public async Task DeleteCashMovementRow(CashMovementViewModel Client)
+        public async Task DeleteCashMovementRow(CashMovementViewModel cash)
         {
             try
             {

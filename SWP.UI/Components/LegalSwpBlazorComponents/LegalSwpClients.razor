@@ -1,8 +1,6 @@
 ﻿@using SWP.UI.Components.LegalSwpBlazorComponents.ClientsInnerComponents
 @inject GeneralViewModel generalViewModel
 
-<h2>Klienci</h2>
-
 @if (App.ActiveClient != null)
 {
     <RadzenButton Click="@(() => App.ClientsPage.SetActivePanel(ClientPage.Panels.Main))" Text="Podsumowanie" Style="margin-bottom: 20px;" />

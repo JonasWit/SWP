@@ -28,6 +28,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         public MyAppPage MyAppPage { get; }
         public ErrorPage ErrorPage { get; }
         public NoProfileWarning NoProfileWarning { get; }
+        public FinancePage FinancePage { get; }
 
         private CustomerViewModel activeCustomer;
 
@@ -54,13 +55,15 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             MyAppPage myAppPanel,
             ErrorPage errorPage,
             NoProfileWarning noProfileWarning,
-            NotificationService notificationService)
+            NotificationService notificationService,
+            FinancePage financePage)
         {
             this.getCustomer = getCustomer;
             this.getCustomers = getCustomers;
             this.userManager = userManager;
             this.notificationService = notificationService;
 
+            FinancePage = financePage;
             CalendarPage = calendarPanel;
             CasesPage = casesPanel;
             CustomersPage = customersPanel;
@@ -84,15 +87,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
                 User.Roles = await userManager.GetRolesAsync(User.User) as List<string>;
 
                 Customers = getCustomers.GetCustomersWithoutData(User.Profile)?.Select(x => (CustomerViewModel)x).ToList();
-                //ActiveCustomer = Customers.FirstOrDefault();
 
-                //For the first run
-                //if (ActiveCustomer != null)
-                //{
-                //    ActiveCustomerWithData = getCustomer.Get(ActiveCustomer.Id, User.Profile);
-                //}
-
-                //RefreshCustomers();
                 InitializePanels();
             }
         }
@@ -105,6 +100,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             MyAppPage.Initialize(this);
             ErrorPage.Initialize(this);
             NoProfileWarning.Initialize(this);
+            FinancePage.Initialize(this);
         }
 
         #region Main Component
@@ -115,7 +111,8 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             Calendar = 1,
             Cases = 2,
             MyApp = 3,
-            ErrorPage = 4
+            ErrorPage = 4,
+            Finance = 5,
         }
 
         public CustomerViewModel ActiveCustomerWithData { get; set; }

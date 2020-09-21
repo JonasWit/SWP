@@ -1,0 +1,17 @@
+﻿@using SWP.UI.Components.LegalSwpBlazorComponents.FinanceInnerComponents
+
+<div class="row">
+    <div class="col-md-6">
+
+    </div>
+    <div class="col-md-6">
+        <FinanceAdminPanel @bind-App="App" />
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public LegalBlazorApp App { get; set; }
+    [Parameter]
+    public EventCallback<LegalBlazorApp> AppChanged { get; set; }
+}

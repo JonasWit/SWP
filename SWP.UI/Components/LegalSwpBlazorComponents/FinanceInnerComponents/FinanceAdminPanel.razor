@@ -1,0 +1,18 @@
+﻿<RadzenCard Style="margin-bottom:20px">
+    Klient:
+    <b>@App.ActiveCustomer.Name</b>
+</RadzenCard>
+<RadzenTabs>
+    <Tabs>
+        <RadzenTabsItem Text="Order Details">
+
+        </RadzenTabsItem>
+    </Tabs>
+</RadzenTabs>
+
+@code {
+    [Parameter]
+    public LegalBlazorApp App { get; set; }
+    [Parameter]
+    public EventCallback<LegalBlazorApp> AppChanged { get; set; }
+}

@@ -29,5 +29,7 @@ namespace SWP.Domain.Models.SWPLegal
         public List<Case> Cases { get; set; }
 
         public List<CustomerJob> Jobs { get; set; }
+
+        public List<CashMovement> CashMovements { get; set; }
     }
 }

@@ -1,0 +1,13 @@
+﻿<RadzenGrid @ref="App.CustomersPage.CustomersGrid" AllowFiltering="true" AllowPaging="true" PageSize="10" AllowSorting="true"
+            Data="@App.Customers" TItem="CustomerViewModel">
+    <Columns>
+
+    </Columns>
+</RadzenGrid>
+
+@code {
+    [Parameter]
+    public LegalBlazorApp App { get; set; }
+    [Parameter]
+    public EventCallback<LegalBlazorApp> AppChanged { get; set; }
+}

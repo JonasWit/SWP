@@ -17,39 +17,40 @@ namespace SWP.DataBase.Managers
 
         #region Customer
 
-        public TResult GetCustomer<TResult>(int id, string claim, Func<Customer, TResult> selector) =>
+        public TResult GetCustomer<TResult>(int id, string profile, Func<Customer, TResult> selector) =>
             context.Customers
                 .Include(x => x.Cases)
                     .ThenInclude(y => y.Reminders)
                 .Include(x => x.Cases)
                     .ThenInclude(y => y.Notes)
                 .Include(x => x.Jobs)
-                .Where(x => x.Id == id && x.ProfileClaim == claim)
+                .Include(x => x.CashMovements)
+                .Where(x => x.Id == id && x.ProfileClaim == profile)
                 .Select(selector)
                 .FirstOrDefault();
 
-        public TResult GetCustomerWithoutCases<TResult>(int id, string claim, Func<Customer, TResult> selector) =>
+        public TResult GetCustomerWithoutCases<TResult>(int id, string profile, Func<Customer, TResult> selector) =>
             context.Customers
                 .Include(x => x.Jobs)
-                .Where(x => x.Id == id && x.ProfileClaim == claim)
+                .Where(x => x.Id == id && x.ProfileClaim == profile)
                 .Select(selector)
                 .FirstOrDefault();
 
-        public List<TResult> GetCustomers<TResult>(string claim, Func<Customer, TResult> selector) =>
+        public List<TResult> GetCustomers<TResult>(string profile, Func<Customer, TResult> selector) =>
             context.Customers
                 .Include(x => x.Cases)
                     .ThenInclude(y => y.Reminders)
                 .Include(x => x.Cases)
                     .ThenInclude(y => y.Notes)
                 .Include(x => x.Jobs)
-                .Where(x => x.ProfileClaim == claim)
+                .Where(x => x.ProfileClaim == profile)
                 .Select(selector)
                 .ToList();
 
-        public List<Customer> GetCustomersWithoutCases(string claim) =>
+        public List<Customer> GetCustomersWithoutCases(string profile) =>
             context.Customers
                 .Include(x => x.Jobs)
-                .Where(x => x.ProfileClaim == claim)
+                .Where(x => x.ProfileClaim == profile)
                 .AsNoTracking()
                 .ToList();
 
@@ -73,9 +74,9 @@ namespace SWP.DataBase.Managers
             return context.SaveChangesAsync();
         }
 
-        public Task<int> DeleteProfileCustomers(string profileClaim)
+        public Task<int> DeleteProfileCustomers(string profile)
         {
-            var customers = GetCustomers(profileClaim, x => x.Id);
+            var customers = GetCustomers(profile, x => x.Id);
             context.Customers.RemoveRange(context.Customers.Where(x => customers.Contains(x.Id)));
             return context.SaveChangesAsync();
         }
@@ -249,6 +250,39 @@ namespace SWP.DataBase.Managers
             context.CustomerJobs.Update(job);
             await context.SaveChangesAsync();
             return job;
+        }
+
+        #endregion
+
+        #region Cash Movements
+
+        public CashMovement GetCashMovement(int id) => context.CashMovements.FirstOrDefault(x => x.Id == id);
+
+        public List<CashMovement> GetCashMovementsForCustomer(int customerId) =>
+            context.CashMovements
+                .Where(x => x.CustomerId == customerId)
+                .ToList();
+
+        public async Task<CashMovement> CreateCashMovement(int customerId, CashMovement cashMovement)
+        {
+            var cs = context.Customers.FirstOrDefault(x =>x.Id == customerId);
+            cs.CashMovements.Add(cashMovement);
+            await context.SaveChangesAsync();
+            return cashMovement;
+        }
+
+        public async Task<CashMovement> UpdateCashMovement(CashMovement cashMovement)
+        {
+            context.CashMovements.Update(cashMovement);
+            await context.SaveChangesAsync();
+            return cashMovement;
+        }
+
+        public Task<int> DeleteCashMovement(int id)
+        {
+            var cm = context.CashMovements.FirstOrDefault(x => x.Id == id);
+            context.CashMovements.Remove(cm);
+            return context.SaveChangesAsync();
         }
 
         #endregion

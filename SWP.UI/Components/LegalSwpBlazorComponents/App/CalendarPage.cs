@@ -101,7 +101,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
                     }
 
                     await RemindersScheduler.Reload();
-                    App.ShowNotification(NotificationSeverity.Warning, "Success!", $"Reminder: {result.Name} has been deleted.", 2000);
+                    App.ShowNotification(NotificationSeverity.Warning, "Sukces!", $"Przypomnienie: {result.Name} zostało usunięte.", App.NotificationDuration);
                 }
                 else
                 {
@@ -133,7 +133,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
                     }
 
                     await RemindersScheduler.Reload();
-                    App.ShowNotification(NotificationSeverity.Success, "Success!", $"Reminder: {result.Name} has been updated.", 2000);
+                    App.ShowNotification(NotificationSeverity.Success, "Sukces!", $"Przypomnienie: {result.Name} zostało zmienione.", App.NotificationDuration);
                 }
             }
         }

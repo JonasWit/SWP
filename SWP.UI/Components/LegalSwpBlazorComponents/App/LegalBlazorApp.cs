@@ -19,9 +19,11 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         private readonly GetClients getClients;
         private readonly UserManager<IdentityUser> userManager;
         private readonly NotificationService notificationService;
+      
 
         public event EventHandler ActiveClientChanged;
 
+        public int NotificationDuration { get; }
         public CalendarPage CalendarPage { get; }
         public CasesPage CasesPage { get; }
         public ClientPage ClientsPage { get; }
@@ -62,6 +64,8 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             this.getClients = getClients;
             this.userManager = userManager;
             this.notificationService = notificationService;
+
+            NotificationDuration = 3000;
 
             FinancePage = financePage;
             CalendarPage = calendarPanel;
@@ -127,7 +131,6 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             }
 
             SetActivePanel(LegalBlazorApp.Panels.Cases);
-            CasesPage.SetActivePanel(CasesPage.Panels.Admin);
             ActiveClientWithData.SelectedCase = ActiveClientWithData.Cases.FirstOrDefault(x => x.Id == id);
             OnCallStateHasChanged(null);
         }

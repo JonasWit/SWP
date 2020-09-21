@@ -63,20 +63,20 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
         #region Client
 
-        public void EditClientRow(ClientViewModel Client) => ClientsGrid.EditRow(Client);
+        public void EditClientRow(ClientViewModel client) => ClientsGrid.EditRow(client);
 
-        public async Task OnUpdateClientRow(ClientViewModel Client)
+        public async Task OnUpdateClientRow(ClientViewModel client)
         {
             try
             {
                 var result = await updateClient.Update(new UpdateClient.Request
                 {
-                    Id = Client.Id,
-                    Active = Client.Active,
-                    Address = Client.Address,
-                    Email = Client.Email,
-                    Name = Client.Name,
-                    PhoneNumber = Client.PhoneNumber,
+                    Id = client.Id,
+                    Active = client.Active,
+                    Address = client.Address,
+                    Email = client.Email,
+                    Name = client.Name,
+                    PhoneNumber = client.PhoneNumber,
                     ProfileClaim = App.User.Profile,
                     UpdatedBy = App.User.UserName
                 });
@@ -91,7 +91,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
                 }
 
                 await ClientsGrid.Reload();
-                App.ShowNotification(NotificationSeverity.Success, "Success!", $"Client: {result.Name} has been updated.", 2000);
+                App.ShowNotification(NotificationSeverity.Success, "Sukces!", $"Klient: {result.Name} został zmieniony.", App.NotificationDuration);
             }
             catch (Exception ex)
             {
@@ -99,23 +99,23 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             }
         }
 
-        public void SaveClientRow(ClientViewModel Client) => ClientsGrid.UpdateRow(Client);
+        public void SaveClientRow(ClientViewModel client) => ClientsGrid.UpdateRow(client);
 
-        public void CancelClientEdit(ClientViewModel Client)
+        public void CancelClientEdit(ClientViewModel client)
         {
-            ClientsGrid.CancelEditRow(Client);
+            ClientsGrid.CancelEditRow(client);
             App.RefreshClients();
         }
 
-        public async Task DeleteClientRow(ClientViewModel Client)
+        public async Task DeleteClientRow(ClientViewModel client)
         {
             try
             {
-                await deleteClient.Delete(Client.Id);
-                App.Clients.RemoveAll(x => x.Id == Client.Id);
+                await deleteClient.Delete(client.Id);
+                App.Clients.RemoveAll(x => x.Id == client.Id);
 
                 await ClientsGrid.Reload();
-                App.ShowNotification(NotificationSeverity.Warning, "Success!", $"Client: {Client.Name} has been deleted.", 2000);
+                App.ShowNotification(NotificationSeverity.Warning, "Sukces!", $"Klient: {client.Name} został usunięty.", App.NotificationDuration);
             }
             catch (Exception ex)
             {
@@ -135,7 +135,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
                 App.Clients.Add(result);
                 await ClientsGrid.Reload();
-                App.ShowNotification(NotificationSeverity.Success, "Success!", $"Client: {result.Name} has been added.", 2000);
+                App.ShowNotification(NotificationSeverity.Success, "Sukces!", $"Klient: {result.Name} został dodany.", App.NotificationDuration);
             }
             catch (Exception ex)
             {
@@ -164,7 +164,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
                 }
 
                 await ClientsJobsGrid.Reload();
-                App.ShowNotification(NotificationSeverity.Success, "Success!", $"Task: {result.Name} has been created.", 2000);
+                App.ShowNotification(NotificationSeverity.Success, "Sukces!", $"Zadanie: {result.Name}, dla Klineta: {App.ActiveClient.Name} zostało stworzone.", App.NotificationDuration);
             }
             catch (Exception ex)
             {
@@ -176,9 +176,9 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             }
         }
 
-        public void EditClientJobRow(ClientJobViewModel ClientJob) => ClientsJobsGrid.EditRow(ClientJob);
+        public void EditClientJobRow(ClientJobViewModel clientJob) => ClientsJobsGrid.EditRow(clientJob);
 
-        public async Task OnUpdateClientJobRow(ClientJobViewModel ClientJob)
+        public async Task OnUpdateClientJobRow(ClientJobViewModel clientJob)
         {
             if (App.Loading) return;
             else App.Loading = true;
@@ -187,18 +187,18 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             {
                 var result = await updateClientJob.Update(new UpdateClientJob.Request
                 {
-                    Id = ClientJob.Id,
-                    Active = ClientJob.Active,
-                    Description = ClientJob.Description,
-                    Name = ClientJob.Name,
-                    Priority = ClientJob.Priority,
+                    Id = clientJob.Id,
+                    Active = clientJob.Active,
+                    Description = clientJob.Description,
+                    Name = clientJob.Name,
+                    Priority = clientJob.Priority,
                     Updated = DateTime.Now,
                     UpdatedBy = App.User.UserName
                 });
 
                 App.ActiveClientWithData.Jobs[App.ActiveClientWithData.Jobs.FindIndex(x => x.Id == result.Id)] = result;
                 await ClientsJobsGrid.Reload();
-                App.ShowNotification(NotificationSeverity.Success, "Success!", $"Task: {result.Name} has been updated.", 2000);
+                App.ShowNotification(NotificationSeverity.Success, "Sukces!", $"Zadanie: {result.Name}, dla Klineta: {App.ActiveClient.Name} zostało zmienione.", App.NotificationDuration);
             }
             catch (Exception ex)
             {
@@ -210,30 +210,30 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             }
         }
 
-        public void SaveClientJobRow(ClientJobViewModel ClientJob) => ClientsJobsGrid.UpdateRow(ClientJob);
+        public void SaveClientJobRow(ClientJobViewModel clientJob) => ClientsJobsGrid.UpdateRow(clientJob);
 
-        public void CancelClientJobEdit(ClientJobViewModel ClientJob)
+        public void CancelClientJobEdit(ClientJobViewModel clientJob)
         {
-            ClientsJobsGrid.CancelEditRow(ClientJob);
+            ClientsJobsGrid.CancelEditRow(clientJob);
             App.RefreshClients();
         }
 
-        public async Task DeleteClientJobRow(ClientJobViewModel ClientJob)
+        public async Task DeleteClientJobRow(ClientJobViewModel clientJob)
         {
             if (App.Loading) return;
             else App.Loading = true;
 
             try
             {
-                await deleteClientJob.Delete(ClientJob.Id);
+                await deleteClientJob.Delete(clientJob.Id);
 
                 if (App.ActiveClientWithData != null)
                 {
-                    App.ActiveClientWithData.Jobs.RemoveAll(x => x.Id == ClientJob.Id);
+                    App.ActiveClientWithData.Jobs.RemoveAll(x => x.Id == clientJob.Id);
                 }
 
                 await ClientsJobsGrid.Reload();
-                App.ShowNotification(NotificationSeverity.Warning, "Success!", $"Task: {ClientJob.Name} has been deleted.", 2000);
+                App.ShowNotification(NotificationSeverity.Warning, "Sukces!", $"Zadanie: {clientJob.Name}, dla Klineta: {App.ActiveClient.Name} zostało usunięte.", App.NotificationDuration);
             }
             catch (Exception ex)
             {

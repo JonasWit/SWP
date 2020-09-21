@@ -5,14 +5,14 @@
 
 @if (App.ActiveCustomer != null)
 {
-    <RadzenButton Click="@(() => App.CustomersPage.SetActivePanel(CustomersPage.Panels.Main))" Text="Summary" Style="margin-bottom: 20px;" />
+    <RadzenButton Click="@(() => App.CustomersPage.SetActivePanel(CustomersPage.Panels.Main))" Text="Podsumowanie" Style="margin-bottom: 20px;" />
 }
 
-<RadzenButton Click="@(() => App.CustomersPage.SetActivePanel(CustomersPage.Panels.Admin))" Text="Admin" Style="margin-bottom: 20px;" />
+<RadzenButton Click="@(() => App.CustomersPage.SetActivePanel(CustomersPage.Panels.Admin))" Text="Administracja" Style="margin-bottom: 20px;" />
 
 @if (App.ActiveCustomer != null && App.ActiveCustomerWithData != null)
 {
-    <RadzenButton Click="@(() => App.CustomersPage.SetActivePanel(CustomersPage.Panels.Jobs))" Text="Tasks" Style="margin-bottom: 20px;" />
+    <RadzenButton Click="@(() => App.CustomersPage.SetActivePanel(CustomersPage.Panels.Jobs))" Text="Zadnia" Style="margin-bottom: 20px;" />
 }
 
 @if (App.ActiveCustomer == null)

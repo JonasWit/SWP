@@ -1,13 +1,66 @@
-﻿@using SWP.UI.Components.LegalSwpBlazorComponents.FinanceInnerComponents
-
-<div class="row">
+﻿<div class="row">
     <div class="col-md-6">
+        <RadzenGrid @ref="App.FinancePage.CashMovementGrid" AllowFiltering="true" AllowPaging="true" PageSize="10" AllowSorting="true"
+                    Data="@App.ActiveCustomerWithData.CashMovements" TItem="CashMovementViewModel" RowUpdate="@App.FinancePage.OnUpdateCashMovementRow">
+            <Columns>
+                <RadzenGridColumn TItem="CashMovementViewModel" Property="Name" Title="Nazwa">
+                    <EditTemplate Context="cm">
+                        <RadzenTextBox @bind-Value="cm.Name" Style="width:100%; display: block" Name="Nazwa" />
+                        <RadzenRequiredValidator Text="Nazwa nie może być pusta!" Component="Nazwa" Popup="true" />
+                        <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Nazwa" Popup="true" />
+                    </EditTemplate>
+                </RadzenGridColumn>
 
+                <RadzenGridColumn TItem="CashMovementViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="100px">
+                    <Template Context="cm">
+                        <RadzenButton Icon="edit" Size="ButtonSize.Medium" Click="@(args => App.FinancePage.EditCashMovementRow(cm))">
+                        </RadzenButton>
+                    </Template>
+                    <EditTemplate Context="cm">
+                        <RadzenButton Icon="save" Size="ButtonSize.Medium" Click="@((args) => App.FinancePage.SaveCashMovementRow(cm))">
+                        </RadzenButton>
+                        <RadzenButton Icon="cancel" Size="ButtonSize.Medium" ButtonStyle="ButtonStyle.Secondary" Click="@((args) => App.FinancePage.CancelCashMovementEdit(cm))">
+                        </RadzenButton>
+                    </EditTemplate>
+                </RadzenGridColumn>
+                <RadzenGridColumn TItem="CashMovementViewModel" Context="order" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="70px">
+                    <Template Context="cm">
+                        <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Medium" Click="@(async (args) => await App.FinancePage.DeleteCashMovementRow(cm))">
+                        </RadzenButton>
+                    </Template>
+                    <EditTemplate Context="cm">
+                        <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Medium" Click="@(async (args) => await App.FinancePage.DeleteCashMovementRow(cm))">
+                        </RadzenButton>
+                    </EditTemplate>
+                </RadzenGridColumn>
+            </Columns>
+        </RadzenGrid>
     </div>
     <div class="col-md-6">
-        <FinanceAdminPanel @bind-App="App" />
+        <RadzenCard Style="margin-bottom:20px">
+            Klient: <b>@App.ActiveCustomer.Name</b>
+        </RadzenCard>
+        <RadzenTabs>
+            <Tabs>
+                <RadzenTabsItem Text="Dodaj Nową Pozycję">
+
+
+
+
+                </RadzenTabsItem>
+                <RadzenTabsItem Text="Statystyki">
+
+
+
+
+                </RadzenTabsItem>
+            </Tabs>
+        </RadzenTabs>
     </div>
 </div>
+
+
+
 
 @code {
     [Parameter]

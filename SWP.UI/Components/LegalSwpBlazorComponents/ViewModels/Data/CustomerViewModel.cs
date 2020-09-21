@@ -26,6 +26,8 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data
 
         public List<CustomerJobViewModel> Jobs { get; set; }
 
+        public List<CashMovementViewModel> CashMovements { get; set; }
+
         public DateTime Created { get; set; }
         public DateTime Updated { get; set; }
         public string UpdatedBy { get; set; }
@@ -43,6 +45,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data
                 PhoneNumber = input.PhoneNumber,
                 Cases = input.Cases == null ? new List<CaseViewModel>() : input.Cases.Select(x => (CaseViewModel)x).ToList(),
                 Jobs = input.Jobs == null ? new List<CustomerJobViewModel>() : input.Jobs.Select(x => (CustomerJobViewModel)x).ToList(),
+                CashMovements = input.CashMovements == null ? new List<CashMovementViewModel>() : input.CashMovements.Select(x => (CashMovementViewModel)x).ToList(),
                 Created = input.Created,
                 Updated = input.Updated,
                 UpdatedBy = input.UpdatedBy,

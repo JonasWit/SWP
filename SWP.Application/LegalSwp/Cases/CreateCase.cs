@@ -13,8 +13,8 @@ namespace SWP.Application.LegalSwp.Cases
         private readonly ILegalSwpManager legalSwpManager;
         public CreateCase(ILegalSwpManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
 
-        public Task<Case> Create(int customerId, string profile, Request request) => 
-            legalSwpManager.CreateCase(customerId, profile, new Case
+        public Task<Case> Create(int ClientId, string profile, Request request) => 
+            legalSwpManager.CreateCase(ClientId, profile, new Case
             { 
                 Name = request.Name,
                 Signature = string.IsNullOrEmpty(request.Signature) ? "Brak" : request.Signature,

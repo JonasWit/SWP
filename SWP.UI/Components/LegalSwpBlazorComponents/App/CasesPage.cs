@@ -86,11 +86,11 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         public void ReloadCase(int id)
         {
             var caseEntity = getCase.Get(id);
-            App.ActiveCustomerWithData.Cases.RemoveAll(x => x.Id == id);
-            App.ActiveCustomerWithData.Cases.Add(caseEntity);
-            App.ActiveCustomerWithData.Cases = App.ActiveCustomerWithData.Cases.OrderBy(x => x.Name).ToList();
-            App.ActiveCustomerWithData.Cases.TrimExcess();
-            App.ActiveCustomerWithData.SelectedCase = caseEntity;
+            App.ActiveClientWithData.Cases.RemoveAll(x => x.Id == id);
+            App.ActiveClientWithData.Cases.Add(caseEntity);
+            App.ActiveClientWithData.Cases = App.ActiveClientWithData.Cases.OrderBy(x => x.Name).ToList();
+            App.ActiveClientWithData.Cases.TrimExcess();
+            App.ActiveClientWithData.SelectedCase = caseEntity;
         }
 
         public async Task CreateNewCase(CreateCase.Request arg)
@@ -98,10 +98,10 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             try
             {
                 NewCase.UpdatedBy = App.User.UserName;
-                var result = await createCase.Create(App.ActiveCustomerWithData.Id, App.User.Profile, NewCase);
+                var result = await createCase.Create(App.ActiveClientWithData.Id, App.User.Profile, NewCase);
                 NewCase = new CreateCase.Request();
 
-                App.ActiveCustomerWithData.Cases.Add(result);
+                App.ActiveClientWithData.Cases.Add(result);
                 await CasesGrid.Reload();
                 App.ShowNotification(NotificationSeverity.Success, "Success!", $"Case: {result.Name} has been added.", 2000);
             }
@@ -127,7 +127,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
                     UpdatedBy = App.User.UserName
                 });
 
-                App.ActiveCustomerWithData.Cases[App.ActiveCustomerWithData.Cases.FindIndex(x => x.Id == result.Id)] = result;
+                App.ActiveClientWithData.Cases[App.ActiveClientWithData.Cases.FindIndex(x => x.Id == result.Id)] = result;
                 await CasesGrid.Reload();
                 App.ShowNotification(NotificationSeverity.Success, "Success!", $"Case: {result.Name} has been updated.", 2000);
             }
@@ -147,7 +147,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             {
                 await deleteCase.Delete(c.Id);
 
-                App.ActiveCustomerWithData.Cases.RemoveAll(x => x.Id == c.Id);
+                App.ActiveClientWithData.Cases.RemoveAll(x => x.Id == c.Id);
                 await CasesGrid.Reload();
                 App.ShowNotification(NotificationSeverity.Warning, "Success!", $"Case: {c.Name} has been deleted.", 2000);
 
@@ -163,11 +163,11 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             var input = (CaseViewModel)value;
             if (value != null)
             {
-                App.ActiveCustomerWithData.SelectedCase = App.ActiveCustomerWithData.Cases.FirstOrDefault(x => x.Id == input.Id);
+                App.ActiveClientWithData.SelectedCase = App.ActiveClientWithData.Cases.FirstOrDefault(x => x.Id == input.Id);
             }
             else
             {
-                App.ActiveCustomerWithData.SelectedCase = null;
+                App.ActiveClientWithData.SelectedCase = null;
             }
         }
 
@@ -180,11 +180,11 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             var input = (NoteViewModel)value;
             if (value != null)
             {
-                App.ActiveCustomerWithData.SelectedCase.SelectedNote = App.ActiveCustomerWithData.SelectedCase.Notes.FirstOrDefault(x => x.Id == input.Id);
+                App.ActiveClientWithData.SelectedCase.SelectedNote = App.ActiveClientWithData.SelectedCase.Notes.FirstOrDefault(x => x.Id == input.Id);
             }
             else
             {
-                App.ActiveCustomerWithData.SelectedCase.SelectedNote = null;
+                App.ActiveClientWithData.SelectedCase.SelectedNote = null;
             }
         }
 
@@ -193,10 +193,10 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             try
             {
                 NewNote.UpdatedBy = App.User.UserName;
-                var result = await createNote.Create(App.ActiveCustomerWithData.SelectedCase.Id, NewNote);
+                var result = await createNote.Create(App.ActiveClientWithData.SelectedCase.Id, NewNote);
                 NewNote = new CreateNote.Request();
 
-                App.ActiveCustomerWithData.SelectedCase.Notes.Add(result);
+                App.ActiveClientWithData.SelectedCase.Notes.Add(result);
                 await NotesGrid.Reload();
                 App.ShowNotification(NotificationSeverity.Success, "Success!", $"Note: {result.Name} has been added.", 2000);
             }
@@ -221,7 +221,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
                     UpdatedBy = App.User.UserName
                 });
 
-                App.ActiveCustomerWithData.SelectedCase.Notes[App.ActiveCustomerWithData.SelectedCase.Notes.FindIndex(x => x.Id == result.Id)] = result;
+                App.ActiveClientWithData.SelectedCase.Notes[App.ActiveClientWithData.SelectedCase.Notes.FindIndex(x => x.Id == result.Id)] = result;
                 await NotesGrid.Reload();
                 App.ShowNotification(NotificationSeverity.Success, "Success!", $"Note: {result.Name} has been updated.", 2000);
             }
@@ -240,7 +240,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             try
             {
                 await deleteNote.Delete(note.Id);
-                App.ActiveCustomerWithData.SelectedCase.Notes.RemoveAll(x => x.Id == note.Id);
+                App.ActiveClientWithData.SelectedCase.Notes.RemoveAll(x => x.Id == note.Id);
                 await NotesGrid.Reload();
                 App.ShowNotification(NotificationSeverity.Warning, "Success!", $"Note: {note.Name} has been deleted.", 2000);
             }
@@ -263,7 +263,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             {
                 result.UpdatedBy = App.User.UserName;
 
-                var newReminder = await createReminder.Create(App.ActiveCustomerWithData.SelectedCase.Id, new CreateReminder.Request
+                var newReminder = await createReminder.Create(App.ActiveClientWithData.SelectedCase.Id, new CreateReminder.Request
                 {
                     Active = true,
                     IsDeadline = result.IsDeadline,
@@ -275,7 +275,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
                     UpdatedBy = result.UpdatedBy
                 });
 
-                App.ActiveCustomerWithData.SelectedCase.Reminders.Add(newReminder);
+                App.ActiveClientWithData.SelectedCase.Reminders.Add(newReminder);
                 App.CalendarPage.Reminders.Add(newReminder);
                 await CasesScheduler.Reload();
                 App.ShowNotification(NotificationSeverity.Success, "Success!", $"Reminder: {newReminder.Name} has been added.", 2000);
@@ -291,7 +291,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
                 if (!result.Active)
                 {
                     await deleteReminder.Delete(result.Id);
-                    App.ActiveCustomerWithData.SelectedCase.Reminders.RemoveAll(x => x.Id == result.Id);
+                    App.ActiveClientWithData.SelectedCase.Reminders.RemoveAll(x => x.Id == result.Id);
                     App.CalendarPage.Reminders.RemoveAll(x => x.Id == result.Id);
 
                     await CasesScheduler.Reload();
@@ -312,7 +312,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
                         UpdatedBy = App.User.UserName
                     });
 
-                    App.ActiveCustomerWithData.SelectedCase.Reminders[App.ActiveCustomerWithData.SelectedCase.Reminders.FindIndex(x => x.Id == result.Id)] = result;
+                    App.ActiveClientWithData.SelectedCase.Reminders[App.ActiveClientWithData.SelectedCase.Reminders.FindIndex(x => x.Id == result.Id)] = result;
                     App.CalendarPage.Reminders[App.CalendarPage.Reminders.FindIndex(x => x.Id == result.Id)] = result;
 
                     await CasesScheduler.Reload();

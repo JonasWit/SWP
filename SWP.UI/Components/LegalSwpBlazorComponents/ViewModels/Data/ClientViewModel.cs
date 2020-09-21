@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data
 {
-    public class CustomerViewModel
+    public class ClientViewModel
     {
         public int Id { get; set; }
         public string IdStr => Id.ToString();
@@ -24,7 +24,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data
 
         public List<CaseViewModel> Cases { get; set; }
 
-        public List<CustomerJobViewModel> Jobs { get; set; }
+        public List<ClientJobViewModel> Jobs { get; set; }
 
         public List<CashMovementViewModel> CashMovements { get; set; }
 
@@ -33,8 +33,8 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data
         public string UpdatedBy { get; set; }
         public string CreatedBy { get; set; }
 
-        public static implicit operator CustomerViewModel(Customer input) =>
-            new CustomerViewModel
+        public static implicit operator ClientViewModel(Client input) =>
+            new ClientViewModel
             { 
                 Id = input.Id,
                 Name = input.Name,
@@ -44,7 +44,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data
                 Email = input.Email,
                 PhoneNumber = input.PhoneNumber,
                 Cases = input.Cases == null ? new List<CaseViewModel>() : input.Cases.Select(x => (CaseViewModel)x).ToList(),
-                Jobs = input.Jobs == null ? new List<CustomerJobViewModel>() : input.Jobs.Select(x => (CustomerJobViewModel)x).ToList(),
+                Jobs = input.Jobs == null ? new List<ClientJobViewModel>() : input.Jobs.Select(x => (ClientJobViewModel)x).ToList(),
                 CashMovements = input.CashMovements == null ? new List<CashMovementViewModel>() : input.CashMovements.Select(x => (CashMovementViewModel)x).ToList(),
                 Created = input.Created,
                 Updated = input.Updated,

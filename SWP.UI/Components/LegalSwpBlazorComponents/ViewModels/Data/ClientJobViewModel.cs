@@ -3,7 +3,7 @@ using System;
 
 namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data
 {
-    public class CustomerJobViewModel
+    public class ClientJobViewModel
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -11,22 +11,22 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data
         public bool Active { get; set; }
         public int Priority { get; set; }
 
-        public int CustomerId { get; set; }
+        public int ClientId { get; set; }
 
         public DateTime Created { get; set; }
         public DateTime Updated { get; set; }
         public string UpdatedBy { get; set; }
         public string CreatedBy { get; set; }
 
-        public static implicit operator CustomerJobViewModel(CustomerJob input) =>
-            new CustomerJobViewModel
+        public static implicit operator ClientJobViewModel(ClientJob input) =>
+            new ClientJobViewModel
             {
                 Id = input.Id,
                 Name = input.Name,
                 Description = input.Description,
                 Active = input.Active,
                 Priority = input.Priority,
-                CustomerId = input.CustomerId,
+                ClientId = input.ClientId,
                 Created = input.Created,
                 Updated = input.Updated,
                 UpdatedBy = input.UpdatedBy,

@@ -13,8 +13,8 @@ namespace SWP.Application.LegalSwp.CashMovements
         private readonly ILegalSwpManager legalSwpManager;
         public CreateCashMovement(ILegalSwpManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
 
-        public Task<CashMovement> Create(int customerId, Request request) =>
-            legalSwpManager.CreateCashMovement(customerId, new CashMovement
+        public Task<CashMovement> Create(int ClientId, Request request) =>
+            legalSwpManager.CreateCashMovement(ClientId, new CashMovement
             {
                 Name = request.Name,
                 Amount = request.Amount,

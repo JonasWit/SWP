@@ -8,14 +8,14 @@ using System.Threading.Tasks;
 namespace SWP.Application.LegalSwp.Jobs
 {
     [TransientService]
-    public class UpdateCustomerJob
+    public class UpdateClientJob
     {
         private readonly ILegalSwpManager legalSwpManager;
-        public UpdateCustomerJob(ILegalSwpManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
+        public UpdateClientJob(ILegalSwpManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
 
-        public Task<CustomerJob> Update(Request request)
+        public Task<ClientJob> Update(Request request)
         {
-            var job = legalSwpManager.GetCustomerJob(request.Id, x => x);
+            var job = legalSwpManager.GetClientJob(request.Id, x => x);
 
             job.Name = request.Name;
             job.Description = request.Description;
@@ -24,7 +24,7 @@ namespace SWP.Application.LegalSwp.Jobs
             job.Updated = DateTime.Now;
             job.UpdatedBy = request.UpdatedBy;
 
-            return legalSwpManager.UpdateCustomerJob(job);
+            return legalSwpManager.UpdateClientJob(job);
         }
 
         public class Request

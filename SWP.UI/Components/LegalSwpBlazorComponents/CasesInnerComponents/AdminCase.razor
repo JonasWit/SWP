@@ -1,6 +1,6 @@
 ﻿
 <RadzenGrid @ref="App.CasesPage.CasesGrid" AllowFiltering="true" AllowPaging="true" PageSize="5" AllowSorting="true"
-            Data="@App.ActiveCustomerWithData.Cases" TItem="CaseViewModel" RowUpdate="@App.CasesPage.OnUpdateCaseRow">
+            Data="@App.ActiveClientWithData.Cases" TItem="CaseViewModel" RowUpdate="@App.CasesPage.OnUpdateCaseRow">
     <Columns>
         <RadzenGridColumn TItem="CaseViewModel" Property="Name" Title="Case Name">
             <EditTemplate Context="c">
@@ -73,20 +73,20 @@
     </Columns>
 </RadzenGrid>
 
-@if (App.ActiveCustomerWithData.SelectedCase == null)
+@if (App.ActiveClientWithData.SelectedCase == null)
 {
     <h3>Brak aktywnej sprawy</h3>
 }
 else
 {
-    <h3>Aktywna sprawa - @App.ActiveCustomerWithData.SelectedCase.Name</h3>
+    <h3>Aktywna sprawa - @App.ActiveClientWithData.SelectedCase.Name</h3>
 
     <RadzenTabs>
         <Tabs>
             <RadzenTabsItem Text="Calendar">
                 <div class="row">
                     <div class="col-md-6">
-                        <RadzenScheduler @ref="App.CasesPage.CasesScheduler" style="height: 768px;" TItem="ReminderViewModel" Data="@App.ActiveCustomerWithData.SelectedCase.Reminders" StartProperty="Start" EndProperty="End" TextProperty="Name" SelectedIndex="2" SlotSelect="@App.CasesPage.OnSlotSelect" AppointmentSelect="@App.CasesPage.OnAppointmentSelect" AppointmentRender="@App.CasesPage.OnAppointmentRender" TodayText="Dzisiaj">
+                        <RadzenScheduler @ref="App.CasesPage.CasesScheduler" style="height: 768px;" TItem="ReminderViewModel" Data="@App.ActiveClientWithData.SelectedCase.Reminders" StartProperty="Start" EndProperty="End" TextProperty="Name" SelectedIndex="2" SlotSelect="@App.CasesPage.OnSlotSelect" AppointmentSelect="@App.CasesPage.OnAppointmentSelect" AppointmentRender="@App.CasesPage.OnAppointmentRender" TodayText="Dzisiaj">
                             <Template Context="data">
                                 <strong>@data.Name</strong>
                             </Template>
@@ -100,18 +100,18 @@ else
 
                     <RadzenCard Style="margin-bottom:20px">
                         Company:
-                        <b>@App.ActiveCustomerWithData.SelectedCase.Name</b>
+                        <b>@App.ActiveClientWithData.SelectedCase.Name</b>
 
                         <div class="row">
                             <div class="col-md-6">
                                 <div>Selected Case:</div>
-                                <b>@App.ActiveCustomerWithData.SelectedCase.Name</b>
+                                <b>@App.ActiveClientWithData.SelectedCase.Name</b>
                             </div>
                             <div class="col-md-6">
                                 <div>Signature:</div>
-                                <b>@App.ActiveCustomerWithData.SelectedCase?.Signature</b>
+                                <b>@App.ActiveClientWithData.SelectedCase?.Signature</b>
                                 <div style="margin-top:20px">Description:</div>
-                                <b>@App.ActiveCustomerWithData.SelectedCase?.Description</b>
+                                <b>@App.ActiveClientWithData.SelectedCase?.Description</b>
                             </div>
                         </div>
                     </RadzenCard>
@@ -126,16 +126,16 @@ else
                         <AdminCaseNotesGrid @bind-App="App"></AdminCaseNotesGrid>
                     </div>
                     <div class="col-md-4">
-                        @if (App.ActiveCustomerWithData.SelectedCase != null &&
-                           App.ActiveCustomerWithData.SelectedCase.SelectedNote != null)
+                        @if (App.ActiveClientWithData.SelectedCase != null &&
+                           App.ActiveClientWithData.SelectedCase.SelectedNote != null)
                         {
                             <RadzenCard Style="margin-bottom:20px">
                                 Note:
-                                <b>@App.ActiveCustomerWithData.SelectedCase.SelectedNote.Name</b>
+                                <b>@App.ActiveClientWithData.SelectedCase.SelectedNote.Name</b>
                             </RadzenCard>
                             <RadzenCard Style="margin-bottom:20px">
                                 Details:
-                                <b>@App.ActiveCustomerWithData.SelectedCase.SelectedNote.Message</b>
+                                <b>@App.ActiveClientWithData.SelectedCase.SelectedNote.Message</b>
                             </RadzenCard>
                         }
                     </div>

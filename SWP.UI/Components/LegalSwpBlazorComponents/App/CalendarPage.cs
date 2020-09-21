@@ -54,12 +54,12 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
         private void SubscribeToEvents()
         {
-            App.ActiveCustomerChanged += new EventHandler(ActiveCustomerHasChanged);
+            App.ActiveClientChanged += new EventHandler(ActiveClientHasChanged);
         }
 
         private void UnsubscribeEvents()
         {
-            App.ActiveCustomerChanged -= new EventHandler(ActiveCustomerHasChanged);
+            App.ActiveClientChanged -= new EventHandler(ActiveClientHasChanged);
         }
 
         #region Reminders Calendar
@@ -69,9 +69,9 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
         public void RefreshCalendarData()
         {
-            if (App.ActiveCustomer != null)
+            if (App.ActiveClient != null)
             {
-                Reminders = getReminders.Get(App.ActiveCustomer.Id).Select(x => (ReminderViewModel)x).ToList();
+                Reminders = getReminders.Get(App.ActiveClient.Id).Select(x => (ReminderViewModel)x).ToList();
             }
             else
             {
@@ -81,7 +81,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
         public async Task OnAppointmentSelect(SchedulerAppointmentSelectEventArgs<ReminderViewModel> args)
         {
-            ReminderViewModel result = await dialogService.OpenAsync<EditReminderPage>($"Customer: {getCase.GetCaseParentName(args.Data.CaseId)} Case: {getCase.GetCaseName(args.Data.CaseId)}", new Dictionary<string, object> { { "Reminder", args.Data } });
+            ReminderViewModel result = await dialogService.OpenAsync<EditReminderPage>($"Client: {getCase.GetCaseParentName(args.Data.CaseId)} Case: {getCase.GetCaseName(args.Data.CaseId)}", new Dictionary<string, object> { { "Reminder", args.Data } });
 
             if (result != null)
             {
@@ -90,9 +90,9 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
                     await deleteReminder.Delete(result.Id);
                     Reminders.RemoveAll(x => x.Id == result.Id);
 
-                    if (App.ActiveCustomerWithData != null)
+                    if (App.ActiveClientWithData != null)
                     {
-                        var c = App.ActiveCustomerWithData.Cases.FirstOrDefault(x => x.Reminders.Any(y => y.Id == result.Id));
+                        var c = App.ActiveClientWithData.Cases.FirstOrDefault(x => x.Reminders.Any(y => y.Id == result.Id));
 
                         if (c != null)
                         {
@@ -121,9 +121,9 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
                     Reminders.RemoveAll(x => x.Id == updatedEntity.Id);
                     Reminders.Add(updatedEntity);
 
-                    if (App.ActiveCustomerWithData != null)
+                    if (App.ActiveClientWithData != null)
                     {
-                        var c = App.ActiveCustomerWithData.Cases.FirstOrDefault(x => x.Reminders.Any(y => y.Id == result.Id));
+                        var c = App.ActiveClientWithData.Cases.FirstOrDefault(x => x.Reminders.Any(y => y.Id == result.Id));
 
                         if (c != null)
                         {
@@ -153,7 +153,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             }
         }
 
-        private void ActiveCustomerHasChanged(object sender, EventArgs e) => RefreshCalendarData();
+        private void ActiveClientHasChanged(object sender, EventArgs e) => RefreshCalendarData();
 
         public void Dispose()
         {

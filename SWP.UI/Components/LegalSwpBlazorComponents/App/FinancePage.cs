@@ -31,35 +31,35 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         public RadzenGrid<CashMovementViewModel> CashMovementGrid { get; set; }
 
 
-        public void EditCashMovementRow(CashMovementViewModel customer) => CashMovementGrid.EditRow(customer);
+        public void EditCashMovementRow(CashMovementViewModel Client) => CashMovementGrid.EditRow(Client);
 
-        public async Task OnUpdateCashMovementRow(CashMovementViewModel customer)
+        public async Task OnUpdateCashMovementRow(CashMovementViewModel Client)
         {
             try
             {
-                //var result = await updateCustomer.Update(new UpdateCustomer.Request
+                //var result = await updateClient.Update(new UpdateClient.Request
                 //{
-                //    Id = customer.Id,
-                //    Active = customer.Active,
-                //    Address = customer.Address,
-                //    Email = customer.Email,
-                //    Name = customer.Name,
-                //    PhoneNumber = customer.PhoneNumber,
+                //    Id = Client.Id,
+                //    Active = Client.Active,
+                //    Address = Client.Address,
+                //    Email = Client.Email,
+                //    Name = Client.Name,
+                //    PhoneNumber = Client.PhoneNumber,
                 //    ProfileClaim = App.User.Profile,
                 //    UpdatedBy = App.User.UserName
                 //});
 
-                //if (App.ActiveCustomer != null && App.ActiveCustomer.Id == result.Id)
+                //if (App.ActiveClient != null && App.ActiveClient.Id == result.Id)
                 //{
-                //    App.ActiveCustomer = result;
+                //    App.ActiveClient = result;
                 //}
                 //else
                 //{
-                //    App.Customers[App.Customers.FindIndex(x => x.Id == result.Id)] = result;
+                //    App.Clients[App.Clients.FindIndex(x => x.Id == result.Id)] = result;
                 //}
 
-                //await CustomersGrid.Reload();
-                //App.ShowNotification(NotificationSeverity.Success, "Success!", $"Customer: {result.Name} has been updated.", 2000);
+                //await ClientsGrid.Reload();
+                //App.ShowNotification(NotificationSeverity.Success, "Success!", $"Client: {result.Name} has been updated.", 2000);
             }
             catch (Exception ex)
             {
@@ -67,23 +67,23 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             }
         }
 
-        public void SaveCashMovementRow(CashMovementViewModel customer) => CashMovementGrid.UpdateRow(customer);
+        public void SaveCashMovementRow(CashMovementViewModel Client) => CashMovementGrid.UpdateRow(Client);
 
-        public void CancelCashMovementEdit(CashMovementViewModel customer)
+        public void CancelCashMovementEdit(CashMovementViewModel Client)
         {
-            //CustomersGrid.CancelEditRow(customer);
-            //App.RefreshCustomers();
+            //ClientsGrid.CancelEditRow(Client);
+            //App.RefreshClients();
         }
 
-        public async Task DeleteCashMovementRow(CashMovementViewModel customer)
+        public async Task DeleteCashMovementRow(CashMovementViewModel Client)
         {
             try
             {
-                //await deleteCustomer.Delete(customer.Id);
-                //App.Customers.RemoveAll(x => x.Id == customer.Id);
+                //await deleteClient.Delete(Client.Id);
+                //App.Clients.RemoveAll(x => x.Id == Client.Id);
 
-                //await CustomersGrid.Reload();
-                //App.ShowNotification(NotificationSeverity.Warning, "Success!", $"Customer: {customer.Name} has been deleted.", 2000);
+                //await ClientsGrid.Reload();
+                //App.ShowNotification(NotificationSeverity.Warning, "Success!", $"Client: {Client.Name} has been deleted.", 2000);
             }
             catch (Exception ex)
             {
@@ -93,17 +93,17 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
         public async Task SubmitNewCashMovement(CreateCashMovement.Request arg)
         {
-            //NewCustomer.ProfileClaim = App.User.Profile;
-            //NewCustomer.UpdatedBy = App.User.UserName;
+            //NewClient.ProfileClaim = App.User.Profile;
+            //NewClient.UpdatedBy = App.User.UserName;
 
             try
             {
-                //var result = await createCustomer.Do(NewCustomer);
-                //NewCustomer = new CreateCustomer.Request();
+                //var result = await createClient.Do(NewClient);
+                //NewClient = new CreateClient.Request();
 
-                //App.Customers.Add(result);
-                //await CustomersGrid.Reload();
-                //App.ShowNotification(NotificationSeverity.Success, "Success!", $"Customer: {result.Name} has been added.", 2000);
+                //App.Clients.Add(result);
+                //await ClientsGrid.Reload();
+                //App.ShowNotification(NotificationSeverity.Success, "Success!", $"Client: {result.Name} has been added.", 2000);
             }
             catch (Exception ex)
             {

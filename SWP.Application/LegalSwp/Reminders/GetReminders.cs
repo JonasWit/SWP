@@ -13,6 +13,6 @@ namespace SWP.Application.LegalSwp.Reminders
         public GetReminders(ILegalSwpManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
 
         public List<Reminder> Get(string profileClaim) => legalSwpManager.GetReminders(profileClaim);
-        public List<Reminder> Get(int customerId) => legalSwpManager.GetRemindersForCustomer(customerId);
+        public List<Reminder> Get(int ClientId) => legalSwpManager.GetRemindersForClient(ClientId);
     }
 }

@@ -6,15 +6,15 @@ using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SWP.Application.LegalSwp.Customers
+namespace SWP.Application.LegalSwp.Clients
 {
     [TransientService]
-    public class CreateCustomer
+    public class CreateClient
     {
         private readonly ILegalSwpManager legalSwpManager;
-        public CreateCustomer(ILegalSwpManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
+        public CreateClient(ILegalSwpManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
 
-        public Task<Customer> Do(Request request) => legalSwpManager.CreateCustomer(new Customer
+        public Task<Client> Do(Request request) => legalSwpManager.CreateClient(new Client
         {
             Name = request.Name,
             ProfileClaim = request.ProfileClaim,
@@ -22,7 +22,7 @@ namespace SWP.Application.LegalSwp.Customers
             Email = string.IsNullOrEmpty(request.Email) ? "Brak" : request.Email,
             PhoneNumber = string.IsNullOrEmpty(request.PhoneNumber) ? "Brak" : request.PhoneNumber,
             Cases = new List<Case>(),
-            Jobs = new List<CustomerJob>(),
+            Jobs = new List<ClientJob>(),
             Created = DateTime.Now,
             Updated = DateTime.Now,
             UpdatedBy = request.UpdatedBy,

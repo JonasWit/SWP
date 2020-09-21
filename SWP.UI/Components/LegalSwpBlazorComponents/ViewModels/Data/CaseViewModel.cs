@@ -20,7 +20,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data
         public List<NoteViewModel> Notes { get; set; }
         public NoteViewModel SelectedNote { get; set; }
 
-        public int CustomerId { get; set; }
+        public int ClientId { get; set; }
 
         public DateTime Created { get; set; }
         public DateTime Updated { get; set; }
@@ -39,7 +39,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data
                 Active = input.Active,
                 Reminders = input.Reminders == null ? new List<ReminderViewModel>() : input.Reminders.Select(x => (ReminderViewModel)x).ToList(),
                 Notes = input.Notes == null ? new List<NoteViewModel>() : input.Notes.Select(x => (NoteViewModel)x).ToList(),
-                CustomerId = input.CustomerId,
+                ClientId = input.ClientId,
                 Created = input.Created,
                 Updated = input.Updated,
                 UpdatedBy = input.UpdatedBy,

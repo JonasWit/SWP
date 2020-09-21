@@ -13,7 +13,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
         public LegalBlazorApp App { get; private set; }
 
-        public List<DataItem> CustomersCases { get; set; } = new List<DataItem>();
+        public List<DataItem> ClientsCases { get; set; } = new List<DataItem>();
 
         public MyAppPage(ProfileStatistics profileStatistics)
         {
@@ -31,12 +31,12 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         {
             var statistics = profileStatistics.GetStatistics(App.User.Profile);
 
-            foreach (var customer in statistics.Customers)
+            foreach (var Client in statistics.Clients)
             {
-                CustomersCases.Add(new DataItem 
+                ClientsCases.Add(new DataItem 
                 { 
-                    Category = customer.Name,
-                    Number = customer.Cases.Count
+                    Category = Client.Name,
+                    Number = Client.Cases.Count
                 });
             }
         }

@@ -15,10 +15,10 @@ namespace SWP.DataBase.Managers
         private readonly ApplicationDbContext context;
         public LegalSwpManager(ApplicationDbContext context) => this.context = context;
 
-        #region Customer
+        #region Client
 
-        public TResult GetCustomer<TResult>(int id, string profile, Func<Customer, TResult> selector) =>
-            context.Customers
+        public TResult GetClient<TResult>(int id, string profile, Func<Client, TResult> selector) =>
+            context.Clients
                 .Include(x => x.Cases)
                     .ThenInclude(y => y.Reminders)
                 .Include(x => x.Cases)
@@ -29,15 +29,15 @@ namespace SWP.DataBase.Managers
                 .Select(selector)
                 .FirstOrDefault();
 
-        public TResult GetCustomerWithoutCases<TResult>(int id, string profile, Func<Customer, TResult> selector) =>
-            context.Customers
+        public TResult GetClientWithoutCases<TResult>(int id, string profile, Func<Client, TResult> selector) =>
+            context.Clients
                 .Include(x => x.Jobs)
                 .Where(x => x.Id == id && x.ProfileClaim == profile)
                 .Select(selector)
                 .FirstOrDefault();
 
-        public List<TResult> GetCustomers<TResult>(string profile, Func<Customer, TResult> selector) =>
-            context.Customers
+        public List<TResult> GetClients<TResult>(string profile, Func<Client, TResult> selector) =>
+            context.Clients
                 .Include(x => x.Cases)
                     .ThenInclude(y => y.Reminders)
                 .Include(x => x.Cases)
@@ -47,41 +47,41 @@ namespace SWP.DataBase.Managers
                 .Select(selector)
                 .ToList();
 
-        public List<Customer> GetCustomersWithoutCases(string profile) =>
-            context.Customers
+        public List<Client> GetClientsWithoutCases(string profile) =>
+            context.Clients
                 .Include(x => x.Jobs)
                 .Where(x => x.ProfileClaim == profile)
                 .AsNoTracking()
                 .ToList();
 
-        public async Task<Customer> CreateCustomer(Customer customer)
+        public async Task<Client> CreateClient(Client Client)
         {
-            context.Customers.Add(customer);
+            context.Clients.Add(Client);
             await context.SaveChangesAsync();
-            return customer;
+            return Client;
         }
 
-        public async Task<Customer> UpdateCustomer(Customer customer)
+        public async Task<Client> UpdateClient(Client Client)
         {
-            context.Customers.Update(customer);
+            context.Clients.Update(Client);
             await context.SaveChangesAsync();
-            return customer;
+            return Client;
         }
 
-        public Task<int> DeleteCustomer(int id)
+        public Task<int> DeleteClient(int id)
         {
-            context.Customers.Remove(context.Customers.FirstOrDefault(x => x.Id == id));
+            context.Clients.Remove(context.Clients.FirstOrDefault(x => x.Id == id));
             return context.SaveChangesAsync();
         }
 
-        public Task<int> DeleteProfileCustomers(string profile)
+        public Task<int> DeleteProfileClients(string profile)
         {
-            var customers = GetCustomers(profile, x => x.Id);
-            context.Customers.RemoveRange(context.Customers.Where(x => customers.Contains(x.Id)));
+            var Clients = GetClients(profile, x => x.Id);
+            context.Clients.RemoveRange(context.Clients.Where(x => Clients.Contains(x.Id)));
             return context.SaveChangesAsync();
         }
 
-        public int CountCustomers() => context.Customers.Count();
+        public int CountClients() => context.Clients.Count();
 
         #endregion
 
@@ -113,10 +113,10 @@ namespace SWP.DataBase.Managers
             return context.SaveChangesAsync();
         }
 
-        public async Task<Case> CreateCase(int customerId, string profile, Case c)
+        public async Task<Case> CreateCase(int ClientId, string profile, Case c)
         {
-            var customerEntity = GetCustomer(customerId, profile, x => x);
-            customerEntity.Cases.Add(c);
+            var ClientEntity = GetClient(ClientId, profile, x => x);
+            ClientEntity.Cases.Add(c);
             await context.SaveChangesAsync();
             return c;
         }
@@ -128,9 +128,9 @@ namespace SWP.DataBase.Managers
             return c;
         }
 
-        public int CountCases(int customerId) => context.Cases.Count(x => x.CustomerId == customerId);
+        public int CountCases(int ClientId) => context.Cases.Count(x => x.ClientId == ClientId);
 
-        public string GetCaseParentName(int id) => context.Customers.Where(x => x.Cases.Any(y => y.Id == id)).Select(x => x.Name).FirstOrDefault();
+        public string GetCaseParentName(int id) => context.Clients.Where(x => x.Cases.Any(y => y.Id == id)).Select(x => x.Name).FirstOrDefault();
 
         public string GetCaseName(int id) => context.Cases.Where(x => x.Id == id).Select(y => y.Name).FirstOrDefault();
 
@@ -145,16 +145,16 @@ namespace SWP.DataBase.Managers
                 .FirstOrDefault();
 
         public List<Reminder> GetReminders(string profile) =>
-            context.Customers
+            context.Clients
                 .Where(x => x.ProfileClaim == profile)
                 .Include(x => x.Cases)
                     .ThenInclude(y => y.Reminders)
                 .SelectMany(x => x.Cases.SelectMany(x => x.Reminders))
                 .ToList();
 
-        public List<Reminder> GetRemindersForCustomer(int customerId) =>
-            context.Customers
-                .Where(x => x.Id == customerId)
+        public List<Reminder> GetRemindersForClient(int ClientId) =>
+            context.Clients
+                .Where(x => x.Id == ClientId)
                 .Include(x => x.Cases)
                     .ThenInclude(y => y.Reminders)
                 .SelectMany(x => x.Cases.SelectMany(x => x.Reminders))
@@ -224,30 +224,30 @@ namespace SWP.DataBase.Managers
 
         #region Job
 
-        public async Task<CustomerJob> CreateCustomerJob(int customerId, string profile, CustomerJob job)
+        public async Task<ClientJob> CreateClientJob(int ClientId, string profile, ClientJob job)
         {
-            var cs = GetCustomer(customerId, profile, x => x);
+            var cs = GetClient(ClientId, profile, x => x);
             cs.Jobs.Add(job);
             await context.SaveChangesAsync();
             return job;
         }
 
-        public Task<int> DeleteCustomerJob(int id)
+        public Task<int> DeleteClientJob(int id)
         {
-            var job = GetCustomerJob(id, x => x);
-            context.CustomerJobs.Remove(job);
+            var job = GetClientJob(id, x => x);
+            context.ClientJobs.Remove(job);
             return context.SaveChangesAsync();
         }
 
-        public TResult GetCustomerJob<TResult>(int id, Func<CustomerJob, TResult> selector) =>
-            context.CustomerJobs
+        public TResult GetClientJob<TResult>(int id, Func<ClientJob, TResult> selector) =>
+            context.ClientJobs
                 .Where(x => x.Id == id)
                 .Select(selector)
                 .FirstOrDefault();
 
-        public async Task<CustomerJob> UpdateCustomerJob(CustomerJob job)
+        public async Task<ClientJob> UpdateClientJob(ClientJob job)
         {
-            context.CustomerJobs.Update(job);
+            context.ClientJobs.Update(job);
             await context.SaveChangesAsync();
             return job;
         }
@@ -258,14 +258,14 @@ namespace SWP.DataBase.Managers
 
         public CashMovement GetCashMovement(int id) => context.CashMovements.FirstOrDefault(x => x.Id == id);
 
-        public List<CashMovement> GetCashMovementsForCustomer(int customerId) =>
+        public List<CashMovement> GetCashMovementsForClient(int ClientId) =>
             context.CashMovements
-                .Where(x => x.CustomerId == customerId)
+                .Where(x => x.ClientId == ClientId)
                 .ToList();
 
-        public async Task<CashMovement> CreateCashMovement(int customerId, CashMovement cashMovement)
+        public async Task<CashMovement> CreateCashMovement(int ClientId, CashMovement cashMovement)
         {
-            var cs = context.Customers.FirstOrDefault(x =>x.Id == customerId);
+            var cs = context.Clients.FirstOrDefault(x =>x.Id == ClientId);
             cs.CashMovements.Add(cashMovement);
             await context.SaveChangesAsync();
             return cashMovement;
@@ -289,11 +289,11 @@ namespace SWP.DataBase.Managers
 
         #region Statistics
 
-        public int CountCasesPerCustomer(int customerId) => 
-            context.Cases.AsNoTracking().Count(x => x.CustomerId == customerId);
+        public int CountCasesPerClient(int ClientId) => 
+            context.Cases.AsNoTracking().Count(x => x.ClientId == ClientId);
 
-        public int CountJobsPerCustomer(int customerId) => 
-            context.CustomerJobs.AsNoTracking().Count(x => x.CustomerId == customerId);
+        public int CountJobsPerClient(int ClientId) => 
+            context.ClientJobs.AsNoTracking().Count(x => x.ClientId == ClientId);
 
         public int CountRemindersPerCase(int caseId) => 
             context.Reminders.AsNoTracking()
@@ -306,11 +306,11 @@ namespace SWP.DataBase.Managers
         public int CountNotesPerCase(int caseId) => 
             context.Notes.AsNoTracking().Count(x => x.CaseId == caseId);
 
-        public IEnumerable<int> GetCustomerCasesIds(int customerId) =>
-            context.Customers
+        public IEnumerable<int> GetClientCasesIds(int ClientId) =>
+            context.Clients
                 .AsNoTracking()
                 .Include(x => x.Cases)
-                .FirstOrDefault(x => x.Id == customerId).Cases
+                .FirstOrDefault(x => x.Id == ClientId).Cases
                 .Select(y => y.Id)
                 .ToList();
 

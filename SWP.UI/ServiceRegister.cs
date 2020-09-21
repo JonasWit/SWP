@@ -80,7 +80,7 @@ namespace SWP.UI
 
             //@this.AddTransient<CasesPanel>();
             //@this.AddTransient<CalendarPanel>();
-            //@this.AddTransient<CustomersPanel>();
+            //@this.AddTransient<ClientsPanel>();
             //@this.AddTransient<LegalSwpApp>();
 
 

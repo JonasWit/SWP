@@ -11,8 +11,8 @@ namespace SWP.Domain.Models.SWPLegal
         [Required]
         public string Name { get; set; }
 
-        public int CustomerId { get; set; }
+        public int ClientId { get; set; }
 
-        public Customer Customer { get; set; }
+        public Client Client { get; set; }
     }
 }

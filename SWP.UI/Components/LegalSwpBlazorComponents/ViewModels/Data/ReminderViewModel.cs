@@ -8,7 +8,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data
         public int Id { get; set; }
         public string Name { get; set; }
         public string ParentCaseName { get; set; }
-        public string ParentCustomerName { get; set; }
+        public string ParentClientName { get; set; }
         public string Message { get; set; }
         public bool Active { get; set; }
         public int Priority { get; set; }
@@ -43,7 +43,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data
                 End = input.End,
                 IsDeadline = input.IsDeadline,
                 ParentCaseName = input.Case?.Name,
-                ParentCustomerName = input.Case?.Customer?.Name,
+                ParentClientName = input.Case?.Client?.Name,
                 CreatedBy = input.CreatedBy
             };
 

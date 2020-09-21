@@ -1,5 +1,5 @@
 ﻿<RadzenGrid @ref="App.CasesPage.NotesGrid" AllowFiltering="true" AllowPaging="true" PageSize="10" AllowSorting="true"
-            Data="@App.ActiveCustomerWithData.SelectedCase.Notes" TItem="NoteViewModel" RowUpdate="@App.CasesPage.OnUpdateNoteRow">
+            Data="@App.ActiveClientWithData.SelectedCase.Notes" TItem="NoteViewModel" RowUpdate="@App.CasesPage.OnUpdateNoteRow">
     <Columns>
         <RadzenGridColumn TItem="NoteViewModel" Property="Name" Title="Name">
             <EditTemplate Context="note">

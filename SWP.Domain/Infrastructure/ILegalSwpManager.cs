@@ -8,26 +8,26 @@ namespace SWP.Domain.Infrastructure
 {
     public interface ILegalSwpManager
     {
-        #region Customers
+        #region Clients
 
-        TResult GetCustomer<TResult>(int id, string profile, Func<Customer, TResult> selector);
-        TResult GetCustomerWithoutCases<TResult>(int id, string profile, Func<Customer, TResult> selector);
-        List<TResult> GetCustomers<TResult>(string profile, Func<Customer, TResult> selector);
-        List<Customer> GetCustomersWithoutCases(string profile);
+        TResult GetClient<TResult>(int id, string profile, Func<Client, TResult> selector);
+        TResult GetClientWithoutCases<TResult>(int id, string profile, Func<Client, TResult> selector);
+        List<TResult> GetClients<TResult>(string profile, Func<Client, TResult> selector);
+        List<Client> GetClientsWithoutCases(string profile);
 
-        Task<Customer> CreateCustomer(Customer customer);
-        Task<Customer> UpdateCustomer(Customer customer);
-        Task<int> DeleteCustomer(int id);
-        Task<int> DeleteProfileCustomers(string profile);
+        Task<Client> CreateClient(Client Client);
+        Task<Client> UpdateClient(Client Client);
+        Task<int> DeleteClient(int id);
+        Task<int> DeleteProfileClients(string profile);
 
         #endregion
 
         #region Jobs
 
-        Task<CustomerJob> CreateCustomerJob(int customerId, string profile, CustomerJob job);
-        Task<int> DeleteCustomerJob(int id);
-        Task<CustomerJob> UpdateCustomerJob(CustomerJob job);
-        TResult GetCustomerJob<TResult>(int id, Func<CustomerJob, TResult> selector);
+        Task<ClientJob> CreateClientJob(int ClientId, string profile, ClientJob job);
+        Task<int> DeleteClientJob(int id);
+        Task<ClientJob> UpdateClientJob(ClientJob job);
+        TResult GetClientJob<TResult>(int id, Func<ClientJob, TResult> selector);
 
         #endregion
 
@@ -38,10 +38,10 @@ namespace SWP.Domain.Infrastructure
         string GetCaseParentName(int id);
         string GetCaseName(int id);
 
-        Task<Case> CreateCase(int customerId, string profile, Case c);
+        Task<Case> CreateCase(int ClientId, string profile, Case c);
         Task<Case> UpdateCase(Case c);
         Task<int> DeleteCase(int id);
-        int CountCases(int customerId);
+        int CountCases(int ClientId);
 
         #endregion
 
@@ -49,7 +49,7 @@ namespace SWP.Domain.Infrastructure
 
         TResult GetReminder<TResult>(int id, Func<Reminder, TResult> selector);
         List<Reminder> GetReminders(string profile);
-        List<Reminder> GetRemindersForCustomer(int customerId);
+        List<Reminder> GetRemindersForClient(int ClientId);
 
         Task<Reminder> CreateReminder(int caseId, Reminder reminder);
         Task<Reminder> UpdateReminder(Reminder reminder);
@@ -72,10 +72,10 @@ namespace SWP.Domain.Infrastructure
 
         #region Statistics
 
-        int CountCustomers();
-        int CountCasesPerCustomer(int customerId);
-        int CountJobsPerCustomer(int customerId);
-        IEnumerable<int> GetCustomerCasesIds(int customerId);
+        int CountClients();
+        int CountCasesPerClient(int ClientId);
+        int CountJobsPerClient(int ClientId);
+        IEnumerable<int> GetClientCasesIds(int ClientId);
 
         int CountRemindersPerCase(int caseId);
         int CountDeadlineRemindersPerCase(int caseId);
@@ -86,8 +86,8 @@ namespace SWP.Domain.Infrastructure
         #region Cash Movements
 
         CashMovement GetCashMovement(int id);
-        List<CashMovement> GetCashMovementsForCustomer(int customerId);
-        Task<CashMovement> CreateCashMovement(int customerId, CashMovement cashMovement);
+        List<CashMovement> GetCashMovementsForClient(int ClientId);
+        Task<CashMovement> CreateCashMovement(int ClientId, CashMovement cashMovement);
         Task<CashMovement> UpdateCashMovement(CashMovement cashMovement);
         Task<int> DeleteCashMovement(int id);
 

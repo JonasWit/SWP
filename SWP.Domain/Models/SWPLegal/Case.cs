@@ -28,8 +28,8 @@ namespace SWP.Domain.Models.SWPLegal
 
         public List<Note> Notes { get; set; }
 
-        public int CustomerId { get; set; }
+        public int ClientId { get; set; }
 
-        public Customer Customer { get; set; }
+        public Client Client { get; set; }
     }
 }

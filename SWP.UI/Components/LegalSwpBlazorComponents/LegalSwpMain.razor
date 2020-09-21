@@ -14,7 +14,7 @@
                 <label class="px-3">Client Name</label>
             </div>
 
-            <Radzen.Blazor.RadzenDropDown AllowClear="true" TValue="string" AllowFiltering="true" Data="@App.Customers" TextProperty="Name" ValueProperty="IdStr" Style="margin-bottom: 20px; width: 180px;" Change="@(args => App.ActiveCustomerChange(args))" />
+            <Radzen.Blazor.RadzenDropDown AllowClear="true" TValue="string" AllowFiltering="true" Data="@App.Clients" TextProperty="Name" ValueProperty="IdStr" Style="margin-bottom: 20px; width: 180px;" Change="@(args => App.ActiveClientChange(args))" />
 
         </div>
         <p class="explain px-3">Wybierz Klienta by zobaczyc jego sprawy</p>
@@ -28,7 +28,7 @@
                     </NavLink>
                 </li>
                 <li class="nav-item px-3">
-                    <NavLink class="nav-link" @onclick="@(() => App.SetActivePanel(LegalBlazorApp.Panels.Customers))">
+                    <NavLink class="nav-link" @onclick="@(() => App.SetActivePanel(LegalBlazorApp.Panels.Clients))">
                         <i><img src="/Images/icons8-reception-36.png" /></i> Klienci
                     </NavLink>
                 </li>
@@ -43,7 +43,7 @@
                     </NavLink>
                 </li>
 
-                @if (App.ActiveCustomerWithData != null)
+                @if (App.ActiveClientWithData != null)
                 {
                     <li class="nav-item px-3">
                         <NavLink class="nav-link" @onclick="@(() => App.SetActivePanel(LegalBlazorApp.Panels.Cases))">
@@ -65,8 +65,8 @@
         <RadzenNotification />
         @switch (App.ActivePanel)
         {
-            case LegalBlazorApp.Panels.Customers:
-                <LegalSwpCustomers @bind-App="App" />
+            case LegalBlazorApp.Panels.Clients:
+                <LegalSwpClients @bind-App="App" />
                 break;
             case LegalBlazorApp.Panels.Calendar:
                 <LegalSwpCalendar @bind-App="App" />

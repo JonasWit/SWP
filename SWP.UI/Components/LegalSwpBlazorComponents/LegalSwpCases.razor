@@ -3,7 +3,7 @@
 
 <h2>Sprawy</h2>
 
-@if (App.ActiveCustomerWithData != null)
+@if (App.ActiveClientWithData != null)
 {
     <RadzenButton Click="@(() => App.CasesPage.SetActivePanel(CasesPage.Panels.AddCase))" Text="Dodaj Nową Sprawę" Style="margin-bottom: 20px;" />
     <RadzenButton Click="@(() => App.CasesPage.SetActivePanel(CasesPage.Panels.Admin))" Text="Zarządzaj Sprawami" Style="margin-bottom: 20px;" />
@@ -19,7 +19,7 @@ else
     {
         case CasesPage.Panels.Admin:
             <h2>Panel Administracyjny</h2>
-            <h2>Zarządzaj sprawami klienta: (@App.ActiveCustomerWithData.Name)</h2>
+            <h2>Zarządzaj sprawami klienta: (@App.ActiveClientWithData.Name)</h2>
 
             <RadzenDialog />
             <RadzenNotification />

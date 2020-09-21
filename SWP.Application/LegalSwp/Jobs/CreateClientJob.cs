@@ -9,13 +9,13 @@ using System.Threading.Tasks;
 namespace SWP.Application.LegalSwp.Jobs
 {
     [TransientService]
-    public class CreateCustomerJob
+    public class CreateClientJob
     {
         private readonly ILegalSwpManager legalSwpManager;
-        public CreateCustomerJob(ILegalSwpManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
+        public CreateClientJob(ILegalSwpManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
 
-        public Task<CustomerJob> Create(Request request) => 
-            legalSwpManager.CreateCustomerJob(request.CustomerId, request.ProfileClaim, new CustomerJob
+        public Task<ClientJob> Create(Request request) => 
+            legalSwpManager.CreateClientJob(request.ClientId, request.ProfileClaim, new ClientJob
             {
                 Active = true,
                 Priority = request.Priority,
@@ -35,7 +35,7 @@ namespace SWP.Application.LegalSwp.Jobs
             public bool Active { get; set; }
             public int Priority { get; set; }
 
-            public int CustomerId { get; set; }
+            public int ClientId { get; set; }
             public string ProfileClaim { get; set; }
 
             public DateTime Created { get; set; }

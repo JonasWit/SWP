@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Radzen;
-using SWP.Application.LegalSwp.Customers;
+using SWP.Application.LegalSwp.Clients;
 using SWP.UI.BlazorApp;
 using SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data;
 using System;
@@ -15,58 +15,58 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
     [UITransientService]
     public class LegalBlazorApp : BlazorAppBase
     {
-        private readonly GetCustomer getCustomer;
-        private readonly GetCustomers getCustomers;
+        private readonly GetClient getClient;
+        private readonly GetClients getClients;
         private readonly UserManager<IdentityUser> userManager;
         private readonly NotificationService notificationService;
 
-        public event EventHandler ActiveCustomerChanged;
+        public event EventHandler ActiveClientChanged;
 
         public CalendarPage CalendarPage { get; }
         public CasesPage CasesPage { get; }
-        public CustomersPage CustomersPage { get; }
+        public ClientPage ClientsPage { get; }
         public MyAppPage MyAppPage { get; }
         public ErrorPage ErrorPage { get; }
         public NoProfileWarning NoProfileWarning { get; }
         public FinancePage FinancePage { get; }
 
-        private CustomerViewModel activeCustomer;
+        private ClientViewModel activeClient;
 
-        public CustomerViewModel ActiveCustomer
+        public ClientViewModel ActiveClient
         {
-            get => activeCustomer; 
+            get => activeClient; 
             set
             {
-                activeCustomer = value;
-                if (activeCustomer != null)
+                activeClient = value;
+                if (activeClient != null)
                 {
-                    ActiveCustomerWithData = getCustomer.Get(activeCustomer.Id, User.Profile);
+                    ActiveClientWithData = getClient.Get(activeClient.Id, User.Profile);
                 }
             }
         }
 
         public LegalBlazorApp(
-            GetCustomer getCustomer,
-            GetCustomers getCustomers,
+            GetClient getClient,
+            GetClients getClients,
             UserManager<IdentityUser> userManager,
             CalendarPage calendarPanel,
             CasesPage casesPanel,
-            CustomersPage customersPanel,
+            ClientPage clientsPanel,
             MyAppPage myAppPanel,
             ErrorPage errorPage,
             NoProfileWarning noProfileWarning,
             NotificationService notificationService,
             FinancePage financePage)
         {
-            this.getCustomer = getCustomer;
-            this.getCustomers = getCustomers;
+            this.getClient = getClient;
+            this.getClients = getClients;
             this.userManager = userManager;
             this.notificationService = notificationService;
 
             FinancePage = financePage;
             CalendarPage = calendarPanel;
             CasesPage = casesPanel;
-            CustomersPage = customersPanel;
+            ClientsPage = clientsPanel;
             MyAppPage = myAppPanel;
             ErrorPage = errorPage;
             NoProfileWarning = noProfileWarning;
@@ -86,7 +86,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
                 User.Claims = await userManager.GetClaimsAsync(User.User) as List<Claim>;
                 User.Roles = await userManager.GetRolesAsync(User.User) as List<string>;
 
-                Customers = getCustomers.GetCustomersWithoutData(User.Profile)?.Select(x => (CustomerViewModel)x).ToList();
+                Clients = getClients.GetClientsWithoutData(User.Profile)?.Select(x => (ClientViewModel)x).ToList();
 
                 InitializePanels();
             }
@@ -96,7 +96,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         {
             CalendarPage.Initialize(this);
             CasesPage.Initialize(this);
-            CustomersPage.Initialize(this);
+            ClientsPage.Initialize(this);
             MyAppPage.Initialize(this);
             ErrorPage.Initialize(this);
             NoProfileWarning.Initialize(this);
@@ -107,7 +107,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
         public enum Panels
         {
-            Customers = 0,
+            Clients = 0,
             Calendar = 1,
             Cases = 2,
             MyApp = 3,
@@ -115,20 +115,20 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             Finance = 5,
         }
 
-        public CustomerViewModel ActiveCustomerWithData { get; set; }
+        public ClientViewModel ActiveClientWithData { get; set; }
         public Panels ActivePanel { get; private set; } = Panels.MyApp;
-        public List<CustomerViewModel> Customers { get; set; } = new List<CustomerViewModel>();
+        public List<ClientViewModel> Clients { get; set; } = new List<ClientViewModel>();
 
         public void RedirectToCase(int id)
         {
-            if (!ActiveCustomerWithData.Cases.Any(x => x.Id == id))
+            if (!ActiveClientWithData.Cases.Any(x => x.Id == id))
             {
                 return;
             }
 
             SetActivePanel(LegalBlazorApp.Panels.Cases);
             CasesPage.SetActivePanel(CasesPage.Panels.Admin);
-            ActiveCustomerWithData.SelectedCase = ActiveCustomerWithData.Cases.FirstOrDefault(x => x.Id == id);
+            ActiveClientWithData.SelectedCase = ActiveClientWithData.Cases.FirstOrDefault(x => x.Id == id);
             OnCallStateHasChanged(null);
         }
 
@@ -151,47 +151,47 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             }
         }
 
-        public void RefreshCustomerWithData()
+        public void RefreshClientWithData()
         {
-            if (ActiveCustomer != null)
+            if (ActiveClient != null)
             {
-                CustomerViewModel newModel = getCustomer.Get(ActiveCustomer.Id, User.Profile);
+                ClientViewModel newModel = getClient.Get(ActiveClient.Id, User.Profile);
 
-                if (ActiveCustomerWithData.SelectedCase != null)
+                if (ActiveClientWithData.SelectedCase != null)
                 {
-                    newModel.SelectedCase = newModel.Cases.FirstOrDefault(x => x.Id == ActiveCustomerWithData.SelectedCase.Id);
+                    newModel.SelectedCase = newModel.Cases.FirstOrDefault(x => x.Id == ActiveClientWithData.SelectedCase.Id);
                 }
 
-                ActiveCustomerWithData = newModel;
+                ActiveClientWithData = newModel;
             }
         }
 
-        public void RefreshCustomers()
+        public void RefreshClients()
         {
             try
             {
-                Customers = getCustomers.GetCustomersWithoutData(User.Profile).Select(x => (CustomerViewModel)x).ToList();
+                Clients = getClients.GetClientsWithoutData(User.Profile).Select(x => (ClientViewModel)x).ToList();
 
-                if (Customers.ToList().Count == 1)
+                if (Clients.ToList().Count == 1)
                 {
-                    ActiveCustomer = Customers.FirstOrDefault();
+                    ActiveClient = Clients.FirstOrDefault();
                 }
 
-                if (ActiveCustomer == null || !Customers.Any(x => x.Id == ActiveCustomer.Id))
+                if (ActiveClient == null || !Clients.Any(x => x.Id == ActiveClient.Id))
                 {
-                    if (Customers.Count() == 0)
+                    if (Clients.Count() == 0)
                     {
-                        ActiveCustomer = null;
-                        ActiveCustomerWithData = null;
+                        ActiveClient = null;
+                        ActiveClientWithData = null;
                     }
                     else
                     {
-                        ActiveCustomer = Customers.FirstOrDefault();
+                        ActiveClient = Clients.FirstOrDefault();
                     }
                 }
                 else
                 {
-                    ActiveCustomer = Customers.FirstOrDefault(x => x.Id == ActiveCustomer.Id);
+                    ActiveClient = Clients.FirstOrDefault(x => x.Id == ActiveClient.Id);
                 }
             }
             catch (Exception ex)
@@ -204,11 +204,11 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             }
         }
 
-        public void ActiveCustomerChange(object value)
+        public void ActiveClientChange(object value)
         {
             if (value != null)
             {
-                ActiveCustomer = Customers.FirstOrDefault(x => x.Id == int.Parse(value.ToString()));
+                ActiveClient = Clients.FirstOrDefault(x => x.Id == int.Parse(value.ToString()));
             }
             else
             {
@@ -217,11 +217,11 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
                     SetActivePanel(Panels.MyApp);
                 }
 
-                ActiveCustomer = null;
-                ActiveCustomerWithData = null;
+                ActiveClient = null;
+                ActiveClientWithData = null;
             }
 
-            ActiveCustomerChanged?.Invoke(this, null);
+            ActiveClientChanged?.Invoke(this, null);
         }
 
         #endregion

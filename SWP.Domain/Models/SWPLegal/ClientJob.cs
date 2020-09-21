@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SWP.Domain.Models.SWPLegal
 {
-    public class CustomerJob : BaseModel
+    public class ClientJob : BaseModel
     {
         [MaxLength(50)]
         [Required]
@@ -17,8 +17,8 @@ namespace SWP.Domain.Models.SWPLegal
 
         public int Priority { get; set; }
 
-        public int CustomerId { get; set; }
+        public int ClientId { get; set; }
 
-        public Customer Customer { get; set; }
+        public Client Client { get; set; }
     }
 }

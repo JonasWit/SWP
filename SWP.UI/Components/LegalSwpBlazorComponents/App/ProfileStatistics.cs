@@ -1,5 +1,5 @@
 ﻿using SWP.Application.LegalSwp.Cases;
-using SWP.Application.LegalSwp.Customers;
+using SWP.Application.LegalSwp.Clients;
 using System.Collections.Generic;
 
 namespace SWP.UI.Components.LegalSwpBlazorComponents.App
@@ -7,12 +7,12 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
     [UITransientService]
     public class ProfileStatistics
     {
-        private readonly GetCustomers getCustomers;
+        private readonly GetClients getClients;
         private readonly GetCases getCases;
 
-        public ProfileStatistics(GetCustomers getCustomers, GetCases getCases)
+        public ProfileStatistics(GetClients getClients, GetCases getCases)
         {
-            this.getCustomers = getCustomers;
+            this.getClients = getClients;
             this.getCases = getCases;
         }
 
@@ -24,25 +24,25 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
         public Response GetStatistics(string profile)
         {
-            var customers = getCustomers.GetCustomersWithoutData(profile);
+            var Clients = getClients.GetClientsWithoutData(profile);
             var response = new Response();
 
-            foreach (var customer in customers)
+            foreach (var Client in Clients)
             {
-                var customerStatistic = new Response.CustomerStatistic
+                var ClientStatistic = new Response.ClientStatistic
                 {
-                    Name = customer.Name
+                    Name = Client.Name
                 };
 
-                var customerCases = getCustomers.GetCustomerCasesIds(customer.Id);
+                var ClientCases = getClients.GetClientCasesIds(Client.Id);
 
-                customerStatistic.Jobs = getCustomers.CountJobsPerCustomer(customer.Id) ?? 0;
+                ClientStatistic.Jobs = getClients.CountJobsPerClient(Client.Id) ?? 0;
 
-                if (customerCases != null)
+                if (ClientCases != null)
                 {
-                    foreach (var cs in customerCases)
+                    foreach (var cs in ClientCases)
                     {
-                        customerStatistic.Cases.Add(new Response.CaseStatistic
+                        ClientStatistic.Cases.Add(new Response.CaseStatistic
                         {
                             Id = cs,
                             Deadlines = getCases.CountDeadlineRemindersPerCase(cs),
@@ -52,7 +52,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
                     }
                 }
 
-                response.Customers.Add(customerStatistic);
+                response.Clients.Add(ClientStatistic);
             }
 
             return response;
@@ -62,9 +62,9 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         {
             public string ProfileName { get; set; }
 
-            public List<CustomerStatistic> Customers { get; set; } = new List<CustomerStatistic>();
+            public List<ClientStatistic> Clients { get; set; } = new List<ClientStatistic>();
 
-            public class CustomerStatistic
+            public class ClientStatistic
             {
                 public int Id { get; set; }
                 public string Name { get; set; }

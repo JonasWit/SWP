@@ -1,7 +1,7 @@
 ﻿<div class="row">
     <div class="col-md-6">
         <RadzenGrid @ref="App.FinancePage.CashMovementGrid" AllowFiltering="true" AllowPaging="true" PageSize="10" AllowSorting="true"
-                    Data="@App.ActiveCustomerWithData.CashMovements" TItem="CashMovementViewModel" RowUpdate="@App.FinancePage.OnUpdateCashMovementRow">
+                    Data="@App.ActiveClientWithData.CashMovements" TItem="CashMovementViewModel" RowUpdate="@App.FinancePage.OnUpdateCashMovementRow">
             <Columns>
                 <RadzenGridColumn TItem="CashMovementViewModel" Property="Name" Title="Nazwa">
                     <EditTemplate Context="cm">
@@ -38,7 +38,7 @@
     </div>
     <div class="col-md-6">
         <RadzenCard Style="margin-bottom:20px">
-            Klient: <b>@App.ActiveCustomer.Name</b>
+            Klient: <b>@App.ActiveClient.Name</b>
         </RadzenCard>
         <RadzenTabs>
             <Tabs>

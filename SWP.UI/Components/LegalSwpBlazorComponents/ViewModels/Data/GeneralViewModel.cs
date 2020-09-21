@@ -7,7 +7,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data
     {
         public string DeadlineColor => "#DC143C";
 
-        public const string Customer = "Klient";
+        public const string Client = "Klient";
         public const string Case = "Klient";
         public const string Reminder = "Przypomnienie";
         public const string Deadline = "Termin";

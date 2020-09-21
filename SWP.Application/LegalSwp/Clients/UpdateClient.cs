@@ -3,17 +3,17 @@ using SWP.Domain.Models.SWPLegal;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
-namespace SWP.Application.LegalSwp.Customers
+namespace SWP.Application.LegalSwp.Clients
 {
     [TransientService]
-    public class UpdateCustomer
+    public class UpdateClient
     {
         private readonly ILegalSwpManager legalSwpManager;
-        public UpdateCustomer(ILegalSwpManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
+        public UpdateClient(ILegalSwpManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
 
-        public Task<Customer> Update(Request request)
+        public Task<Client> Update(Request request)
         {
-            var record = legalSwpManager.GetCustomer(request.Id, request.ProfileClaim, x => x);
+            var record = legalSwpManager.GetClient(request.Id, request.ProfileClaim, x => x);
 
             record.Address = request.Address;
             record.Active = request.Active;
@@ -23,7 +23,7 @@ namespace SWP.Application.LegalSwp.Customers
             record.Updated = System.DateTime.Now;
             record.UpdatedBy = request.UpdatedBy;
 
-            return legalSwpManager.UpdateCustomer(record);
+            return legalSwpManager.UpdateClient(record);
         }          
 
         public class Request

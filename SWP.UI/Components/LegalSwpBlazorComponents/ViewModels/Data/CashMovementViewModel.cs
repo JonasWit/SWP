@@ -11,7 +11,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data
         public int Id { get; set; }
         public string Name { get; set; }
 
-        public int CustomerId { get; set; }
+        public int ClientId { get; set; }
 
         public DateTime Created { get; set; }
         public DateTime Updated { get; set; }
@@ -23,7 +23,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data
             {
                 Id = input.Id,
                 Name = input.Name,
-                CustomerId = input.CustomerId,
+                ClientId = input.ClientId,
                 Created = input.Created,
                 Updated = input.Updated,
                 UpdatedBy = input.UpdatedBy,

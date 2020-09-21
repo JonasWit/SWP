@@ -25,7 +25,6 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         private readonly CreateClientJob createClientJob;
         private readonly DeleteClientJob deleteClientJob;
         private readonly UpdateClientJob updateClientJob;
-        private readonly GetClients getClients;
 
         public LegalBlazorApp App { get; private set; }
 
@@ -35,8 +34,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             CreateClient createClient,
             CreateClientJob createClientJob,
             DeleteClientJob deleteClientJob,
-            UpdateClientJob updateClientJob,
-            GetClients getClients)
+            UpdateClientJob updateClientJob)
         {
             this.deleteClient = deleteClient;
             this.updateClient = updateClient;
@@ -44,7 +42,6 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             this.createClientJob = createClientJob;
             this.deleteClientJob = deleteClientJob;
             this.updateClientJob = updateClientJob;
-            this.getClients = getClients;
         }
 
         public override Task Initialize(BlazorAppBase app)

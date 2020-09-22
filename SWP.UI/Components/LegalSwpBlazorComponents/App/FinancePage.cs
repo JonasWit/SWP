@@ -1,4 +1,5 @@
-﻿using Radzen.Blazor;
+﻿using Radzen;
+using Radzen.Blazor;
 using SWP.Application.LegalSwp.CashMovements;
 using SWP.UI.BlazorApp;
 using SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data;
@@ -13,14 +14,21 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
     public class FinancePage : BlazorPageBase
     {
         private readonly CreateCashMovement createCashMovement;
+        private readonly DeleteCashMovement deleteCashMovement;
+        private readonly UpdateCashMovement updateCashMovement;
 
         public LegalBlazorApp App { get; private set; }
+        public CreateCashMovement.Request NewCashMovement { get; set; } = new CreateCashMovement.Request();
         public int CashMovementDirection { get; set; }
 
         public FinancePage(
-            CreateCashMovement createCashMovement)
+            CreateCashMovement createCashMovement,
+            DeleteCashMovement deleteCashMovement,
+            UpdateCashMovement updateCashMovement)
         {
             this.createCashMovement = createCashMovement;
+            this.deleteCashMovement = deleteCashMovement;
+            this.updateCashMovement = updateCashMovement;
         }
 
         public override Task Initialize(BlazorAppBase app)
@@ -30,13 +38,6 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         }
 
         public RadzenGrid<CashMovementViewModel> CashMovementGrid { get; set; }
-
-        public void AddCashMovement()
-        { 
-        
-        
-        
-        }
 
         public void EditCashMovementRow(CashMovementViewModel cash) => CashMovementGrid.EditRow(cash);
 
@@ -100,23 +101,23 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
         public async Task SubmitNewCashMovement(CreateCashMovement.Request arg)
         {
-            //NewClient.ProfileClaim = App.User.Profile;
-            //NewClient.UpdatedBy = App.User.UserName;
-
             try
             {
-                //var result = await createClient.Do(NewClient);
-                //NewClient = new CreateClient.Request();
+                NewCashMovement.UpdatedBy = App.User.UserName;
 
-                //App.Clients.Add(result);
-                //await ClientsGrid.Reload();
-                //App.ShowNotification(NotificationSeverity.Success, "Success!", $"Client: {result.Name} has been added.", 2000);
+                var result = await createCashMovement.Create(App.ActiveClient.Id, App.User.Profile, NewCashMovement);
+                NewCashMovement = new CreateCashMovement.Request();
+
+                App.ActiveClientWithData.CashMovements.Add(result);
+                await CashMovementGrid.Reload();
+                App.ShowNotification(NotificationSeverity.Success, "Sukces!", $"Kwota: {result.Amount} zł, została dodana.", App.NotificationDuration);
             }
             catch (Exception ex)
             {
                 App.ErrorPage.DisplayMessage(ex);
             }
         }
+
 
 
 

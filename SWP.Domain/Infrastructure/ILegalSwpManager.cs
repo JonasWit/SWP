@@ -90,7 +90,7 @@ namespace SWP.Domain.Infrastructure
 
         CashMovement GetCashMovement(int id);
         List<CashMovement> GetCashMovementsForClient(int clientId);
-        Task<CashMovement> CreateCashMovement(int clientId, CashMovement cashMovement);
+        Task<CashMovement> CreateCashMovement(int clientId, string profile, CashMovement cashMovement);
         Task<CashMovement> UpdateCashMovement(CashMovement cashMovement);
         Task<int> DeleteCashMovement(int id);
 

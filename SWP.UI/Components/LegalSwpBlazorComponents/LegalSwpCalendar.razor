@@ -14,11 +14,53 @@
             </Template>
             <ChildContent>
                 <RadzenDayView Text="Dzień" StartTime="@(new TimeSpan(0, 0, 0))" EndTime="@(new TimeSpan(24, 0, 0))" />
-                <RadzenWeekView Text="Tydzień" StartTime="@(new TimeSpan(0, 0, 0))" EndTime="@(new TimeSpan(24, 0, 0))"  />
+                <RadzenWeekView Text="Tydzień" StartTime="@(new TimeSpan(0, 0, 0))" EndTime="@(new TimeSpan(24, 0, 0))" />
                 <RadzenMonthView Text="Miesiąc" />
             </ChildContent>
         </RadzenScheduler>
     </div>
+
+    <RadzenCard Style="width:600px; margin-bottom: 20px; height:500px;">
+        <div class="row">
+            <div class="col-md-6">
+                <div>Najbliższe Przypomnienia</div>
+
+                @foreach (var deadline in App.CalendarPage.UpcomingReminders)
+                {
+                    <p>@deadline.Name</p>
+                    <p>@deadline.Start.ToShortDateString()</p>
+                }
+
+                @if (App.CalendarPage.UpcomingReminders.Count == 0)
+                {
+                    <p>Brak nadchodzących przypomnień.</p>
+                }
+
+            </div>
+        </div>
+    </RadzenCard>
+    <RadzenCard Style="width:600px; margin-bottom: 20px; height:500px;">
+        <div class="row">
+            <div class="col-md-6">
+                <div>Nadchodzące Terminy</div>
+
+                @foreach (var deadline in App.CalendarPage.UpcomingDeadlines)
+                {
+                    <p>@deadline.Name</p>
+                    <p>@deadline.Start.ToShortDateString()</p>
+                }
+
+                @if (App.CalendarPage.UpcomingDeadlines.Count == 0)
+                {
+                    <p>Brak nadchodzących terminów.</p>
+                }
+
+            </div>
+        </div>
+    </RadzenCard>
+
+
+
 
 </div>
 

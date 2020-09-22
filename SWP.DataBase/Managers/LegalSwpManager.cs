@@ -242,9 +242,9 @@ namespace SWP.DataBase.Managers
 
         #region Job
 
-        public async Task<ClientJob> CreateClientJob(int ClientId, string profile, ClientJob job)
+        public async Task<ClientJob> CreateClientJob(int clientId, string profile, ClientJob job)
         {
-            var cs = GetClient(ClientId, profile, x => x);
+            var cs = GetClient(clientId, profile, x => x);
             cs.Jobs.Add(job);
             await context.SaveChangesAsync();
             return job;
@@ -276,14 +276,14 @@ namespace SWP.DataBase.Managers
 
         public CashMovement GetCashMovement(int id) => context.CashMovements.FirstOrDefault(x => x.Id == id);
 
-        public List<CashMovement> GetCashMovementsForClient(int ClientId) =>
+        public List<CashMovement> GetCashMovementsForClient(int clientId) =>
             context.CashMovements
-                .Where(x => x.ClientId == ClientId)
+                .Where(x => x.ClientId ==clientId)
                 .ToList();
 
-        public async Task<CashMovement> CreateCashMovement(int ClientId, CashMovement cashMovement)
+        public async Task<CashMovement> CreateCashMovement(int clientId, string profile, CashMovement cashMovement)
         {
-            var cs = context.Clients.FirstOrDefault(x =>x.Id == ClientId);
+            var cs = GetClient(clientId, profile, x => x);
             cs.CashMovements.Add(cashMovement);
             await context.SaveChangesAsync();
             return cashMovement;

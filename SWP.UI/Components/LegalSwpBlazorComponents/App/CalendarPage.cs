@@ -67,6 +67,16 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         public RadzenScheduler<ReminderViewModel> RemindersScheduler { get; set; }
         public List<ReminderViewModel> Reminders { get; set; }
 
+        public List<ReminderViewModel> UpcomingReminders =>
+            Reminders
+            .Where(x => x.Start >= DateTime.Now && x.Start <= DateTime.Now.AddDays(14))
+            .ToList();
+
+        public List<ReminderViewModel> UpcomingDeadlines =>
+            Reminders
+            .Where(x => x.IsDeadline && x.Start >= DateTime.Now && x.Start <= DateTime.Now.AddDays(14))
+            .ToList();
+
         public void RefreshCalendarData()
         {
             if (App.ActiveClient != null)

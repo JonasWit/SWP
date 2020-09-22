@@ -10,7 +10,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data
     {
         public int Id { get; set; }
         public string Name { get; set; }
-
+        public double Amount { get; set; }
         public int ClientId { get; set; }
 
         public DateTime Created { get; set; }
@@ -22,6 +22,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data
             new CashMovementViewModel
             {
                 Id = input.Id,
+                Amount = input.Amount,
                 Name = input.Name,
                 ClientId = input.ClientId,
                 Created = input.Created,

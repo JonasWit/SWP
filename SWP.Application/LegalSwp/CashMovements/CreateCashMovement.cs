@@ -13,11 +13,11 @@ namespace SWP.Application.LegalSwp.CashMovements
         private readonly ILegalSwpManager legalSwpManager;
         public CreateCashMovement(ILegalSwpManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
 
-        public Task<CashMovement> Create(int ClientId, Request request) =>
-            legalSwpManager.CreateCashMovement(ClientId, new CashMovement
+        public Task<CashMovement> Create(int clientId, string profile, Request request) =>
+            legalSwpManager.CreateCashMovement(clientId, profile, new CashMovement
             {
                 Name = request.Name,
-                Amount = request.Amount,
+                Amount = request.ResultAmount,
                 Created = DateTime.Now,
                 Updated = DateTime.Now,
                 UpdatedBy = request.UpdatedBy,
@@ -28,7 +28,10 @@ namespace SWP.Application.LegalSwp.CashMovements
         {
             public string Name { get; set; }
             public double Amount { get; set; }
+            public int CashFlowDirection { get; set; }
             public string UpdatedBy { get; set; }
+
+            public double ResultAmount => CashFlowDirection == 0 ? Math.Abs(Amount) * -1 : Math.Abs(Amount);
         }
     }
 }

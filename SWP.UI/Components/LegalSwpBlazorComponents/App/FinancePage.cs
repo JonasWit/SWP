@@ -79,8 +79,8 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
         public void CancelCashMovementEdit(CashMovementViewModel cash)
         {
-            //ClientsGrid.CancelEditRow(Client);
-            //App.RefreshClients();
+            CashMovementGrid.CancelEditRow(cash);
+            App.RefreshClients();
         }
 
         public async Task DeleteCashMovementRow(CashMovementViewModel cash)

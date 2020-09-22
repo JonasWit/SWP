@@ -17,25 +17,21 @@
                         <RadzenRequiredValidator Text="Kwota nie może być pusta!" Component="Kwota" Popup="true" />
                     </EditTemplate>
                 </RadzenGridColumn>
-
-
-                @*<RadzenGridColumn TItem="CaseViewModel" Property="Created" Title="Created">
-                    <Template Context="c">
-                        @String.Format("{0:f}", c.Created)
+                <RadzenGridColumn TItem="CashMovementViewModel" Property="Created" Title="Created">
+                    <Template Context="cm">
+                        @String.Format("{0:f}", cm.Created)
                     </Template>
                 </RadzenGridColumn>
-                <RadzenGridColumn TItem="CaseViewModel" Property="Updated" Title="Last Change">
-                    <Template Context="c">
-                        @String.Format("{0:f}", c.Updated)
+                <RadzenGridColumn TItem="CashMovementViewModel" Property="Updated" Title="Last Change">
+                    <Template Context="cm">
+                        @String.Format("{0:f}", cm.Updated)
                     </Template>
                 </RadzenGridColumn>
-                <RadzenGridColumn TItem="CaseViewModel" Property="UpdatedBy" Title="Last Updated By">
-                    <Template Context="c">
-                        @c.UpdatedBy
+                <RadzenGridColumn TItem="CashMovementViewModel" Property="UpdatedBy" Title="Last Updated By">
+                    <Template Context="cm">
+                        @cm.UpdatedBy
                     </Template>
-                </RadzenGridColumn>*@
-
-
+                </RadzenGridColumn>
                 <RadzenGridColumn TItem="CashMovementViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="100px">
                     <Template Context="cm">
                         <RadzenButton Icon="edit" Size="ButtonSize.Medium" Click="@(args => App.FinancePage.EditCashMovementRow(cm))">

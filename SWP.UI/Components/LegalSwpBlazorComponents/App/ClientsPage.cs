@@ -212,7 +212,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         public void CancelClientJobEdit(ClientJobViewModel clientJob)
         {
             ClientsJobsGrid.CancelEditRow(clientJob);
-            App.RefreshClients();
+            App.RefreshClientWithData();
         }
 
         public async Task DeleteClientJobRow(ClientJobViewModel clientJob)

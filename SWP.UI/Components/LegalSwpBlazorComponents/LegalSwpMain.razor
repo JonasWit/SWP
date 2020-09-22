@@ -9,16 +9,10 @@
         <div class="text-center">
             <img class="mt-4 mb-4" src="/Images/icons8-courthouse-80.png" />
         </div>
-        <div class="input-group">
-            <div>
-                <label class="px-3">Client Name</label>
-            </div>
-
-            <Radzen.Blazor.RadzenDropDown AllowClear="true" TValue="string" AllowFiltering="true" Data="@App.Clients" TextProperty="Name" ValueProperty="IdStr" Style="margin-bottom: 20px; width: 180px;" Change="@(args => App.ActiveClientChange(args))" />
-
-        </div>
         <p class="explain px-3">Wybierz Klienta by zobaczyc jego sprawy</p>
-
+        <div class="input-group">
+            <Radzen.Blazor.RadzenDropDown AllowClear="true" TValue="string" AllowFiltering="true" Data="@App.Clients" TextProperty="Name" ValueProperty="IdStr" Style="margin-bottom: 20px; width: 180px;" Change="@(args => App.ActiveClientChange(args))" />
+        </div>
         <div>
             <ul class="nav flex-column">
                 <li class="nav-item px-3">

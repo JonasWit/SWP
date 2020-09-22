@@ -129,7 +129,11 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
         public void SaveCaseRow(CaseViewModel c) => CasesGrid.UpdateRow(c);
 
-        public void CancelEditCaseRow(CaseViewModel c) => CasesGrid.CancelEditRow(c);
+        public void CancelEditCaseRow(CaseViewModel c)
+        {
+            CasesGrid.CancelEditRow(c);
+            App.RefreshClientWithData();
+        }
 
         public async Task DeleteCaseRow(CaseViewModel c)
         {
@@ -223,7 +227,11 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
         public void SaveNoteRow(NoteViewModel note) => NotesGrid.UpdateRow(note);
 
-        public void CancelEditNoteRow(NoteViewModel note) => NotesGrid.CancelEditRow(note);
+        public void CancelEditNoteRow(NoteViewModel note)
+        {
+            NotesGrid.CancelEditRow(note);
+            ReloadCase(note.CaseId);
+        } 
 
         public async Task DeleteNoteRow(NoteViewModel note)
         {

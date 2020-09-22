@@ -3,54 +3,49 @@
         <RadzenGrid @ref="App.FinancePage.CashMovementGrid" AllowFiltering="true" AllowPaging="true" PageSize="10" AllowSorting="true"
                     Data="@App.ActiveClientWithData.CashMovements" TItem="CashMovementViewModel" RowUpdate="@App.FinancePage.OnUpdateCashMovementRow">
             <Columns>
-                <RadzenGridColumn TItem="CashMovementViewModel" Property="Name" Title="Nazwa">
-                    <EditTemplate Context="cm">
-                        <RadzenTextBox @bind-Value="cm.Name" Style="width:100%; display: block" Name="Nazwa" />
-                        <RadzenRequiredValidator Text="Nazwa nie może być pusta!" Component="Nazwa" Popup="true" />
-                        <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Nazwa" Popup="true" />
+                <RadzenGridColumn TItem="CashMovementViewModel" Property="Name" Title="Name">
+                    <EditTemplate Context="c">
+                        <RadzenTextBox @bind-Value="c.Name" Style="width:100%; display: block" Name="Name" />
+                        <RadzenRequiredValidator Component="Name" Text="Name cannot be empty!" Popup="true" />
+                        <RadzenLengthValidator Max="50" Text="Max 50 characters!" Component="Name" Popup="true" />
                     </EditTemplate>
                 </RadzenGridColumn>
 
-                <RadzenGridColumn TItem="CashMovementViewModel" Property="Amount" Title="Kwota">
-                    <EditTemplate Context="cm">
-                        <RadzenTextBox @bind-Value="cm.Name" Style="width:100%; display: block" Name="Kwota" />
-                        <RadzenRequiredValidator Text="Kwota nie może być pusta!" Component="Kwota" Popup="true" />
-                    </EditTemplate>
-                </RadzenGridColumn>
                 <RadzenGridColumn TItem="CashMovementViewModel" Property="Created" Title="Created">
-                    <Template Context="cm">
-                        @String.Format("{0:f}", cm.Created)
+                    <Template Context="c">
+                        @String.Format("{0:f}", c.Created)
                     </Template>
                 </RadzenGridColumn>
                 <RadzenGridColumn TItem="CashMovementViewModel" Property="Updated" Title="Last Change">
-                    <Template Context="cm">
-                        @String.Format("{0:f}", cm.Updated)
+                    <Template Context="c">
+                        @String.Format("{0:f}", c.Updated)
                     </Template>
                 </RadzenGridColumn>
-                <RadzenGridColumn TItem="CashMovementViewModel" Property="UpdatedBy" Title="Last Updated By">
-                    <Template Context="cm">
-                        @cm.UpdatedBy
+                <RadzenGridColumn TItem="CashMovementViewModel" Property="UpdatedBy" Title="Użytkownik">
+                    <Template Context="c">
+                        @c.UpdatedBy
                     </Template>
                 </RadzenGridColumn>
+
                 <RadzenGridColumn TItem="CashMovementViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="100px">
-                    <Template Context="cm">
-                        <RadzenButton Icon="edit" Size="ButtonSize.Medium" Click="@(args => App.FinancePage.EditCashMovementRow(cm))">
+                    <Template Context="c">
+                        <RadzenButton Icon="edit" Size="ButtonSize.Medium" Click="@(args => App.FinancePage.EditCashMovementRow(c))">
                         </RadzenButton>
                     </Template>
-                    <EditTemplate Context="cm">
-                        <RadzenButton Icon="save" Size="ButtonSize.Medium" Click="@((args) => App.FinancePage.SaveCashMovementRow(cm))">
+                    <EditTemplate Context="c">
+                        <RadzenButton Icon="save" Size="ButtonSize.Medium" Click="@((args) => App.FinancePage.SaveCashMovementRow(c))">
                         </RadzenButton>
-                        <RadzenButton Icon="cancel" Size="ButtonSize.Medium" ButtonStyle="ButtonStyle.Secondary" Click="@((args) => App.FinancePage.CancelCashMovementEdit(cm))">
+                        <RadzenButton Icon="cancel" Size="ButtonSize.Medium" ButtonStyle="ButtonStyle.Secondary" Click="@((args) => App.FinancePage.CancelCashMovementEdit(c))">
                         </RadzenButton>
                     </EditTemplate>
                 </RadzenGridColumn>
                 <RadzenGridColumn TItem="CashMovementViewModel" Context="order" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="70px">
-                    <Template Context="cm">
-                        <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Medium" Click="@(async (args) => await App.FinancePage.DeleteCashMovementRow(cm))">
+                    <Template Context="c">
+                        <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Medium" Click="@(async (args) => await App.FinancePage.DeleteCashMovementRow(c))">
                         </RadzenButton>
                     </Template>
-                    <EditTemplate Context="cm">
-                        <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Medium" Click="@(async (args) => await App.FinancePage.DeleteCashMovementRow(cm))">
+                    <EditTemplate Context="c">
+                        <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Medium" Click="@(async (args) => await App.FinancePage.DeleteCashMovementRow(c))">
                         </RadzenButton>
                     </EditTemplate>
                 </RadzenGridColumn>

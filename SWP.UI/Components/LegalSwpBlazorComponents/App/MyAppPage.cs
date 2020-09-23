@@ -1,7 +1,9 @@
-﻿using SWP.UI.BlazorApp;
-using SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data;
+﻿using Radzen.Blazor;
+using SWP.UI.BlazorApp;
 using SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data.Statistics;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace SWP.UI.Components.LegalSwpBlazorComponents.App
@@ -15,6 +17,8 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
         public List<DataItem> ClientsCases { get; set; } = new List<DataItem>();
         public List<DataItem> UserActivity { get; set; } = new List<DataItem>();
+
+        public ColorScheme ColorScheme { get; set; } = ColorScheme.Palette;
 
         public MyAppPage(ProfileStatistics profileStatistics)
         {

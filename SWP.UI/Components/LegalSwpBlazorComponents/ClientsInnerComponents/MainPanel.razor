@@ -1,34 +1,24 @@
 ﻿
 <h2>Panel Aktywnego Klienta</h2>
 
-@if (App.ActiveClientWithData != null)
-{
-    <div>
-        <h2>All Cases</h2>
-        <RadzenDataList WrapItems="true" AllowPaging="true" Data="@App.ActiveClientWithData.Cases" TItem="CaseViewModel">
-            <Template Context="c">
-                <RadzenCard Style="width:300px;" @onclick="(() => App.RedirectToCase(c.Id))">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div>Case Name:</div>
-                            <b>@c.Name</b>
-                            <div>Description:</div>
-                            <b>@c.Description</b>
-                    
-                        </div>
-                    </div>
-                </RadzenCard>
-            </Template>
-        </RadzenDataList>
-    </div>
-}
-else
-{
-    <div>
-        <h2>Żaden klient nie został wybrany.</h2>
+<div>
+    <h2>All Cases</h2>
+    <RadzenDataList WrapItems="true" AllowPaging="true" Data="@App.ActiveClientWithData.Cases" TItem="CaseViewModel" PageSize="5">
+        <Template Context="c">
+            <RadzenCard Style="width:300px;" @onclick="(() => App.RedirectToCase(c.Id))">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div>Case Name:</div>
+                        <b>@c.Name</b>
+                        <div>Description:</div>
+                        <b>@c.Description</b>
 
-    </div>
-}
+                    </div>
+                </div>
+            </RadzenCard>
+        </Template>
+    </RadzenDataList>
+</div>
 
 @code {
     [Parameter]

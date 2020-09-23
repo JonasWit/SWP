@@ -88,7 +88,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
                 }
 
                 await ClientsGrid.Reload();
-                App.ShowNotification(NotificationSeverity.Success, "Sukces!", $"Klient: {result.Name} został zmieniony.", App.NotificationDuration);
+                App.ShowNotification(NotificationSeverity.Success, "Sukces!", $"Klient: {result.Name} został zmieniony.", GeneralViewModel.NotificationDuration);
             }
             catch (Exception ex)
             {
@@ -112,7 +112,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
                 App.Clients.RemoveAll(x => x.Id == client.Id);
 
                 await ClientsGrid.Reload();
-                App.ShowNotification(NotificationSeverity.Warning, "Sukces!", $"Klient: {client.Name} został usunięty.", App.NotificationDuration);
+                App.ShowNotification(NotificationSeverity.Warning, "Sukces!", $"Klient: {client.Name} został usunięty.", GeneralViewModel.NotificationDuration);
             }
             catch (Exception ex)
             {
@@ -132,7 +132,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
                 App.Clients.Add(result);
                 await ClientsGrid.Reload();
-                App.ShowNotification(NotificationSeverity.Success, "Sukces!", $"Klient: {result.Name} został dodany.", App.NotificationDuration);
+                App.ShowNotification(NotificationSeverity.Success, "Sukces!", $"Klient: {result.Name} został dodany.", GeneralViewModel.NotificationDuration);
             }
             catch (Exception ex)
             {
@@ -161,7 +161,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
                 }
 
                 await ClientsJobsGrid.Reload();
-                App.ShowNotification(NotificationSeverity.Success, "Sukces!", $"Zadanie: {result.Name}, dla Klineta: {App.ActiveClient.Name} zostało stworzone.", App.NotificationDuration);
+                App.ShowNotification(NotificationSeverity.Success, "Sukces!", $"Zadanie: {result.Name}, dla Klineta: {App.ActiveClient.Name} zostało stworzone.", GeneralViewModel.NotificationDuration);
             }
             catch (Exception ex)
             {
@@ -195,7 +195,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
                 App.ActiveClientWithData.Jobs[App.ActiveClientWithData.Jobs.FindIndex(x => x.Id == result.Id)] = result;
                 await ClientsJobsGrid.Reload();
-                App.ShowNotification(NotificationSeverity.Success, "Sukces!", $"Zadanie: {result.Name}, dla Klineta: {App.ActiveClient.Name} zostało zmienione.", App.NotificationDuration);
+                App.ShowNotification(NotificationSeverity.Success, "Sukces!", $"Zadanie: {result.Name}, dla Klineta: {App.ActiveClient.Name} zostało zmienione.", GeneralViewModel.NotificationDuration);
             }
             catch (Exception ex)
             {
@@ -230,7 +230,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
                 }
 
                 await ClientsJobsGrid.Reload();
-                App.ShowNotification(NotificationSeverity.Warning, "Sukces!", $"Zadanie: {clientJob.Name}, dla Klineta: {App.ActiveClient.Name} zostało usunięte.", App.NotificationDuration);
+                App.ShowNotification(NotificationSeverity.Warning, "Sukces!", $"Zadanie: {clientJob.Name}, dla Klineta: {App.ActiveClient.Name} zostało usunięte.", GeneralViewModel.NotificationDuration);
             }
             catch (Exception ex)
             {

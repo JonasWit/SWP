@@ -1,27 +1,33 @@
 ﻿<div class="row">
     <div class="col-md-6">
         <RadzenGrid @ref="App.FinancePage.CashMovementGrid" AllowFiltering="true" AllowPaging="true" PageSize="10" AllowSorting="true"
-                    Data="@App.ActiveClientWithData.CashMovements" TItem="CashMovementViewModel" RowUpdate="@App.FinancePage.OnUpdateCashMovementRow">
+                    Data="@App.ActiveClientWithData.CashMovements" TItem="CashMovementViewModel" RowUpdate="@App.FinancePage.OnUpdateCashMovementRow" RowRender="@App.FinancePage.RowRender" CellRender="@App.FinancePage.CellRender">
             <Columns>
-                <RadzenGridColumn TItem="CashMovementViewModel" Property="Name" Title="Name">
+                <RadzenGridColumn TItem="CashMovementViewModel" Property="Name" Title="Nazwa">
                     <EditTemplate Context="c">
                         <RadzenTextBox @bind-Value="c.Name" Style="width:100%; display: block" Name="Name" />
-                        <RadzenRequiredValidator Component="Name" Text="Name cannot be empty!" Popup="true" />
-                        <RadzenLengthValidator Max="50" Text="Max 50 characters!" Component="Name" Popup="true" />
+                        <RadzenRequiredValidator Component="Name" Text="Nazwa nie może być pusta!" Popup="true" />
+                        <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Name" Popup="true" />
+                    </EditTemplate>
+                </RadzenGridColumn>
+                <RadzenGridColumn TItem="CashMovementViewModel" Property="Amount" Title="Kwota">
+                    <EditTemplate Context="c">
+                        <RadzenNumeric TValue="double" Step="0.01" @bind-Value="@c.Amount" Name="Amount" />
+                        <RadzenRequiredValidator Component="Amount" Text="Kwota nie może być pusta!" Popup="true" />
                     </EditTemplate>
                 </RadzenGridColumn>
 
-                <RadzenGridColumn TItem="CashMovementViewModel" Property="Created" Title="Created">
+                <RadzenGridColumn TItem="CashMovementViewModel" Property="Created" Title="@GeneralViewModel.Created">
                     <Template Context="c">
-                        @String.Format("{0:f}", c.Created)
+                        @c.Created.ToString(GeneralViewModel.DateFormant)
                     </Template>
                 </RadzenGridColumn>
-                <RadzenGridColumn TItem="CashMovementViewModel" Property="Updated" Title="Last Change">
+                <RadzenGridColumn TItem="CashMovementViewModel" Property="Updated" Title="@GeneralViewModel.Updated">
                     <Template Context="c">
-                        @String.Format("{0:f}", c.Updated)
+                        @c.Updated.ToString(GeneralViewModel.DateFormant)
                     </Template>
                 </RadzenGridColumn>
-                <RadzenGridColumn TItem="CashMovementViewModel" Property="UpdatedBy" Title="Użytkownik">
+                <RadzenGridColumn TItem="CashMovementViewModel" Property="UpdatedBy" Title="@GeneralViewModel.UpdatedBy">
                     <Template Context="c">
                         @c.UpdatedBy
                     </Template>
@@ -105,9 +111,6 @@
         </RadzenTabs>
     </div>
 </div>
-
-
-
 
 @code {
     [Parameter]

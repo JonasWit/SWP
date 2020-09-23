@@ -93,7 +93,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
                 App.ActiveClientWithData.Cases.Add(result);
                 await CasesGrid.Reload();
-                App.ShowNotification(NotificationSeverity.Success, "Sukces!", $"Sprawa: {result.Name} została dodana.", App.NotificationDuration);
+                App.ShowNotification(NotificationSeverity.Success, "Sukces!", $"Sprawa: {result.Name} została dodana.", GeneralViewModel.NotificationDuration);
             }
             catch (Exception ex)
             {
@@ -119,7 +119,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
                 App.ActiveClientWithData.Cases[App.ActiveClientWithData.Cases.FindIndex(x => x.Id == result.Id)] = result;
                 await CasesGrid.Reload();
-                App.ShowNotification(NotificationSeverity.Success, "Sukces!", $"Sprawa: {result.Name} została zmieniona.", App.NotificationDuration);
+                App.ShowNotification(NotificationSeverity.Success, "Sukces!", $"Sprawa: {result.Name} została zmieniona.", GeneralViewModel.NotificationDuration);
             }
             catch (Exception ex)
             {
@@ -143,7 +143,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
                 App.ActiveClientWithData.Cases.RemoveAll(x => x.Id == c.Id);
                 await CasesGrid.Reload();
-                App.ShowNotification(NotificationSeverity.Warning, "Sukces!", $"Sprawa: {c.Name} została usunięta.", App.NotificationDuration);
+                App.ShowNotification(NotificationSeverity.Warning, "Sukces!", $"Sprawa: {c.Name} została usunięta.", GeneralViewModel.NotificationDuration);
 
             }
             catch (Exception ex)
@@ -192,7 +192,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
                 App.ActiveClientWithData.SelectedCase.Notes.Add(result);
                 await NotesGrid.Reload();
-                App.ShowNotification(NotificationSeverity.Success, "Sukces!", $"Notka: {result.Name} została dodana.", App.NotificationDuration);
+                App.ShowNotification(NotificationSeverity.Success, "Sukces!", $"Notka: {result.Name} została dodana.", GeneralViewModel.NotificationDuration);
             }
             catch (Exception ex)
             {
@@ -217,7 +217,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
                 App.ActiveClientWithData.SelectedCase.Notes[App.ActiveClientWithData.SelectedCase.Notes.FindIndex(x => x.Id == result.Id)] = result;
                 await NotesGrid.Reload();
-                App.ShowNotification(NotificationSeverity.Success, "Sukces!", $"Notka: {result.Name} została zmieniona.", App.NotificationDuration);
+                App.ShowNotification(NotificationSeverity.Success, "Sukces!", $"Notka: {result.Name} została zmieniona.", GeneralViewModel.NotificationDuration);
             }
             catch (Exception ex)
             {
@@ -240,7 +240,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
                 await deleteNote.Delete(note.Id);
                 App.ActiveClientWithData.SelectedCase.Notes.RemoveAll(x => x.Id == note.Id);
                 await NotesGrid.Reload();
-                App.ShowNotification(NotificationSeverity.Warning, "Sukces!", $"Notka: {note.Name} została usunięta.", App.NotificationDuration);
+                App.ShowNotification(NotificationSeverity.Warning, "Sukces!", $"Notka: {note.Name} została usunięta.", GeneralViewModel.NotificationDuration);
             }
             catch (Exception ex)
             {
@@ -276,7 +276,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
                 App.ActiveClientWithData.SelectedCase.Reminders.Add(newReminder);
                 App.CalendarPage.Reminders.Add(newReminder);
                 await CasesScheduler.Reload();
-                App.ShowNotification(NotificationSeverity.Success, "Sukces!", $"Przypomnienie: {newReminder.Name} zostało dodane.", App.NotificationDuration);
+                App.ShowNotification(NotificationSeverity.Success, "Sukces!", $"Przypomnienie: {newReminder.Name} zostało dodane.", GeneralViewModel.NotificationDuration);
             }
         }
 
@@ -293,7 +293,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
                     App.CalendarPage.Reminders.RemoveAll(x => x.Id == result.Id);
 
                     await CasesScheduler.Reload();
-                    App.ShowNotification(NotificationSeverity.Warning, "Sukces!", $"Przypomnienie: {result.Name} zostało usunięte.", App.NotificationDuration);
+                    App.ShowNotification(NotificationSeverity.Warning, "Sukces!", $"Przypomnienie: {result.Name} zostało usunięte.", GeneralViewModel.NotificationDuration);
                 }
                 else
                 {
@@ -314,7 +314,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
                     App.CalendarPage.Reminders[App.CalendarPage.Reminders.FindIndex(x => x.Id == result.Id)] = result;
 
                     await CasesScheduler.Reload();
-                    App.ShowNotification(NotificationSeverity.Success, "Sukces!", $"Przypomnienie: {result.Name} zostało zmienione.", App.NotificationDuration);
+                    App.ShowNotification(NotificationSeverity.Success, "Sukces!", $"Przypomnienie: {result.Name} zostało zmienione.", GeneralViewModel.NotificationDuration);
                 }
             }
         }

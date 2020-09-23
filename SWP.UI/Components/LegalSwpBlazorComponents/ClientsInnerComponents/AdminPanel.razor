@@ -1,4 +1,6 @@
-﻿<h2>Panel Administracyjny</h2>
+﻿@inject GeneralViewModel generalViewModel
+
+<h2>Panel Administracyjny</h2>
 <h2>Zarządzaj swoimi klientami</h2>
 
 <div>
@@ -46,7 +48,7 @@
                 </div>
                 <div class="row justify-content-center">
                     <div class="d-flex justify-content-center">
-                        <RadzenButton ButtonType="ButtonType.Submit" Icon="save" Text="Dodaj Klienta" ButtonStyle="ButtonStyle.Secondary"/>
+                        <RadzenButton ButtonType="ButtonType.Submit" Icon="save" Text="Dodaj Klienta" ButtonStyle="ButtonStyle.Secondary" />
                     </div>
                 </div>
             </RadzenFieldset>
@@ -84,23 +86,23 @@
                     <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Telefon" Popup="true" Style="position: absolute" />
                 </EditTemplate>
             </RadzenGridColumn>
-            <RadzenGridColumn TItem="ClientViewModel" Property="Created" Title="Created">
+            <RadzenGridColumn TItem="ClientViewModel" Property="Created" Title="@GeneralViewModel.Created">
                 <Template Context="client">
-                    @String.Format("{0:f}", client.Created)
+                    @client.Created.ToString(GeneralViewModel.DateFormant)
                 </Template>
             </RadzenGridColumn>
-            <RadzenGridColumn TItem="ClientViewModel" Property="Updated" Title="Ostatnia Zmiana">
+            <RadzenGridColumn TItem="ClientViewModel" Property="Updated" Title="@GeneralViewModel.Updated">
                 <Template Context="client">
-                    @String.Format("{0:f}", client.Updated)
+                    @client.Updated.ToString(GeneralViewModel.DateFormant)
                 </Template>
             </RadzenGridColumn>
-            <RadzenGridColumn TItem="ClientViewModel" Property="UpdatedBy" Title="Użytkownik">
+            <RadzenGridColumn TItem="ClientViewModel" Property="UpdatedBy" Title="@GeneralViewModel.UpdatedBy">
                 <Template Context="client">
                     @client.UpdatedBy
                 </Template>
             </RadzenGridColumn>
 
-            <RadzenGridColumn TItem="ClientViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="100px">
+            <RadzenGridColumn TItem="ClientViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="100px" Title="Edytuj">
                 <Template Context="client">
                     <RadzenButton Icon="edit" Size="ButtonSize.Medium" Click="@(args => App.ClientsPage.EditClientRow(client))">
                     </RadzenButton>
@@ -112,7 +114,7 @@
                     </RadzenButton>
                 </EditTemplate>
             </RadzenGridColumn>
-            <RadzenGridColumn TItem="ClientViewModel" Context="order" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="70px">
+            <RadzenGridColumn TItem="ClientViewModel" Context="order" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="70px" Title="Usuń">
                 <Template Context="client">
                     <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Medium" Click="@(async (args) => await App.ClientsPage.DeleteClientRow(client))">
                     </RadzenButton>

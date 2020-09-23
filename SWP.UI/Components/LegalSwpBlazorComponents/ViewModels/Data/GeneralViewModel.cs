@@ -8,22 +8,25 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data
         public string DeadlineColor => "#DC143C";
 
         public const string Client = "Klient";
-        public const string Case = "Klient";
+        public const string Case = "Sprawa";
         public const string Reminder = "Przypomnienie";
         public const string Deadline = "Termin";
-        public const string CreatedBy = "Stworzone";
-        public const string UpdatedBy = "Ostania Zmiana";
+        public const string Created = "Stworzone";
+        public const string CreatedBy = "Użytkownik";
+        public const string Updated = "Ostania Zmiana";
+        public const string UpdatedBy = "Użytkownik";
 
         public const string Day = "Dzień";
         public const string Week = "Tydzień";
         public const string Month = "Miesiąc";
 
+        public const string DateFormant = "dd/MM/yy HH:mm";
+        public const int NotificationDuration = 4000;
+
         public class Priority
         {
             public int Number { get; set; }
         }
-
-        //todo: dodac consty na polskie nazwy kolumn
 
         public class PriorityColor
         {

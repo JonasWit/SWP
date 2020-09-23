@@ -71,23 +71,23 @@ else
                         <RadzenLengthValidator Max="500" Text="Maksymalnie 500 znaków!" Component="Description" Popup="true" Style="position: absolute" />
                     </EditTemplate>
                 </RadzenGridColumn>
-                <RadzenGridColumn TItem="ClientJobViewModel" Property="Created" Title="Created">
+                <RadzenGridColumn TItem="ClientJobViewModel" Property="Created" Title="@GeneralViewModel.Created">
                     <Template Context="job">
-                        @String.Format("{0:f}", job.Created)
+                        @job.Created.ToString(GeneralViewModel.DateFormant)
                     </Template>
                 </RadzenGridColumn>
-                <RadzenGridColumn TItem="ClientJobViewModel" Property="Updated" Title="Last Change">
+                <RadzenGridColumn TItem="ClientJobViewModel" Property="Updated" Title="@GeneralViewModel.Updated">
                     <Template Context="job">
-                        @String.Format("{0:f}", job.Updated)
+                        @job.Updated.ToString(GeneralViewModel.DateFormant)
                     </Template>
                 </RadzenGridColumn>
-                <RadzenGridColumn TItem="ClientJobViewModel" Property="UpdatedBy" Title="Użytkownik">
+                <RadzenGridColumn TItem="ClientJobViewModel" Property="UpdatedBy" Title="@GeneralViewModel.UpdatedBy">
                     <Template Context="job">
                         @job.UpdatedBy
                     </Template>
                 </RadzenGridColumn>
 
-                <RadzenGridColumn TItem="ClientJobViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="100px">
+                <RadzenGridColumn TItem="ClientJobViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="100px" Title="Edytuj">
                     <Template Context="job">
                         <RadzenButton Icon="edit" Size="ButtonSize.Medium" Click="@(args => App.ClientsPage.EditClientJobRow(job))">
                         </RadzenButton>
@@ -99,7 +99,7 @@ else
                         </RadzenButton>
                     </EditTemplate>
                 </RadzenGridColumn>
-                <RadzenGridColumn TItem="ClientJobViewModel" Context="order" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="70px">
+                <RadzenGridColumn TItem="ClientJobViewModel" Context="order" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="70px" Title="Usuń">
                     <Template Context="job">
                         <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Medium" Click="@(async (args) => await App.ClientsPage.DeleteClientJobRow(job))">
                         </RadzenButton>

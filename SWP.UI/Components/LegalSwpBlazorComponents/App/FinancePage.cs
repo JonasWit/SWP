@@ -45,29 +45,22 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         {
             try
             {
-                //var result = await updateClient.Update(new UpdateClient.Request
-                //{
-                //    Id = Client.Id,
-                //    Active = Client.Active,
-                //    Address = Client.Address,
-                //    Email = Client.Email,
-                //    Name = Client.Name,
-                //    PhoneNumber = Client.PhoneNumber,
-                //    ProfileClaim = App.User.Profile,
-                //    UpdatedBy = App.User.UserName
-                //});
+                var result = await updateCashMovement.Update(new UpdateCashMovement.Request
+                {
+                    Id = cash.Id,
+                    Amount = cash.Amount,
+                    Name = cash.Name,
+                    Updated = DateTime.Now,
+                    UpdatedBy = App.User.UserName
+                });
 
-                //if (App.ActiveClient != null && App.ActiveClient.Id == result.Id)
-                //{
-                //    App.ActiveClient = result;
-                //}
-                //else
-                //{
-                //    App.Clients[App.Clients.FindIndex(x => x.Id == result.Id)] = result;
-                //}
+                if (App.ActiveClient != null)
+                {
+                    App.ActiveClientWithData.CashMovements[App.ActiveClientWithData.CashMovements.FindIndex(x => x.Id == result.Id)] = result;
+                }
 
-                //await ClientsGrid.Reload();
-                //App.ShowNotification(NotificationSeverity.Success, "Success!", $"Client: {result.Name} has been updated.", 2000);
+                await CashMovementGrid.Reload();
+                App.ShowNotification(NotificationSeverity.Success, "Sukces!", $"Kwota: {result.Amount} zł, została zmieniona.", GeneralViewModel.NotificationDuration);
             }
             catch (Exception ex)
             {
@@ -87,11 +80,11 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         {
             try
             {
-                //await deleteClient.Delete(Client.Id);
-                //App.Clients.RemoveAll(x => x.Id == Client.Id);
+                await deleteCashMovement.Delete(cash.Id);
+                App.ActiveClientWithData.CashMovements.RemoveAll(x => x.Id == cash.Id);
 
-                //await ClientsGrid.Reload();
-                //App.ShowNotification(NotificationSeverity.Warning, "Success!", $"Client: {Client.Name} has been deleted.", 2000);
+                await CashMovementGrid.Reload();
+                App.ShowNotification(NotificationSeverity.Warning, "Sukces!", $"Kwota: {cash.Amount} zł, została usunięta.", GeneralViewModel.NotificationDuration);
             }
             catch (Exception ex)
             {
@@ -110,7 +103,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
                 App.ActiveClientWithData.CashMovements.Add(result);
                 await CashMovementGrid.Reload();
-                App.ShowNotification(NotificationSeverity.Success, "Sukces!", $"Kwota: {result.Amount} zł, została dodana.", App.NotificationDuration);
+                App.ShowNotification(NotificationSeverity.Success, "Sukces!", $"Kwota: {result.Amount} zł, została dodana.", GeneralViewModel.NotificationDuration);
             }
             catch (Exception ex)
             {
@@ -118,8 +111,18 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             }
         }
 
+        public void RowRender(RowRenderEventArgs<CashMovementViewModel> args)
+        {
+            args.Attributes.Add("style", $"font-weight: {(args.Data.Amount < 0 ? "bold" : "normal")};");
+        }
 
-
+        public void CellRender(CellRenderEventArgs<CashMovementViewModel> args)
+        {
+            if (args.Column.Property == "Amount")
+            {
+                args.Attributes.Add("style", $"background-color: {(args.Data.Amount < 0 ? "#ff6d41" : "white")};");
+            }
+        }
 
 
 

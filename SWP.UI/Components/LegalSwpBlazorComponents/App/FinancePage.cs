@@ -123,9 +123,5 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
                 args.Attributes.Add("style", $"background-color: {(args.Data.Amount < 0 ? "#ff6d41" : "white")};");
             }
         }
-
-
-
-
     }
 }

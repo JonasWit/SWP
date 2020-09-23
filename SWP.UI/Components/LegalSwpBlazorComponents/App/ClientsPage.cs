@@ -167,19 +167,12 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             {
                 App.ErrorPage.DisplayMessage(ex);
             }
-            finally
-            {
-
-            }
         }
 
         public void EditClientJobRow(ClientJobViewModel clientJob) => ClientsJobsGrid.EditRow(clientJob);
 
         public async Task OnUpdateClientJobRow(ClientJobViewModel clientJob)
         {
-            if (App.Loading) return;
-            else App.Loading = true;
-
             try
             {
                 var result = await updateClientJob.Update(new UpdateClientJob.Request
@@ -201,10 +194,6 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             {
                 App.ErrorPage.DisplayMessage(ex);
             }
-            finally
-            {
-                App.Loading = false;
-            }
         }
 
         public void SaveClientJobRow(ClientJobViewModel clientJob) => ClientsJobsGrid.UpdateRow(clientJob);
@@ -217,9 +206,6 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
         public async Task DeleteClientJobRow(ClientJobViewModel clientJob)
         {
-            if (App.Loading) return;
-            else App.Loading = true;
-
             try
             {
                 await deleteClientJob.Delete(clientJob.Id);
@@ -236,12 +222,6 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             {
                 App.ErrorPage.DisplayMessage(ex);
             }
-            finally
-            {
-                App.Loading = false;
-            }
-
-
         }
 
         #endregion

@@ -16,28 +16,28 @@
 </head>
 <body>
     <div class="container-fluid">
-        <nav class="main-nav navbar navbar-expand-lg navbar-light ">
+        <nav class="main-nav navbar navbar-expand-lg navbar-light pb-5">
             <a class="navbar-brand" asp-page="/Index">SWP</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
-                <ul class="main-menu">
-                    <li>
+                <ul class="main-menu nav navbar-nav">
+                    <li class="nav-item">
                         <environment names="Development">
                             <strong>Development Environment</strong>
                         </environment>
                     </li>
-                    <li>
+                    <li class="nav-item">
                         <a asp-page="/Index">Strona Główna</a>
                     </li>
-                    <li>
+                    <li class="nav-item">
                         <a asp-page="/Marketing/Products">Produkty</a>
                     </li>
 
                     @if (User.Identity.IsAuthenticated && (User.IsInRole("Administrators") || User.IsInRole("Users")))
                     {
-                        <li>
+                        <li class="nav-item">
                             <a asp-page="/Applications/Index">Moje Aplikacje</a>
                         </li>
 
@@ -45,22 +45,22 @@
 
                     @if (User.Identity.IsAuthenticated && User.IsInRole("Administrators"))
                     {
-                        <li>
+                        <li class="nav-item">
                             <a asp-page="/Admin/Index">Admin</a>
                         </li>
-                        <li>
+                        <li class="nav-item">
                             <a asp-page="/Marketing/Contact">Kontakt</a>
                         </li>
                     }
                 </ul>
                 <partial name="_LoginPartial">
-                    <ul class="right-menu">
-                        <li>
+                    <ul class="right-menu nav navbar-nav navbar-right">
+                        <li class="nav-item">
                             <a href="#">
                                 <i class="fas fa-search"></i>
                             </a>
                         </li>
-                        <li>
+                        <li class="nav-item">
                             <a href="#">
                                 <i class="fas fa-shopping-cart"></i>
                             </a>

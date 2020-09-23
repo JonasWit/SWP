@@ -164,86 +164,96 @@ ul {
             margin-left: 10px;
         }
 
-img:hover {
-    opacity: 0.7;
-}
 
-.main-link {
-    display: inline-block;
-    border: 2px solid #000;
-    padding: 5px 10px;
-    font-weight: bold;
-    border-radius: 8px;
-}
-
-.main-link:hover {
-    text-decoration: none;
-}
-
-
-.card-img-top {
-    height: 180px;
-}
-
-.color-font {
-    color: #0067b8;
-    font-weight: bold;
-}
-
-.instr-1 {
-    border-bottom: solid;
-    border-bottom-color: #0067b8;
-    border-bottom-width: 2px;
-    padding-bottom: 5px;
-}
-
-.product-card {
-    height: 1500px;
-    width: 800px;
-
-}
-
-.user-name {
-    color: #0067b8;
-}
-
-.btn-2 {
-    cursor: pointer;
-    display: inline-block;
-    border: solid;
-    border-radius: 12px;
-    padding: 5px 45px;
-    background: #0067b8;
-    color: #fff;
-    font-size: 16px;
-   
-}
-
-    .btn-2:hover {
-        opacity: 0.8;
-        color: #fff;
-        text-decoration: none;
-        
+@media only screen and (max-width: 768px) {
+    .home-cards {
+        display: grid;
+        grid-template-columns: repeat(1, 1fr);
+        grid-gap: 10px;
+        padding: 10px;
     }
 
 
-    
-
-.steps {
-    height: 550px;
-    background-image: url(/Images/19366.jpg);
-    background-position: top;
-    background-size: ;
-    padding: 12px 12px 0px 12px;
-}
-
-.app-card {
-    background-image: url(/Images/19366.jpg);
-    background-position: top;
-    background-size: cover;
-}
-
-.footer {
-    height: 150px ;
 
 }
+
+
+    img:hover {
+        opacity: 0.7;
+    }
+
+    .main-link {
+        display: inline-block;
+        border: 2px solid #000;
+        padding: 5px 10px;
+        font-weight: bold;
+        border-radius: 8px;
+    }
+
+        .main-link:hover {
+            text-decoration: none;
+        }
+
+
+    .card-img-top {
+        height: 180px;
+    }
+
+    .color-font {
+        color: #0067b8;
+        font-weight: bold;
+    }
+
+    .instr-1 {
+        border-bottom: solid;
+        border-bottom-color: #0067b8;
+        border-bottom-width: 2px;
+        padding-bottom: 5px;
+    }
+
+    .product-card {
+        height: 1500px;
+        width: 800px;
+    }
+
+    .user-name {
+        color: #0067b8;
+    }
+
+    .btn-2 {
+        cursor: pointer;
+        display: inline-block;
+        border: solid;
+        border-radius: 12px;
+        padding: 5px 45px;
+        background: #0067b8;
+        color: #fff;
+        font-size: 16px;
+    }
+
+        .btn-2:hover {
+            opacity: 0.8;
+            color: #fff;
+            text-decoration: none;
+        }
+
+
+
+
+    .steps {
+        height: 550px;
+        background-image: url(/Images/19366.jpg);
+        background-position: top;
+        background-size:;
+        padding: 12px 12px 0px 12px;
+    }
+
+    .app-card {
+        background-image: url(/Images/19366.jpg);
+        background-position: top;
+        background-size: cover;
+    }
+
+    .footer {
+        height: 150px;
+    }

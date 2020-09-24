@@ -2,25 +2,26 @@
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
 
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <a class="p-lg-3 p-md-3" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">@User.Identity.Name</a>
+
+    <form class="form-inline p-lg-3 p-md-3" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+        <button type="submit" class="btn">Logout</button>
+    </form>
+
+
+}
+else
+{
+
 <ul>
-    @if (SignInManager.IsSignedIn(User))
-    {
-        <li>
-            <a asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">@User.Identity.Name</a>
-        </li>
-        <li>
-            <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                <button type="submit" class="btn">Logout</button>
-            </form>
-        </li>
-    }
-    else
-    {
-        <li>
-            <a asp-area="Identity" asp-page="/Account/Register">Register</a>
-        </li>
-        <li>
-            <a asp-area="Identity" asp-page="/Account/Login">Login</a>
-        </li>
-    }
+    <li><a class="p-lg-3 p-md-3" asp-area="Identity" asp-page="/Account/Register">Register</a></li>
+
+    <li><a class="p-lg-3 p-md-3" asp-area="Identity" asp-page="/Account/Login">Login</a></li>
 </ul>
+
+
+}
+

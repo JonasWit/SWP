@@ -38,41 +38,22 @@ ul {
     margin: auto;
 }
 
-/* Nav */
-.main-nav {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    height: 60px;
-    font-size: 13px;
+
+.nav-item a {
+    color: #000;
+    font-size: 14px;
+    
+    
 }
-
-    .main-nav .logo {
-        width: 110px;
+    .nav-item a:hover {
+        display: inline-block;
+        color: #262626;
+        text-decoration: none;
+        border-bottom: 2px solid;
+        
     }
 
-    .main-nav ul {
-        display: flex;
-    }
 
-        .main-nav ul li {
-            padding: 0 20px;
-        }
-
-            .main-nav ul li a {
-                text-decoration:none;
-                padding-bottom: 2px;
-            }
-
-                .main-nav ul li a:hover {
-                    border-bottom: 2px solid #262626;
-                    color: #000;
-                }
-
-        .main-nav ul.main-menu {
-            flex: 1;
-            margin-left: 20px;
-        }
 
 .btn {
     cursor: pointer;
@@ -83,7 +64,6 @@ ul {
     color: #fff;
     font-size: 12px;
     font-weight: bold;
-    
 }
 
     .btn:hover {

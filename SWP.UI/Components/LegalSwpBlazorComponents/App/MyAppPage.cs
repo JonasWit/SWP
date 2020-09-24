@@ -1,4 +1,6 @@
 ﻿using Radzen.Blazor;
+using SWP.Application.LegalSwp.Cases;
+using SWP.Application.LegalSwp.Clients;
 using SWP.UI.BlazorApp;
 using SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data.Statistics;
 using System;
@@ -9,9 +11,10 @@ using System.Threading.Tasks;
 namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 {
     [UITransientService]
-    public class MyAppPage : BlazorPageBase
+    public class MyAppPage : BlazorPageBase, IDisposable
     {
-        private readonly ProfileStatistics profileStatistics;
+        private readonly GetClients getClients;
+        private readonly GetCases getCases;
 
         public LegalBlazorApp App { get; private set; }
 
@@ -20,52 +23,80 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
         public ColorScheme ColorScheme { get; set; } = ColorScheme.Palette;
 
-        public MyAppPage(ProfileStatistics profileStatistics)
+        public MyAppPage(
+            GetClients getClients,
+            GetCases getCases)
         {
-            this.profileStatistics = profileStatistics;
+            this.getClients = getClients;
+            this.getCases = getCases;
         }
 
         public override Task Initialize(BlazorAppBase app)
-        { 
+        {
             App = app as LegalBlazorApp;
-            RefreshStatistics();
+            RefreshClientsData();
+            SubscribeToEvents();
             return Task.CompletedTask;
         }
-     
-        public void RefreshStatistics()
-        {
-            RefreshClientCases();
 
+        private void SubscribeToEvents()
+        {
+            App.ActiveClientChanged += new EventHandler(ActiveClientHasChanged);
         }
 
-        private void  RefreshClientCases()
+        private void UnsubscribeEvents()
         {
-            var statistics = profileStatistics.GetStatistics(App.User.Profile);
+            App.ActiveClientChanged -= new EventHandler(ActiveClientHasChanged);
+        }
 
-            foreach (var Client in statistics.Clients)
+        private void ActiveClientHasChanged(object sender, EventArgs e)
+        {
+            RefreshClientsData();
+        }
+
+        private void RefreshClientsData()
+        {
+            if (App.ActiveClient != null)
+            {
+
+
+
+                RefreshFinanceData();
+            }
+            else
+            else
+            {
+                RefreshClinetCases();
+                RefreshFinanceData();
+            }
+        }
+
+        private void RefreshClinetCases()
+        {
+            ClientsCases.Clear();
+
+            foreach (var client in App.Clients)
             {
                 ClientsCases.Add(new DataItem
                 {
-                    Category = Client.Name,
-                    Number = Client.Cases.Count
+                    Category = client.Name,
+                    Number = getClients.CountCasesPerClient(client.Id)
                 });
             }
         }
 
-        private void RefreshUsersActivity()
+        private void RefreshFinanceData()
         {
-            var statistics = profileStatistics.GetStatistics(App.User.Profile);
 
-            foreach (var Client in statistics.Clients)
-            {
-                ClientsCases.Add(new DataItem
-                {
-                    Category = Client.Name,
-                    Number = Client.Cases.Count
-                });
-            }
+
+
+
+
         }
 
-
+        public void Dispose()
+        {
+            UnsubscribeEvents();
+        }
     }
 }

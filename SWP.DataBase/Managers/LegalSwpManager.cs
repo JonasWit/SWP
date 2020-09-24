@@ -307,11 +307,11 @@ namespace SWP.DataBase.Managers
 
         #region Statistics
 
-        public int CountCasesPerClient(int ClientId) => 
-            context.Cases.AsNoTracking().Count(x => x.ClientId == ClientId);
+        public int CountCasesPerClient(int clientId) => 
+            context.Cases.AsNoTracking().Count(x => x.ClientId == clientId);
 
-        public int CountJobsPerClient(int ClientId) => 
-            context.ClientJobs.AsNoTracking().Count(x => x.ClientId == ClientId);
+        public int CountJobsPerClient(int clientId) => 
+            context.ClientJobs.AsNoTracking().Count(x => x.ClientId == clientId);
 
         public int CountRemindersPerCase(int caseId) => 
             context.Reminders.AsNoTracking()
@@ -324,11 +324,18 @@ namespace SWP.DataBase.Managers
         public int CountNotesPerCase(int caseId) => 
             context.Notes.AsNoTracking().Count(x => x.CaseId == caseId);
 
-        public IEnumerable<int> GetClientCasesIds(int ClientId) =>
+        public IEnumerable<int> GetClientCasesIds(int clientId) =>
             context.Clients
                 .AsNoTracking()
                 .Include(x => x.Cases)
-                .FirstOrDefault(x => x.Id == ClientId).Cases
+                .FirstOrDefault(x => x.Id == clientId).Cases
+                .Select(y => y.Id)
+                .ToList();
+
+        public IEnumerable<int> GetClientsIds(string profile) =>
+            context.Clients
+                .AsNoTracking()
+                .Where(x => x.ProfileClaim == profile)
                 .Select(y => y.Id)
                 .ToList();
 

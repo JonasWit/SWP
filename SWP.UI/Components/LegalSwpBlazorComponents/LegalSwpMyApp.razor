@@ -1,11 +1,45 @@
 ﻿<h1>Moja Aplikacja</h1>
 
-<div class="row">
+
+@if (App.ActiveClient != null)
+{
+
+    <p>active client : @App.ActiveClient.Name</p>
+
+
+
+
+
+
+
+}
+else
+{
+    <p>No active client</p>
+
+    <div class="row">
         <RadzenChart ColorScheme="@App.MyAppPage.ColorScheme">
             <RadzenPieSeries Data="@App.MyAppPage.ClientsCases" Title="Sprawy" CategoryProperty="Category" ValueProperty="Number" />
         </RadzenChart>
- 
-</div>
+    </div>
+
+}
+
+
+@*<RadzenChart>
+    <RadzenAreaSeries Smooth="true" Data="@revenue2019" CategoryProperty="Date" Title="2019" ValueProperty="Revenue" RenderingOrder="1">
+    </RadzenAreaSeries>
+    <RadzenAreaSeries Smooth="true" Data="@revenue2020" CategoryProperty="Date" Title="2020" LineType="LineType.Dashed" ValueProperty="Revenue">
+    </RadzenAreaSeries>
+    <RadzenCategoryAxis Padding="20" FormatString="{0:MMM}" />
+    <RadzenValueAxis Formatter="@FormatAsUSD">
+        <RadzenGridLines Visible="true" />
+        <RadzenAxisTitle Text="Revenue in USD" />
+    </RadzenValueAxis>
+</RadzenChart>*@
+
+
+
 
 
 @code {

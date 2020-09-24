@@ -78,6 +78,8 @@ namespace SWP.Domain.Infrastructure
         int CountClients();
         int CountCasesPerClient(int clientId);
         int CountJobsPerClient(int clientId);
+
+        IEnumerable<int> GetClientsIds(string profile);
         IEnumerable<int> GetClientCasesIds(int clientId);
 
         int CountRemindersPerCase(int caseId);

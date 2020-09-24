@@ -29,6 +29,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         public ErrorPage ErrorPage { get; }
         public NoProfileWarning NoProfileWarning { get; }
         public FinancePage FinancePage { get; }
+        public ProductivityPage ProductivityPage { get; }
 
         private ClientViewModel activeClient;
 
@@ -56,7 +57,8 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             ErrorPage errorPage,
             NoProfileWarning noProfileWarning,
             NotificationService notificationService,
-            FinancePage financePage)
+            FinancePage financePage,
+            ProductivityPage productivityPage)
         {
             this.getClient = getClient;
             this.getClients = getClients;
@@ -64,6 +66,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             this.notificationService = notificationService;
 
             FinancePage = financePage;
+            ProductivityPage = productivityPage;
             CalendarPage = calendarPanel;
             CasesPage = casesPanel;
             ClientsPage = clientsPanel;
@@ -88,11 +91,11 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
                 Clients = getClients.GetClientsWithoutData(User.Profile)?.Select(x => (ClientViewModel)x).ToList();
 
-                InitializePanels();
+                InitializePages();
             }
         }
 
-        private void InitializePanels()
+        private void InitializePages()
         {
             CalendarPage.Initialize(this);
             CasesPage.Initialize(this);
@@ -101,6 +104,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             ErrorPage.Initialize(this);
             NoProfileWarning.Initialize(this);
             FinancePage.Initialize(this);
+            ProductivityPage.Initialize(this);
         }
 
         #region Main Component
@@ -113,6 +117,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             MyApp = 3,
             ErrorPage = 4,
             Finance = 5,
+            Productivity = 6,
         }
 
         public ClientViewModel ActiveClientWithData { get; set; }

@@ -14,6 +14,7 @@ namespace SWP.DataBase
         public DbSet<Client> Clients { get; set; }
         public DbSet<Case> Cases { get; set; }
         public DbSet<ClientJob> ClientJobs { get; set; }
+        public DbSet<TimeRecord> TimeRecords { get; set; }
         public DbSet<Reminder> Reminders { get; set; }
         public DbSet<Note> Notes { get; set; }
         public DbSet<CashMovement> CashMovements { get; set; }
@@ -59,6 +60,11 @@ namespace SWP.DataBase
 
             modelBuilder.Entity<Client>()
                 .HasMany(c => c.Jobs)
+                .WithOne(e => e.Client)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Client>()
+                .HasMany(c => c.TimeRecords)
                 .WithOne(e => e.Client)
                 .OnDelete(DeleteBehavior.Cascade);
 

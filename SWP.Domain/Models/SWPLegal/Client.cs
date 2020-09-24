@@ -13,6 +13,8 @@ namespace SWP.Domain.Models.SWPLegal
 
         public bool Active { get; set; }
 
+        //todo: add timespan for time spent
+
         [MaxLength(50)]
         [Required]
         public string ProfileClaim { get; set; }
@@ -25,6 +27,8 @@ namespace SWP.Domain.Models.SWPLegal
 
         [MaxLength(50)]
         public string PhoneNumber { get; set; }
+
+        public List<TimeRecord> TimeRecords { get; set; }
 
         public List<Case> Cases { get; set; }
 

@@ -9,23 +9,18 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data
     {
         public int Id { get; set; }
         public string IdStr => Id.ToString();
-
         public string Name { get; set; }
         public bool Active { get; set; }
-
         public string ProfileClaim { get; set; }
-
         public string Address { get; set; }
-
         public CaseViewModel SelectedCase { get; set; }
-
+        public TimeRecordViewModel SelectedTimeRecord { get; set; }
+        public CashMovementViewModel SelectedCashMovement { get; set; }
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
-
         public List<CaseViewModel> Cases { get; set; }
-
         public List<ClientJobViewModel> Jobs { get; set; }
-
+        public List<TimeRecordViewModel> TimeRecords { get; set; }
         public List<CashMovementViewModel> CashMovements { get; set; }
 
         public DateTime Created { get; set; }
@@ -45,6 +40,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data
                 PhoneNumber = input.PhoneNumber,
                 Cases = input.Cases == null ? new List<CaseViewModel>() : input.Cases.Select(x => (CaseViewModel)x).ToList(),
                 Jobs = input.Jobs == null ? new List<ClientJobViewModel>() : input.Jobs.Select(x => (ClientJobViewModel)x).ToList(),
+                TimeRecords = input.TimeRecords == null ? new List<TimeRecordViewModel>() : input.TimeRecords.Select(x => (TimeRecordViewModel)x).ToList(),
                 CashMovements = input.CashMovements == null ? new List<CashMovementViewModel>() : input.CashMovements.Select(x => (CashMovementViewModel)x).ToList(),
                 Created = input.Created,
                 Updated = input.Updated,

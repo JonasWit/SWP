@@ -25,6 +25,7 @@ namespace SWP.DataBase.Managers
                     .ThenInclude(y => y.Notes)
                 .Include(x => x.Jobs)
                 .Include(x => x.CashMovements)
+                .Include(x => x.TimeRecords)
                 .Where(x => x.Id == id && x.ProfileClaim == profile)
                 .Select(selector)
                 .FirstOrDefault();
@@ -305,6 +306,39 @@ namespace SWP.DataBase.Managers
 
         #endregion
 
+        #region Time Records
+
+        public TimeRecord GetTimeRecord(int id) => context.TimeRecords.FirstOrDefault(x => x.Id == id);
+
+        public List<TimeRecord> GetTimeRecordsForClient(int clientId) =>
+            context.TimeRecords
+                .Where(x => x.ClientId == clientId)
+                .ToList();
+
+        public async Task<TimeRecord> CreateTimeRecord(int clientId, string profile, TimeRecord timeRecord)
+        {
+            var cs = GetClient(clientId, profile, x => x);
+            cs.TimeRecords.Add(timeRecord);
+            await context.SaveChangesAsync();
+            return timeRecord;
+        }
+
+        public async Task<TimeRecord> UpdateTimeRecord(TimeRecord timeRecord)
+        {
+            context.TimeRecords.Update(timeRecord);
+            await context.SaveChangesAsync();
+            return timeRecord;
+        }
+
+        public Task<int> DeleteTimeRecord(int id)
+        {
+            var tr = context.TimeRecords.FirstOrDefault(x => x.Id == id);
+            context.TimeRecords.Remove(tr);
+            return context.SaveChangesAsync();
+        }
+
+        #endregion
+
         #region Statistics
 
         public int CountCasesPerClient(int clientId) => 
@@ -340,6 +374,7 @@ namespace SWP.DataBase.Managers
                 .ToList();
 
         #endregion
+
     }
 
 }

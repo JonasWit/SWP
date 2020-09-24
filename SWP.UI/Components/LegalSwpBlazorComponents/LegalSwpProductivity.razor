@@ -1,0 +1,116 @@
+﻿<div class="row">
+    <div class="col-md-6">
+        <RadzenGrid @ref="App.ProductivityPage.TimeRecordsGrid" AllowFiltering="true" AllowPaging="true" PageSize="10" AllowSorting="true"
+                    Data="@App.ActiveClientWithData.TimeRecords" TItem="TimeRecordViewModel" RowUpdate="@App.ProductivityPage.OnUpdateTimeRecordRow">
+            <Columns>
+                <RadzenGridColumn TItem="TimeRecordViewModel" Property="Name" Title="Nazwa">
+                    <EditTemplate Context="r">
+                        <RadzenTextBox @bind-Value="r.Name" Style="width:100%; display: block" Name="Name" />
+                        <RadzenRequiredValidator Component="Name" Text="Nazwa nie może być pusta!" Popup="true" />
+                        <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Name" Popup="true" />
+                    </EditTemplate>
+                </RadzenGridColumn>
+
+                <RadzenGridColumn TItem="TimeRecordViewModel" Property="Created" Title="@GeneralViewModel.Created">
+                    <Template Context="r">
+                        @r.Created.ToString(GeneralViewModel.DateFormant)
+                    </Template>
+                </RadzenGridColumn>
+                <RadzenGridColumn TItem="TimeRecordViewModel" Property="Updated" Title="@GeneralViewModel.Updated">
+                    <Template Context="r">
+                        @r.Updated.ToString(GeneralViewModel.DateFormant)
+                    </Template>
+                </RadzenGridColumn>
+                <RadzenGridColumn TItem="TimeRecordViewModel" Property="UpdatedBy" Title="@GeneralViewModel.UpdatedBy">
+                    <Template Context="r">
+                        @r.UpdatedBy
+                    </Template>
+                </RadzenGridColumn>
+
+                <RadzenGridColumn TItem="TimeRecordViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="100px" Title="Szczegóły">
+                    <Template Context="r">
+                        <RadzenButton Icon="reply" Size="ButtonSize.Medium" ButtonStyle="ButtonStyle.Secondary" Click="@(args => App.ProductivityPage.ActiveTimeRecordChange(r))">
+                        </RadzenButton>
+                    </Template>
+                </RadzenGridColumn>
+
+                <RadzenGridColumn TItem="TimeRecordViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="100px">
+                    <Template Context="r">
+                        <RadzenButton Icon="edit" Size="ButtonSize.Medium" Click="@(args => App.ProductivityPage.EditTimeRecordRow(r))">
+                        </RadzenButton>
+                    </Template>
+                    <EditTemplate Context="r">
+                        <RadzenButton Icon="save" Size="ButtonSize.Medium" Click="@((args) => App.ProductivityPage.SaveTimeRecordRow(r))">
+                        </RadzenButton>
+                        <RadzenButton Icon="cancel" Size="ButtonSize.Medium" ButtonStyle="ButtonStyle.Secondary" Click="@((args) => App.ProductivityPage.CancelTimeRecordEdit(r))">
+                        </RadzenButton>
+                    </EditTemplate>
+                </RadzenGridColumn>
+                <RadzenGridColumn TItem="TimeRecordViewModel" Context="order" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="70px">
+                    <Template Context="r">
+                        <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Medium" Click="@(async (args) => await App.ProductivityPage.DeleteTimeRecordRow(r))">
+                        </RadzenButton>
+                    </Template>
+                    <EditTemplate Context="r">
+                        <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Medium" Click="@(async (args) => await App.ProductivityPage.DeleteTimeRecordRow(r))">
+                        </RadzenButton>
+                    </EditTemplate>
+                </RadzenGridColumn>
+            </Columns>
+        </RadzenGrid>
+    </div>
+    <div class="col-md-6">
+        <RadzenCard Style="margin-bottom:20px">
+            Klient: <b>@App.ActiveClient.Name</b>
+        </RadzenCard>
+        <RadzenTabs>
+            <Tabs>
+                <RadzenTabsItem Text="Dodaj Nową Pozycję">
+                    <RadzenTemplateForm Data="@App.ProductivityPage.NewTimeRecord" Submit="@(async (CreateTimeRecord.Request args) => { await App.ProductivityPage.SubmitNewTimeRecord(args); })">
+                        <div class="row">
+                            <RadzenFieldset Text="Wprowadź nową czynność i czas">
+                                <div class="row">
+                                    <div class="col-md-8 m-5">
+                                        <RadzenTextBox Placeholder="Nazwa Srawy..." Style="margin-bottom: 30px" @bind-Value="App.ProductivityPage.NewTimeRecord.Name" Name="Name" />
+                                        <RadzenRequiredValidator Text="Nazwa nie może być pusta!" Component="Name" Popup="true" />
+                                        <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Name" Popup="true" />
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-8 m-5">
+                                        <RadzenTextArea Placeholder="Opis..." Style="margin-bottom: 30px" @bind-Value="App.ProductivityPage.NewTimeRecord.Description" Name="Description" />
+                                        <RadzenLengthValidator Max="500" Text="Maksymalnie 500 znaków!" Component="Description" Popup="true" />
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <RadzenDatePicker TValue="DateTime" ShowTime="true" TimeOnly="true" DateFormat="HH:mm" @bind-Value="App.ProductivityPage.NewTimeRecord.RecordedTime" Name="Time" />
+                                    <RadzenRequiredValidator Text="Czas musi być wprowadzony!" Component="Time" Popup="true" />
+                                </div>
+                                <div class="row">
+
+                                </div>
+                            </RadzenFieldset>
+                        </div>
+                        <div class="row justify-content-center">
+                            <div class="col-md-12 d-flex align-items-end justify-content-center" style="margin-top: 16px;">
+                                <RadzenButton ButtonStyle="ButtonStyle.Secondary" ButtonType="ButtonType.Submit" Icon="save" Text="Zapisz" />
+                            </div>
+                        </div>
+                    </RadzenTemplateForm>
+                </RadzenTabsItem>
+                <RadzenTabsItem Text="Detale">
+
+
+                </RadzenTabsItem>
+            </Tabs>
+        </RadzenTabs>
+    </div>
+</div>
+
+
+@code {
+    [Parameter]
+    public LegalBlazorApp App { get; set; }
+    [Parameter]
+    public EventCallback<LegalBlazorApp> AppChanged { get; set; }
+}

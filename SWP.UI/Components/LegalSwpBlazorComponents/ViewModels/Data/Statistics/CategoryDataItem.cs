@@ -5,9 +5,10 @@ using System.Threading.Tasks;
 
 namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data.Statistics
 {
-    public class DataItem
+    public class CategoryDataItem
     {
+        public int CategoryId { get; set; }
         public string Category { get; set; }
-        public double Number { get; set; }
+        public double Number { get; set; } = 0;
     }
 }

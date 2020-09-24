@@ -65,10 +65,9 @@
         <RadzenTabs>
             <Tabs>
                 <RadzenTabsItem Text="Dodaj Nową Pozycję">
-
                     <RadzenTemplateForm Data="@App.FinancePage.NewCashMovement" Submit="@(async (CreateCashMovement.Request args) => { await App.FinancePage.SubmitNewCashMovement(args); })">
                         <div class="row">
-                            <RadzenFieldset Text="Nowa Sprawa">
+                            <RadzenFieldset Text="Nowa pozycja">
                                 <div class="row">
                                     <div class="col-md-8 m-5">
                                         <RadzenTextBox Placeholder="Nazwa Srawy..." Style="margin-bottom: 30px" @bind-Value="App.FinancePage.NewCashMovement.Name" Name="Name" />

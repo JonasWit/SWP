@@ -12,7 +12,7 @@ namespace SWP.Application.LegalSwp.CashMovements
         private readonly ILegalSwpManager legalSwpManager;
         public GetCashMovements(ILegalSwpManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
 
-        public List<CashMovement> Get(int ClientId) => legalSwpManager.GetCashMovementsForClient(ClientId);
+        public List<CashMovement> Get(int clientId) => legalSwpManager.GetCashMovementsForClient(clientId);
 
 
 

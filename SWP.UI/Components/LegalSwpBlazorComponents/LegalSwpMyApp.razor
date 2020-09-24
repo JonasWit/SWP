@@ -1,4 +1,31 @@
-﻿<h1>Moja Aplikacja</h1>
+﻿@using System.Globalization
+
+<h1>Moja Aplikacja</h1>
+
+<RadzenButton ButtonStyle="ButtonStyle.Secondary" Click="App.MyAppPage.RefreshData">Odśwież Dane</RadzenButton>
+
+<div class="row">
+    <RadzenChart ColorScheme="@App.MyAppPage.ColorScheme">
+        <RadzenPieSeries Data="@App.MyAppPage.ClientsCases" Title="Sprawy" CategoryProperty="Category" ValueProperty="Number" />
+    </RadzenChart>
+</div>
+
+<div style="width: 1000px; height:1000px">
+    <RadzenChart ColorScheme="@App.MyAppPage.ColorScheme">
+        @foreach (var data in App.MyAppPage.RevenueData)
+        {
+            <RadzenLineSeries Smooth="true" Data="@data.DataByDate" CategoryProperty="Date" Title="@data.Name" LineType="LineType.Solid" ValueProperty="Number">
+                <RadzenMarkers MarkerType="MarkerType.Circle" />
+            </RadzenLineSeries>
+        }
+
+        <RadzenCategoryAxis Padding="20" FormatString="{0:MMM}" />
+        <RadzenValueAxis Formatter="@FormatAsPLN">
+            <RadzenGridLines Visible="true" />
+            <RadzenAxisTitle Text="Bilans w PLN" />
+        </RadzenValueAxis>
+    </RadzenChart>
+</div>
 
 
 @if (App.ActiveClient != null)
@@ -12,39 +39,28 @@
 
 
 
+
+
+
 }
 else
 {
     <p>No active client</p>
 
-    <div class="row">
-        <RadzenChart ColorScheme="@App.MyAppPage.ColorScheme">
-            <RadzenPieSeries Data="@App.MyAppPage.ClientsCases" Title="Sprawy" CategoryProperty="Category" ValueProperty="Number" />
-        </RadzenChart>
-    </div>
 
 }
-
-
-@*<RadzenChart>
-    <RadzenAreaSeries Smooth="true" Data="@revenue2019" CategoryProperty="Date" Title="2019" ValueProperty="Revenue" RenderingOrder="1">
-    </RadzenAreaSeries>
-    <RadzenAreaSeries Smooth="true" Data="@revenue2020" CategoryProperty="Date" Title="2020" LineType="LineType.Dashed" ValueProperty="Revenue">
-    </RadzenAreaSeries>
-    <RadzenCategoryAxis Padding="20" FormatString="{0:MMM}" />
-    <RadzenValueAxis Formatter="@FormatAsUSD">
-        <RadzenGridLines Visible="true" />
-        <RadzenAxisTitle Text="Revenue in USD" />
-    </RadzenValueAxis>
-</RadzenChart>*@
-
-
-
-
 
 @code {
     [Parameter]
     public LegalBlazorApp App { get; set; }
     [Parameter]
     public EventCallback<LegalBlazorApp> AppChanged { get; set; }
+
+    private string FormatAsPLN(object value)
+    {
+        return ((double)value).ToString("C0", CultureInfo.CreateSpecificCulture("pl"));
+    }
+
+
+
 }

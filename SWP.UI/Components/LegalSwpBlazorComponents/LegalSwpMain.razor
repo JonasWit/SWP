@@ -49,6 +49,11 @@
                             <i><img src="/Images/icons8-reception-36.png" /></i> Finanse
                         </NavLink>
                     </li>
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" @onclick="@(() => App.SetActivePanel(LegalBlazorApp.Panels.Productivity))">
+                            <i><img src="/Images/icons8-reception-36.png" /></i> Produktywność
+                        </NavLink>
+                    </li>
                 }
 
             </ul>
@@ -56,6 +61,7 @@
     </div>
 
     <div class="not-sidebar px-5 ml-4 mt-5">
+        <RadzenDialog />
         <RadzenNotification />
         @switch (App.ActivePanel)
         {
@@ -77,11 +83,13 @@
             case LegalBlazorApp.Panels.Finance:
                 <LegalSwpFinance @bind-App="App" />
                 break;
+            case LegalBlazorApp.Panels.Productivity:
+                <LegalSwpProductivity @bind-App="App" />
+                break;
             default:
                 <LegalSwpMyApp @bind-App="App" />
                 break;
         }
-
     </div>
 }
 else

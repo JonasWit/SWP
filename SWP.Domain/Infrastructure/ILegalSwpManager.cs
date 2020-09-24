@@ -98,5 +98,15 @@ namespace SWP.Domain.Infrastructure
 
         #endregion
 
+        #region Cash Movements
+
+        TimeRecord GetTimeRecord(int id);
+        List<TimeRecord> GetTimeRecordsForClient(int clientId);
+        Task<TimeRecord> CreateTimeRecord(int clientId, string profile, TimeRecord cashMovement);
+        Task<TimeRecord> UpdateTimeRecord(TimeRecord cashMovement);
+        Task<int> DeleteTimeRecord(int id);
+
+        #endregion
+
     }
 }

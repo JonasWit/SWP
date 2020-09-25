@@ -13,6 +13,8 @@
     <RadzenButton Click="@(() => App.ClientsPage.SetActivePanel(ClientPage.Panels.Jobs))" Text="Zadnia" Style="margin-bottom: 20px;" />
 }
 
+<RadzenButton Click="@(() => App.ClientsPage.SetActivePanel(ClientPage.Panels.Admin))" Text="Dodaj Klienta" Style="margin-bottom: 20px;" />
+
 @if (App.ActiveClient == null)
 {
     <AdminPanel @bind-App="App"></AdminPanel>

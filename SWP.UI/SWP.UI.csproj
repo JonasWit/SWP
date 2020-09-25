@@ -30,6 +30,7 @@
 
   <ItemGroup>
     <Folder Include="Components\AdminBlazorComponents\ViewModels\" />
+    <Folder Include="Components\LegalSwpBlazorComponents\Dialogs\" />
     <Folder Include="Components\MedicalSwpBlazorComponents\ViewModels\" />
     <Folder Include="wwwroot\DownloadableFiles\" />
     <Folder Include="wwwroot\js\" />

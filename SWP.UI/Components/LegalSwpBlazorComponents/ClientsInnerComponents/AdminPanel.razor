@@ -1,11 +1,12 @@
 ﻿@inject GeneralViewModel generalViewModel
 
-<h2>Panel Administracyjny</h2>
-<h2>Zarządzaj swoimi klientami</h2>
+<h2>Panel Administracyjny. Zarządzaj listą swoich klientów</h2>
 
-<div>
+<button @onclick="(() => ShowHideForm())">Dodaj Nowego Klienta</button>
+
+<div id="client-form" class="m-auto p-3 bg-white rounded @(formVisible ? "add-client" : "")">
     <RadzenTemplateForm Data="@App.ClientsPage.NewClient" Submit="@(async (CreateClient.Request args) => { await App.ClientsPage.SubmitNewClient(args); })">
-        <div class="row">
+        <div class="row card-body ">
             <RadzenFieldset Text="Nowy Klient">
                 <div class="row">
                     <div class="col-md-4 align-items-center d-flex">
@@ -56,7 +57,7 @@
     </RadzenTemplateForm>
 </div>
 
-<div>
+<div class="client-list mx-5 shadow-lg bg-white rounded">
     <RadzenGrid @ref="App.ClientsPage.ClientsGrid" AllowFiltering="true" AllowPaging="true" PageSize="10" AllowSorting="true"
                 Data="@App.Clients" TItem="ClientViewModel" RowUpdate="@App.ClientsPage.OnUpdateClientRow">
         <Columns>
@@ -128,9 +129,27 @@
     </RadzenGrid>
 </div>
 
+
+
 @code {
     [Parameter]
     public LegalBlazorApp App { get; set; }
     [Parameter]
     public EventCallback<LegalBlazorApp> AppChanged { get; set; }
+
+    private bool formVisible = false;
+
+    private void ShowHideForm() => formVisible = !formVisible;
+
+
+
+
+
+
+
+
+
+
+
 }
+

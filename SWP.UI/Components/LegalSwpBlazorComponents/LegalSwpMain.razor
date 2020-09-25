@@ -19,7 +19,7 @@
                     <li class="nav-item px-3">
 
                         <NavLink class="nav-link" @onclick="@(() => App.SetActivePanel(LegalBlazorApp.Panels.MyApp))">
-                            <i><img src="/Images/icons8-application-window-36.png" /></i> Moja Aplikacja
+                            <i><img src="/Images/icons8-web-design-36.png" /></i> Moja Aplikacja
                         </NavLink>
                     </li>
                     <li class="nav-item px-3">
@@ -64,8 +64,9 @@
         <div class="not-sidebar mb-5">
             <div class="top-menu">
                 <ul class="">
-                    <li class="nav-item">
-
+                
+                    <li class="nav-item title pt-2 ml-4">
+                      
                         @switch (App.ActivePanel)
                         {
                             case LegalBlazorApp.Panels.Clients:
@@ -94,8 +95,8 @@
                         }
 
                     </li>
-                    <li class="nav-item user"><a href="/Index"><img src="/Images/icons8-exit-36.png" /></a></li>
-                    <li class="nav-item user"><p>@App.User.UserName</p></li>
+                    <li class="pt-2 user"><a href="/Index"><img src="/Images/icons8-exit-36.png" /></a></li>
+                    <li class="pt-2 user"><p>@App.User.UserName</p></li>
                 </ul>
             </div>
             <div class="main-window mx-auto">

@@ -5,6 +5,7 @@ using SWP.Application.LegalSwp.Jobs;
 using SWP.UI.BlazorApp;
 using SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace SWP.UI.Components.LegalSwpBlazorComponents.App
@@ -221,6 +222,19 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             catch (Exception ex)
             {
                 App.ErrorPage.DisplayMessage(ex);
+            }
+        }
+
+        public void ActiveJobChange(object value)
+        {
+            var input = (ClientJobViewModel)value;
+            if (value != null)
+            {
+                App.ActiveClientWithData.SelectedJob = App.ActiveClientWithData.Jobs.FirstOrDefault(x => x.Id == input.Id);
+            }
+            else
+            {
+                App.ActiveClientWithData.SelectedJob = null;
             }
         }
 

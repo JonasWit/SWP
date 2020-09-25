@@ -57,12 +57,12 @@
                 </RadzenGridColumn>
             </Columns>
         </RadzenGrid>
-    </div>
+    </div
 
     <div class="col-md-6">
         <RadzenCard Style="margin-bottom:20px">
             Klient: <b>@App.ActiveClient.Name</b>
-            Bilans: <b>@String.Format(CultureInfo.GetCultureInfo("pl"), "{0:C}", App.ActiveClientWithData.CashMovements.Sum(x => x.Amount))</b>
+            Bilans: <b>@App.ActiveClientWithData.CashMovements.Sum(x => x.Amount).FormatPLN()</b>
         </RadzenCard>
         <RadzenTabs>
             <Tabs>

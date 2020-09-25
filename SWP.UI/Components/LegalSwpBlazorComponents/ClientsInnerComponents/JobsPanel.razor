@@ -50,7 +50,7 @@ else
     </div>
 
     <div class="row justify-content-center">
-        <RadzenGrid @ref="App.ClientsPage.ClientsJobsGrid" AllowFiltering="true" AllowPaging="true" PageSize="10" AllowSorting="true"
+        <RadzenGrid @ref="App.ClientsPage.ClientsJobsGrid" AllowFiltering="true" AllowPaging="true" PageSize="10" AllowSorting="true" RowSelect="@(args => App.ClientsPage.ActiveJobChange(args))"
                     Data="@App.ActiveClientWithData.Jobs" TItem="ClientJobViewModel" RowUpdate="@App.ClientsPage.OnUpdateClientJobRow">
             <Columns>
                 <RadzenGridColumn TItem="ClientJobViewModel" Property="Name" Title="Nazwa">
@@ -112,6 +112,15 @@ else
             </Columns>
         </RadzenGrid>
     </div>
+
+    @if (App.ActiveClientWithData.SelectedJob == null)
+    {
+        <RadzenCard>Wybierz zadanie by zobaczyć szcegóły!</RadzenCard>
+    }
+    else
+    {
+        <RadzenCard>@App.ActiveClientWithData.SelectedJob.Name</RadzenCard>
+    }
 }
 
 @code {

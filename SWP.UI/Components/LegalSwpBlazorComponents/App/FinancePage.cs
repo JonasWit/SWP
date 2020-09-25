@@ -123,5 +123,18 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
                 args.Attributes.Add("style", $"background-color: {(args.Data.Amount < 0 ? "#ff6d41" : "white")};");
             }
         }
+
+        public void ActiveCashMovementChange(object value)
+        {
+            var input = (CashMovementViewModel)value;
+            if (value != null)
+            {
+                App.ActiveClientWithData.SelectedCashMovement = App.ActiveClientWithData.CashMovements.FirstOrDefault(x => x.Id == input.Id);
+            }
+            else
+            {
+                App.ActiveClientWithData.SelectedCashMovement = null;
+            }
+        }
     }
 }

@@ -1,6 +1,6 @@
 ﻿<div class="row">
     <div class="col-md-6">
-        <RadzenGrid @ref="App.FinancePage.CashMovementGrid" AllowFiltering="true" AllowPaging="true" PageSize="10" AllowSorting="true"
+        <RadzenGrid @ref="App.FinancePage.CashMovementGrid" AllowFiltering="true" AllowPaging="true" PageSize="10" AllowSorting="true" RowSelect="@(args => App.FinancePage.ActiveCashMovementChange(args))"
                     Data="@App.ActiveClientWithData.CashMovements" TItem="CashMovementViewModel" RowUpdate="@App.FinancePage.OnUpdateCashMovementRow" RowRender="@App.FinancePage.RowRender" CellRender="@App.FinancePage.CellRender">
             <Columns>
                 <RadzenGridColumn TItem="CashMovementViewModel" Property="Name" Title="Nazwa">
@@ -58,9 +58,11 @@
             </Columns>
         </RadzenGrid>
     </div>
+
     <div class="col-md-6">
         <RadzenCard Style="margin-bottom:20px">
             Klient: <b>@App.ActiveClient.Name</b>
+            Bilans: <b>@String.Format(CultureInfo.GetCultureInfo("pl"), "{0:C}", App.ActiveClientWithData.CashMovements.Sum(x => x.Amount))</b>
         </RadzenCard>
         <RadzenTabs>
             <Tabs>
@@ -101,6 +103,12 @@
                 </RadzenTabsItem>
 
                 <RadzenTabsItem Text="Statystyki">
+
+
+
+
+
+
 
 
 

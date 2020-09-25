@@ -112,7 +112,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
         public void ActiveTimeRecordChange(object value)
         {
-            var input = (CashMovementViewModel)value;
+            var input = (TimeRecordViewModel)value;
             if (value != null)
             {
                 App.ActiveClientWithData.SelectedTimeRecord = App.ActiveClientWithData.TimeRecords.FirstOrDefault(x => x.Id == input.Id);

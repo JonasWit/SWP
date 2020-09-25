@@ -60,7 +60,7 @@ else
     <RadzenButton Click="App.ThrowTestException" />
 
     <RadzenGrid @ref="App.CasesPage.CasesGrid" AllowFiltering="true" AllowPaging="true" PageSize="5" AllowSorting="true"
-                Data="@App.ActiveClientWithData.Cases" TItem="CaseViewModel" RowUpdate="@App.CasesPage.OnUpdateCaseRow">
+                Data="@App.ActiveClientWithData.Cases" TItem="CaseViewModel" RowUpdate="@App.CasesPage.OnUpdateCaseRow" RowSelect="@(args => App.CasesPage.ActiveCaseChange(args))">
         <Columns>
             <RadzenGridColumn TItem="CaseViewModel" Property="Name" Title="Case Name">
                 <EditTemplate Context="c">
@@ -98,13 +98,6 @@ else
             <RadzenGridColumn TItem="CaseViewModel" Property="UpdatedBy" Title="@GeneralViewModel.UpdatedBy">
                 <Template Context="c">
                     @c.UpdatedBy
-                </Template>
-            </RadzenGridColumn>
-
-            <RadzenGridColumn TItem="CaseViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="100px" Title="Szczegóły">
-                <Template Context="c">
-                    <RadzenButton Icon="reply" Size="ButtonSize.Medium" ButtonStyle="ButtonStyle.Secondary" Click="@(args => App.CasesPage.ActiveCaseChange(c))">
-                    </RadzenButton>
                 </Template>
             </RadzenGridColumn>
 
@@ -202,7 +195,7 @@ else
                     </div>
                     <div class="row">
                         <div class="col-md-8">
-                            <RadzenGrid @ref="App.CasesPage.NotesGrid" AllowFiltering="true" AllowPaging="true" PageSize="10" AllowSorting="true"
+                            <RadzenGrid @ref="App.CasesPage.NotesGrid" AllowFiltering="true" AllowPaging="true" PageSize="10" AllowSorting="true" RowSelect="@(args => App.CasesPage.ActiveNoteChange(args))"
                                         Data="@App.ActiveClientWithData.SelectedCase.Notes" TItem="NoteViewModel" RowUpdate="@App.CasesPage.OnUpdateNoteRow">
                                 <Columns>
                                     <RadzenGridColumn TItem="NoteViewModel" Property="Name" Title="Nazwa">
@@ -233,12 +226,7 @@ else
                                             @note.UpdatedBy
                                         </Template>
                                     </RadzenGridColumn>
-                                    <RadzenGridColumn TItem="NoteViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="100px" Title="Szczegóły">
-                                        <Template Context="note">
-                                            <RadzenButton Icon="reply" Size="ButtonSize.Medium" ButtonStyle="ButtonStyle.Secondary" Click="@(args => App.CasesPage.ActiveNoteChange(note))">
-                                            </RadzenButton>
-                                        </Template>
-                                    </RadzenGridColumn>
+
                                     <RadzenGridColumn TItem="NoteViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="100px" Title="Edytuj">
                                         <Template Context="note">
                                             <RadzenButton Icon="edit" Size="ButtonSize.Medium" Click="@(args => App.CasesPage.EditNoteRow(note))">

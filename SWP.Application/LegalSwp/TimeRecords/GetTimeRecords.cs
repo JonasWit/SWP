@@ -10,5 +10,7 @@ namespace SWP.Application.LegalSwp.TimeRecords
     {
         private readonly ILegalSwpManager legalSwpManager;
         public GetTimeRecords(ILegalSwpManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
+
+
     }
 }

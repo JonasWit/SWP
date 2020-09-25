@@ -310,7 +310,7 @@ namespace SWP.DataBase.Managers
 
         public TimeRecord GetTimeRecord(int id) => context.TimeRecords.FirstOrDefault(x => x.Id == id);
 
-        public List<TimeRecord> GetTimeRecordsForClient(int clientId) =>
+        public List<TimeRecord> GetTimeRecords(int clientId) =>
             context.TimeRecords
                 .Where(x => x.ClientId == clientId)
                 .ToList();

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace SWP.Application.LegalSwp.TimeRecords
 {
@@ -10,5 +11,7 @@ namespace SWP.Application.LegalSwp.TimeRecords
     {
         private readonly ILegalSwpManager legalSwpManager;
         public DeleteTimeRecord(ILegalSwpManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
+
+        public Task<int> Delete(int id) => legalSwpManager.DeleteTimeRecord(id);
     }
 }

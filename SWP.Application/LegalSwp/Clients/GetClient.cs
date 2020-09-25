@@ -12,7 +12,6 @@ namespace SWP.Application.LegalSwp.Clients
         private readonly ILegalSwpManager legalSwpManager;
         public GetClient(ILegalSwpManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
 
-
         public Client Get(int id, string claim) => legalSwpManager.GetClient(id, claim, x => x);
     }
 }

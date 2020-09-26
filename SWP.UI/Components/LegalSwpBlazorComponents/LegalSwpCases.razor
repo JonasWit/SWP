@@ -75,6 +75,8 @@ else
         </Columns>
     </RadzenGrid>
 
+    @*<CasesGrid @bind-App="App.CasesPage.CasesGridComponentApp"></CasesGrid>*@
+
     <RadzenTemplateForm Data="@App.CasesPage.NewCase" Submit="@(async (CreateCase.Request args) => { await App.CasesPage.CreateNewCase(args); })">
         <div class="row">
             <RadzenFieldset Text="Nowa Sprawa">
@@ -121,6 +123,8 @@ else
             </div>
         </div>
     </RadzenTemplateForm>
+
+    @*<AddCaseForm @bind-App="App.CasesPage.AddCaseComponentApp"></AddCaseForm>*@
 
     @if (App.ActiveClientWithData.SelectedCase == null)
     {

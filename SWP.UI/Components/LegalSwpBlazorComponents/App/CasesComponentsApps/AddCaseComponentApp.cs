@@ -6,8 +6,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data;
+using SWP.UI.Components.LegalSwpBlazorComponents.App.ComponentsApps;
 
-namespace SWP.UI.Components.LegalSwpBlazorComponents.App.ComponentsApps
+namespace SWP.UI.Components.LegalSwpBlazorComponents.App.CasesComponentsApps
 {
     [UITransientService]
     public class AddCaseComponentApp : ComponentAppBase
@@ -17,11 +18,8 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App.ComponentsApps
         public CreateCase.Request NewCase { get; set; } = new CreateCase.Request();
         private CreateCase CreateCase => serviceProvider.GetService<CreateCase>();
 
-        public AddCaseComponentApp(IServiceProvider serviceProvider)
-        {
-            this.serviceProvider = serviceProvider;
-        }
-
+        public AddCaseComponentApp(IServiceProvider serviceProvider) => this.serviceProvider = serviceProvider;
+        
         public async Task CreateNewCase(CreateCase.Request arg)
         {
             try
@@ -31,7 +29,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App.ComponentsApps
                 NewCase = new CreateCase.Request();
 
                 MainApp.ActiveClientWithData.Cases.Add(result);
-                await MainApp.CasesPage.CasesGrid.Reload();
+                await MainApp.CasesPage.CasesGridComponentApp.CasesGrid.Reload();
                 MainApp.ShowNotification(NotificationSeverity.Success, "Sukces!", $"Sprawa: {result.Name} została dodana.", GeneralViewModel.NotificationDuration);
             }
             catch (Exception ex)

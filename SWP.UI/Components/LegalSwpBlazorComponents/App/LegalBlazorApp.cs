@@ -64,10 +64,10 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         {
             this.userManager = userManager;
             this.notificationService = notificationService;
+            this.serviceProvider = serviceProvider;
 
             FinancePage = financePage;
             ProductivityPage = productivityPage;
-            this.serviceProvider = serviceProvider;
             CalendarPage = calendarPanel;
             CasesPage = casesPanel;
             ClientsPage = clientsPanel;

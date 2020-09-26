@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
+using SWP.UI.Components.LegalSwpBlazorComponents.App.ComponentsApps;
 
 namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 {
@@ -20,12 +21,12 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
     {
         private readonly DialogService dialogService;
         private readonly GeneralViewModel generalViewModel;
+        private readonly AddCaseComponentApp addCaseComponentApp;
         private readonly IServiceProvider serviceProvider;
 
         private CreateReminder CreateReminder => serviceProvider.GetService<CreateReminder>();
         private UpdateReminder UpdateReminder => serviceProvider.GetService<UpdateReminder>();
         private DeleteReminder DeleteReminder => serviceProvider.GetService<DeleteReminder>();
-
         private GetCase GetCase => serviceProvider.GetService<GetCase>();
         private CreateCase CreateCase => serviceProvider.GetService<CreateCase>();
         private UpdateCase UpdateCase => serviceProvider.GetService<UpdateCase>();
@@ -39,17 +40,28 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         public CasesPage(
             DialogService dialogService,
             GeneralViewModel generalViewModel,
+            AddCaseComponentApp addCaseComponentApp,
             IServiceProvider serviceProvider)
         {
+
             this.dialogService = dialogService;
             this.generalViewModel = generalViewModel;
+            this.addCaseComponentApp = addCaseComponentApp;
             this.serviceProvider = serviceProvider;
         }
 
         public override Task Initialize(BlazorAppBase app)
         {
             App = app as LegalBlazorApp;
+
+            InitializeComponents();
+
             return Task.CompletedTask;
+        }
+
+        private void InitializeComponents()
+        {
+            addCaseComponentApp.Initialize(App);
         }
 
         public CreateCase.Request NewCase { get; set; } = new CreateCase.Request();

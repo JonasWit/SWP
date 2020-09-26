@@ -16,7 +16,6 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
     public class MyAppPage : BlazorPageBase, IDisposable
     {
         private GetClients GetClients => serviceProvider.GetService<GetClients>();
-        private GetCases GetCases => serviceProvider.GetService<GetCases>();
         private GetCashMovements GetCashMovements => serviceProvider.GetService<GetCashMovements>();
 
         private readonly IServiceProvider serviceProvider;

@@ -52,7 +52,6 @@ namespace SWP.DataBase.Managers
             context.Clients
                 .Include(x => x.Jobs)
                 .Where(x => x.ProfileClaim == profile)
-                .AsNoTracking()
                 .ToList();
 
         public async Task<Client> CreateClient(Client client)

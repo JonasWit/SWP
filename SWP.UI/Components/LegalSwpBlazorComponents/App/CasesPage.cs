@@ -1,4 +1,5 @@
-﻿using Radzen;
+﻿using Microsoft.AspNetCore.Mvc;
+using Radzen;
 using Radzen.Blazor;
 using SWP.Application.LegalSwp.Cases;
 using SWP.Application.LegalSwp.Notes;
@@ -10,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 {
@@ -17,46 +19,31 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
     public class CasesPage : BlazorPageBase
     {
         private readonly DialogService dialogService;
-        private readonly CreateReminder createReminder;
-        private readonly UpdateReminder updateReminder;
-        private readonly DeleteReminder deleteReminder;
         private readonly GeneralViewModel generalViewModel;
-        private readonly GetCase getCase;
-        private readonly CreateCase createCase;
-        private readonly UpdateCase updateCase;
-        private readonly DeleteCase deleteCase;
-        private readonly CreateNote createNote;
-        private readonly DeleteNote deleteNote;
-        private readonly UpdateNote updateNote;
+        private readonly IServiceProvider serviceProvider;
+
+        private CreateReminder CreateReminder => serviceProvider.GetService<CreateReminder>();
+        private UpdateReminder UpdateReminder => serviceProvider.GetService<UpdateReminder>();
+        private DeleteReminder DeleteReminder => serviceProvider.GetService<DeleteReminder>();
+
+        private GetCase GetCase => serviceProvider.GetService<GetCase>();
+        private CreateCase CreateCase => serviceProvider.GetService<CreateCase>();
+        private UpdateCase UpdateCase => serviceProvider.GetService<UpdateCase>();
+        private DeleteCase DeleteCase=> serviceProvider.GetService<DeleteCase>();
+        private CreateNote CreateNote => serviceProvider.GetService<CreateNote>();
+        private DeleteNote DeleteNote => serviceProvider.GetService<DeleteNote>();
+        private UpdateNote UpdateNote => serviceProvider.GetService<UpdateNote>();
 
         public LegalBlazorApp App { get; private set; }
 
         public CasesPage(
             DialogService dialogService,
-            CreateReminder createReminder,
-            UpdateReminder updateReminder,
-            DeleteReminder deleteReminder,
             GeneralViewModel generalViewModel,
-            GetCase getCase,
-            CreateCase createCase,
-            UpdateCase updateCase,
-            DeleteCase deleteCase,
-            CreateNote createNote,
-            DeleteNote deleteNote,
-            UpdateNote updateNote)
+            IServiceProvider serviceProvider)
         {
             this.dialogService = dialogService;
-            this.createReminder = createReminder;
-            this.updateReminder = updateReminder;
-            this.deleteReminder = deleteReminder;
             this.generalViewModel = generalViewModel;
-            this.getCase = getCase;
-            this.createCase = createCase;
-            this.updateCase = updateCase;
-            this.deleteCase = deleteCase;
-            this.createNote = createNote;
-            this.deleteNote = deleteNote;
-            this.updateNote = updateNote;
+            this.serviceProvider = serviceProvider;
         }
 
         public override Task Initialize(BlazorAppBase app)
@@ -75,7 +62,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
         public void ReloadCase(int id)
         {
-            var caseEntity = getCase.Get(id);
+            var caseEntity = GetCase.Get(id);
             App.ActiveClientWithData.Cases.RemoveAll(x => x.Id == id);
             App.ActiveClientWithData.Cases.Add(caseEntity);
             App.ActiveClientWithData.Cases = App.ActiveClientWithData.Cases.OrderBy(x => x.Name).ToList();
@@ -88,7 +75,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             try
             {
                 NewCase.UpdatedBy = App.User.UserName;
-                var result = await createCase.Create(App.ActiveClientWithData.Id, App.User.Profile, NewCase);
+                var result = await CreateCase.Create(App.ActiveClientWithData.Id, App.User.Profile, NewCase);
                 NewCase = new CreateCase.Request();
 
                 App.ActiveClientWithData.Cases.Add(result);
@@ -107,7 +94,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         {
             try
             {
-                var result = await updateCase.Update(new UpdateCase.Request
+                var result = await UpdateCase.Update(new UpdateCase.Request
                 {
                     Id = c.Id,
                     CaseType = c.CaseType,
@@ -118,6 +105,12 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
                 });
 
                 App.ActiveClientWithData.Cases[App.ActiveClientWithData.Cases.FindIndex(x => x.Id == result.Id)] = result;
+
+                if (App.ActiveClientWithData.SelectedCase.Id == result.Id)
+                {
+                    App.ActiveClientWithData.SelectedCase = App.ActiveClientWithData.Cases.FirstOrDefault(x => x.Id == result.Id);
+                }
+     
                 await CasesGrid.Reload();
                 App.ShowNotification(NotificationSeverity.Success, "Sukces!", $"Sprawa: {result.Name} została zmieniona.", GeneralViewModel.NotificationDuration);
             }
@@ -139,7 +132,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         {
             try
             {
-                await deleteCase.Delete(c.Id);
+                await DeleteCase.Delete(c.Id);
 
                 App.ActiveClientWithData.Cases.RemoveAll(x => x.Id == c.Id);
                 await CasesGrid.Reload();
@@ -187,7 +180,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             try
             {
                 NewNote.UpdatedBy = App.User.UserName;
-                var result = await createNote.Create(App.ActiveClientWithData.SelectedCase.Id, NewNote);
+                var result = await CreateNote.Create(App.ActiveClientWithData.SelectedCase.Id, NewNote);
                 NewNote = new CreateNote.Request();
 
                 App.ActiveClientWithData.SelectedCase.Notes.Add(result);
@@ -206,7 +199,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         {
             try
             {
-                var result = await updateNote.Update(new UpdateNote.Request
+                var result = await UpdateNote.Update(new UpdateNote.Request
                 {
                     Id = note.Id,
                     Message = note.Message,
@@ -237,7 +230,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         {
             try
             {
-                await deleteNote.Delete(note.Id);
+                await DeleteNote.Delete(note.Id);
                 App.ActiveClientWithData.SelectedCase.Notes.RemoveAll(x => x.Id == note.Id);
                 await NotesGrid.Reload();
                 App.ShowNotification(NotificationSeverity.Warning, "Sukces!", $"Notka: {note.Name} została usunięta.", GeneralViewModel.NotificationDuration);
@@ -261,7 +254,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             {
                 result.UpdatedBy = App.User.UserName;
 
-                var newReminder = await createReminder.Create(App.ActiveClientWithData.SelectedCase.Id, new CreateReminder.Request
+                var newReminder = await CreateReminder.Create(App.ActiveClientWithData.SelectedCase.Id, new CreateReminder.Request
                 {
                     Active = true,
                     IsDeadline = result.IsDeadline,
@@ -288,7 +281,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             {
                 if (!result.Active)
                 {
-                    await deleteReminder.Delete(result.Id);
+                    await DeleteReminder.Delete(result.Id);
                     App.ActiveClientWithData.SelectedCase.Reminders.RemoveAll(x => x.Id == result.Id);
                     App.CalendarPage.Reminders.RemoveAll(x => x.Id == result.Id);
 
@@ -297,7 +290,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
                 }
                 else
                 {
-                    var updatedReminder = await updateReminder.Update(new UpdateReminder.Request
+                    var updatedReminder = await UpdateReminder.Update(new UpdateReminder.Request
                     {
                         Id = result.Id,
                         IsDeadline = result.IsDeadline,

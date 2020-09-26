@@ -7,23 +7,22 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 {
     [UITransientService]
     public class ProductivityPage : BlazorPageBase
     {
-        private readonly CreateTimeRecord createTimeRecord;
+        private CreateTimeRecord CreateTimeRecord => serviceProvider.GetService<CreateTimeRecord>();
+
+        private readonly IServiceProvider serviceProvider;
 
         public LegalBlazorApp App { get; private set; }
         public CreateTimeRecord.Request NewTimeRecord { get; set; } = new CreateTimeRecord.Request();
         public int CashMovementDirection { get; set; }
 
-        public ProductivityPage(
-            CreateTimeRecord createTimeRecord)
-        {
-            this.createTimeRecord = createTimeRecord;
-        }
+        public ProductivityPage(IServiceProvider serviceProvider) => this.serviceProvider = serviceProvider;
 
         public override Task Initialize(BlazorAppBase app)
         {

@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection;
 using Radzen;
 using SWP.Application.LegalSwp.Clients;
 using SWP.UI.BlazorApp;
 using SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data;
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -15,11 +15,14 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
     [UITransientService]
     public class LegalBlazorApp : BlazorAppBase
     {
-        private readonly GetClient getClient;
-        private readonly GetClients getClients;
+        private GetClient GetClient => serviceProvider.GetService<GetClient>();
+        private GetClients GetClients => serviceProvider.GetService<GetClients>();
+
         private readonly UserManager<IdentityUser> userManager;
         private readonly NotificationService notificationService;
-      
+
+        private readonly IServiceProvider serviceProvider;
+
         public event EventHandler ActiveClientChanged;
 
         public CalendarPage CalendarPage { get; }
@@ -41,14 +44,12 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
                 activeClient = value;
                 if (activeClient != null)
                 {
-                    ActiveClientWithData = getClient.Get(activeClient.Id, User.Profile);
+                    ActiveClientWithData = GetClient.Get(activeClient.Id, User.Profile);
                 }
             }
         }
 
         public LegalBlazorApp(
-            GetClient getClient,
-            GetClients getClients,
             UserManager<IdentityUser> userManager,
             CalendarPage calendarPanel,
             CasesPage casesPanel,
@@ -58,15 +59,15 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             NoProfileWarning noProfileWarning,
             NotificationService notificationService,
             FinancePage financePage,
-            ProductivityPage productivityPage)
+            ProductivityPage productivityPage,
+            IServiceProvider serviceProvider)
         {
-            this.getClient = getClient;
-            this.getClients = getClients;
             this.userManager = userManager;
             this.notificationService = notificationService;
 
             FinancePage = financePage;
             ProductivityPage = productivityPage;
+            this.serviceProvider = serviceProvider;
             CalendarPage = calendarPanel;
             CasesPage = casesPanel;
             ClientsPage = clientsPanel;
@@ -89,7 +90,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
                 User.Claims = await userManager.GetClaimsAsync(User.User) as List<Claim>;
                 User.Roles = await userManager.GetRolesAsync(User.User) as List<string>;
 
-                Clients = getClients.GetClientsWithoutData(User.Profile)?.Select(x => (ClientViewModel)x).ToList();
+                Clients = GetClients.GetClientsWithoutData(User.Profile)?.Select(x => (ClientViewModel)x).ToList();
 
                 InitializePages();
             }
@@ -159,7 +160,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         {
             if (ActiveClient != null)
             {
-                ClientViewModel newModel = getClient.Get(ActiveClient.Id, User.Profile);
+                ClientViewModel newModel = GetClient.Get(ActiveClient.Id, User.Profile);
 
                 if (ActiveClientWithData.SelectedCase != null)
                 {
@@ -174,7 +175,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         {
             try
             {
-                Clients = getClients.GetClientsWithoutData(User.Profile).Select(x => (ClientViewModel)x).ToList();
+                Clients = GetClients.GetClientsWithoutData(User.Profile).Select(x => (ClientViewModel)x).ToList();
 
                 if (Clients.ToList().Count == 1)
                 {

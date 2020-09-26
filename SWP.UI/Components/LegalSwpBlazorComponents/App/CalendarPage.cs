@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 {
@@ -19,29 +20,24 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
     public class CalendarPage : BlazorPageBase, IDisposable
     {
         private readonly DialogService dialogService;
-        private readonly GetReminders getReminders;
-        private readonly UpdateReminder updateReminder;
-        private readonly DeleteReminder deleteReminder;
+        private readonly IServiceProvider serviceProvider;
         private readonly GeneralViewModel generalViewModel;
-        private readonly GetCase getCase;
+
+        private GetReminders GetReminders => serviceProvider.GetService<GetReminders>();
+        private UpdateReminder UpdateReminder => serviceProvider.GetService<UpdateReminder>();
+        private DeleteReminder DeleteReminder => serviceProvider.GetService<DeleteReminder>();
+        private GetCase GetCase => serviceProvider.GetService<GetCase>();
 
         public LegalBlazorApp App { get; private set; }
 
         public CalendarPage(
             DialogService dialogService,
-
-            GetReminders getReminders,
-            UpdateReminder updateReminder,
-            DeleteReminder deleteReminder,
-            GeneralViewModel generalViewModel,
-            GetCase getCase)
+            IServiceProvider serviceProvider,
+            GeneralViewModel generalViewModel)
         {
             this.dialogService = dialogService;
-            this.getReminders = getReminders;
-            this.updateReminder = updateReminder;
-            this.deleteReminder = deleteReminder;
+            this.serviceProvider = serviceProvider;
             this.generalViewModel = generalViewModel;
-            this.getCase = getCase;
         }
 
         public override Task Initialize(BlazorAppBase app)
@@ -81,23 +77,23 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         {
             if (App.ActiveClient != null)
             {
-                Reminders = getReminders.Get(App.ActiveClient.Id).Select(x => (ReminderViewModel)x).ToList();
+                Reminders = GetReminders.Get(App.ActiveClient.Id).Select(x => (ReminderViewModel)x).ToList();
             }
             else
             {
-                Reminders = getReminders.Get(App.User.Profile).Select(x => (ReminderViewModel)x).ToList();
+                Reminders = GetReminders.Get(App.User.Profile).Select(x => (ReminderViewModel)x).ToList();
             }
         }
 
         public async Task OnAppointmentSelect(SchedulerAppointmentSelectEventArgs<ReminderViewModel> args)
         {
-            ReminderViewModel result = await dialogService.OpenAsync<EditReminderPage>($"Client: {getCase.GetCaseParentName(args.Data.CaseId)} Case: {getCase.GetCaseName(args.Data.CaseId)}", new Dictionary<string, object> { { "Reminder", args.Data } });
+            ReminderViewModel result = await dialogService.OpenAsync<EditReminderPage>($"Client: {GetCase.GetCaseParentName(args.Data.CaseId)} Case: {GetCase.GetCaseName(args.Data.CaseId)}", new Dictionary<string, object> { { "Reminder", args.Data } });
 
             if (result != null)
             {
                 if (!result.Active)
                 {
-                    await deleteReminder.Delete(result.Id);
+                    await DeleteReminder.Delete(result.Id);
                     Reminders.RemoveAll(x => x.Id == result.Id);
 
                     if (App.ActiveClientWithData != null)
@@ -115,7 +111,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
                 }
                 else
                 {
-                    var updatedEntity = await updateReminder.Update(new UpdateReminder.Request
+                    var updatedEntity = await UpdateReminder.Update(new UpdateReminder.Request
                     {
                         Id = result.Id,
                         IsDeadline = result.IsDeadline,

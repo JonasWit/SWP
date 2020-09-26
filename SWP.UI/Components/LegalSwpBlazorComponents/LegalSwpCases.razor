@@ -10,6 +10,7 @@ else
 {
     <h2>Panel Administracyjny</h2>
     <h2>Zarządzaj sprawami klienta: (@App.ActiveClientWithData.Name)</h2>
+
     <RadzenTemplateForm Data="@App.CasesPage.NewCase" Submit="@(async (CreateCase.Request args) => { await App.CasesPage.CreateNewCase(args); })">
         <div class="row">
             <RadzenFieldset Text="Nowa Sprawa">
@@ -62,67 +63,68 @@ else
     <RadzenGrid @ref="App.CasesPage.CasesGrid" AllowFiltering="true" AllowPaging="true" PageSize="5" AllowSorting="true"
                 Data="@App.ActiveClientWithData.Cases" TItem="CaseViewModel" RowUpdate="@App.CasesPage.OnUpdateCaseRow" RowSelect="@(args => App.CasesPage.ActiveCaseChange(args))">
         <Columns>
-            <RadzenGridColumn TItem="CaseViewModel" Property="Name" Title="Case Name">
-                <EditTemplate Context="c">
-                    <RadzenTextBox @bind-Value="c.Name" Style="width:100%; display: block" Name="Nazwa" />
-                    <RadzenRequiredValidator Text="Nazwa nie może być pusta!" Component="Nazwa" Popup="true" />
-                    <RadzenLengthValidator Max="50" Text="Max 50 characters!" Component="Nazwa" Popup="true" />
+            <RadzenGridColumn TItem="CaseViewModel" Property="Name" Title="Nazwa Sprawy">
+                <EditTemplate Context="cs">
+                    <RadzenTextBox @bind-Value="cs.Name" Style="width:100%; display: block" Name="CaseName" />
+                    <RadzenRequiredValidator Text="Nazwa nie może być pusta!" Component="CaseName" Popup="true" />
+                    <RadzenLengthValidator Max="50" Text="Max 50 characters!" Component="CaseName" Popup="true" />
                 </EditTemplate>
             </RadzenGridColumn>
-            <RadzenGridColumn TItem="CaseViewModel" Property="Signature" Title="Signature">
-                <EditTemplate Context="c">
-                    <RadzenTextBox @bind-Value="c.Signature" Style="width:100%; display: block" Name="Sygnatura" />
+            <RadzenGridColumn TItem="CaseViewModel" Property="Signature" Title="Sygnatura">
+                <EditTemplate Context="cs">
+                    <RadzenTextBox @bind-Value="cs.Signature" Style="width:100%; display: block" Name="Sygnatura" />
                 </EditTemplate>
             </RadzenGridColumn>
-            <RadzenGridColumn TItem="CaseViewModel" Property="CaseType" Title="Type">
-                <EditTemplate Context="c">
-                    <RadzenTextBox @bind-Value="c.CaseType" Style="width:100%; display: block" Name="Typ sprawy" />
+            <RadzenGridColumn TItem="CaseViewModel" Property="CaseType" Title="Typ Sprawy">
+                <EditTemplate Context="cs">
+                    <RadzenTextBox @bind-Value="cs.CaseType" Style="width:100%; display: block" Name="Typ sprawy" />
                 </EditTemplate>
             </RadzenGridColumn>
-            <RadzenGridColumn TItem="CaseViewModel" Property="Description" Title="Description">
-                <EditTemplate Context="c">
-                    <Radzen.Blazor.RadzenTextArea @bind-Value="c.Description" Style="width:100%; display: block" Name="Opis" />
+            <RadzenGridColumn TItem="CaseViewModel" Property="Description" Title="Opis">
+                <EditTemplate Context="cs">
+                    <Radzen.Blazor.RadzenTextArea @bind-Value="cs.Description" Style="width:100%; display: block" Name="Description" />
                     <RadzenLengthValidator Max="500" Text="Max 500 characters!" Component="Description" Popup="true" />
                 </EditTemplate>
             </RadzenGridColumn>
             <RadzenGridColumn TItem="CaseViewModel" Property="Created" Title="@GeneralViewModel.Created">
-                <Template Context="c">
-                    @c.Created.ToString(GeneralViewModel.DateFormant)
+                <Template Context="cs">
+                    @cs.Created.ToString(GeneralViewModel.DateFormant)
                 </Template>
             </RadzenGridColumn>
             <RadzenGridColumn TItem="CaseViewModel" Property="Updated" Title="@GeneralViewModel.Updated">
-                <Template Context="c">
-                    @c.Updated.ToString(GeneralViewModel.DateFormant)
+                <Template Context="cs">
+                    @cs.Updated.ToString(GeneralViewModel.DateFormant)
                 </Template>
             </RadzenGridColumn>
             <RadzenGridColumn TItem="CaseViewModel" Property="UpdatedBy" Title="@GeneralViewModel.UpdatedBy">
-                <Template Context="c">
-                    @c.UpdatedBy
+                <Template Context="cs">
+                    @cs.UpdatedBy
                 </Template>
             </RadzenGridColumn>
 
             <RadzenGridColumn TItem="CaseViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="100px" Title="Edytuj">
-                <Template Context="c">
-                    <RadzenButton Icon="edit" Size="ButtonSize.Medium" Click="@(args => App.CasesPage.EditCaseRow(c))">
+                <Template Context="cs">
+                    <RadzenButton Icon="edit" Size="ButtonSize.Medium" Click="@((args) => App.CasesPage.EditCaseRow(cs))">
                     </RadzenButton>
                 </Template>
-                <EditTemplate Context="c">
-                    <RadzenButton Icon="save" Size="ButtonSize.Medium" Click="@((args) => App.CasesPage.SaveCaseRow(c))">
+                <EditTemplate Context="cs">
+                    <RadzenButton Icon="save" Size="ButtonSize.Medium" Click="@((args) => App.CasesPage.SaveCaseRow(cs))">
                     </RadzenButton>
-                    <RadzenButton Icon="cancel" Size="ButtonSize.Medium" ButtonStyle="ButtonStyle.Secondary" Click="@((args) => App.CasesPage.CancelEditCaseRow(c))">
+                    <RadzenButton Icon="cancel" Size="ButtonSize.Medium" ButtonStyle="ButtonStyle.Secondary" Click="@((args) => App.CasesPage.CancelEditCaseRow(cs))">
                     </RadzenButton>
                 </EditTemplate>
             </RadzenGridColumn>
             <RadzenGridColumn TItem="CaseViewModel" Context="order" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="70px" Title="Usuń">
-                <Template Context="c">
-                    <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Medium" Click="@(async (args) => await App.CasesPage.DeleteCaseRow(c))">
+                <Template Context="cs">
+                    <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Medium" Click="@(async (args) => await App.CasesPage.DeleteCaseRow(cs))">
                     </RadzenButton>
                 </Template>
-                <EditTemplate Context="c">
-                    <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Medium" Click="@(async (args) => await App.CasesPage.DeleteCaseRow(c))">
+                <EditTemplate Context="cs">
+                    <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Medium" Click="@(async (args) => await App.CasesPage.DeleteCaseRow(cs))">
                     </RadzenButton>
                 </EditTemplate>
             </RadzenGridColumn>
+
         </Columns>
     </RadzenGrid>
 
@@ -229,7 +231,7 @@ else
 
                                     <RadzenGridColumn TItem="NoteViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="100px" Title="Edytuj">
                                         <Template Context="note">
-                                            <RadzenButton Icon="edit" Size="ButtonSize.Medium" Click="@(args => App.CasesPage.EditNoteRow(note))">
+                                            <RadzenButton Icon="edit" Size="ButtonSize.Medium" Click="@((args) => App.CasesPage.EditNoteRow(note))">
                                             </RadzenButton>
                                         </Template>
                                         <EditTemplate Context="note">

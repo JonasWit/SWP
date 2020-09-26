@@ -7,29 +7,23 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 {
     [UITransientService]
     public class FinancePage : BlazorPageBase
     {
-        private readonly CreateCashMovement createCashMovement;
-        private readonly DeleteCashMovement deleteCashMovement;
-        private readonly UpdateCashMovement updateCashMovement;
+        private readonly IServiceProvider serviceProvider;
+        private CreateCashMovement CreateCashMovement => serviceProvider.GetService<CreateCashMovement>();
+        private DeleteCashMovement DeleteCashMovement => serviceProvider.GetService<DeleteCashMovement>();
+        private UpdateCashMovement UpdateCashMovement => serviceProvider.GetService<UpdateCashMovement>();
 
         public LegalBlazorApp App { get; private set; }
         public CreateCashMovement.Request NewCashMovement { get; set; } = new CreateCashMovement.Request();
         public int CashMovementDirection { get; set; }
 
-        public FinancePage(
-            CreateCashMovement createCashMovement,
-            DeleteCashMovement deleteCashMovement,
-            UpdateCashMovement updateCashMovement)
-        {
-            this.createCashMovement = createCashMovement;
-            this.deleteCashMovement = deleteCashMovement;
-            this.updateCashMovement = updateCashMovement;
-        }
+        public FinancePage(IServiceProvider serviceProvider) => this.serviceProvider = serviceProvider;
 
         public override Task Initialize(BlazorAppBase app)
         {
@@ -45,7 +39,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         {
             try
             {
-                var result = await updateCashMovement.Update(new UpdateCashMovement.Request
+                var result = await UpdateCashMovement.Update(new UpdateCashMovement.Request
                 {
                     Id = cash.Id,
                     Amount = cash.Amount,
@@ -80,7 +74,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         {
             try
             {
-                await deleteCashMovement.Delete(cash.Id);
+                await DeleteCashMovement.Delete(cash.Id);
                 App.ActiveClientWithData.CashMovements.RemoveAll(x => x.Id == cash.Id);
 
                 await CashMovementGrid.Reload();
@@ -98,7 +92,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             {
                 NewCashMovement.UpdatedBy = App.User.UserName;
 
-                var result = await createCashMovement.Create(App.ActiveClient.Id, App.User.Profile, NewCashMovement);
+                var result = await CreateCashMovement.Create(App.ActiveClient.Id, App.User.Profile, NewCashMovement);
                 NewCashMovement = new CreateCashMovement.Request();
 
                 App.ActiveClientWithData.CashMovements.Add(result);

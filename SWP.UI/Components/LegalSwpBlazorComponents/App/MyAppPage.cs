@@ -8,15 +8,18 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 {
     [UITransientService]
     public class MyAppPage : BlazorPageBase, IDisposable
     {
-        private readonly GetClients getClients;
-        private readonly GetCases getCases;
-        private readonly GetCashMovements getCashMovements;
+        private GetClients GetClients => serviceProvider.GetService<GetClients>();
+        private GetCases GetCases => serviceProvider.GetService<GetCases>();
+        private GetCashMovements GetCashMovements => serviceProvider.GetService<GetCashMovements>();
+
+        private readonly IServiceProvider serviceProvider;
 
         public LegalBlazorApp App { get; private set; }
 
@@ -28,15 +31,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
         public ColorScheme ColorScheme { get; set; } = ColorScheme.Monochrome;
 
-        public MyAppPage(
-            GetClients getClients,
-            GetCases getCases,
-            GetCashMovements getCashMovements)
-        {
-            this.getClients = getClients;
-            this.getCases = getCases;
-            this.getCashMovements = getCashMovements;
-        }
+        public MyAppPage(IServiceProvider serviceProvider) => this.serviceProvider = serviceProvider;
 
         public override Task Initialize(BlazorAppBase app)
         {
@@ -84,7 +79,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
                 ClientsCases.Add(new CategoryDataItem
                 {
                     Category = client.Name,
-                    Number = getClients.CountCasesPerClient(client.Id)
+                    Number = GetClients.CountCasesPerClient(client.Id)
                 });
             }
         }
@@ -100,7 +95,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
                     Name = client.Name
                 };
 
-                var cashMovements = getCashMovements.Get(client.Id);
+                var cashMovements = GetCashMovements.Get(client.Id);
 
                 for (int i = 0; i < 13; i++)
                 {
@@ -125,7 +120,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
                 Name = App.ActiveClient.Name
             };
 
-            var cashMovements = getCashMovements.Get(App.ActiveClient.Id);
+            var cashMovements = GetCashMovements.Get(App.ActiveClient.Id);
 
             for (int i = 0; i < 13; i++)
             {

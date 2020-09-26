@@ -7,6 +7,7 @@ using SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 {
@@ -20,29 +21,20 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             Main = 2
         }
 
-        private readonly DeleteClient deleteClient;
-        private readonly UpdateClient updateClient;
-        private readonly CreateClient createClient;
-        private readonly CreateClientJob createClientJob;
-        private readonly DeleteClientJob deleteClientJob;
-        private readonly UpdateClientJob updateClientJob;
+        private DeleteClient DeleteClient => serviceProvider.GetService<DeleteClient>();
+        private UpdateClient UpdateClient => serviceProvider.GetService<UpdateClient>();
+        private CreateClient CreateClient => serviceProvider.GetService<CreateClient>();
+        private CreateClientJob CreateClientJob => serviceProvider.GetService<CreateClientJob>();
+        private DeleteClientJob DeleteClientJob => serviceProvider.GetService<DeleteClientJob>();
+        private UpdateClientJob UpdateClientJob => serviceProvider.GetService<UpdateClientJob>();
+
+        private readonly IServiceProvider serviceProvider;
 
         public LegalBlazorApp App { get; private set; }
 
-        public ClientPage(
-            DeleteClient deleteClient,
-            UpdateClient updateClient,
-            CreateClient createClient,
-            CreateClientJob createClientJob,
-            DeleteClientJob deleteClientJob,
-            UpdateClientJob updateClientJob)
+        public ClientPage(IServiceProvider serviceProvider)
         {
-            this.deleteClient = deleteClient;
-            this.updateClient = updateClient;
-            this.createClient = createClient;
-            this.createClientJob = createClientJob;
-            this.deleteClientJob = deleteClientJob;
-            this.updateClientJob = updateClientJob;
+            this.serviceProvider = serviceProvider;
         }
 
         public override Task Initialize(BlazorAppBase app)
@@ -67,7 +59,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         {
             try
             {
-                var result = await updateClient.Update(new UpdateClient.Request
+                var result = await UpdateClient.Update(new UpdateClient.Request
                 {
                     Id = client.Id,
                     Active = client.Active,
@@ -109,7 +101,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         {
             try
             {
-                await deleteClient.Delete(client.Id);
+                await DeleteClient.Delete(client.Id);
                 App.Clients.RemoveAll(x => x.Id == client.Id);
 
                 await ClientsGrid.Reload();
@@ -128,7 +120,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
             try
             {
-                var result = await createClient.Do(NewClient);
+                var result = await CreateClient.Do(NewClient);
                 NewClient = new CreateClient.Request();
 
                 App.Clients.Add(result);
@@ -153,7 +145,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
                 NewClientJob.ClientId = App.ActiveClient.Id;
                 NewClientJob.UpdatedBy = App.User.UserName;
 
-                var result = await createClientJob.Create(NewClientJob);
+                var result = await CreateClientJob.Create(NewClientJob);
                 NewClientJob = new CreateClientJob.Request();
 
                 if (App.ActiveClientWithData != null)
@@ -176,7 +168,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         {
             try
             {
-                var result = await updateClientJob.Update(new UpdateClientJob.Request
+                var result = await UpdateClientJob.Update(new UpdateClientJob.Request
                 {
                     Id = clientJob.Id,
                     Active = clientJob.Active,
@@ -209,7 +201,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         {
             try
             {
-                await deleteClientJob.Delete(clientJob.Id);
+                await DeleteClientJob.Delete(clientJob.Id);
 
                 if (App.ActiveClientWithData != null)
                 {

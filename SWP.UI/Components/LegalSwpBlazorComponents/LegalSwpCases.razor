@@ -1,4 +1,5 @@
-﻿@inject GeneralViewModel generalViewModel
+﻿@using SWP.UI.Components.LegalSwpBlazorComponents.CasesInnerComponents 
+@inject GeneralViewModel generalViewModel
 
 @if (App.Loading)
 {
@@ -120,6 +121,8 @@ else
             </div>
         </div>
     </RadzenTemplateForm>
+
+
 
     @if (App.ActiveClientWithData.SelectedCase == null)
     {

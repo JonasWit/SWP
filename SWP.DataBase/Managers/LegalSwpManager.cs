@@ -81,7 +81,7 @@ namespace SWP.DataBase.Managers
             return context.SaveChangesAsync();
         }
 
-        public int CountClients() => context.Clients.Count();
+        public int CountClients() => context.Clients.AsNoTracking().Count();
 
         #endregion
 
@@ -115,7 +115,7 @@ namespace SWP.DataBase.Managers
 
         public async Task<Case> CreateCase(int clientId, string profile, Case c)
         {
-            var ClientEntity = GetClient(clientId, profile, x => x);
+            var ClientEntity = context.Clients.FirstOrDefault(x => x.ProfileClaim == profile && x.Id == clientId);
             ClientEntity.Cases.Add(c);
             await context.SaveChangesAsync();
             return c;
@@ -162,7 +162,7 @@ namespace SWP.DataBase.Managers
 
         public async Task<Reminder> CreateReminder(int caseId, Reminder reminder)
         {
-            var caseEntity = GetCase(caseId, x => x);
+            var caseEntity = context.Cases.FirstOrDefault(x => x.Id == caseId);
             caseEntity.Reminders.Add(reminder);
             await context.SaveChangesAsync();
             return reminder;
@@ -209,7 +209,7 @@ namespace SWP.DataBase.Managers
 
         #region Note
 
-        public Note GetNote(int id) => context.Notes.FirstOrDefault(x => x.Id == id);
+        public Note GetNote(int id) => context.Notes.AsNoTracking().FirstOrDefault(x => x.Id == id);
 
         public List<Note> GetNotesForCase(int caseId) =>
             context.Notes
@@ -218,7 +218,7 @@ namespace SWP.DataBase.Managers
 
         public async Task<Note> CreateNote(int caseId, Note note)
         {
-            var caseEntity = GetCase(caseId, x => x);
+            var caseEntity = context.Cases.FirstOrDefault(x => x.Id == caseId);
             caseEntity.Notes.Add(note);
             await context.SaveChangesAsync();
             return note;
@@ -244,7 +244,7 @@ namespace SWP.DataBase.Managers
 
         public async Task<ClientJob> CreateClientJob(int clientId, string profile, ClientJob job)
         {
-            var cs = GetClient(clientId, profile, x => x);
+            var cs = context.Clients.FirstOrDefault(x => x.Id == clientId && x.ProfileClaim == profile);
             cs.Jobs.Add(job);
             await context.SaveChangesAsync();
             return job;
@@ -252,7 +252,7 @@ namespace SWP.DataBase.Managers
 
         public Task<int> DeleteClientJob(int id)
         {
-            var job = GetClientJob(id, x => x);
+            var job = context.ClientJobs.FirstOrDefault(x => x.Id == id);
             context.ClientJobs.Remove(job);
             return context.SaveChangesAsync();
         }
@@ -274,7 +274,7 @@ namespace SWP.DataBase.Managers
 
         #region Cash Movements
 
-        public CashMovement GetCashMovement(int id) => context.CashMovements.FirstOrDefault(x => x.Id == id);
+        public CashMovement GetCashMovement(int id) => context.CashMovements.AsNoTracking().FirstOrDefault(x => x.Id == id);
 
         public List<CashMovement> GetCashMovementsForClient(int clientId) =>
             context.CashMovements
@@ -283,8 +283,8 @@ namespace SWP.DataBase.Managers
 
         public async Task<CashMovement> CreateCashMovement(int clientId, string profile, CashMovement cashMovement)
         {
-            var cs = GetClient(clientId, profile, x => x);
-            cs.CashMovements.Add(cashMovement);
+            var client = GetClient(clientId, profile, x => x);
+            client.CashMovements.Add(cashMovement);
             await context.SaveChangesAsync();
             return cashMovement;
         }
@@ -311,13 +311,14 @@ namespace SWP.DataBase.Managers
 
         public List<TimeRecord> GetTimeRecords(int clientId) =>
             context.TimeRecords
+                .AsNoTracking()
                 .Where(x => x.ClientId == clientId)
                 .ToList();
 
         public async Task<TimeRecord> CreateTimeRecord(int clientId, string profile, TimeRecord timeRecord)
         {
-            var cs = GetClient(clientId, profile, x => x);
-            cs.TimeRecords.Add(timeRecord);
+            var client = context.Clients.FirstOrDefault(x => x.Id == clientId && x.ProfileClaim == profile);
+            client.TimeRecords.Add(timeRecord);
             await context.SaveChangesAsync();
             return timeRecord;
         }

@@ -115,7 +115,10 @@ namespace SWP.DataBase.Managers
 
         public async Task<Case> CreateCase(int clientId, string profile, Case c)
         {
-            var ClientEntity = context.Clients.FirstOrDefault(x => x.ProfileClaim == profile && x.Id == clientId);
+            var ClientEntity = context.Clients
+                .Include(x => x.Cases)
+                .FirstOrDefault(x => x.ProfileClaim == profile && x.Id == clientId);
+
             ClientEntity.Cases.Add(c);
             await context.SaveChangesAsync();
             return c;
@@ -162,7 +165,10 @@ namespace SWP.DataBase.Managers
 
         public async Task<Reminder> CreateReminder(int caseId, Reminder reminder)
         {
-            var caseEntity = context.Cases.FirstOrDefault(x => x.Id == caseId);
+            var caseEntity = context.Cases
+                .Include(x => x.Reminders)
+                .FirstOrDefault(x => x.Id == caseId);
+
             caseEntity.Reminders.Add(reminder);
             await context.SaveChangesAsync();
             return reminder;
@@ -218,7 +224,10 @@ namespace SWP.DataBase.Managers
 
         public async Task<Note> CreateNote(int caseId, Note note)
         {
-            var caseEntity = context.Cases.FirstOrDefault(x => x.Id == caseId);
+            var caseEntity = context.Cases
+                .Include(x => x.Notes)
+                .FirstOrDefault(x => x.Id == caseId);
+
             caseEntity.Notes.Add(note);
             await context.SaveChangesAsync();
             return note;
@@ -244,8 +253,11 @@ namespace SWP.DataBase.Managers
 
         public async Task<ClientJob> CreateClientJob(int clientId, string profile, ClientJob job)
         {
-            var cs = context.Clients.FirstOrDefault(x => x.Id == clientId && x.ProfileClaim == profile);
-            cs.Jobs.Add(job);
+            var client = context.Clients
+                .Include(x => x.Jobs)
+                .FirstOrDefault(x => x.Id == clientId && x.ProfileClaim == profile);
+
+            client.Jobs.Add(job);
             await context.SaveChangesAsync();
             return job;
         }
@@ -283,7 +295,10 @@ namespace SWP.DataBase.Managers
 
         public async Task<CashMovement> CreateCashMovement(int clientId, string profile, CashMovement cashMovement)
         {
-            var client = GetClient(clientId, profile, x => x);
+            var client = context.Clients
+                .Include(x => x.CashMovements)
+                .FirstOrDefault(x => x.Id == clientId && x.ProfileClaim == profile);
+
             client.CashMovements.Add(cashMovement);
             await context.SaveChangesAsync();
             return cashMovement;
@@ -317,7 +332,10 @@ namespace SWP.DataBase.Managers
 
         public async Task<TimeRecord> CreateTimeRecord(int clientId, string profile, TimeRecord timeRecord)
         {
-            var client = context.Clients.FirstOrDefault(x => x.Id == clientId && x.ProfileClaim == profile);
+            var client = context.Clients
+                .Include(x => x.TimeRecords)
+                .FirstOrDefault(x => x.Id == clientId && x.ProfileClaim == profile);
+
             client.TimeRecords.Add(timeRecord);
             await context.SaveChangesAsync();
             return timeRecord;

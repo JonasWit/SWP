@@ -1,20 +1,24 @@
 ﻿@using SWP.UI.Components.LegalSwpBlazorComponents.ClientsInnerComponents
 @inject GeneralViewModel generalViewModel
+@*@if (App.ActiveClient != null)
+    {
+        <RadzenButton Click="@(() => App.ClientsPage.SetActivePanel(ClientPage.Panels.Main))" Text="Lista Spraw" Style="margin-bottom: 20px;" />
+    }*@
+<ul class="nav">
+    <li class="active-page px-5">
+        <RadzenButton Click="@(() => App.ClientsPage.SetActivePanel(ClientPage.Panels.Admin))" Text="Administracja" Style="margin-bottom: 20px;" />
+    </li>
 
-@if (App.ActiveClient != null)
-{
-    <RadzenButton Click="@(() => App.ClientsPage.SetActivePanel(ClientPage.Panels.Main))" Text="Podsumowanie" Style="margin-bottom: 20px;" />
-}
-
-<RadzenButton Click="@(() => App.ClientsPage.SetActivePanel(ClientPage.Panels.Admin))" Text="Administracja" Style="margin-bottom: 20px;" />
-
-@if (App.ActiveClient != null && App.ActiveClientWithData != null)
-{
-    <RadzenButton Click="@(() => App.ClientsPage.SetActivePanel(ClientPage.Panels.Jobs))" Text="Zadnia" Style="margin-bottom: 20px;" />
-}
-
-<RadzenButton Click="@(() => App.ClientsPage.SetActivePanel(ClientPage.Panels.Admin))" Text="Dodaj Klienta" Style="margin-bottom: 20px;" />
-
+    @if (App.ActiveClient != null && App.ActiveClientWithData != null)
+    {
+        <li class="px-5">
+            <RadzenButton Click="@(() => App.ClientsPage.SetActivePanel(ClientPage.Panels.Jobs))" Text="Zadnia" Style="margin-bottom: 20px;" />
+        </li>
+    }
+    <li class="px-5">
+        <RadzenButton Click="@(() => App.ClientsPage.SetActivePanel(ClientPage.Panels.Admin))" Text="Dodaj Klienta" Style="margin-bottom: 20px;" />
+    </li>
+</ul>
 @if (App.ActiveClient == null)
 {
     <AdminPanel @bind-App="App"></AdminPanel>

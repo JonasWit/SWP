@@ -64,19 +64,26 @@
         <div class="not-sidebar mb-5">
             <div class="top-menu">
                 <ul class="">
-                
+
                     <li class="nav-item title pt-2 ml-4">
-                      
+
                         @switch (App.ActivePanel)
                         {
                             case LegalBlazorApp.Panels.Clients:
                                 <p>Klienci</p>
                                 break;
                             case LegalBlazorApp.Panels.Calendar:
-                                <p>Kalendarz</p>
+                                if (App.ActiveClient == null)
+                                {
+                                    <p>Kalendarz wszytkich kilentów</p>
+                                }
+                                else
+                                {
+                                    <p>Kalendarz Klienta - @App.ActiveClientWithData.Name</p>
+                                }
                                 break;
                             case LegalBlazorApp.Panels.Cases:
-                                <p>Sprawy</p>
+                                <p>Sprawy Klienta - @App.ActiveClientWithData.Name</p>
                                 break;
                             case LegalBlazorApp.Panels.MyApp:
                                 <p>Moja Aplikacja</p>
@@ -85,10 +92,10 @@
                                 <p>Komunikat Błędu</p>
                                 break;
                             case LegalBlazorApp.Panels.Finance:
-                                <p>Finanse</p>
+                                <p>Finanse Klienta - @App.ActiveClientWithData.Name</p>
                                 break;
                             case LegalBlazorApp.Panels.Productivity:
-                                <p>Produktywność</p>
+                                <p>Produktywność Klienta - @App.ActiveClientWithData.Name</p>
                                 break;
                             default:
                                 break;
@@ -142,7 +149,7 @@
     }
 }
 else
-{ 
+{
     <LoaderComponent />
 }
 

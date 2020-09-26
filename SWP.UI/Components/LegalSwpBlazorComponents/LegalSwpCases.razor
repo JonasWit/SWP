@@ -1,7 +1,4 @@
-﻿@using SWP.UI.Components.LegalSwpBlazorComponents.CasesInnerComponents
-@inject GeneralViewModel generalViewModel
-
-<h2>Sprawy</h2>
+﻿@inject GeneralViewModel generalViewModel
 
 @if (App.Loading)
 {
@@ -9,13 +6,6 @@
 }
 else
 {
-    <h2>Panel Administracyjny</h2>
-    <h2>Zarządzaj sprawami klienta: (@App.ActiveClientWithData.Name)</h2>
-
-    <AddCase @bind-App="App"></AddCase>
-
-    <RadzenButton Click="App.ThrowTestException" />
-
     <RadzenGrid @ref="App.CasesPage.CasesGrid" AllowFiltering="true" AllowPaging="true" PageSize="5" AllowSorting="true"
                 Data="@App.ActiveClientWithData.Cases" TItem="CaseViewModel" RowUpdate="@App.CasesPage.OnUpdateCaseRow" RowSelect="@(args => App.CasesPage.ActiveCaseChange(args))">
         <Columns>
@@ -83,6 +73,53 @@ else
 
         </Columns>
     </RadzenGrid>
+
+    <RadzenTemplateForm Data="@App.CasesPage.NewCase" Submit="@(async (CreateCase.Request args) => { await App.CasesPage.CreateNewCase(args); })">
+        <div class="row">
+            <RadzenFieldset Text="Nowa Sprawa">
+                <div class="row">
+                    <div class="col-md-4 align-items-center d-flex">
+                        <RadzenLabel Text="Nazwa" />
+                    </div>
+                    <div class="col-md-8">
+                        <RadzenTextBox Placeholder="Nazwa Srawy..." Style="margin-bottom: 30px" @bind-Value="App.CasesPage.NewCase.Name" Name="Name" />
+                        <RadzenRequiredValidator Component="Name" Text="Name cannot be empty!" Popup="true" />
+                        <RadzenLengthValidator Max="50" Text="Max 50 characters!" Component="Name" Popup="true" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 align-items-center d-flex">
+                        <RadzenLabel Text="Sygnatura" />
+                    </div>
+                    <div class="col-md-8">
+                        <RadzenTextBox Placeholder="Sygnatura..." Style="margin-bottom: 30px" @bind-Value="App.CasesPage.NewCase.Signature" Name="Signature" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 align-items-center d-flex">
+                        <RadzenLabel Text="opis" />
+                    </div>
+                    <div class="col-md-8">
+                        <RadzenTextArea Placeholder="Opis..." Style="margin-bottom: 30px" @bind-Value="App.CasesPage.NewCase.Description" Name="Description" />
+                        <RadzenLengthValidator Max="500" Text="Max 500 characters!" Component="Description" Popup="true" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 align-items-center d-flex">
+                        <RadzenLabel Text="Typ Sprawy" />
+                    </div>
+                    <div class="col-md-8">
+                        <RadzenTextArea Placeholder="Typ Sprawy..." Style="margin-bottom: 30px" @bind-Value="App.CasesPage.NewCase.CaseType" Name="CaseType" />
+                    </div>
+                </div>
+            </RadzenFieldset>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-md-12 d-flex align-items-end justify-content-center" style="margin-top: 16px;">
+                <RadzenButton ButtonType="ButtonType.Submit" Icon="save" Text="Zapisz" />
+            </div>
+        </div>
+    </RadzenTemplateForm>
 
     @if (App.ActiveClientWithData.SelectedCase == null)
     {
@@ -212,7 +249,7 @@ else
                         </div>
                         <div class="col-md-4">
                             @if (App.ActiveClientWithData.SelectedCase != null &&
-                             App.ActiveClientWithData.SelectedCase.SelectedNote != null)
+                           App.ActiveClientWithData.SelectedCase.SelectedNote != null)
                             {
                                 <RadzenCard Style="margin-bottom:20px">
                                     Note:

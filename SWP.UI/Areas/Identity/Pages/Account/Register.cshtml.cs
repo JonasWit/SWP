@@ -59,7 +59,7 @@ namespace SWP.UI.Areas.Identity.Pages.Account
 
             [DataType(DataType.Password)]
             [Display(Name = "Confirm password")]
-            [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+            [Compare("Password", ErrorMessage = "Hasła nie są identyczne!.")]
             public string ConfirmPassword { get; set; }
 
             [Required]
@@ -101,7 +101,7 @@ namespace SWP.UI.Areas.Identity.Pages.Account
                         protocol: Request.Scheme);
 
                     await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                         $"Please confirm your account by <a href='{callbackUrl}'>clicking here</a>.");
+                         $"Kliknij w link by potwierdzić: <a href='{callbackUrl}'>Potwierdzam</a>.");
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {

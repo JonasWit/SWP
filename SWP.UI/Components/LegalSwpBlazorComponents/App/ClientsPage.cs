@@ -47,8 +47,6 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         public CreateClient.Request NewClient { get; set; } = new CreateClient.Request();
         public RadzenGrid<ClientViewModel> ClientsGrid { get; set; }
 
-        #region Client
-
         public void EditClientRow(ClientViewModel client) => ClientsGrid.EditRow(client);
 
         public async Task OnUpdateClientRow(ClientViewModel client)
@@ -141,7 +139,5 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
                 SelectedClient = null;
             }
         }
-
-        #endregion
     }
 }

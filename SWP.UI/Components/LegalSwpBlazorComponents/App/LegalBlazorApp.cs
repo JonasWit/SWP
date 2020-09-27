@@ -39,7 +39,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
         public ClientViewModel ActiveClient
         {
-            get => activeClient; 
+            get => activeClient;
             set
             {
                 activeClient = value;
@@ -94,21 +94,23 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
                 Clients = GetClients.GetClientsWithoutData(User.Profile)?.Select(x => (ClientViewModel)x).ToList();
 
-                InitializePages();
+                await InitializePages();
             }
         }
 
-        private void InitializePages()
+        public async Task RefreshRelatedUsers() => User.RelatedUsers = await UserManager.GetUsersForClaimAsync(User.ProfileClaim);
+
+        private async Task InitializePages()
         {
-            CalendarPage.Initialize(this);
-            CasesPage.Initialize(this);
-            ClientsPage.Initialize(this);
-            MyAppPage.Initialize(this);
-            ErrorPage.Initialize(this);
-            NoProfileWarning.Initialize(this);
-            FinancePage.Initialize(this);
-            ProductivityPage.Initialize(this);
-            ClientJobsPage.Initialize(this);
+            await CalendarPage.Initialize(this);
+            await CasesPage.Initialize(this);
+            await ClientsPage.Initialize(this);
+            await MyAppPage.Initialize(this);
+            await ErrorPage.Initialize(this);
+            await NoProfileWarning.Initialize(this);
+            await FinancePage.Initialize(this);
+            await ProductivityPage.Initialize(this);
+            await ClientJobsPage.Initialize(this);
         }
 
         #region Main Component
@@ -145,9 +147,9 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
         public void ForceRefresh() => OnCallStateHasChanged(null);
 
-        public void ShowNotification(NotificationSeverity severity, string summary, string detail, int duration) => 
+        public void ShowNotification(NotificationSeverity severity, string summary, string detail, int duration) =>
             notificationService.Notify(new NotificationMessage() { Severity = severity, Summary = summary, Detail = detail, Duration = duration });
-        
+
         public void ThrowTestException()
         {
             try

@@ -14,7 +14,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
     [UITransientService]
     public class ClientJobsPage : BlazorPageBase
     {
-        private IServiceProvider serviceProvider;
+        private readonly IServiceProvider serviceProvider;
 
         public LegalBlazorApp App { get; private set; }
 

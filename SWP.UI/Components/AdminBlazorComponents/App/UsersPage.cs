@@ -174,12 +174,8 @@ namespace SWP.UI.Components.AdminBlazorComponents.App
 
         public async Task DeleteClaimRow(Claim claim)
         {
-            if (Loading) return;
-            else Loading = true;
-
             if (claim.Type == "Root")
             {
-                Loading = false;
                 return;
             }
 
@@ -207,7 +203,7 @@ namespace SWP.UI.Components.AdminBlazorComponents.App
                 }
                 finally
                 {
-                    Loading = false;
+        
                 }
             }
             else

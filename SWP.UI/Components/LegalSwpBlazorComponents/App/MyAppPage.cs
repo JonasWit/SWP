@@ -1,5 +1,6 @@
-﻿using Radzen.Blazor;
-using SWP.Application.LegalSwp.Cases;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection;
+using Radzen.Blazor;
 using SWP.Application.LegalSwp.CashMovements;
 using SWP.Application.LegalSwp.Clients;
 using SWP.UI.BlazorApp;
@@ -8,32 +9,23 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.AspNetCore.Identity;
-using System.Security.Claims;
-using SWP.UI.Models;
 
 namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 {
     [UITransientService]
     public class MyAppPage : BlazorPageBase, IDisposable
     {
+        private readonly IServiceProvider serviceProvider;
+
         private GetClients GetClients => serviceProvider.GetService<GetClients>();
         private GetCashMovements GetCashMovements => serviceProvider.GetService<GetCashMovements>();
         private UserManager<IdentityUser> UserManager => serviceProvider.GetService<UserManager<IdentityUser>>();
-
-        private readonly IServiceProvider serviceProvider;
-
         public LegalBlazorApp App { get; private set; }
-
         public List<CategoryDataItem> ClientsCases { get; set; } = new List<CategoryDataItem>();
-
         public List<ClientData> RevenueData { get; set; } = new List<ClientData>();
-
         public List<ClientData> ProductivityData { get; set; } = new List<ClientData>();
-
+        public IdentityUser SelectedUser { get; set; }
         public ColorScheme ColorScheme { get; set; } = ColorScheme.Monochrome;
-
         public MyAppPage(IServiceProvider serviceProvider) => this.serviceProvider = serviceProvider;
 
         public override Task Initialize(BlazorAppBase app)
@@ -142,6 +134,36 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         public void Dispose()
         {
             UnsubscribeEvents();
+        }
+
+        public void SelectedUserChange(object value)
+        {
+            var input = (string)value;
+            if (value != null)
+            {
+                SelectedUser = App.User.RelatedUsers.FirstOrDefault(x => x.Id == input);
+            }
+            else
+            {
+                SelectedUser = null;
+            }
+        }
+
+        public async Task RemoveRelation()
+        {
+            try
+            {
+                var profileClaim = App.User.ProfileClaim;
+                var selectedUser = App.User.RelatedUsers.FirstOrDefault(x => x.Id == SelectedUser.Id);
+                var result = await UserManager.RemoveClaimAsync(selectedUser, profileClaim);
+
+                SelectedUser = App.User.User;
+                await App.RefreshRelatedUsers();
+            }
+            catch (Exception ex)
+            {
+                App.ErrorPage.DisplayMessage(ex);
+            }
         }
     }
 }

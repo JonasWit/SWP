@@ -18,6 +18,7 @@ html, body {
     height: 100%;
     position: sticky;
     top: 0;
+    bottom: 0;
 }
 
     .sidebar .navbar-brand {
@@ -167,7 +168,7 @@ html, body {
 
 .info {
 margin-top: 50px;
-background: url(../../Images/icons8-info-squared-60.png) no-repeat;
+background: url(../../Images/icons8-info-squared-36.png) no-repeat;
 cursor: pointer;
 border: none;
 height: 80px;

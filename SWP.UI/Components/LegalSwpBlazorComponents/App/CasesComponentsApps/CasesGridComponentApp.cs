@@ -103,10 +103,5 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App.CasesComponentsApps
                 MainApp.ActiveClientWithData.SelectedCase = null;
             }
         }
-
-
-
-
-
     }
 }

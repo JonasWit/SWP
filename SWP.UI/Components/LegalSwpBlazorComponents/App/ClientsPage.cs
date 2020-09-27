@@ -18,17 +18,15 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         {
             Admin = 0,
             Jobs = 1,
-            Main = 2
         }
 
         private DeleteClient DeleteClient => serviceProvider.GetService<DeleteClient>();
         private UpdateClient UpdateClient => serviceProvider.GetService<UpdateClient>();
         private CreateClient CreateClient => serviceProvider.GetService<CreateClient>();
-        private CreateClientJob CreateClientJob => serviceProvider.GetService<CreateClientJob>();
-        private DeleteClientJob DeleteClientJob => serviceProvider.GetService<DeleteClientJob>();
-        private UpdateClientJob UpdateClientJob => serviceProvider.GetService<UpdateClientJob>();
 
         private readonly IServiceProvider serviceProvider;
+
+        public ClientViewModel SelectedClient { get; set; }
 
         public LegalBlazorApp App { get; private set; }
 
@@ -47,9 +45,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         public void SetActivePanel(Panels panel) => ActivePanel = panel;
 
         public CreateClient.Request NewClient { get; set; } = new CreateClient.Request();
-        public CreateClientJob.Request NewClientJob { get; set; } = new CreateClientJob.Request();
         public RadzenGrid<ClientViewModel> ClientsGrid { get; set; }
-        public RadzenGrid<ClientJobViewModel> ClientsJobsGrid { get; set; }
 
         #region Client
 
@@ -133,100 +129,16 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             }
         }
 
-        #endregion
-
-        #region Jobs
-
-        public async Task SubmitNewClientJob(CreateClientJob.Request arg)
+        public void ClientSelected(object value)
         {
-            try
-            {
-                NewClientJob.ProfileClaim = App.User.Profile;
-                NewClientJob.ClientId = App.ActiveClient.Id;
-                NewClientJob.UpdatedBy = App.User.UserName;
-
-                var result = await CreateClientJob.Create(NewClientJob);
-                NewClientJob = new CreateClientJob.Request();
-
-                if (App.ActiveClientWithData != null)
-                {
-                    App.ActiveClientWithData.Jobs.Add(result);
-                }
-
-                await ClientsJobsGrid.Reload();
-                App.ShowNotification(NotificationSeverity.Success, "Sukces!", $"Zadanie: {result.Name}, dla Klineta: {App.ActiveClient.Name} zostało stworzone.", GeneralViewModel.NotificationDuration);
-            }
-            catch (Exception ex)
-            {
-                App.ErrorPage.DisplayMessage(ex);
-            }
-        }
-
-        public void EditClientJobRow(ClientJobViewModel clientJob) => ClientsJobsGrid.EditRow(clientJob);
-
-        public async Task OnUpdateClientJobRow(ClientJobViewModel clientJob)
-        {
-            try
-            {
-                var result = await UpdateClientJob.Update(new UpdateClientJob.Request
-                {
-                    Id = clientJob.Id,
-                    Active = clientJob.Active,
-                    Description = clientJob.Description,
-                    Name = clientJob.Name,
-                    Priority = clientJob.Priority,
-                    Updated = DateTime.Now,
-                    UpdatedBy = App.User.UserName
-                });
-
-                App.ActiveClientWithData.Jobs[App.ActiveClientWithData.Jobs.FindIndex(x => x.Id == result.Id)] = result;
-                await ClientsJobsGrid.Reload();
-                App.ShowNotification(NotificationSeverity.Success, "Sukces!", $"Zadanie: {result.Name}, dla Klineta: {App.ActiveClient.Name} zostało zmienione.", GeneralViewModel.NotificationDuration);
-            }
-            catch (Exception ex)
-            {
-                App.ErrorPage.DisplayMessage(ex);
-            }
-        }
-
-        public void SaveClientJobRow(ClientJobViewModel clientJob) => ClientsJobsGrid.UpdateRow(clientJob);
-
-        public void CancelClientJobEdit(ClientJobViewModel clientJob)
-        {
-            ClientsJobsGrid.CancelEditRow(clientJob);
-            App.RefreshClientWithData();
-        }
-
-        public async Task DeleteClientJobRow(ClientJobViewModel clientJob)
-        {
-            try
-            {
-                await DeleteClientJob.Delete(clientJob.Id);
-
-                if (App.ActiveClientWithData != null)
-                {
-                    App.ActiveClientWithData.Jobs.RemoveAll(x => x.Id == clientJob.Id);
-                }
-
-                await ClientsJobsGrid.Reload();
-                App.ShowNotification(NotificationSeverity.Warning, "Sukces!", $"Zadanie: {clientJob.Name}, dla Klineta: {App.ActiveClient.Name} zostało usunięte.", GeneralViewModel.NotificationDuration);
-            }
-            catch (Exception ex)
-            {
-                App.ErrorPage.DisplayMessage(ex);
-            }
-        }
-
-        public void ActiveJobChange(object value)
-        {
-            var input = (ClientJobViewModel)value;
+            var input = (ClientViewModel)value;
             if (value != null)
             {
-                App.ActiveClientWithData.SelectedJob = App.ActiveClientWithData.Jobs.FirstOrDefault(x => x.Id == input.Id);
+                SelectedClient = input;
             }
             else
             {
-                App.ActiveClientWithData.SelectedJob = null;
+                SelectedClient = null;
             }
         }
 

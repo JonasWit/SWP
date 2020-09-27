@@ -45,7 +45,6 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
                 CasesGridComponentApp casesGridComponentApp,
                 IServiceProvider serviceProvider)
         {
-
             this.dialogService = dialogService;
             this.generalViewModel = generalViewModel;
             this.serviceProvider = serviceProvider;
@@ -57,16 +56,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         public override Task Initialize(BlazorAppBase app)
         {
             App = app as LegalBlazorApp;
-
-            InitializeComponents();
-
             return Task.CompletedTask;
-        }
-
-        private void InitializeComponents()
-        {
-            AddCaseComponentApp.Initialize(App);
-            CasesGridComponentApp.Initialize(App);
         }
 
         public CreateCase.Request NewCase { get; set; } = new CreateCase.Request();

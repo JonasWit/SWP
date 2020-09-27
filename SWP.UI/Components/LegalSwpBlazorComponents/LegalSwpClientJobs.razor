@@ -9,7 +9,7 @@ else
     <h2>Zarządzaj zadaniami klienta: @App.ActiveClientWithData.Name</h2>
 
     <div class="row justify-content-center">
-        <RadzenTemplateForm Data="@App.ClientsPage.NewClientJob" Submit="@(async (CreateClientJob.Request args) => { await App.ClientsPage.SubmitNewClientJob(args); })">
+        <RadzenTemplateForm Data="@App.ClientJobsPage.NewClientJob" Submit="@(async (CreateClientJob.Request args) => { await App.ClientJobsPage.SubmitNewClientJob(args); })">
             <div class="row">
                 <RadzenFieldset Text="Nowe Zadanie">
                     <div class="row">
@@ -17,7 +17,7 @@ else
                             <RadzenLabel Text="Nazwa" />
                         </div>
                         <div class="col-md-8">
-                            <RadzenTextBox Placeholder="Nazwa..." @bind-Value="App.ClientsPage.NewClientJob.Name" Name="Nazwa" />
+                            <RadzenTextBox Placeholder="Nazwa..." @bind-Value="App.ClientJobsPage.NewClientJob.Name" Name="Nazwa" />
                             <RadzenRequiredValidator Component="Nazwa" Text="Nazwa nie może być pusta!" Popup="true" />
                             <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Nazwa" Popup="true" Style="position: absolute" />
                         </div>
@@ -27,7 +27,7 @@ else
                             <RadzenLabel Text="Opis" />
                         </div>
                         <div class="col-md-8">
-                            <RadzenTextArea Placeholder="Opis..." Style="margin-bottom: 30px" @bind-Value="App.ClientsPage.NewClientJob.Description" Name="Description" />
+                            <RadzenTextArea Placeholder="Opis..." Style="margin-bottom: 30px" @bind-Value="App.ClientJobsPage.NewClientJob.Description" Name="Description" />
                             <RadzenLengthValidator Max="500" Text="Maksymalnie 500 znaków!" Component="Description" Popup="true" Style="position: absolute" />
                         </div>
                     </div>
@@ -36,7 +36,7 @@ else
                             <RadzenLabel Text="Priorytet" />
                         </div>
                         <div class="col-md-8">
-                            <RadzenDropDown @bind-Value="App.ClientsPage.NewClientJob.Priority" Data="@generalViewModel.Priorities" TextProperty="Number" ValueProperty="Number" Style="width:100%" />
+                            <RadzenDropDown @bind-Value="App.ClientJobsPage.NewClientJob.Priority" Data="@generalViewModel.Priorities" TextProperty="Number" ValueProperty="Number" Style="width:100%" />
                         </div>
                     </div>
                     <div class="row justify-content-center">
@@ -50,8 +50,8 @@ else
     </div>
 
     <div class="row justify-content-center">
-        <RadzenGrid @ref="App.ClientsPage.ClientsJobsGrid" AllowFiltering="true" AllowPaging="true" PageSize="10" AllowSorting="true" RowSelect="@(args => App.ClientsPage.ActiveJobChange(args))"
-                    Data="@App.ActiveClientWithData.Jobs" TItem="ClientJobViewModel" RowUpdate="@App.ClientsPage.OnUpdateClientJobRow">
+        <RadzenGrid @ref="App.ClientJobsPage.ClientsJobsGrid" AllowFiltering="true" AllowPaging="true" PageSize="10" AllowSorting="true" RowSelect="@(args => App.ClientJobsPage.ActiveJobChange(args))"
+                    Data="@App.ActiveClientWithData.Jobs" TItem="ClientJobViewModel" RowUpdate="@App.ClientJobsPage.OnUpdateClientJobRow">
             <Columns>
                 <RadzenGridColumn TItem="ClientJobViewModel" Property="Name" Title="Nazwa">
                     <EditTemplate Context="job">
@@ -89,23 +89,23 @@ else
 
                 <RadzenGridColumn TItem="ClientJobViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="100px" Title="Edytuj">
                     <Template Context="job">
-                        <RadzenButton Icon="edit" Size="ButtonSize.Medium" Click="@(args => App.ClientsPage.EditClientJobRow(job))">
+                        <RadzenButton Icon="edit" Size="ButtonSize.Medium" Click="@(args => App.ClientJobsPage.EditClientJobRow(job))">
                         </RadzenButton>
                     </Template>
                     <EditTemplate Context="job">
-                        <RadzenButton Icon="save" Size="ButtonSize.Medium" Click="@((args) => App.ClientsPage.SaveClientJobRow(job))">
+                        <RadzenButton Icon="save" Size="ButtonSize.Medium" Click="@((args) => App.ClientJobsPage.SaveClientJobRow(job))">
                         </RadzenButton>
-                        <RadzenButton Icon="cancel" Size="ButtonSize.Medium" ButtonStyle="ButtonStyle.Secondary" Click="@((args) => App.ClientsPage.CancelClientJobEdit(job))">
+                        <RadzenButton Icon="cancel" Size="ButtonSize.Medium" ButtonStyle="ButtonStyle.Secondary" Click="@((args) => App.ClientJobsPage.CancelClientJobEdit(job))">
                         </RadzenButton>
                     </EditTemplate>
                 </RadzenGridColumn>
                 <RadzenGridColumn TItem="ClientJobViewModel" Context="order" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="70px" Title="Usuń">
                     <Template Context="job">
-                        <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Medium" Click="@(async (args) => await App.ClientsPage.DeleteClientJobRow(job))">
+                        <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Medium" Click="@(async (args) => await App.ClientJobsPage.DeleteClientJobRow(job))">
                         </RadzenButton>
                     </Template>
                     <EditTemplate Context="job">
-                        <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Medium" Click="@(async (args) => await App.ClientsPage.DeleteClientJobRow(job))">
+                        <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Medium" Click="@(async (args) => await App.ClientJobsPage.DeleteClientJobRow(job))">
                         </RadzenButton>
                     </EditTemplate>
                 </RadzenGridColumn>

@@ -33,6 +33,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         public NoProfileWarning NoProfileWarning { get; }
         public FinancePage FinancePage { get; }
         public ProductivityPage ProductivityPage { get; }
+        public ClientJobsPage ClientJobsPage { get; }
 
         private ClientViewModel activeClient;
 
@@ -60,6 +61,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             NotificationService notificationService,
             FinancePage financePage,
             ProductivityPage productivityPage,
+            ClientJobsPage clientJobsPage,
             IServiceProvider serviceProvider)
         {
             this.userManager = userManager;
@@ -68,6 +70,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
             FinancePage = financePage;
             ProductivityPage = productivityPage;
+            ClientJobsPage = clientJobsPage;
             CalendarPage = calendarPanel;
             CasesPage = casesPanel;
             ClientsPage = clientsPanel;
@@ -106,6 +109,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             NoProfileWarning.Initialize(this);
             FinancePage.Initialize(this);
             ProductivityPage.Initialize(this);
+            ClientJobsPage.Initialize(this);
         }
 
         #region Main Component
@@ -119,6 +123,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             ErrorPage = 4,
             Finance = 5,
             Productivity = 6,
+            ClientJobs = 7,
         }
 
         public ClientViewModel ActiveClientWithData { get; set; }

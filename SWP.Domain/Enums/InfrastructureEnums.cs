@@ -10,6 +10,11 @@ namespace SWP.Domain.Enums
         MedicalSwp = 1,
     }
 
+    public enum UserStatus
+    { 
+        RootClient = 0
+    }
+
     public enum RoleType
     {
         Administrators = 0,
@@ -20,6 +25,7 @@ namespace SWP.Domain.Enums
     {
         Application = 0,
         Profile = 1,
+        Status = 2,
     }
 
 

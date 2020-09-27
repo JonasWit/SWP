@@ -17,12 +17,14 @@ namespace SWP.UI.Components.AdminBlazorComponents.App
 
         public int SelectedRole { get; set; } = 1;
         public string SelectedApplicationClaim { get; set; } = "";
+        public string SelectedStatusClaim { get; set; } = "";
         public string ProfileClaimName { get; set; } = "";
 
         public RadzenGrid<Claim> ClaimsGrid { get; set; }
 
         private readonly UserManager<IdentityUser> userManager;
 
+        public List<string> StatusClaims => Enum.GetNames(typeof(UserStatus)).ToList();
         public List<string> Claims => Enum.GetNames(typeof(ApplicationType)).ToList();
         public List<string> Roles => Enum.GetNames(typeof(RoleType)).ToList();
 
@@ -228,6 +230,45 @@ namespace SWP.UI.Components.AdminBlazorComponents.App
                 {
                     var userIdentity = await userManager.FindByIdAsync(SelectedUser.Id);
                     var newClaim = new Claim(ClaimType.Application.ToString(), SelectedApplicationClaim);
+                    var result = await userManager.AddClaimAsync(userIdentity, newClaim);
+
+                    if (result.Succeeded)
+                    {
+                        await GetUsers();
+                        SelectedUser = await GetUser(SelectedUser.Id);
+                    }
+                    else
+                    {
+                        throw new Exception("Issue when adding claim!");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw;
+                }
+                finally
+                {
+                    Loading = false;
+                }
+            }
+            else
+            {
+                Loading = false;
+            }
+        }
+
+        public async Task AddStatusClaim()
+        {
+            if (Loading) return;
+            else Loading = true;
+
+            if (!SelectedUser.Claims.Any(x => x.Value == SelectedStatusClaim) &&
+                !string.IsNullOrEmpty(SelectedStatusClaim))
+            {
+                try
+                {
+                    var userIdentity = await userManager.FindByIdAsync(SelectedUser.Id);
+                    var newClaim = new Claim(ClaimType.Status.ToString(), SelectedStatusClaim);
                     var result = await userManager.AddClaimAsync(userIdentity, newClaim);
 
                     if (result.Succeeded)

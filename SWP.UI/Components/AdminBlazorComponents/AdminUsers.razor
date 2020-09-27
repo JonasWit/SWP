@@ -1,8 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Identity;
 @using System.Security.Claims
-@inject UserManager<IdentityUser> _userManager
-@inject RoleManager<IdentityRole> _roleManager
-
 
 <div class="row m-2">
     <div class="col-md-6 m-2">
@@ -67,6 +64,12 @@
                                     FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" FilterOperator="StringFilterOperator.StartsWith" AllowFiltering="true"
                                     Data="@App.UsersPage.Claims" @bind-Value="App.UsersPage.SelectedApplicationClaim" Style="margin-bottom: 20px" />
                     <RadzenButton Click="@(async () => await App.UsersPage.AddApplicationClaim())" Text="Add Application Claim" Style="margin-bottom: 20px; width: 150px" />
+
+                    <h3>User Status Claims</h3>
+                    <RadzenDropDown AllowClear="true" TValue="string"
+                                    FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" FilterOperator="StringFilterOperator.StartsWith" AllowFiltering="true"
+                                    Data="@App.UsersPage.StatusClaims" @bind-Value="App.UsersPage.SelectedStatusClaim" Style="margin-bottom: 20px" />
+                    <RadzenButton Click="@(async () => await App.UsersPage.AddStatusClaim())" Text="Add Status Claim" Style="margin-bottom: 20px; width: 150px" />
 
                     <h3>Profile Claim Name</h3>
                     <RadzenTextBox @bind-Value="@App.UsersPage.ProfileClaimName" MaxLength="50" Style="margin-bottom: 20px" />

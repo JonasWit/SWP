@@ -11,7 +11,12 @@ namespace SWP.UI.Models
         public IdentityUser User { get; set; }
         public List<Claim> Claims { get; set; } = new List<Claim>();
         public List<string> Roles { get; set; } = new List<string>();
+        public IList<IdentityUser> RelatedUsers { get; set; } = new List<IdentityUser>();
+
         public string Profile => Claims.FirstOrDefault(x => x.Type == ClaimType.Profile.ToString())?.Value;
+        public bool RootClient => Claims.Any(x => x.Type == ClaimType.Status.ToString() && x.Value == UserStatus.RootClient.ToString());
+        public List<Claim> StatusClaims => Claims.Where(x => x.Type == ClaimType.Status.ToString()).ToList();
+        public Claim ProfileClaim => Claims.FirstOrDefault(x => x.Type == ClaimType.Profile.ToString());
         public string UserName => User?.UserName;
     }
 }

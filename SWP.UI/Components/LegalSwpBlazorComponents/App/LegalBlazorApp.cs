@@ -17,8 +17,8 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
     {
         private GetClient GetClient => serviceProvider.GetService<GetClient>();
         private GetClients GetClients => serviceProvider.GetService<GetClients>();
+        private UserManager<IdentityUser> UserManager => serviceProvider.GetService<UserManager<IdentityUser>>();
 
-        private readonly UserManager<IdentityUser> userManager;
         private readonly NotificationService notificationService;
 
         private readonly IServiceProvider serviceProvider;
@@ -51,7 +51,6 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         }
 
         public LegalBlazorApp(
-            UserManager<IdentityUser> userManager,
             CalendarPage calendarPanel,
             CasesPage casesPanel,
             ClientPage clientsPanel,
@@ -64,7 +63,6 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             ClientJobsPage clientJobsPage,
             IServiceProvider serviceProvider)
         {
-            this.userManager = userManager;
             this.notificationService = notificationService;
             this.serviceProvider = serviceProvider;
 
@@ -89,9 +87,10 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             {
                 ActiveUserId = activeUserId;
 
-                User.User = await userManager.FindByIdAsync(ActiveUserId);
-                User.Claims = await userManager.GetClaimsAsync(User.User) as List<Claim>;
-                User.Roles = await userManager.GetRolesAsync(User.User) as List<string>;
+                User.User = await UserManager.FindByIdAsync(ActiveUserId);
+                User.Claims = await UserManager.GetClaimsAsync(User.User) as List<Claim>;
+                User.Roles = await UserManager.GetRolesAsync(User.User) as List<string>;
+                User.RelatedUsers = await UserManager.GetUsersForClaimAsync(User.ProfileClaim);
 
                 Clients = GetClients.GetClientsWithoutData(User.Profile)?.Select(x => (ClientViewModel)x).ToList();
 

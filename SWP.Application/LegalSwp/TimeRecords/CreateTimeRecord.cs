@@ -17,7 +17,7 @@ namespace SWP.Application.LegalSwp.TimeRecords
             legalSwpManager.CreateTimeRecord(clientId, profile, new TimeRecord
             {
                 Name = request.Name,
-                RecordedTime = request.RecordedTime.TimeOfDay,
+                RecordedTime = request.RecordedTime,
                 Description = request.Description,
                 Created = DateTime.Now,
                 Updated = DateTime.Now,
@@ -29,7 +29,9 @@ namespace SWP.Application.LegalSwp.TimeRecords
         {
             public string Name { get; set; }
             public string Description { get; set; }
-            public DateTime RecordedTime { get; set; }
+            public int RecordedHours { get; set; } = 0;
+            public int RecordedMinutes { get; set; } = 0;
+            public TimeSpan RecordedTime => new TimeSpan(RecordedHours, RecordedMinutes, 0);
             public string UpdatedBy { get; set; }
         }
     }

@@ -83,8 +83,19 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <RadzenDatePicker TValue="DateTime" ShowTime="true" TimeOnly="true" DateFormat="HH:mm" @bind-Value="App.ProductivityPage.NewTimeRecord.RecordedTime" Name="Time" />
-                                    <RadzenRequiredValidator Text="Czas musi być wprowadzony!" Component="Time" Popup="true" />
+
+                                    <RadzenLabel Text="Godziny"></RadzenLabel>
+                                    <RadzenNumeric TValue="int" Style="margin-bottom: 20px" @bind-Value="App.ProductivityPage.NewTimeRecord.RecordedHours" Name="Hours" Placeholder="0" />
+                                    <RadzenRequiredValidator Text="Czas musi być wprowadzony!" Component="Hours" Popup="true" />
+                                    <RadzenNumericRangeValidator Component="Hours" Min="1" Text="Wartość dla godzin nie może być mniejsza od jednego!" Style="position: absolute" />
+
+                                    <RadzenLabel Text="Minuty"></RadzenLabel>
+                                    <RadzenNumeric TValue="int" Style="margin-bottom: 20px" @bind-Value="App.ProductivityPage.NewTimeRecord.RecordedMinutes" Name="Minutes" Placeholder="0" />
+                                    <RadzenRequiredValidator Text="Czas musi być wprowadzony!" Component="Minutes" Popup="true" />
+                                    <RadzenNumericRangeValidator Component="Minutes" Min="0" Text="Wartość dla minut nie może być mniejsza od zera!" Style="position: absolute" />
+
+                                    @*<RadzenDatePicker TValue="DateTime" ShowTime="true" TimeOnly="true" DateFormat="HH:mm" @bind-Value="App.ProductivityPage.NewTimeRecord.RecordedTime" Name="Time" />
+        <RadzenRequiredValidator Text="Czas musi być wprowadzony!" Component="Time" Popup="true" />*@
                                 </div>
                                 <div class="row">
 

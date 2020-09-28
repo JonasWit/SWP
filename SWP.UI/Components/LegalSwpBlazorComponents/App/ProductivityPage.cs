@@ -87,7 +87,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
         public async Task SubmitNewTimeRecord(CreateTimeRecord.Request arg)
         {
-            if (arg.RecordedTime.TimeOfDay == new TimeSpan(0,0,0))
+            if (arg.RecordedTime == new TimeSpan(0,0,0))
             {
                 return;
             }

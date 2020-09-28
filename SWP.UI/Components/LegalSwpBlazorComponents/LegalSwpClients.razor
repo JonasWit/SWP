@@ -1,134 +1,75 @@
 ﻿@inject GeneralViewModel generalViewModel
 
-<div class="row">
-    <button class="info ml-5 pl-5" @onclick="ShowHideForm"></button>
+
+<div class="grid-container-i">
+
     @if (formVisible)
     {
-        <div class="col-12">
-            <div class="ml-5 pl-5">
-                <p>Zarządzaj listą swoich klientów. Użyj guzika "Dodaj Nowego Klienta",aby uzupełnić listę kontaktów.</p>
-                <p>Edytuj oraz usuwaj Klientów z głównej listy. Tekst do zupełnienia.</p>
-            </div>
+        <div class="info-text">
+            <p>Zarządzaj listą swoich klientów. Użyj guzika "Dodaj Nowego Klienta",aby uzupełnić listę kontaktów.</p>
+            <p>Edytuj oraz usuwaj Klientów z głównej listy. Tekst do zupełnienia.</p>
         </div>
     }
+
+    <div>
+        <button class="info" @onclick="ShowHideForm"></button>
+    </div>
 </div>
 
-<RadzenTemplateForm Data="@App.ClientsPage.NewClient" Submit="@(async (CreateClient.Request args) => { await App.ClientsPage.SubmitNewClient(args); })" Style="width: 100%;">
-    <div class="row m-auto p-3 shadow-lg bg-white rounded add-client" style="width: 100%;">
-        <div class="col-md-8 border-right">
-            <div class="row">
-                <div class="row">
-                    <div class="align-items-center d-flex col-md-2">
-                        <RadzenLabel Text="Nazwa" Style="font-size: 14px" />
-                    </div>
-                    <div class="col-md-3">
-                        <RadzenTextArea Placeholder="Nazwa..." @bind-Value="App.ClientsPage.NewClient.Name" Name="Nazwa" />
-                        <RadzenRequiredValidator Component="Nazwa" Text="Name cannot be empty!" Popup="true" tyle="width: 100%;" />
-                        <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Nazwa" Popup="true" Style="position: absolute" />
-                    </div>
-                    <div class="align-items-center d-flex col-md-2">
-                        <RadzenLabel Text="Adres" Style="font-size: 14px" />
-                    </div>
-                    <div class="col-md-5 p-0">
-                        <RadzenTextArea Placeholder="Adres..." @bind-Value="App.ClientsPage.NewClient.Address" style="width: 100%;" Name="Address" />
-                        <RadzenLengthValidator Max="200" Text="Maksymalnie 200 znaków!" Component="Address" Popup="true" Style="position: absolute" />
-                    </div>
+<RadzenTemplateForm Data="@App.ClientsPage.NewClient" Submit="@(async (CreateClient.Request args) => { await App.ClientsPage.SubmitNewClient(args); })">
+
+    <div class="shadow-lg bg-white rounded mx-5">
+        <RadzenFieldset Text="Nowy Klient">
+            <i><img src="/Images/icons8-add-user-male-36.png" /></i>
+            <div class="grid-container add-client ">
+                <div class="">
+                    <RadzenLabel Text="Nazwa" Style="font-size: 14px; font-weight:bold" />
+                </div>
+                <div class="">
+                    <RadzenTextArea Placeholder="Nazwa..." @bind-Value="App.ClientsPage.NewClient.Name" style="width: 100%;" Name="Nazwa" />
+                    <RadzenRequiredValidator Component="Nazwa" Text="Name cannot be empty!"  tyle="width: 100%;" />
+                    <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Nazwa" Style="position: absolute" />
+                </div>
+                <div class="">
+                    <RadzenLabel Text="Adres" Style="font-size: 14px; font-weight:bold" />
+                </div>
+                <div class="">
+                    <RadzenTextArea Placeholder="Adres..." @bind-Value="App.ClientsPage.NewClient.Address" style="width: 100%;" Name="Address" />
+                    <RadzenLengthValidator Max="200" Text="Maksymalnie 200 znaków!" Component="Address"  Style="position: absolute" />
+                </div>
+
+                <div class="">
+                    <RadzenLabel Text="Telefon" Style="font-size: 14px; font-weight:bold" />
+                </div>
+                <div class="">
+                    <RadzenTextBox Placeholder="Telefon..." @bind-Value="App.ClientsPage.NewClient.PhoneNumber" style="width: 100%;" Name="PhoneNumber" />
+                    <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="PhoneNumber" Style="position: absolute" />
+                </div>
+
+                <div class="">
+                    <RadzenLabel Text="Email" Style="font-size: 14px; font-weight:bold" />
+                </div>
+                <div class="">
+                    <RadzenTextBox Placeholder="Adres Email..." @bind-Value="App.ClientsPage.NewClient.Email" style="width: 100%;" Name="Email" />
+                    <RadzenRequiredValidator Component="Email" Text="Email address cannot be empty!" Style="position: absolute" />
+                    <RadzenEmailValidator Component="Email" Text="Nieprawidłowy adres Email!" />
+                    <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Email" Style="position: absolute" />
                 </div>
             </div>
-        </div>
-        <div class="col-md-4">
-            <div class="row mb-3">
-                <div class="align-items-center d-flex col-md-2">
-                    <RadzenLabel Text="Telefon" Style="font-size: 14px" />
-                </div>
-                <div class="col-md-3 mr-2">
-                    <RadzenTextBox Placeholder="Telefon..." @bind-Value="App.ClientsPage.NewClient.PhoneNumber" Name="PhoneNumber" />
-                    <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="PhoneNumber" Popup="true" Style="position: absolute" />
-                </div>
-            </div>
-            <div class="row">
-                <div class="align-items-center d-flex col-md-2">
-                    <RadzenLabel Text="Email" Style="font-size: 14px" />
-                </div>
-                <div class="col-md-3">
-                    <RadzenTextBox Placeholder="Adres Email..." @bind-Value="App.ClientsPage.NewClient.Email" Name="Email" />
-                    <RadzenRequiredValidator Component="Email" Text="Email address cannot be empty!" Popup="true" Style="position: absolute" />
-                    <RadzenEmailValidator Component="Email" Text="Nieprawidłowy adres Email!" Popup="true" />
-                    <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Email" Popup="true" Style="position: absolute" />
-                </div>
-            </div>
-        </div>
+        </RadzenFieldset>
     </div>
+
+
     <div class="row justify-content-center">
         <div class="col-md-12 d-flex align-items-end justify-content-center" style="margin-top: 16px;">
             <RadzenButton ButtonType="ButtonType.Submit" Icon="save" Text="Dodaj Klienta" ButtonStyle="ButtonStyle.Secondary" />
         </div>
     </div>
+
 </RadzenTemplateForm>
 
 
-
-
-<button class="info ml-5 pl-5" @onclick="ShowHideForm"></button>
-
-@if (formVisible)
-{
-    <div class="row info-panel">
-        <div class="col-4">
-            <div class="ml-5 pl-5">
-                <p>Zarządzaj listą swoich klientów. Użyj guzika "Dodaj Nowego Klienta",aby uzupełnić listę kontaktów.</p>
-                <p>Edytuj oraz usuwaj Klientów z głównej listy. Tekst do zupełnienia.</p>
-            </div>
-        </div>
-        <div class="col-8">
-            <div class="ml-5 pl-5">
-                <p>Zarządzaj listą swoich klientów. Użyj guzika "Dodaj Nowego Klienta",aby uzupełnić listę kontaktów.</p>
-                <p>Edytuj oraz usuwaj Klientów z głównej listy. Tekst do zupełnienia.</p>
-            </div>
-        </div>
-    </div>
-}
-
 <div class="row admin-panel">
-    <div class="col-4">
-        <div class="m-auto p-3 shadow-lg bg-white rounded add-client">
-            <RadzenTemplateForm Data="@App.ClientsPage.NewClient" Submit="@(async (CreateClient.Request args) => { await App.ClientsPage.SubmitNewClient(args); })">
-                <div class="card-body ">
-                    <RadzenFieldset Text="Nowy Klient">
-                        <div>
-                            <RadzenLabel Text="Nazwa" />
-                            <RadzenTextArea Placeholder="Nazwa..." Style="margin-bottom: 30px; width: 500px;" @bind-Value="App.ClientsPage.NewClient.Name" Name="Nazwa" />
-                            <RadzenRequiredValidator Component="Nazwa" Text="Name cannot be empty!" Popup="true" Style="position: absolute" />
-                            <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Nazwa" Popup="true" Style="position: absolute" />
-                        </div>
-                        <div>
-                            <RadzenLabel Text="Adres Email" />
-                            <RadzenTextBox Placeholder="Adres Email..." Style="margin-bottom: 30px; width: 500px;" @bind-Value="App.ClientsPage.NewClient.Email" Name="Email" />
-                            <RadzenRequiredValidator Component="Email" Text="Email address cannot be empty!" Popup="true" Style="position: absolute" />
-                            <RadzenEmailValidator Component="Email" Text="Nieprawidłowy adres Email!" Popup="true" Style="position: absolute" />
-                            <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Email" Popup="true" Style="position: absolute" />
-                        </div>
-                        <div>
-                            <RadzenLabel Text="Telefon" />
-                            <RadzenTextBox Placeholder="Telefon..." Style="margin-bottom: 30px; width: 500px;" @bind-Value="App.ClientsPage.NewClient.PhoneNumber" Name="PhoneNumber" />
-                            <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="PhoneNumber" Popup="true" Style="position: absolute" />
-                        </div>
-                        <div>
-                            <RadzenLabel Text="Adres" />
-                            <RadzenTextArea Placeholder="Adres..." Style="margin-bottom: 30px; width: 500px;" @bind-Value="App.ClientsPage.NewClient.Address" Name="Address" />
-                            <RadzenLengthValidator Max="200" Text="Maksymalnie 200 znaków!" Component="Address" Popup="true" Style="position: absolute" />
-                        </div>
-                        <div class="row justify-content-center">
-                            <div class="d-flex justify-content-center">
-                                <RadzenButton ButtonType="ButtonType.Submit" Icon="save" Text="Dodaj Klienta" ButtonStyle="ButtonStyle.Secondary" />
-                            </div>
-                        </div>
-                    </RadzenFieldset>
-                </div>
-            </RadzenTemplateForm>
-        </div>
-
-    </div>
     <div class="col-8">
         <div class="client-list mx-5 shadow-lg bg-white rounded">
             <RadzenGrid @ref="App.ClientsPage.ClientsGrid" AllowFiltering="true" AllowPaging="true" PageSize="10" AllowSorting="true"

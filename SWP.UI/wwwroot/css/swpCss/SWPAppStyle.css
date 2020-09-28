@@ -6,6 +6,7 @@ html, body {
     flex-wrap: wrap;
     overflow-x: hidden;
     overflow-y: scroll;
+    font-size: 12px;
 }
 
 .sidebar {
@@ -95,12 +96,10 @@ html, body {
 
 .title {
     font-size: 25px;
-
 }
 
 
 .footer {
-   
     width: 100%;
     height: 50px;
     margin: 0;
@@ -160,24 +159,17 @@ html, body {
     margin-top: 50px;
 }
 
-.add-client {
-   
-    width: 550px;
-}
-
 
 .info {
-margin-top: 50px;
-background: url(../../Images/icons8-info-squared-36.png) no-repeat;
-cursor: pointer;
-border: none;
-height: 80px;
-width: 80px;
-outline: none !important;
-}
-
-.info-panel {
-    margin-top: 50px;
+    position: absolute;
+    top: 37px;
+    right: -290px;
+    background: url(../../Images/icons8-info-squared-36.png) no-repeat;
+    cursor: pointer;
+    border: none;
+    height: 80px;
+    width: 80px;
+    outline: none !important;
 }
 
 .contact-details {
@@ -185,10 +177,57 @@ outline: none !important;
     height: 180px;
 }
 
+.grid-container {
+    display: grid;
+    grid-template-columns: 45px auto 45px auto;
+    align-content: center;
+    grid-gap: 10px;
+    padding: 15px;
+}
+
+.grid-container-i {
+    display: grid;
+    grid-template-columns: 500px 20px;
+    align-content: center;
+    grid-gap: 5px;
+    padding: 5px;
+    position: absolute;
+    z-index: 999;
+    top: 90px;
+}
+
+.info-text {
+    position: absolute;
+    left: 150px;
+    height: 80px;
+    width: 100%;
+    padding: 5px;
+    background-color: #ffffff;
+    border-radius: 5px 0px 5px 0px;
+    border: 2px solid #0094ff;
+}
+
+
+.info-text {
+    animation: moveLeft ease 1s;
+    animation-timing-function: ease;
+}
+
+@keyframes moveLeft {
+    0% {
+        opacity: 0;
+        margin-left: 25px;
+    }
+
+    100% {
+        margin-left: 0;
+        opacity: 1;
+    }
+}
 
 
 
-.add-client, .client-list, .contact-details, info-panel {
+.add-client, .client-list, .contact-details, info-panel, .info {
     animation: fadeInAnimation ease 3s;
     animation-iteration-count: 1;
     animation-fill-mode: forwards;
@@ -203,4 +242,3 @@ outline: none !important;
         opacity: 1;
     }
 }
-

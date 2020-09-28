@@ -54,8 +54,6 @@
 
 
     }
-
-
 }
 else
 {
@@ -71,10 +69,7 @@ else
     [Parameter]
     public EventCallback<LegalBlazorApp> AppChanged { get; set; }
 
-    private string FormatAsPLN(object value)
-    {
-        return ((double)value).ToString("C0", CultureInfo.CreateSpecificCulture("pl"));
-    }
+    private string FormatAsPLN(object value) => ((double)value).ToString("C0", CultureInfo.CreateSpecificCulture("pl"));
 
     private string RelatedUsersFilterValue = "";
 }

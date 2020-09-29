@@ -148,13 +148,3 @@
 
     </div>
 </div>
-
-@code {
-    [Parameter]
-    public LegalBlazorApp App { get; set; }
-    [Parameter]
-    public EventCallback<LegalBlazorApp> AppChanged { get; set; }
-
-    private bool formVisible = false;
-    private void ShowHideForm() => formVisible = !formVisible;
-}

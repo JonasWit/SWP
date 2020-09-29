@@ -122,10 +122,3 @@ else
         <RadzenCard>@App.ActiveClientWithData.SelectedJob.Name</RadzenCard>
     }
 }
-
-@code {
-    [Parameter]
-    public LegalBlazorApp App { get; set; }
-    [Parameter]
-    public EventCallback<LegalBlazorApp> AppChanged { get; set; }
-}

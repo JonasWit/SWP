@@ -3,15 +3,6 @@
 
 
 
-<RadzenListBox AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" @bind-Value="ArchvizedClientsFilterValue" Data="@App.ArchivePage.ArchivizedClients" TextProperty="Name" ValueProperty="Id" Change="@(args => App.ArchivePage.SelectedArchivizedClientChange(args))"
+<RadzenListBox AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" @bind-Value="ArchvizedClientsFilterValue" Data="@App.ArchivePage.ArchivizedClients" TextProperty="Name" ValueProperty="IdString" Change="@(args => App.ArchivePage.SelectedArchivizedClientChange(args))"
                Style="margin-bottom: 20px; height:200px;" />
 
-
-@code {
-    [Parameter]
-    public LegalBlazorApp App { get; set; }
-    [Parameter]
-    public EventCallback<LegalBlazorApp> AppChanged { get; set; }
-
-    private string ArchvizedClientsFilterValue = "";
-}

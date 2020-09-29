@@ -81,26 +81,3 @@
         </div>
     </div>
 </RadzenTemplateForm>
-@code {
-    [Parameter]
-    public ReminderViewModel Reminder { get; set; }
-
-    private ReminderViewModel model = new ReminderViewModel();
-    private GeneralViewModel generalVm = new GeneralViewModel();
-
-    protected override void OnParametersSet()
-    {
-        model = Reminder;
-    }
-
-    private void OnSubmit(ReminderViewModel model)
-    {
-        DialogService.Close(model);
-    }
-
-    private void Delete()
-    {
-        Reminder.Active = false;
-        DialogService.Close(Reminder);
-    }
-}

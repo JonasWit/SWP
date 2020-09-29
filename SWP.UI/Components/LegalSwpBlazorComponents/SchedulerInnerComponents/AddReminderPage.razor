@@ -62,23 +62,3 @@
         </div>
     </div>
 </RadzenTemplateForm>
-@code {
-    [Parameter]
-    public DateTime Start { get; set; }
-    [Parameter]
-    public DateTime End { get; set; }
-
-    private ReminderViewModel model = new ReminderViewModel();
-    private GeneralViewModel generalVm = new GeneralViewModel();
-
-    protected override void OnParametersSet()
-    {
-        model.Start = Start;
-        model.End = End;
-    }
-
-    void OnSubmit(ReminderViewModel model)
-    {
-        DialogService.Close(model);
-    }
-}

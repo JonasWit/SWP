@@ -38,7 +38,8 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
         public void RefreshApp() => App.ForceRefresh();
 
-        public void SelectedArchivizedClientChange(object client) => SelectedArchivizedClient = client as ClientViewModel;
+        public void SelectedArchivizedClientChange(object client) => SelectedArchivizedClient = ArchivizedClients.FirstOrDefault(x => x.Id == int.Parse(client.ToString()));
+
 
 
 

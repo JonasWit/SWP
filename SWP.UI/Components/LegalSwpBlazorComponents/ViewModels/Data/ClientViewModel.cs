@@ -8,6 +8,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data
     public class ClientViewModel
     {
         public int Id { get; set; }
+        public string IdString => Id.ToString();
         public string IdStr => Id.ToString();
         public string Name { get; set; }
         public bool Active { get; set; }

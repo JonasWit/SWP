@@ -15,7 +15,7 @@ namespace SWP.Application.LegalSwp.Jobs
         public CreateClientJob(ILegalSwpManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
 
         public Task<ClientJob> Create(Request request) => 
-            legalSwpManager.CreateClientJob(request.ClientId, request.ProfileClaim, new ClientJob
+            legalSwpManager.CreateClientJob(request.ClientId, new ClientJob
             {
                 Active = true,
                 Priority = request.Priority,
@@ -32,12 +32,8 @@ namespace SWP.Application.LegalSwp.Jobs
             [Required(ErrorMessage = "Nazwa nie może być pusta!")]
             public string Name { get; set; }
             public string Description { get; set; }
-            public bool Active { get; set; }
             public int Priority { get; set; }
-
             public int ClientId { get; set; }
-            public string ProfileClaim { get; set; }
-
             public DateTime Created { get; set; }
             public DateTime Updated { get; set; }
             public string UpdatedBy { get; set; }

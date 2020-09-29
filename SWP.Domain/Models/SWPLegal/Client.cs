@@ -7,13 +7,11 @@ namespace SWP.Domain.Models.SWPLegal
 {
     public class Client : BaseModel
     {
+        public bool Active { get; set; }
+
         [MaxLength(50)]
         [Required]
         public string Name { get; set; }
-
-        public bool Active { get; set; }
-
-        //todo: add timespan for time spent
 
         [MaxLength(50)]
         [Required]

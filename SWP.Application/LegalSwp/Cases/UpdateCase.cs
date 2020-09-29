@@ -13,7 +13,7 @@ namespace SWP.Application.LegalSwp.Cases
 
         public Task<Case> Update(Request request)
         {
-            var c = legalSwpManager.GetCase(request.Id, x => x);
+            var c = legalSwpManager.GetCase(request.Id);
 
             c.Name = request.Name;
             c.Description = request.Description;

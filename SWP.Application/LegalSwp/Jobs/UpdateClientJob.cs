@@ -15,7 +15,7 @@ namespace SWP.Application.LegalSwp.Jobs
 
         public Task<ClientJob> Update(Request request)
         {
-            var job = legalSwpManager.GetClientJob(request.Id, x => x);
+            var job = legalSwpManager.GetClientJob(request.Id);
 
             job.Name = request.Name;
             job.Description = request.Description;

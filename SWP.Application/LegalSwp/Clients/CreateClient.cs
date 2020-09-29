@@ -17,6 +17,7 @@ namespace SWP.Application.LegalSwp.Clients
         public Task<Client> Do(Request request) => legalSwpManager.CreateClient(new Client
         {
             Name = request.Name,
+            Active = true,
             ProfileClaim = request.ProfileClaim,
             Address = string.IsNullOrEmpty(request.Address) ? "Brak" : request.Address,
             Email = string.IsNullOrEmpty(request.Email) ? "Brak" : request.Email,
@@ -33,6 +34,7 @@ namespace SWP.Application.LegalSwp.Clients
         {
             [Required(ErrorMessage = "Nazwa Klienta nie może być pusta!")]
             public string Name { get; set; }
+
             public string ProfileClaim { get; set; }
 
             public string Address { get; set; }
@@ -40,7 +42,9 @@ namespace SWP.Application.LegalSwp.Clients
             [DataType(DataType.EmailAddress)]
             [EmailAddress(ErrorMessage = "Niepoprawny adres Email!")]
             public string Email { get; set; }
+
             public string PhoneNumber { get; set; }
+
             public string UpdatedBy { get; set; }
         }
     }

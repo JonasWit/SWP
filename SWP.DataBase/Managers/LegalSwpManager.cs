@@ -17,7 +17,7 @@ namespace SWP.DataBase.Managers
 
         #region Client
 
-        public TResult GetClient<TResult>(int id, string profile, Func<Client, TResult> selector) =>
+        public Client GetClient(int clientId) =>
             context.Clients
                 .Include(x => x.Cases)
                     .ThenInclude(y => y.Reminders)
@@ -26,32 +26,19 @@ namespace SWP.DataBase.Managers
                 .Include(x => x.Jobs)
                 .Include(x => x.CashMovements)
                 .Include(x => x.TimeRecords)
-                .Where(x => x.Id == id && x.ProfileClaim == profile)
-                .Select(selector)
+                .Where(x => x.Id == clientId)
                 .FirstOrDefault();
 
-        public TResult GetClientWithoutCases<TResult>(int id, string profile, Func<Client, TResult> selector) =>
+        public Client GetClientWithoutCases(int clientId) =>
             context.Clients
                 .Include(x => x.Jobs)
-                .Where(x => x.Id == id && x.ProfileClaim == profile)
-                .Select(selector)
+                .Where(x => x.Id == clientId)
                 .FirstOrDefault();
 
-        public List<TResult> GetClients<TResult>(string profile, Func<Client, TResult> selector) =>
-            context.Clients
-                .Include(x => x.Cases)
-                    .ThenInclude(y => y.Reminders)
-                .Include(x => x.Cases)
-                    .ThenInclude(y => y.Notes)
-                .Include(x => x.Jobs)
-                .Where(x => x.ProfileClaim == profile)
-                .Select(selector)
-                .ToList();
-
-        public List<Client> GetClientsWithoutCases(string profile) =>
+        public List<Client> GetClientsWithoutCases(string profile, bool active = true) =>
             context.Clients
                 .Include(x => x.Jobs)
-                .Where(x => x.ProfileClaim == profile)
+                .Where(x => x.ProfileClaim == profile && active ? x.Active : !x.Active)
                 .ToList();
 
         public async Task<Client> CreateClient(Client client)
@@ -76,34 +63,36 @@ namespace SWP.DataBase.Managers
 
         public Task<int> DeleteProfileClients(string profile)
         {
-            var clients = GetClients(profile, x => x.Id);
+            var clients = context.Clients
+                .Include(x => x.Cases)
+                    .ThenInclude(y => y.Reminders)
+                .Include(x => x.Cases)
+                    .ThenInclude(y => y.Notes)
+                .Include(x => x.Jobs)
+                .Where(x => x.ProfileClaim == profile && x.Active)
+                .Select(x => x.Id)
+                .ToList();
+
             context.Clients.RemoveRange(context.Clients.Where(x => clients.Contains(x.Id)));
             return context.SaveChangesAsync();
         }
 
-        public int CountClients() => context.Clients.AsNoTracking().Count();
+        public int CountClients() => context.Clients.AsNoTracking().Count(x => x.Active);
 
         #endregion
 
         #region Case
 
-        public TResult GetCases<TResult>(string profile, Func<Case, TResult> selector)
-        {
-            throw new NotImplementedException();
-        }
-
-        public TResult GetCase<TResult>(int id, Func<Case, TResult> selector) =>
+        public Case GetCase(int id) =>
             context.Cases
                 .Include(x => x.Notes)
                 .Include(x => x.Reminders)
                 .Where(x => x.Id == id)
-                .Select(selector)
                 .FirstOrDefault();
 
-        public TResult GetCaseWithoutData<TResult>(int id, Func<Case, TResult> selector) =>
+        public Case GetCaseWithoutData(int id) =>
             context.Cases
                 .Where(x => x.Id == id)
-                .Select(selector)
                 .FirstOrDefault();
 
         public Task<int> DeleteCase(int id)
@@ -141,10 +130,9 @@ namespace SWP.DataBase.Managers
 
         #region Reminder
 
-        public TResult GetReminder<TResult>(int id, Func<Reminder, TResult> selector) =>
+        public Reminder GetReminder(int id) =>
             context.Reminders
                 .Where(x => x.Id == id)
-                .Select(selector)
                 .FirstOrDefault();
 
         public List<Reminder> GetReminders(string profile) =>
@@ -251,11 +239,11 @@ namespace SWP.DataBase.Managers
 
         #region Job
 
-        public async Task<ClientJob> CreateClientJob(int clientId, string profile, ClientJob job)
+        public async Task<ClientJob> CreateClientJob(int clientId, ClientJob job)
         {
             var client = context.Clients
                 .Include(x => x.Jobs)
-                .FirstOrDefault(x => x.Id == clientId && x.ProfileClaim == profile);
+                .FirstOrDefault(x => x.Id == clientId);
 
             client.Jobs.Add(job);
             await context.SaveChangesAsync();
@@ -269,10 +257,9 @@ namespace SWP.DataBase.Managers
             return context.SaveChangesAsync();
         }
 
-        public TResult GetClientJob<TResult>(int id, Func<ClientJob, TResult> selector) =>
+        public ClientJob GetClientJob(int id) =>
             context.ClientJobs
                 .Where(x => x.Id == id)
-                .Select(selector)
                 .FirstOrDefault();
 
         public async Task<ClientJob> UpdateClientJob(ClientJob job)
@@ -374,25 +361,120 @@ namespace SWP.DataBase.Managers
                 .Count(y => y.CaseId == caseId && y.End >= DateTime.Now && y.IsDeadline);
 
         public int CountNotesPerCase(int caseId) => 
-            context.Notes.AsNoTracking().Count(x => x.CaseId == caseId);
+            context.Notes.AsNoTracking().Count(x => x.CaseId == caseId && x.Active);
 
         public IEnumerable<int> GetClientCasesIds(int clientId) =>
             context.Clients
                 .AsNoTracking()
                 .Include(x => x.Cases)
-                .FirstOrDefault(x => x.Id == clientId).Cases
+                .FirstOrDefault(x => x.Id == clientId && x.Active).Cases
                 .Select(y => y.Id)
                 .ToList();
 
         public IEnumerable<int> GetClientsIds(string profile) =>
             context.Clients
                 .AsNoTracking()
-                .Where(x => x.ProfileClaim == profile)
+                .Where(x => x.ProfileClaim == profile && x.Active)
                 .Select(y => y.Id)
                 .ToList();
 
         #endregion
 
+        #region Archive
+
+        public int CountArchivedCases() => context.Clients
+            .Include(x => x.Cases)
+            .SelectMany(x => x.Cases)
+            .Where(x => !x.Active)
+            .Count();
+
+        public int CountArchivedClients() => context.Clients.Count(x => !x.Active);
+
+        public Task<int> ArchivizeClient(int clientId)
+        {
+            var client = context.Clients
+                .Include(x => x.Cases)
+                    .ThenInclude(y => y.Notes)
+                .Include(x => x.Jobs)
+                .Where(x => x.Id == clientId)
+                .FirstOrDefault();
+
+            client.Active = false;
+
+            foreach (var c in client.Cases)
+            {
+                c.Active = false;
+                foreach (var n in c.Notes)
+                {
+                    n.Active = false;
+                }
+            }
+
+            foreach (var j in client.Jobs)
+            {
+                j.Active = false;
+            }
+
+            context.Clients.Update(client);
+            return context.SaveChangesAsync();
+        }
+
+        public Task<int> ArchiveCase(int caseId)
+        {
+            var c = context.Cases.FirstOrDefault(x => x.Id == caseId);
+            c.Active = false;
+
+            foreach (var n in c.Notes)
+            {
+                n.Active = false;
+            }
+
+            context.Cases.Update(c);
+            return context.SaveChangesAsync();
+        }
+
+        public Task<int> ArchiveClientJob(int jobId)
+        {
+            var job = context.ClientJobs.FirstOrDefault(x => x.Id == jobId);
+            job.Active = false;
+
+            context.ClientJobs.Update(job);
+            return context.SaveChangesAsync();
+        }
+
+        public Task<int> ArchiveNote(int noteId)
+        {
+            var note = context.Notes.FirstOrDefault(x => x.Id == noteId);
+            note.Active = false;
+
+            context.Notes.Update(note);
+            return context.SaveChangesAsync();
+        }
+
+        public List<Case> GetArchivedCases() => context.Cases.Where(x => !x.Active).ToList();
+
+        public Client RecoverClient(int clientId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Case RecoverCase(int caseId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ClientJob RecoverClientJob(int jobId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Note RecoverNote(int noteId)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        #endregion
     }
 
 }

@@ -13,7 +13,7 @@ namespace SWP.Application.LegalSwp.Clients
 
         public Task<Client> Update(Request request)
         {
-            var record = legalSwpManager.GetClient(request.Id, request.ProfileClaim, x => x);
+            var record = legalSwpManager.GetClient(request.Id);
 
             record.Address = request.Address;
             record.Active = request.Active;
@@ -32,9 +32,8 @@ namespace SWP.Application.LegalSwp.Clients
 
             [Required(ErrorMessage = "Nazwa Klienta nie może być pusta!")]
             public string Name { get; set; }
-            public bool Active { get; set; }
 
-            public string ProfileClaim { get; set; }
+            public bool Active { get; set; }
 
             public string Address { get; set; }
 

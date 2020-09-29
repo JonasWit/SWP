@@ -23,7 +23,6 @@ namespace SWP.Application.LegalSwp.Reminders
                 IsDeadline = request.IsDeadline,
                 Message = request.Message,
                 Priority = request.Priority,
-                Active = true,
                 Created = DateTime.Now,
                 Updated = DateTime.Now,
                 UpdatedBy = request.UpdatedBy,
@@ -37,7 +36,6 @@ namespace SWP.Application.LegalSwp.Reminders
             public string Name { get; set; }
             [MaxLength(500)]
             public string Message { get; set; }
-            public bool Active { get; set; }
             public int Priority { get; set; }
             public bool IsDeadline { get; set; }
             public DateTime Start { get; set; }

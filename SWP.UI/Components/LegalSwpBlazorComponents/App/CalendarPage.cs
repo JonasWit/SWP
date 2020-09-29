@@ -1,7 +1,6 @@
-﻿using Org.BouncyCastle.Math.EC.Rfc7748;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Radzen;
 using Radzen.Blazor;
-using SWP.Application;
 using SWP.Application.LegalSwp.Cases;
 using SWP.Application.LegalSwp.Reminders;
 using SWP.UI.BlazorApp;
@@ -10,9 +9,7 @@ using SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 {

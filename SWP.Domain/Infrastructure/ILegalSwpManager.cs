@@ -10,31 +10,31 @@ namespace SWP.Domain.Infrastructure
     {
         #region Clients
 
-        TResult GetClient<TResult>(int id, string profile, Func<Client, TResult> selector);
-        TResult GetClientWithoutCases<TResult>(int id, string profile, Func<Client, TResult> selector);
-        List<TResult> GetClients<TResult>(string profile, Func<Client, TResult> selector);
-        List<Client> GetClientsWithoutCases(string profile);
+        Client GetClient(int clientId);
+        Client GetClientWithoutCases(int clientId);
+        List<Client> GetClientsWithoutCases(string profile, bool active = true);
 
         Task<Client> CreateClient(Client client);
         Task<Client> UpdateClient(Client client);
-        Task<int> DeleteClient(int id);
+        Task<int> DeleteClient(int clientId);
         Task<int> DeleteProfileClients(string profile);
 
         #endregion
 
         #region Jobs
 
-        Task<ClientJob> CreateClientJob(int clientId, string profile, ClientJob job);
+        Task<ClientJob> CreateClientJob(int clientId, ClientJob job);
         Task<int> DeleteClientJob(int id);
         Task<ClientJob> UpdateClientJob(ClientJob job);
-        TResult GetClientJob<TResult>(int id, Func<ClientJob, TResult> selector);
+        ClientJob GetClientJob(int id);
 
         #endregion
 
         #region Cases
-        TResult GetCase<TResult>(int id, Func<Case, TResult> selector);
-        TResult GetCaseWithoutData<TResult>(int id, Func<Case, TResult> selector);
-        TResult GetCases<TResult>(string profile, Func<Case, TResult> selector);
+
+        Case GetCase(int id);
+        List<Case> GetArchivedCases();
+        Case GetCaseWithoutData(int id);
         string GetCaseParentName(int id);
         string GetCaseName(int id);
 
@@ -47,7 +47,7 @@ namespace SWP.Domain.Infrastructure
 
         #region Reminders
 
-        TResult GetReminder<TResult>(int id, Func<Reminder, TResult> selector);
+        Reminder GetReminder(int id);
         List<Reminder> GetReminders(string profile);
         List<Reminder> GetRemindersForClient(int clientId);
 
@@ -105,6 +105,23 @@ namespace SWP.Domain.Infrastructure
         Task<TimeRecord> CreateTimeRecord(int clientId, string profile, TimeRecord cashMovement);
         Task<TimeRecord> UpdateTimeRecord(TimeRecord cashMovement);
         Task<int> DeleteTimeRecord(int id);
+
+        #endregion
+
+        #region Archive
+
+        int CountArchivedCases();
+        int CountArchivedClients();
+
+        Task<int> ArchivizeClient(int clientId);
+        Task<int> ArchiveCase(int caseId);
+        Task<int> ArchiveClientJob(int jobId);
+        Task<int> ArchiveNote(int noteId);
+
+        Client RecoverClient(int clientId);
+        Case RecoverCase(int caseId);
+        ClientJob RecoverClientJob(int jobId);
+        Note RecoverNote(int noteId);
 
         #endregion
 

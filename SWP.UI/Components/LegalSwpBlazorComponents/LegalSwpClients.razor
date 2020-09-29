@@ -114,6 +114,16 @@
                             </RadzenButton>
                         </EditTemplate>
                     </RadzenGridColumn>
+                    <RadzenGridColumn TItem="ClientViewModel" Context="order" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="70px" Title="Archiwizuj">
+                        <Template Context="client">
+                            <RadzenButton ButtonStyle="ButtonStyle.Warning" Icon="close" Size="ButtonSize.Medium" Click="@(async (args) => await App.ClientsPage.ArchivizeClient(client))">
+                            </RadzenButton>
+                        </Template>
+                        <EditTemplate Context="client">
+                            <RadzenButton ButtonStyle="ButtonStyle.Warning" Icon="close" Size="ButtonSize.Medium" Click="@(async (args) => await App.ClientsPage.ArchivizeClient(client))">
+                            </RadzenButton>
+                        </EditTemplate>
+                    </RadzenGridColumn>
                     <RadzenGridColumn TItem="ClientViewModel" Context="order" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="70px" Title="Usuń">
                         <Template Context="client">
                             <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Medium" Click="@(async (args) => await App.ClientsPage.DeleteClientRow(client))">

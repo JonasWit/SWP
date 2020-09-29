@@ -61,7 +61,6 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
                     Email = client.Email,
                     Name = client.Name,
                     PhoneNumber = client.PhoneNumber,
-                    ProfileClaim = App.User.Profile,
                     UpdatedBy = App.User.UserName
                 });
 
@@ -100,6 +99,31 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
                 await ClientsGrid.Reload();
                 App.ShowNotification(NotificationSeverity.Warning, "Sukces!", $"Klient: {client.Name} został usunięty.", GeneralViewModel.NotificationDuration);
+            }
+            catch (Exception ex)
+            {
+                App.ErrorPage.DisplayMessage(ex);
+            }
+        }
+
+        public async Task ArchivizeClient(ClientViewModel client)
+        {
+            try
+            {
+                
+
+
+                if (App.ActiveClient != null && App.ActiveClient.Id == client.Id)
+                {
+                    App.ActiveClient = null;
+                }
+                else
+                {
+                    App.Clients.RemoveAll(x => x.Id == client.Id);
+                }
+
+                await ClientsGrid.Reload();
+                App.ShowNotification(NotificationSeverity.Success, "Sukces!", $"Klient: {client.Name} został zmieniony.", GeneralViewModel.NotificationDuration);
             }
             catch (Exception ex)
             {

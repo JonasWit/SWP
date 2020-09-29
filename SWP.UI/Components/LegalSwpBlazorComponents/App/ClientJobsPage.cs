@@ -39,7 +39,6 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         {
             try
             {
-                NewClientJob.ProfileClaim = App.User.Profile;
                 NewClientJob.ClientId = App.ActiveClient.Id;
                 NewClientJob.UpdatedBy = App.User.UserName;
 

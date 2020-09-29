@@ -255,7 +255,6 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
                 var newReminder = await CreateReminder.Create(App.ActiveClientWithData.SelectedCase.Id, new CreateReminder.Request
                 {
-                    Active = true,
                     IsDeadline = result.IsDeadline,
                     Message = result.Message,
                     Name = result.Name,

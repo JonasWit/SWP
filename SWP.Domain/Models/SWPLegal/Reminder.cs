@@ -13,8 +13,6 @@ namespace SWP.Domain.Models.SWPLegal
         [MaxLength(500)]
         public string Message { get; set; }
 
-        public bool Active { get; set; }
-
         public int Priority { get; set; }
 
         public bool IsDeadline { get; set; }

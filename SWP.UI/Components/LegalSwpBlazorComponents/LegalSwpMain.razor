@@ -62,6 +62,12 @@
                         </li>
                     }
 
+                    <li class="nav-item px-3">
+                        <NavLink class="nav-link" @onclick="@(() => App.SetActivePanel(LegalBlazorApp.Panels.Archive))">
+                            <i><img src="/Images/icons8-calendar-12-36.png" /></i> Archiwum
+                        </NavLink>
+                    </li>
+
                 </ul>
             </div>
         </div>
@@ -102,6 +108,9 @@
                             case LegalBlazorApp.Panels.Productivity:
                                 <p>Produktywność Klienta - @App.ActiveClientWithData.Name</p>
                                 break;
+                            case LegalBlazorApp.Panels.Archive:
+                                <p>Archiwum</p>
+                                break;
                             default:
                                 break;
                         }
@@ -139,6 +148,9 @@
                         break;
                     case LegalBlazorApp.Panels.ClientJobs:
                         <LegalSwpClientJobs @bind-App="App" />
+                        break;
+                    case LegalBlazorApp.Panels.Archive:
+                        <LegalSwpArchive @bind-App="App" />
                         break;
                     default:
                         <LegalSwpMyApp @bind-App="App" />

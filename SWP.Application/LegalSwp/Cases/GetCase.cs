@@ -12,7 +12,7 @@ namespace SWP.Application.LegalSwp.Cases
         private readonly ILegalSwpManager legalSwpManager;
         public GetCase(ILegalSwpManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
 
-        public Case Get(int id) => legalSwpManager.GetCase(id, x => x);
+        public Case Get(int id) => legalSwpManager.GetCase(id);
         public string GetCaseParentName(int id) => legalSwpManager.GetCaseParentName(id);
         public string GetCaseName(int id) => legalSwpManager.GetCaseName(id);
     }

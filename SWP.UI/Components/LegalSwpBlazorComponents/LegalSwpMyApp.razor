@@ -1,21 +1,20 @@
 ﻿@using System.Globalization
 
-<h1>Moja Aplikacja</h1>
-
-<RadzenButton ButtonStyle="ButtonStyle.Secondary" Click="App.MyAppPage.RefreshData">Odśwież Dane</RadzenButton>
-
-<RadzenListBox AllowFiltering="true" @bind-Value="RelatedUsersFilterValue" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" Data="@App.User.RelatedUsers" TextProperty="UserName" ValueProperty="Id" Style="margin-bottom: 20px; height:200px;" Change="@(args => App.MyAppPage.SelectedUserChange(args))" />
-
-@if (App.MyAppPage.SelectedUser != null &&
- App.User.RootClient &&
- App.ActiveUserId != App.MyAppPage.SelectedUser.Id)
-{
-    <h1>Mozna skasowac</h1>
-    <RadzenButton Text="Usuń powiązanie!" Click="App.MyAppPage.RemoveRelation"></RadzenButton>
-}
-
 @if (App.Clients.Count != 0)
 {
+
+    <RadzenButton ButtonStyle="ButtonStyle.Secondary" Click="App.MyAppPage.RefreshData">Odśwież Dane</RadzenButton>
+
+    <RadzenListBox AllowFiltering="true" @bind-Value="RelatedUsersFilterValue" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" Data="@App.User.RelatedUsers" TextProperty="UserName" ValueProperty="Id" Style="margin-bottom: 20px; height:200px;" Change="@(args => App.MyAppPage.SelectedUserChange(args))" />
+
+    @if (App.MyAppPage.SelectedUser != null &&
+    App.User.RootClient &&
+    App.ActiveUserId != App.MyAppPage.SelectedUser.Id)
+    {
+        <h1>Mozna skasowac</h1>
+        <RadzenButton Text="Usuń powiązanie!" Click="App.MyAppPage.RemoveRelation"></RadzenButton>
+    }
+
     @if (App.MyAppPage.ClientsCases.Count != 0)
     {
         <div class="row">
@@ -24,7 +23,6 @@
             </RadzenChart>
         </div>
     }
-
 
     <div style="width: 1000px; height:500px">
         <RadzenChart ColorScheme="@App.MyAppPage.ColorScheme">
@@ -94,7 +92,7 @@
 }
 else
 {
-
+    <h2>Nie masz jeszcze zadnych klientow!</h2>
 
 
 

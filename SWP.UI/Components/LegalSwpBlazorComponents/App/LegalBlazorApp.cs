@@ -34,6 +34,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         public FinancePage FinancePage { get; }
         public ProductivityPage ProductivityPage { get; }
         public ClientJobsPage ClientJobsPage { get; }
+        public ArchivePage ArchivePage { get; }
 
         private ClientViewModel activeClient;
 
@@ -45,7 +46,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
                 activeClient = value;
                 if (activeClient != null)
                 {
-                    ActiveClientWithData = GetClient.Get(activeClient.Id, User.Profile);
+                    ActiveClientWithData = GetClient.Get(activeClient.Id);
                 }
             }
         }
@@ -61,6 +62,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             FinancePage financePage,
             ProductivityPage productivityPage,
             ClientJobsPage clientJobsPage,
+            ArchivePage archivePage,
             IServiceProvider serviceProvider)
         {
             this.notificationService = notificationService;
@@ -69,6 +71,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             FinancePage = financePage;
             ProductivityPage = productivityPage;
             ClientJobsPage = clientJobsPage;
+            ArchivePage = archivePage;
             CalendarPage = calendarPanel;
             CasesPage = casesPanel;
             ClientsPage = clientsPanel;
@@ -111,6 +114,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             await FinancePage.Initialize(this);
             await ProductivityPage.Initialize(this);
             await ClientJobsPage.Initialize(this);
+            await ArchivePage.Initialize(this);
         }
 
         #region Main Component
@@ -125,6 +129,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             Finance = 5,
             Productivity = 6,
             ClientJobs = 7,
+            Archive = 8,
         }
 
         public ClientViewModel ActiveClientWithData { get; set; }
@@ -166,7 +171,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         {
             if (ActiveClient != null)
             {
-                ClientViewModel newModel = GetClient.Get(ActiveClient.Id, User.Profile);
+                ClientViewModel newModel = GetClient.Get(ActiveClient.Id);
 
                 if (ActiveClientWithData.SelectedCase != null)
                 {

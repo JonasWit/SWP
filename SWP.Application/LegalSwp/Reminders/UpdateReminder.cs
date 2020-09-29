@@ -16,11 +16,10 @@ namespace SWP.Application.LegalSwp.Reminders
 
         public Task<Reminder> Update(Request request)
         {
-            var reminderEntity = legalSwpManager.GetReminder(request.Id, x => x);
+            var reminderEntity = legalSwpManager.GetReminder(request.Id);
 
             reminderEntity.IsDeadline = request.IsDeadline;
             reminderEntity.Name = request.Name;
-            reminderEntity.Active = true;
             reminderEntity.Priority = request.Priority;
             reminderEntity.Updated = DateTime.Now;
             reminderEntity.UpdatedBy = request.UpdatedBy;

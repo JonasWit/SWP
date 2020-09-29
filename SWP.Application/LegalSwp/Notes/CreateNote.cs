@@ -32,12 +32,16 @@ namespace SWP.Application.LegalSwp.Notes
             [MaxLength(50)]
             [Required]
             public string Name { get; set; }
+
             [MaxLength(500)]
             public string Message { get; set; }
-            public bool Active { get; set; }
+
             public int Priority { get; set; }
+
             public DateTime Created { get; set; }
+
             public DateTime Updated { get; set; }
+
             [MaxLength(50)]
             [Required]
             public string UpdatedBy { get; set; }

@@ -9,7 +9,7 @@ namespace SWP.Application.LegalSwp.Reminders
         private readonly ILegalSwpManager legalSwpManager;
         public GetReminder(ILegalSwpManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
 
-        public Reminder Get(int id) => legalSwpManager.GetReminder(id, x => x);
+        public Reminder Get(int id) => legalSwpManager.GetReminder(id);
 
     }
 }

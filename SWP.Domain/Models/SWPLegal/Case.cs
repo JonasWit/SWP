@@ -7,6 +7,8 @@ namespace SWP.Domain.Models.SWPLegal
 {
     public class Case : BaseModel
     {
+        public bool Active { get; set; }
+
         [MaxLength(50)]
         [Required]
         public string Name { get; set; }
@@ -19,8 +21,6 @@ namespace SWP.Domain.Models.SWPLegal
 
         [MaxLength(500)]
         public string Description { get; set; }
-
-        public bool Active { get; set; }
 
         public int Priority { get; set; }
 

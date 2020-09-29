@@ -11,6 +11,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.Logging;
 using System.Linq;
+using SWP.Application.LegalSwp.Clients;
+using SWP.Domain.Enums;
 
 namespace SWP.UI.Areas.Identity.Pages.Account.Manage
 {
@@ -18,15 +20,18 @@ namespace SWP.UI.Areas.Identity.Pages.Account.Manage
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly DeleteClient deleteClient;
         private readonly ILogger<DeletePersonalDataModel> _logger;
 
         public DeletePersonalDataModel(
             UserManager<IdentityUser> userManager,
             SignInManager<IdentityUser> signInManager,
+            DeleteClient deleteClient,
             ILogger<DeletePersonalDataModel> logger)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            this.deleteClient = deleteClient;
             _logger = logger;
         }
 
@@ -79,11 +84,16 @@ namespace SWP.UI.Areas.Identity.Pages.Account.Manage
                 }
             }
 
-            //todo JW: Check for profile nand remove all data if this is only user with profile
+            //todo JW: Check for profile nand remove all data if this is only user with profile - test it
+            foreach (var claim in claims)
+            {
+                if (claim.Type == ClaimType.Profile.ToString())
+                {
+                    await deleteClient.Delete(claim.Value);
+                }
+            }
+
             var result = await _userManager.DeleteAsync(user);
-
-
-
 
             var userId = await _userManager.GetUserIdAsync(user);
             if (!result.Succeeded)

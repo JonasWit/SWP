@@ -3,11 +3,8 @@
 
 
 
-<RadzenListBox AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" @bind-Value="ArchvizedClientsFilterValue" Data="@App.ArchivePage.ArchivizedClients" TextProperty="Name" ValueProperty="Id"
+<RadzenListBox AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" @bind-Value="ArchvizedClientsFilterValue" Data="@App.ArchivePage.ArchivizedClients" TextProperty="Name" ValueProperty="Id" Change="@(args => App.ArchivePage.SelectedArchivizedClientChange(args))"
                Style="margin-bottom: 20px; height:200px;" />
-
-
-
 
 
 @code {

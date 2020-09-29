@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data;
+using Microsoft.AspNetCore.Server.HttpSys;
 
 namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 {
@@ -18,6 +19,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
         public LegalBlazorApp App { get; private set; }
         public List<ClientViewModel> ArchivizedClients { get; set; }
+        public ClientViewModel SelectedArchivizedClient { get; set; }
 
         public ArchivePage(IServiceProvider serviceProvider) => this.serviceProvider = serviceProvider;
 
@@ -35,6 +37,8 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         }
 
         public void RefreshApp() => App.ForceRefresh();
+
+        public void SelectedArchivizedClientChange(object client) => SelectedArchivizedClient = client as ClientViewModel;
 
 
 

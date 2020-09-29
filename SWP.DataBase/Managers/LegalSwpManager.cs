@@ -69,7 +69,7 @@ namespace SWP.DataBase.Managers
                 .Include(x => x.Cases)
                     .ThenInclude(y => y.Notes)
                 .Include(x => x.Jobs)
-                .Where(x => x.ProfileClaim == profile && x.Active)
+                .Where(x => x.ProfileClaim == profile)
                 .Select(x => x.Id)
                 .ToList();
 

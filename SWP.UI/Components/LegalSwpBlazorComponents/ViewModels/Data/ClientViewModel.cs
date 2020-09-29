@@ -22,7 +22,6 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data
         public string PhoneNumber { get; set; }
 
         public List<CaseViewModel> Cases { get; set; }
-
         public List<CaseViewModel> ArchivedCases { get; set; }
 
         public List<ClientJobViewModel> Jobs { get; set; }

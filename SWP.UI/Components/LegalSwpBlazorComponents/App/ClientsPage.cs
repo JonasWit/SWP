@@ -23,6 +23,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         private DeleteClient DeleteClient => serviceProvider.GetService<DeleteClient>();
         private UpdateClient UpdateClient => serviceProvider.GetService<UpdateClient>();
         private CreateClient CreateClient => serviceProvider.GetService<CreateClient>();
+        private ArchiveClient ArchiveClient => serviceProvider.GetService<ArchiveClient>();
 
         private readonly IServiceProvider serviceProvider;
 
@@ -45,6 +46,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         public void SetActivePanel(Panels panel) => ActivePanel = panel;
 
         public CreateClient.Request NewClient { get; set; } = new CreateClient.Request();
+
         public RadzenGrid<ClientViewModel> ClientsGrid { get; set; }
 
         public void EditClientRow(ClientViewModel client) => ClientsGrid.EditRow(client);
@@ -110,8 +112,9 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         {
             try
             {
-                
+                var result = await ArchiveClient.ArchivizeClient(client.Id);
 
+                SelectedClient = null;
 
                 if (App.ActiveClient != null && App.ActiveClient.Id == client.Id)
                 {

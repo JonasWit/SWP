@@ -7,8 +7,8 @@
 <RadzenListBox AllowFiltering="true" @bind-Value="RelatedUsersFilterValue" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" Data="@App.User.RelatedUsers" TextProperty="UserName" ValueProperty="Id" Style="margin-bottom: 20px; height:200px;" Change="@(args => App.MyAppPage.SelectedUserChange(args))" />
 
 @if (App.MyAppPage.SelectedUser != null &&
-  App.User.RootClient &&
-  App.ActiveUserId != App.MyAppPage.SelectedUser.Id)
+ App.User.RootClient &&
+ App.ActiveUserId != App.MyAppPage.SelectedUser.Id)
 {
     <h1>Mozna skasowac</h1>
     <RadzenButton Text="Usuń powiązanie!" Click="App.MyAppPage.RemoveRelation"></RadzenButton>
@@ -28,7 +28,7 @@
 
     <div style="width: 1000px; height:500px">
         <RadzenChart ColorScheme="@App.MyAppPage.ColorScheme">
-            @foreach (var data in App.MyAppPage.RevenueData)
+            @foreach (var data in App.MyAppPage.ProductivityData)
             {
                 <RadzenLineSeries Smooth="true" Data="@data.DataByDate" CategoryProperty="Date" Title="@data.Name" LineType="LineType.Solid" ValueProperty="Number">
                     <RadzenMarkers MarkerType="MarkerType.Circle" />
@@ -45,7 +45,7 @@
 
     <div style="width: 1000px; height:500px">
         <RadzenChart ColorScheme="@App.MyAppPage.ColorScheme">
-            @foreach (var data in App.MyAppPage.TimeData)
+            @foreach (var data in App.MyAppPage.ProductivityData)
             {
                 <RadzenLineSeries Smooth="true" Data="@data.DataByDate" CategoryProperty="Date" Title="@data.Name" LineType="LineType.Solid" ValueProperty="TimeNumber">
                     <RadzenMarkers MarkerType="MarkerType.Circle" />
@@ -55,6 +55,22 @@
             <RadzenValueAxis Formatter="@FormatAsTime">
                 <RadzenGridLines Visible="true" />
                 <RadzenAxisTitle Text="Czas" />
+            </RadzenValueAxis>
+        </RadzenChart>
+    </div>
+
+    <div style="width: 1000px; height:500px">
+        <RadzenChart ColorScheme="@App.MyAppPage.ColorScheme">
+            @foreach (var data in App.MyAppPage.ProductivityData)
+            {
+                <RadzenLineSeries Smooth="true" Data="@data.DataByDate" CategoryProperty="Date" Title="@data.Name" LineType="LineType.Solid" ValueProperty="ProductivityRatio">
+                    <RadzenMarkers MarkerType="MarkerType.Circle" />
+                </RadzenLineSeries>
+            }
+            <RadzenCategoryAxis Padding="20" />
+            <RadzenValueAxis Formatter="@FormatAsPLN">
+                <RadzenGridLines Visible="true" />
+                <RadzenAxisTitle Text="Bilans w PLN" />
             </RadzenValueAxis>
         </RadzenChart>
     </div>

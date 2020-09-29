@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Radzen.Blazor;
 using SWP.Application.LegalSwp.CashMovements;
 using SWP.Application.LegalSwp.Clients;
+using SWP.Application.LegalSwp.TimeRecords;
 using SWP.UI.BlazorApp;
 using SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data.Statistics;
 using System;
@@ -19,10 +20,12 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
         private GetClients GetClients => serviceProvider.GetService<GetClients>();
         private GetCashMovements GetCashMovements => serviceProvider.GetService<GetCashMovements>();
+        private GetTimeRecords GetTimeRecords => serviceProvider.GetService<GetTimeRecords>();
         private UserManager<IdentityUser> UserManager => serviceProvider.GetService<UserManager<IdentityUser>>();
         public LegalBlazorApp App { get; private set; }
         public List<CategoryDataItem> ClientsCases { get; set; } = new List<CategoryDataItem>();
         public List<ClientData> RevenueData { get; set; } = new List<ClientData>();
+        public List<ClientData> TimeData { get; set; } = new List<ClientData>();
         public List<ClientData> ProductivityData { get; set; } = new List<ClientData>();
         public IdentityUser SelectedUser { get; set; }
         public ColorScheme ColorScheme { get; set; } = ColorScheme.Monochrome;
@@ -57,11 +60,13 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             {
                 RefreshClientCases();
                 RefreshSpecificFinanceData();
+                RefreshSpecificTimeData();
             }
             else
             {
                 RefreshClientCases();
                 RefreshAllFinanceData();
+                RefreshAllTimeData();
             }
         }
 
@@ -98,7 +103,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
                     dataSet.DataByDate.Add(new DateDataItem
                     {
                         Date = date,
-                        Number = Math.Round(cashMovements.Where(x => x.Created <= date).Sum(x => x.Amount), 2),
+                        Number = Math.Round(cashMovements.Where(x => x.EventDate <= date).Sum(x => x.Amount), 2),
                     });
                 }
 
@@ -123,7 +128,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
                 dataSet.DataByDate.Add(new DateDataItem
                 {
                     Date = date,
-                    Number = Math.Round(cashMovements.Where(x => x.Created <= date).Sum(x => x.Amount), 2),
+                    Number = Math.Round(cashMovements.Where(x => x.EventDate <= date).Sum(x => x.Amount), 2),
                 });
             }
 
@@ -131,10 +136,66 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
         }
 
+        private void RefreshAllTimeData()
+        {
+            TimeData.Clear();
+
+            foreach (var client in App.Clients)
+            {
+                var dataSet = new ClientData
+                {
+                    Name = client.Name
+                };
+
+                var timeRecords = GetTimeRecords.Get(client.Id);
+
+                for (int i = 0; i < 13; i++)
+                {
+                    var date = new DateTime(DateTime.Now.AddMonths(-i).Year, DateTime.Now.AddMonths(-i).Month, DateTime.DaysInMonth(DateTime.Now.AddMonths(-i).Year, DateTime.Now.AddMonths(-i).Month));
+                    var records = timeRecords.Where(x => x.EventDate <= date).ToList();
+
+                    dataSet.DataByDate.Add(new DateDataItem
+                    {
+                        Date = date,
+                        Time = new TimeSpan(timeRecords.Where(x => x.EventDate <= date).Sum(x => x.Hours), timeRecords.Where(x => x.EventDate <= date).Sum(x => x.Minutes), 0)
+                    });
+
+                }
+
+                TimeData.Add(dataSet);
+            }
+        }
+
+        private void RefreshSpecificTimeData()
+        {
+            TimeData.Clear();
+
+            var dataSet = new ClientData
+            {
+                Name = App.ActiveClient.Name
+            };
+
+            var timeRecords = GetTimeRecords.Get(App.ActiveClient.Id);
+
+            for (int i = 0; i < 13; i++)
+            {
+                var date = new DateTime(DateTime.Now.AddMonths(-i).Year, DateTime.Now.AddMonths(-i).Month, DateTime.DaysInMonth(DateTime.Now.AddMonths(-i).Year, DateTime.Now.AddMonths(-i).Month));
+                dataSet.DataByDate.Add(new DateDataItem
+                {
+                    Date = date,
+                    Time = new TimeSpan(timeRecords.Where(x => x.EventDate <= date).Sum(x => x.Hours), timeRecords.Where(x => x.EventDate <= date).Sum(x => x.Minutes), 0)
+                });
+            }
+
+            TimeData.Add(dataSet);
+        }
+
         public void Dispose()
         {
             UnsubscribeEvents();
         }
+
+        #region Users Features
 
         public void SelectedUserChange(object value)
         {
@@ -165,5 +226,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
                 App.ErrorPage.DisplayMessage(ex);
             }
         }
+
+        #endregion
     }
 }

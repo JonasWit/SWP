@@ -4,11 +4,11 @@
 
 <RadzenButton ButtonStyle="ButtonStyle.Secondary" Click="App.MyAppPage.RefreshData">Odśwież Dane</RadzenButton>
 
-<RadzenListBox AllowFiltering="true" @bind-Value="RelatedUsersFilterValue" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" Data="@App.User.RelatedUsers" TextProperty="UserName" ValueProperty="Id" Style="margin-bottom: 20px; height:200px;" Change="@(args => App.MyAppPage.SelectedUserChange(args))"/>
+<RadzenListBox AllowFiltering="true" @bind-Value="RelatedUsersFilterValue" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" Data="@App.User.RelatedUsers" TextProperty="UserName" ValueProperty="Id" Style="margin-bottom: 20px; height:200px;" Change="@(args => App.MyAppPage.SelectedUserChange(args))" />
 
 @if (App.MyAppPage.SelectedUser != null &&
-    App.User.RootClient && 
-    App.ActiveUserId != App.MyAppPage.SelectedUser.Id)
+  App.User.RootClient &&
+  App.ActiveUserId != App.MyAppPage.SelectedUser.Id)
 {
     <h1>Mozna skasowac</h1>
     <RadzenButton Text="Usuń powiązanie!" Click="App.MyAppPage.RemoveRelation"></RadzenButton>
@@ -16,13 +16,17 @@
 
 @if (App.Clients.Count != 0)
 {
-    <div class="row">
-        <RadzenChart ColorScheme="@App.MyAppPage.ColorScheme">
-            <RadzenPieSeries Data="@App.MyAppPage.ClientsCases" Title="Sprawy" CategoryProperty="Category" ValueProperty="Number" />
-        </RadzenChart>
-    </div>
+    @if (App.MyAppPage.ClientsCases.Count != 0)
+    {
+        <div class="row">
+            <RadzenChart ColorScheme="@App.MyAppPage.ColorScheme">
+                <RadzenPieSeries Data="@App.MyAppPage.ClientsCases" Title="Sprawy" CategoryProperty="Category" ValueProperty="Number" />
+            </RadzenChart>
+        </div>
+    }
 
-    <div style="width: 1000px; height:1000px">
+
+    <div style="width: 1000px; height:500px">
         <RadzenChart ColorScheme="@App.MyAppPage.ColorScheme">
             @foreach (var data in App.MyAppPage.RevenueData)
             {
@@ -30,10 +34,27 @@
                     <RadzenMarkers MarkerType="MarkerType.Circle" />
                 </RadzenLineSeries>
             }
-            <RadzenCategoryAxis Padding="20" FormatString="{0:MMM}" />
+            <RadzenCategoryAxis Padding="20" />
             <RadzenValueAxis Formatter="@FormatAsPLN">
                 <RadzenGridLines Visible="true" />
                 <RadzenAxisTitle Text="Bilans w PLN" />
+            </RadzenValueAxis>
+
+        </RadzenChart>
+    </div>
+
+    <div style="width: 1000px; height:500px">
+        <RadzenChart ColorScheme="@App.MyAppPage.ColorScheme">
+            @foreach (var data in App.MyAppPage.TimeData)
+            {
+                <RadzenLineSeries Smooth="true" Data="@data.DataByDate" CategoryProperty="Date" Title="@data.Name" LineType="LineType.Solid" ValueProperty="TimeNumber">
+                    <RadzenMarkers MarkerType="MarkerType.Circle" />
+                </RadzenLineSeries>
+            }
+            <RadzenCategoryAxis />
+            <RadzenValueAxis Formatter="@FormatAsTime">
+                <RadzenGridLines Visible="true" />
+                <RadzenAxisTitle Text="Czas" />
             </RadzenValueAxis>
         </RadzenChart>
     </div>
@@ -69,7 +90,29 @@ else
     [Parameter]
     public EventCallback<LegalBlazorApp> AppChanged { get; set; }
 
-    private string FormatAsPLN(object value) => ((double)value).ToString("C0", CultureInfo.CreateSpecificCulture("pl"));
+    private string FormatAsPLN(object value) => ((double)value).ToString(CultureInfo.CreateSpecificCulture("pl"));
+
+    private string FormatAsTime(object value)
+    {
+        var stringValue = value.ToString();
+
+        if (stringValue.Contains('.') ||
+            stringValue.Contains(','))
+        {
+            if (value.ToString().Split('.', ',')[1].Length == 1)
+            {
+                return $"{value.ToString().Split('.', ',')[0]}:{value.ToString().Split('.', ',')[1]}0";
+            }
+            else
+            {
+                return $"{value.ToString().Split('.', ',')[0]}:{value.ToString().Split('.', ',')[1]}";
+            }
+        }
+        else
+        {
+            return stringValue;
+        }
+    }
 
     private string RelatedUsersFilterValue = "";
 }

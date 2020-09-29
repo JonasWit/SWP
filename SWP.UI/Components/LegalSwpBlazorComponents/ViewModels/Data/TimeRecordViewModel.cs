@@ -8,8 +8,13 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data
         public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public TimeSpan RecordedTime { get; set; }
+
+        public int RecordedHours { get; set; } = 0;
+        public int RecordedMinutes { get; set; } = 0;
+
         public int ClientId { get; set; }
+
+        public DateTime EventDate { get; set; }
 
         public DateTime Created { get; set; }
         public DateTime Updated { get; set; }
@@ -21,7 +26,9 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data
             {
                 Id = input.Id,
                 Description = input.Description,
-                RecordedTime = input.RecordedTime,
+                RecordedHours = input.Hours,
+                RecordedMinutes = input.Minutes,
+                EventDate = input.EventDate,
                 Name = input.Name,
                 ClientId = input.ClientId,
                 Created = input.Created,

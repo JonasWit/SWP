@@ -1,45 +1,41 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Radzen;
-using SWP.Application.LegalSwp.Cases;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data;
-using SWP.UI.Components.LegalSwpBlazorComponents.App.ComponentsApps;
+﻿//using Microsoft.Extensions.DependencyInjection;
+//using Radzen;
+//using SWP.Application.LegalSwp.Cases;
+//using System;
+//using System.Collections.Generic;
+//using System.Linq;
+//using System.Threading.Tasks;
+//using SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data;
+//using SWP.UI.Components.LegalSwpBlazorComponents.App.ComponentsApps;
 
-namespace SWP.UI.Components.LegalSwpBlazorComponents.App.CasesComponentsApps
-{
-    [UITransientService]
-    public class AddCaseComponentApp : ComponentAppBase
-    {
-        private readonly IServiceProvider serviceProvider;
+//namespace SWP.UI.Components.LegalSwpBlazorComponents.App.CasesComponentsApps
+//{
+//    [UITransientService]
+//    public class AddCaseComponentApp : ComponentAppBase
+//    {
+//        private readonly IServiceProvider serviceProvider;
 
-        public CreateCase.Request NewCase { get; set; } = new CreateCase.Request();
-        private CreateCase CreateCase => serviceProvider.GetService<CreateCase>();
+//        public CreateCase.Request NewCase { get; set; } = new CreateCase.Request();
+//        private CreateCase CreateCase => serviceProvider.GetService<CreateCase>();
 
-        public AddCaseComponentApp(IServiceProvider serviceProvider) => this.serviceProvider = serviceProvider;
+//        public AddCaseComponentApp(IServiceProvider serviceProvider) => this.serviceProvider = serviceProvider;
         
-        public async Task CreateNewCase(CreateCase.Request arg)
-        {
-            try
-            {
-                NewCase.UpdatedBy = MainApp.User.UserName;
-                var result = await CreateCase.Create(MainApp.ActiveClientWithData.Id, MainApp.User.Profile, NewCase);
-                NewCase = new CreateCase.Request();
+//        public async Task CreateNewCase(CreateCase.Request arg)
+//        {
+//            try
+//            {
+//                NewCase.UpdatedBy = MainApp.User.UserName;
+//                var result = await CreateCase.Create(MainApp.ActiveClientWithData.Id, MainApp.User.Profile, NewCase);
+//                NewCase = new CreateCase.Request();
 
-                MainApp.ActiveClientWithData.Cases.Add(result);
-                await MainApp.CasesPage.CasesGridComponentApp.CasesGrid.Reload();
-                MainApp.ShowNotification(NotificationSeverity.Success, "Sukces!", $"Sprawa: {result.Name} została dodana.", GeneralViewModel.NotificationDuration);
-            }
-            catch (Exception ex)
-            {
-                MainApp.ErrorPage.DisplayMessage(ex);
-            }
-        }
-
-
-
-
-    }
-}
+//                MainApp.ActiveClientWithData.Cases.Add(result);
+//                await MainApp.CasesPage.CasesGridComponentApp.CasesGrid.Reload();
+//                MainApp.ShowNotification(NotificationSeverity.Success, "Sukces!", $"Sprawa: {result.Name} została dodana.", GeneralViewModel.NotificationDuration);
+//            }
+//            catch (Exception ex)
+//            {
+//                MainApp.ErrorPage.DisplayMessage(ex);
+//            }
+//        }
+//    }
+//}

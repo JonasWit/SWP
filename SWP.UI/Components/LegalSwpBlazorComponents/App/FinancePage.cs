@@ -45,7 +45,8 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
                     Amount = cash.Amount,
                     Name = cash.Name,
                     Updated = DateTime.Now,
-                    UpdatedBy = App.User.UserName
+                    UpdatedBy = App.User.UserName,
+                    EventDate = cash.EventDate
                 });
 
                 if (App.ActiveClient != null)
@@ -107,21 +108,21 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
         public void RowRender(RowRenderEventArgs<CashMovementViewModel> args)
         {
-            args.Attributes.Add("style", $"font-weight: {(args.Data.Amount < 0 ? "bold" : "normal")};");
+            //args.Attributes.Add("style", $"font-weight: {(args.Data.Amount < 0 ? "bold" : "normal")};");
         }
 
         public void CellRender(CellRenderEventArgs<CashMovementViewModel> args)
         {
-            if (args.Column.Property == "Amount")
-            {
-                args.Attributes.Add("style", $"background-color: {(args.Data.Amount < 0 ? "#ff6d41" : "white")};");
-            }
+            //if (args.Column.Property == "Amount")
+            //{
+            //    args.Attributes.Add("style", $"background-color: {(args.Data.Amount < 0 ? "#ff6d41" : "white")};");
+            //}
         }
 
         public void ActiveCashMovementChange(object value)
         {
             var input = (CashMovementViewModel)value;
-            if (value != null)
+            if (input != null)
             {
                 App.ActiveClientWithData.SelectedCashMovement = App.ActiveClientWithData.CashMovements.FirstOrDefault(x => x.Id == input.Id);
             }

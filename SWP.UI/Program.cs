@@ -23,7 +23,7 @@ namespace SWP.UI
                 var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
                 var rolesManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
-                context.Database.EnsureCreated();
+                //context.Database.EnsureCreated();
 
                 if (!context.Users.Any())
                 {

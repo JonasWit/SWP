@@ -1,7 +1,7 @@
 ﻿<div class="row">
     <div class="col-md-6">
         <RadzenGrid @ref="App.ProductivityPage.TimeRecordsGrid" AllowFiltering="true" AllowPaging="true" PageSize="10" AllowSorting="true"
-                    Data="@App.ActiveClientWithData.TimeRecords" TItem="TimeRecordViewModel" RowUpdate="@App.ProductivityPage.OnUpdateTimeRecordRow">
+                    Data="@App.ActiveClientWithData.TimeRecords" TItem="TimeRecordViewModel" RowUpdate="@App.ProductivityPage.OnUpdateTimeRecordRow" RowSelect="@(args => App.ProductivityPage.ActiveTimeRecordChange(args))">
             <Columns>
                 <RadzenGridColumn TItem="TimeRecordViewModel" Property="Name" Title="Nazwa">
                     <EditTemplate Context="r">
@@ -10,28 +10,37 @@
                         <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Name" Popup="true" />
                     </EditTemplate>
                 </RadzenGridColumn>
-
-                <RadzenGridColumn TItem="TimeRecordViewModel" Property="Created" Title="@GeneralViewModel.Created">
-                    <Template Context="r">
-                        @r.Created.ToString(GeneralViewModel.DateFormant)
-                    </Template>
-                </RadzenGridColumn>
-                <RadzenGridColumn TItem="TimeRecordViewModel" Property="Updated" Title="@GeneralViewModel.Updated">
-                    <Template Context="r">
-                        @r.Updated.ToString(GeneralViewModel.DateFormant)
-                    </Template>
-                </RadzenGridColumn>
-                <RadzenGridColumn TItem="TimeRecordViewModel" Property="UpdatedBy" Title="@GeneralViewModel.UpdatedBy">
-                    <Template Context="r">
-                        @r.UpdatedBy
-                    </Template>
+                <RadzenGridColumn TItem="TimeRecordViewModel" Property="Description" Title="Opis">
+                    <EditTemplate Context="r">
+                        <RadzenTextArea @bind-Value="r.Description" Style="width:100%; display: block" Name="Description" />
+                        <RadzenLengthValidator Max="500" Text="Maksymalnie 500 znaków!" Component="Description" Popup="true" />
+                    </EditTemplate>
                 </RadzenGridColumn>
 
-                <RadzenGridColumn TItem="TimeRecordViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="100px" Title="Szczegóły">
+                <RadzenGridColumn TItem="TimeRecordViewModel" Property="RecordedHours" Title="Godziny">
+                    <EditTemplate Context="r">
+                        <RadzenNumeric TValue="int" Step="1" @bind-Value="@r.RecordedHours" Name="Hours"  Placeholder="0"/>
+                        <RadzenRequiredValidator Text="Czas musi być wprowadzony!" Component="Hours" Popup="true" />
+                        <RadzenNumericRangeValidator Component="Hours" Min="0" Text="Wartość dla godzin nie może być mniejsza od zera!" Style="position: absolute" />
+                    </EditTemplate>
+                </RadzenGridColumn>
+                <RadzenGridColumn TItem="TimeRecordViewModel" Property="RecordedMinutes" Title="Minuty">
+                    <EditTemplate Context="r">
+                        <RadzenNumeric TValue="int" Step="1" @bind-Value="@r.RecordedMinutes" Name="Minutes" Placeholder="1" />
+                        <RadzenRequiredValidator Text="Czas musi być wprowadzony!" Component="Minutes" Popup="true" />
+                        <RadzenNumericRangeValidator Component="Minutes" Min="0" Text="Wartość dla minut nie może być mniejsza od zera!" Style="position: absolute" />
+                        <RadzenNumericRangeValidator Component="Minutes" Max="59" Text="Wartość dla minut nie może być większa od 59!" Style="position: absolute" />
+                    </EditTemplate>
+                </RadzenGridColumn>
+
+                <RadzenGridColumn TItem="TimeRecordViewModel" Property="EventDate" Title="Data">
                     <Template Context="r">
-                        <RadzenButton Icon="reply" Size="ButtonSize.Medium" ButtonStyle="ButtonStyle.Secondary" Click="@(args => App.ProductivityPage.ActiveTimeRecordChange(r))">
-                        </RadzenButton>
+                        @String.Format("{0:d}", r.EventDate)
                     </Template>
+                    <EditTemplate Context="r">
+                        <RadzenDatePicker @bind-Value="r.EventDate" Name="EventDate" DateFormat="dd/MM/yyyy" />
+                        <RadzenRequiredValidator Component="EventDate" Text="Data nie może być pusta!" Popup="true" />
+                    </EditTemplate>
                 </RadzenGridColumn>
 
                 <RadzenGridColumn TItem="TimeRecordViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="100px">
@@ -63,6 +72,23 @@
         <RadzenCard Style="margin-bottom:20px">
             Klient: <b>@App.ActiveClient.Name</b>
         </RadzenCard>
+        <RadzenCard>
+            <div class="row">
+                @if (App.ActiveClientWithData.SelectedTimeRecord != null)
+                {
+                    <div class="col-md-6">
+                        <div>Nazwa:</div>
+                        <b>@App.ActiveClientWithData.SelectedTimeRecord.Name</b>
+                        <div>Opis:</div>
+                        <b>@App.ActiveClientWithData.SelectedTimeRecord.Description</b>
+                    </div>
+                }
+                else
+                {
+                    <p>Wybierz kwotę!</p>
+                }
+            </div>
+        </RadzenCard>
         <RadzenTabs>
             <Tabs>
                 <RadzenTabsItem Text="Dodaj Nową Pozycję">
@@ -87,18 +113,19 @@
                                     <RadzenLabel Text="Godziny"></RadzenLabel>
                                     <RadzenNumeric TValue="int" Style="margin-bottom: 20px" @bind-Value="App.ProductivityPage.NewTimeRecord.RecordedHours" Name="Hours" Placeholder="0" />
                                     <RadzenRequiredValidator Text="Czas musi być wprowadzony!" Component="Hours" Popup="true" />
-                                    <RadzenNumericRangeValidator Component="Hours" Min="1" Text="Wartość dla godzin nie może być mniejsza od jednego!" Style="position: absolute" />
+                                    <RadzenNumericRangeValidator Component="Hours" Min="0" Text="Wartość dla godzin nie może być mniejsza od zera!" Style="position: absolute" />
 
                                     <RadzenLabel Text="Minuty"></RadzenLabel>
-                                    <RadzenNumeric TValue="int" Style="margin-bottom: 20px" @bind-Value="App.ProductivityPage.NewTimeRecord.RecordedMinutes" Name="Minutes" Placeholder="0" />
+                                    <RadzenNumeric TValue="int" Style="margin-bottom: 20px" @bind-Value="App.ProductivityPage.NewTimeRecord.RecordedMinutes" Name="Minutes" Placeholder="1" />
                                     <RadzenRequiredValidator Text="Czas musi być wprowadzony!" Component="Minutes" Popup="true" />
                                     <RadzenNumericRangeValidator Component="Minutes" Min="0" Text="Wartość dla minut nie może być mniejsza od zera!" Style="position: absolute" />
-
-                                    @*<RadzenDatePicker TValue="DateTime" ShowTime="true" TimeOnly="true" DateFormat="HH:mm" @bind-Value="App.ProductivityPage.NewTimeRecord.RecordedTime" Name="Time" />
-        <RadzenRequiredValidator Text="Czas musi być wprowadzony!" Component="Time" Popup="true" />*@
+                                    <RadzenNumericRangeValidator Component="Minutes" Max="59" Text="Wartość dla minut nie może być większa od 59!" Style="position: absolute" />
                                 </div>
                                 <div class="row">
 
+                                    <h3>Data</h3>
+                                    <RadzenDatePicker @bind-Value="App.ProductivityPage.NewTimeRecord.EventDate" DateFormat="d" Name="EventDate" />
+                                    <RadzenRequiredValidator Component="EventDate" Text="Data nie może być pusta!" Popup="true" />
                                 </div>
                             </RadzenFieldset>
                         </div>
@@ -117,7 +144,6 @@
         </RadzenTabs>
     </div>
 </div>
-
 
 @code {
     [Parameter]

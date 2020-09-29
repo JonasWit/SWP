@@ -21,6 +21,7 @@ namespace SWP.Application.LegalSwp.CashMovements
             c.Amount = request.Amount;
             c.Updated = request.Updated;
             c.UpdatedBy = request.UpdatedBy;
+            c.EventDate = request.EventDate;
 
             return legalSwpManager.UpdateCashMovement(c);
         }
@@ -31,6 +32,7 @@ namespace SWP.Application.LegalSwp.CashMovements
             public string Name { get; set; }
             public double Amount { get; set; }
             public DateTime Updated { get; set; }
+            public DateTime EventDate { get; set; } = DateTime.Now;
             public string UpdatedBy { get; set; }
         }
     }

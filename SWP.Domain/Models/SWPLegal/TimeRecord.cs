@@ -15,8 +15,10 @@ namespace SWP.Domain.Models.SWPLegal
         [MaxLength(500)]
         public string Description { get; set; }
 
-        [Required]
-        public TimeSpan RecordedTime { get; set; }
+        public int Hours { get; set; } 
+        public int Minutes { get; set; } 
+
+        public DateTime EventDate { get; set; }
 
         public int ClientId { get; set; }
 

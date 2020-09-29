@@ -18,6 +18,7 @@ namespace SWP.Application.LegalSwp.CashMovements
             {
                 Name = request.Name,
                 Amount = request.ResultAmount,
+                EventDate = request.EventDate,
                 Created = DateTime.Now,
                 Updated = DateTime.Now,
                 UpdatedBy = request.UpdatedBy,
@@ -30,6 +31,7 @@ namespace SWP.Application.LegalSwp.CashMovements
             public double Amount { get; set; }
             public int CashFlowDirection { get; set; }
             public string UpdatedBy { get; set; }
+            public DateTime EventDate { get; set; } = DateTime.Now;
 
             public double ResultAmount => CashFlowDirection == 0 ? Math.Abs(Amount) * -1 : Math.Abs(Amount);
         }

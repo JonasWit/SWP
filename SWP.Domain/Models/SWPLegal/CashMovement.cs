@@ -1,4 +1,5 @@
 ﻿using SWP.Domain.Models.BaseClasses;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace SWP.Domain.Models.SWPLegal
@@ -10,6 +11,8 @@ namespace SWP.Domain.Models.SWPLegal
         [MaxLength(50)]
         [Required]
         public string Name { get; set; }
+
+        public DateTime EventDate { get; set; }
 
         public int ClientId { get; set; }
 

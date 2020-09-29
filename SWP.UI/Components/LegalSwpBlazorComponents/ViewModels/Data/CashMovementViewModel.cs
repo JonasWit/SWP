@@ -13,6 +13,8 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data
         public double Amount { get; set; }
         public int ClientId { get; set; }
 
+        public DateTime EventDate { get; set; }
+
         public DateTime Created { get; set; }
         public DateTime Updated { get; set; }
         public string UpdatedBy { get; set; }
@@ -28,7 +30,8 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data
                 Created = input.Created,
                 Updated = input.Updated,
                 UpdatedBy = input.UpdatedBy,
-                CreatedBy = input.CreatedBy
+                CreatedBy = input.CreatedBy,
+                EventDate = input.EventDate
             };
     }
 }

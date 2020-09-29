@@ -17,8 +17,10 @@ namespace SWP.Application.LegalSwp.TimeRecords
             legalSwpManager.CreateTimeRecord(clientId, profile, new TimeRecord
             {
                 Name = request.Name,
-                RecordedTime = request.RecordedTime,
+                Hours = request.RecordedHours,
+                Minutes = request.RecordedMinutes,
                 Description = request.Description,
+                EventDate = request.EventDate,
                 Created = DateTime.Now,
                 Updated = DateTime.Now,
                 UpdatedBy = request.UpdatedBy,
@@ -31,6 +33,7 @@ namespace SWP.Application.LegalSwp.TimeRecords
             public string Description { get; set; }
             public int RecordedHours { get; set; } = 0;
             public int RecordedMinutes { get; set; } = 0;
+            public DateTime EventDate { get; set; } = DateTime.Now;
             public TimeSpan RecordedTime => new TimeSpan(RecordedHours, RecordedMinutes, 0);
             public string UpdatedBy { get; set; }
         }

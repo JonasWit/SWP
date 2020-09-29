@@ -15,12 +15,13 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
     public class ProductivityPage : BlazorPageBase
     {
         private CreateTimeRecord CreateTimeRecord => serviceProvider.GetService<CreateTimeRecord>();
+        private DeleteTimeRecord DeleteTimeRecord => serviceProvider.GetService<DeleteTimeRecord>();
+        private UpdateTimeRecord UpdateTimeRecord => serviceProvider.GetService<UpdateTimeRecord>();
 
         private readonly IServiceProvider serviceProvider;
 
         public LegalBlazorApp App { get; private set; }
         public CreateTimeRecord.Request NewTimeRecord { get; set; } = new CreateTimeRecord.Request();
-        public int CashMovementDirection { get; set; }
 
         public ProductivityPage(IServiceProvider serviceProvider) => this.serviceProvider = serviceProvider;
 
@@ -38,22 +39,25 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         {
             try
             {
-                //var result = await updateCashMovement.Update(new UpdateCashMovement.Request
-                //{
-                //    Id = cash.Id,
-                //    Amount = cash.Amount,
-                //    Name = cash.Name,
-                //    Updated = DateTime.Now,
-                //    UpdatedBy = App.User.UserName
-                //});
+                var result = await UpdateTimeRecord.Update(new UpdateTimeRecord.Request
+                {
+                    Id = time.Id,
+                    Description = time.Description,
+                    Name = time.Name,
+                    EventDate = time.EventDate,
+                    RecordedHours = time.RecordedHours,
+                    RecordedMinutes = time.RecordedMinutes,
+                    Updated = DateTime.Now,
+                    UpdatedBy = App.User.UserName
+                });
 
-                //if (App.ActiveClient != null)
-                //{
-                //    App.ActiveClientWithData.CashMovements[App.ActiveClientWithData.CashMovements.FindIndex(x => x.Id == result.Id)] = result;
-                //}
+                if (App.ActiveClient != null)
+                {
+                    App.ActiveClientWithData.TimeRecords[App.ActiveClientWithData.TimeRecords.FindIndex(x => x.Id == result.Id)] = result;
+                }
 
-                //await CashMovementGrid.Reload();
-                //App.ShowNotification(NotificationSeverity.Success, "Sukces!", $"Kwota: {result.Amount} zł, została zmieniona.", GeneralViewModel.NotificationDuration);
+                await TimeRecordsGrid.Reload();
+                App.ShowNotification(NotificationSeverity.Success, "Sukces!", $"Wpis: {result.Name}, został zmieniony.", GeneralViewModel.NotificationDuration);
             }
             catch (Exception ex)
             {
@@ -65,19 +69,20 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
         public void CancelTimeRecordEdit(TimeRecordViewModel time)
         {
-            //CashMovementGrid.CancelEditRow(cash);
-            //App.RefreshClientWithData();
+            TimeRecordsGrid.CancelEditRow(time);
+            App.RefreshClientWithData();
         }
 
         public async Task DeleteTimeRecordRow(TimeRecordViewModel time)
         {
             try
             {
-                //await deleteCashMovement.Delete(cash.Id);
-                //App.ActiveClientWithData.CashMovements.RemoveAll(x => x.Id == cash.Id);
+                await DeleteTimeRecord.Delete(time.Id);
+                App.ActiveClientWithData.TimeRecords.RemoveAll(x => x.Id == time.Id);
+                App.ActiveClientWithData.SelectedTimeRecord = null;
 
-                //await CashMovementGrid.Reload();
-                //App.ShowNotification(NotificationSeverity.Warning, "Sukces!", $"Kwota: {cash.Amount} zł, została usunięta.", GeneralViewModel.NotificationDuration);
+                await TimeRecordsGrid.Reload();
+                App.ShowNotification(NotificationSeverity.Warning, "Sukces!", $"Wpis: {time.Name}, został usunięty.", GeneralViewModel.NotificationDuration);
             }
             catch (Exception ex)
             {
@@ -94,14 +99,14 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
             try
             {
-                //NewCashMovement.UpdatedBy = App.User.UserName;
+                NewTimeRecord.UpdatedBy = App.User.UserName;
 
-                //var result = await createCashMovement.Create(App.ActiveClient.Id, App.User.Profile, NewCashMovement);
-                //NewCashMovement = new CreateCashMovement.Request();
+                var result = await CreateTimeRecord.Create(App.ActiveClient.Id, App.User.Profile, NewTimeRecord);
+                NewTimeRecord = new CreateTimeRecord.Request();
 
-                //App.ActiveClientWithData.CashMovements.Add(result);
-                //await CashMovementGrid.Reload();
-                //App.ShowNotification(NotificationSeverity.Success, "Sukces!", $"Kwota: {result.Amount} zł, została dodana.", GeneralViewModel.NotificationDuration);
+                App.ActiveClientWithData.TimeRecords.Add(result);
+                await TimeRecordsGrid.Reload();
+                App.ShowNotification(NotificationSeverity.Success, "Sukces!", $"Wpis: {result.Name}, został dodany.", GeneralViewModel.NotificationDuration);
             }
             catch (Exception ex)
             {

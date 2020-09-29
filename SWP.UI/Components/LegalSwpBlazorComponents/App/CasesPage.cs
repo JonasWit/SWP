@@ -12,7 +12,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
-using SWP.UI.Components.LegalSwpBlazorComponents.App.CasesComponentsApps;
 
 namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 {
@@ -35,22 +34,15 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         private UpdateNote UpdateNote => serviceProvider.GetService<UpdateNote>();
 
         public LegalBlazorApp App { get; private set; }
-        public AddCaseComponentApp AddCaseComponentApp { get; set; }
-        public CasesGridComponentApp CasesGridComponentApp { get; set; }
 
         public CasesPage(
                 DialogService dialogService,
                 GeneralViewModel generalViewModel,
-                AddCaseComponentApp addCaseComponentApp,
-                CasesGridComponentApp casesGridComponentApp,
                 IServiceProvider serviceProvider)
         {
             this.dialogService = dialogService;
             this.generalViewModel = generalViewModel;
             this.serviceProvider = serviceProvider;
-
-            AddCaseComponentApp = addCaseComponentApp;
-            CasesGridComponentApp = casesGridComponentApp;
         }
 
         public override Task Initialize(BlazorAppBase app)

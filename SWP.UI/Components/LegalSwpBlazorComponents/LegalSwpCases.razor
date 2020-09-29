@@ -29,7 +29,7 @@ else
             <RadzenGridColumn TItem="CaseViewModel" Property="Description" Title="Opis">
                 <EditTemplate Context="cs">
                     <Radzen.Blazor.RadzenTextArea @bind-Value="cs.Description" Style="width:100%; display: block" Name="Description" />
-                    <RadzenLengthValidator Max="500" Text="Max 500 characters!" Component="Description" Popup="true" />
+                    <RadzenLengthValidator Max="500" Text="Maksymalnie 500 znaków!" Component="Description" Popup="true" />
                 </EditTemplate>
             </RadzenGridColumn>
             <RadzenGridColumn TItem="CaseViewModel" Property="Created" Title="@GeneralViewModel.Created">

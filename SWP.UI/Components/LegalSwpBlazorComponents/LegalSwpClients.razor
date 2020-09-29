@@ -18,9 +18,9 @@
 
 <RadzenTemplateForm Data="@App.ClientsPage.NewClient" Submit="@(async (CreateClient.Request args) => { await App.ClientsPage.SubmitNewClient(args); })">
 
-    <div class="shadow-lg bg-white rounded mx-5">
+    <div class="shadow-lg bg-white rounded form" >
         <RadzenFieldset Text="Nowy Klient">
-            <i><img src="/Images/icons8-add-user-male-36.png" /></i>
+            <i class="user-icon"><img  src="/Images/icons8-add-user-male-36.png" /></i>
             <div class="grid-container add-client ">
                 <div class="">
                     <RadzenLabel Text="Nazwa" Style="font-size: 14px; font-weight:bold" />
@@ -60,7 +60,7 @@
     </div>
 
 
-    <div class="row justify-content-center">
+    <div class="row justify-content-center container">
         <div class="col-md-12 d-flex align-items-end justify-content-center" style="margin-top: 16px;">
             <RadzenButton ButtonType="ButtonType.Submit" Icon="save" Text="Dodaj Klienta" ButtonStyle="ButtonStyle.Secondary" />
         </div>

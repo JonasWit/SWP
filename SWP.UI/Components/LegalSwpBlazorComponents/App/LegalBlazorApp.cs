@@ -37,6 +37,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         public ArchivePage ArchivePage { get; }
 
         private ClientViewModel activeClient;
+        public string SelectedClientString { get; set; }
 
         public ClientViewModel ActiveClient
         {
@@ -190,28 +191,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
                 ActiveClient = null;
                 ActiveClientWithData = null;
-
-                //if (Clients.ToList().Count == 1)
-                //{
-                //    ActiveClient = Clients.FirstOrDefault();
-                //}
-
-                //if (ActiveClient == null || !Clients.Any(x => x.Id == ActiveClient.Id))
-                //{
-                //    if (Clients.Count() == 0)
-                //    {
-                //        ActiveClient = null;
-                //        ActiveClientWithData = null;
-                //    }
-                //    else
-                //    {
-                //        ActiveClient = Clients.FirstOrDefault();
-                //    }
-                //}
-                //else
-                //{
-                //    ActiveClient = Clients.FirstOrDefault(x => x.Id == ActiveClient.Id);
-                //}
+                SelectedClientString = null;
             }
             catch (Exception ex)
             {

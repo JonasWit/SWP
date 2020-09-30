@@ -1,8 +1,8 @@
 ﻿@using Microsoft.AspNetCore.Identity;
 @using System.Security.Claims
 
-<div class="row m-2">
-    <div class="col-md-6 m-2">
+<div>
+    <div>
         <RadzenGrid AllowFiltering="true"
                     AllowPaging="true"
                     PageSize="5"
@@ -18,7 +18,7 @@
             </Columns>
         </RadzenGrid>
     </div>
-    <div class="col-md-6 m-2">
+    <div>
         <RadzenCard Style="margin-bottom:20px">
             Active User: <b>@App.UsersPage.SelectedUser?.Name</b>
         </RadzenCard>
@@ -81,11 +81,3 @@
     </div>
 </div>
 
-
-
-@code {
-    [Parameter]
-    public AdminBlazorApp App { get; set; }
-    [Parameter]
-    public EventCallback<AdminBlazorApp> AppChanged { get; set; }
-}

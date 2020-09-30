@@ -31,6 +31,7 @@
   <ItemGroup>
     <Folder Include="Components\AdminBlazorComponents\ViewModels\" />
     <Folder Include="Components\MedicalSwpBlazorComponents\ViewModels\" />
+    <Folder Include="wwwroot\css\bulma\" />
     <Folder Include="wwwroot\DownloadableFiles\" />
     <Folder Include="wwwroot\js\" />
     <Folder Include="wwwroot\Images\" />

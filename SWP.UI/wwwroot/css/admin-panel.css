@@ -1,16 +1,1 @@
-﻿body {
-    display: grid;
-    height: 100vh;
-    grid-template-rows: auto 1fr auto;
-    overflow: auto;
-}
-
-header {
-    background: lightgray;
-    padding: 2rem;
-}
-
-body {
-    font-family: system-ui, sans-serif;
-}
-
+﻿

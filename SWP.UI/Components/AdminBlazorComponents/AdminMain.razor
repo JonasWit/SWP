@@ -1,5 +1,4 @@
-﻿@implements IDisposable
-@inject AdminBlazorApp App
+﻿@inject AdminBlazorApp App
 
 <header>
     <h2>Admin Panel</h2>
@@ -9,7 +8,7 @@
 </header>
 
 
-<div class="container-fluid">
+<div>
     @switch (App.ActivePanel)
     {
         case AdminBlazorApp.Panels.Users:
@@ -25,18 +24,3 @@
             break;
     }
 </div>
-
-@code {
-    [Parameter]
-    public string ActiveUserId { get; set; }
-
-    protected override async Task OnInitializedAsync()
-    {
-        await App.Initialize(ActiveUserId);
-        App.CallStateHasChanged += new EventHandler(CallStateHasChanged);
-    }
-
-    private void CallStateHasChanged(object sender, EventArgs e) => StateHasChanged();
-
-    public void Dispose() => App.CallStateHasChanged -= new EventHandler(CallStateHasChanged);
-}

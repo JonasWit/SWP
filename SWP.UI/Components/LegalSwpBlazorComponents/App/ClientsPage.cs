@@ -75,6 +75,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
                     App.Clients[App.Clients.FindIndex(x => x.Id == result.Id)] = result;
                 }
 
+                App.RefreshClients();
                 await ClientsGrid.Reload();
                 App.ShowNotification(NotificationSeverity.Success, "Sukces!", $"Klient: {result.Name} został zmieniony.", GeneralViewModel.NotificationDuration);
             }

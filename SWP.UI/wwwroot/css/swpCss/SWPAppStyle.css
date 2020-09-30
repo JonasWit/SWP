@@ -5,6 +5,7 @@ html, body {
     color: rgb(0, 0, 0);
     font-size: 12px;
     margin: 0;
+    
 }
 
 #grid-container-2 {
@@ -60,8 +61,8 @@ ul, li {
     background-image: url(../../Images/19366.jpg);
     background-repeat: no-repeat;
     background-position: right center;
-   /* margin-bottom: 50px;*/
-    }
+    /* margin-bottom: 50px;*/
+}
 
 .nav-item {
     float: left;
@@ -82,7 +83,6 @@ ul, li {
     grid-column: 2;
     grid-row: 2 / span 8;
     align-self: start;
-    
 }
 
 /*Legal SWP Clients*/
@@ -107,15 +107,15 @@ ul, li {
     margin-top: 20px;
 }
 
-.form /*form size*/ {
+/*.form*/ /*form size*/ /*{
     height: 250px;
-    width: 850px;
-}
+    width: 650px;
+}*/
 
-.info /*Information icon*/ {
+/*.info*/ /*Information icon*/ /*{
     position: absolute;
-    top: 32px;
-    right: -10%;
+    top: 5px;
+    right: -15%;
     background: url(../../Images/icons8-info-squared-36.png) no-repeat;
     cursor: pointer;
     border: none;
@@ -152,17 +152,7 @@ ul, li {
     100% {
         transform: skewX(-45deg) translateX(100%);
     }
-}
-
-
-/*.contact-details {
-    margin-bottom: 50px;
-    height: 180px;
-}
-
-
-
-
+}*/
 
 /*.info-text {
     position: absolute;
@@ -174,9 +164,326 @@ ul, li {
     border-radius: 5px 0px 5px 0px;
     border: 2px solid #0094ff;
 }
+*/
 
 
-.info-text {
+
+/* For 1280 Resolution */
+@media only screen and (min-device-width : 768px) and (max-device-width : 1280px) {
+
+
+
+    #grid-container-3 {
+        display: grid;
+        grid-template-columns:
+        /* 1 */ auto
+        /* 2 */ auto;
+        grid-template-rows:
+        /* 4 */ auto
+        /* 5 */ auto
+        /* 6 */ auto;
+        
+        
+    }
+
+    #form-box {
+        grid-column: 1 / span 2;
+        grid-row: 1;
+        grid-gap: 25px;
+    }
+
+    #btn-add-client {
+        grid-column: 1 / span 2;
+        grid-row: 2;
+        grid-gap: 25px;
+        align-content: center;
+    }
+
+    .form /*form size*/ {
+        height: 250px;
+        width: 800px;
+        padding: 10px;
+    }
+
+    .info /*Information icon*/ {
+        position: absolute;
+        top: ;
+        right: -40%;
+        background: url(../../Images/icons8-info-squared-36.png) no-repeat;
+        cursor: pointer;
+        border: none;
+        height: 50px;
+        width: 50px;
+        outline: none !important;
+    }
+
+        .info:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 2;
+            background: white;
+            opacity: 0.3;
+            height: 35px;
+            width: 50px;
+            transform: skew(-45deg);
+            background: linear-gradient(to right, white, white 5px, transparent);
+            transform-origin: left bottom;
+            animation: shine 5s ease-in infinite;
+        }
+
+    .info-2 /*Information icon*/ {
+        position: absolute;
+        top: 310px;
+        right: -40%;
+        background: url(../../Images/icons8-info-squared-36.png) no-repeat;
+        cursor: pointer;
+        border: none;
+        height: 50px;
+        width: 50px;
+        outline: none !important;
+    }
+
+        .info-2:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 2;
+            background: white;
+            opacity: 0.3;
+            height: 35px;
+            width: 50px;
+            transform: skew(-45deg);
+            background: linear-gradient(to right, white, white 5px, transparent);
+            transform-origin: left bottom;
+            animation: shine 5s ease-in infinite;
+        }
+
+    @keyframes shine {
+        0% {
+            transform: skewX(-45deg) translateX(-100%);
+        }
+
+        10% {
+            transform: skewX(-45deg) translateX(100%);
+        }
+
+        100% {
+            transform: skewX(-45deg) translateX(100%);
+        }
+    }
+
+    .info-text {
+        position: absolute;
+        left: 120px;
+        height: 75px;
+        width: 100%;
+        padding: 5px;
+        background-color: #ffffff;
+        border-radius: 5px 0px 5px 0px;
+        border: 2px solid #0094ff;
+    }
+
+    .info-text-2 {
+        position: absolute;
+        top: 310px;
+        left: 120px;
+        height: 75px;
+        width: 100%;
+        padding: 5px;
+        background-color: #ffffff;
+        border-radius: 5px 0px 5px 0px;
+        border: 2px solid #0094ff;
+    }
+
+    #list {
+        grid-column: 1 / span 2;
+        grid-row: 3;
+        padding: 25px 5px 5px 5px;
+    }
+
+    .client-list {
+        width: 100%;
+    }
+
+    .contact-details {
+        width: 100%;
+    }
+}
+
+/* For 1366 Resolution */
+@media only screen and (min-width: 1030px) and (max-width: 1366px) {
+    #grid-container-3 {
+        display: grid;
+        grid-template-columns:
+        /* 1 */ auto
+        /* 2 */ auto;
+        grid-template-rows:
+        /* 4 */ auto
+        /* 5 */ auto
+        /* 6 */ auto;
+    }
+
+    #form-box {
+        grid-column: 1 / span 2;
+        grid-row: 1;
+        grid-gap: 25px;
+    }
+
+    #btn-add-client {
+        grid-column: 1 / span 2;
+        grid-row: 2;
+        grid-gap: 25px;
+        align-content: center;
+    }
+
+    .form /*form size*/ {
+        height: 250px;
+        width: 800px;
+        padding: 10px;
+    }
+
+    .info /*Information icon*/ {
+        position: absolute;
+        top:;
+        right: -40%;
+        background: url(../../Images/icons8-info-squared-36.png) no-repeat;
+        cursor: pointer;
+        border: none;
+        height: 50px;
+        width: 50px;
+        outline: none !important;
+    }
+
+        .info:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 2;
+            background: white;
+            opacity: 0.3;
+            height: 35px;
+            width: 50px;
+            transform: skew(-45deg);
+            background: linear-gradient(to right, white, white 5px, transparent);
+            transform-origin: left bottom;
+            animation: shine 5s ease-in infinite;
+        }
+
+    .info-2 /*Information icon*/ {
+        position: absolute;
+        top: 310px;
+        right: -40%;
+        background: url(../../Images/icons8-info-squared-36.png) no-repeat;
+        cursor: pointer;
+        border: none;
+        height: 50px;
+        width: 50px;
+        outline: none !important;
+    }
+
+        .info-2:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 2;
+            background: white;
+            opacity: 0.3;
+            height: 35px;
+            width: 50px;
+            transform: skew(-45deg);
+            background: linear-gradient(to right, white, white 5px, transparent);
+            transform-origin: left bottom;
+            animation: shine 5s ease-in infinite;
+        }
+
+    @keyframes shine {
+        0% {
+            transform: skewX(-45deg) translateX(-100%);
+        }
+
+        10% {
+            transform: skewX(-45deg) translateX(100%);
+        }
+
+        100% {
+            transform: skewX(-45deg) translateX(100%);
+        }
+    }
+
+    .info-text {
+        position: absolute;
+        left: 120px;
+        height: 75px;
+        width: 100%;
+        padding: 5px;
+        background-color: #ffffff;
+        border-radius: 5px 0px 5px 0px;
+        border: 2px solid #0094ff;
+    }
+
+    .info-text-2 {
+        position: absolute;
+        top: 310px;
+        left: 120px;
+        height: 75px;
+        width: 100%;
+        padding: 5px;
+        background-color: #ffffff;
+        border-radius: 5px 0px 5px 0px;
+        border: 2px solid #0094ff;
+    }
+
+    #list {
+        grid-column: 1 / span 2;
+        grid-row: 3;
+        padding: 25px 5px 5px 5px;
+    }
+
+    .client-list {
+        width: 100%;
+    }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*.contact-details {
+    margin-bottom: 50px;
+    height: 180px;
+}*/
+/*/*.info-text {
     animation: moveLeft ease 1s;
     animation-timing-function: ease;
 }
@@ -211,8 +518,6 @@ ul, li {
     }
 }
 */
-
-
 #footer {
     grid-column: 2/ span 3;
     grid-row: 10;
@@ -220,11 +525,3 @@ ul, li {
     background-repeat: no-repeat;
     background-position: right center;*/
 }
-
-
-
-
-
-
-
-

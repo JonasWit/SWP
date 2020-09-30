@@ -3,20 +3,22 @@
 
 <div>
     <div class="section">
-        <RadzenGrid AllowFiltering="true"
-                    AllowPaging="true"
-                    PageSize="5"
-                    AllowSorting="true"
-                    Data="@App.UsersPage.Users"
-                    TItem="App.UsersPage.UserModel"
-                    Value="@App.UsersPage.SelectedUser"
-                    RowSelect="@(args => App.UsersPage.RowSelected(args))">
-            <Columns>
-                <RadzenGridColumn TItem="App.UsersPage.UserModel" Property="Name" Title="User Name" />
-                <RadzenGridColumn TItem="App.UsersPage.UserModel" Property="Email" Title="Email" />
-                <RadzenGridColumn TItem="App.UsersPage.UserModel" Property="UserRole" Title="Role" />
-            </Columns>
-        </RadzenGrid>
+        <RadzenCard Style="margin-bottom:20px">
+            <RadzenGrid AllowFiltering="true"
+                        AllowPaging="true"
+                        PageSize="5"
+                        AllowSorting="true"
+                        Data="@App.UsersPage.Users"
+                        TItem="App.UsersPage.UserModel"
+                        Value="@App.UsersPage.SelectedUser"
+                        RowSelect="@(args => App.UsersPage.RowSelected(args))">
+                <Columns>
+                    <RadzenGridColumn TItem="App.UsersPage.UserModel" Property="Name" Title="User Name" />
+                    <RadzenGridColumn TItem="App.UsersPage.UserModel" Property="Email" Title="Email" />
+                    <RadzenGridColumn TItem="App.UsersPage.UserModel" Property="UserRole" Title="Role" />
+                </Columns>
+            </RadzenGrid>
+        </RadzenCard>
     </div>
 
     @if (App.UsersPage.SelectedUser != null)
@@ -35,8 +37,9 @@
                         <RadzenRadioButtonListItem Text="Users" Value="1" />
                     </Items>
                 </RadzenRadioButtonList>
-                <h2>Current Claims</h2>
 
+
+                <h2>Current Claims</h2>
                 <div class="columns">
                     <div class="column is-full">
                         <RadzenGrid @ref="App.UsersPage.ClaimsGrid"
@@ -69,13 +72,13 @@
                 </div>
 
 
-                <div class="columns is-vcentered">
+                <div class="columns is-vcentered is-centered">
                     <div class="column is-one-third">
                         <h3>Application Claims</h3>
                         <RadzenDropDown AllowClear="true" TValue="string"
                                         FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" FilterOperator="StringFilterOperator.StartsWith" AllowFiltering="true"
                                         Data="@App.UsersPage.Claims" @bind-Value="App.UsersPage.SelectedApplicationClaim" Style="width: 250px;" />
-                        <RadzenButton Click="@(async () => await App.UsersPage.AddApplicationClaim())" Text="Add Application Claim" Style="width: 250px;"  />
+                        <RadzenButton Click="@(async () => await App.UsersPage.AddApplicationClaim())" Text="Add Application Claim" Style="width: 250px;" />
                     </div>
                     <div class="column is-one-third">
                         <h3>User Status Claims</h3>
@@ -92,53 +95,21 @@
                 </div>
             </RadzenCard>
         </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     }
 
 
     <div>
 
-        <RadzenTabs>
-            <Tabs>
-                <RadzenTabsItem Text="Roles">
+        @*<RadzenTabs>
+                <Tabs>
+                    <RadzenTabsItem Text="Roles">
 
-                </RadzenTabsItem>
-                <RadzenTabsItem Text="Claims">
+                    </RadzenTabsItem>
+                    <RadzenTabsItem Text="Claims">
 
-
-
-                    <h3>Application Claims</h3>
-                    <RadzenDropDown AllowClear="true" TValue="string"
-                                    FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" FilterOperator="StringFilterOperator.StartsWith" AllowFiltering="true"
-                                    Data="@App.UsersPage.Claims" @bind-Value="App.UsersPage.SelectedApplicationClaim" Style="margin-bottom: 20px" />
-                    <RadzenButton Click="@(async () => await App.UsersPage.AddApplicationClaim())" Text="Add Application Claim" Style="margin-bottom: 20px; width: 150px" />
-
-                    <h3>User Status Claims</h3>
-                    <RadzenDropDown AllowClear="true" TValue="string"
-                                    FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" FilterOperator="StringFilterOperator.StartsWith" AllowFiltering="true"
-                                    Data="@App.UsersPage.StatusClaims" @bind-Value="App.UsersPage.SelectedStatusClaim" Style="margin-bottom: 20px" />
-                    <RadzenButton Click="@(async () => await App.UsersPage.AddStatusClaim())" Text="Add Status Claim" Style="margin-bottom: 20px; width: 150px" />
-
-                    <h3>Profile Claim Name</h3>
-                    <RadzenTextBox @bind-Value="@App.UsersPage.ProfileClaimName" MaxLength="50" Style="margin-bottom: 20px" />
-                    <RadzenButton Click="@(async () => await App.UsersPage.AddProfileClaim())" Text="Add Profile Claim" Style="margin-bottom: 20px; width: 150px" />
-
-                </RadzenTabsItem>
-            </Tabs>
-        </RadzenTabs>
+                    </RadzenTabsItem>
+                </Tabs>
+            </RadzenTabs>*@
     </div>
 </div>
 

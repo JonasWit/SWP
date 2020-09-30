@@ -14,7 +14,13 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
         [Parameter]
         public EventCallback<LegalBlazorApp> AppChanged { get; set; }
 
-        public bool formVisible = false;
-        public void ShowHideForm() => formVisible = !formVisible;
+        public bool addClientformVisible = false;
+        public void ShowHideClientFormI() => addClientformVisible = !addClientformVisible;
+
+        public bool clientListInfoVisible = false;
+        public void ShowHideClientI() => clientListInfoVisible = !clientListInfoVisible;
+
+
+
     }
 }

@@ -35,18 +35,16 @@
                     <EditTemplate Context="c">
                         <RadzenButton Icon="save" Size="ButtonSize.Medium" Click="@((args) => App.FinancePage.SaveCashMovementRow(c))">
                         </RadzenButton>
-                        <RadzenButton Icon="cancel" Size="ButtonSize.Medium" ButtonStyle="ButtonStyle.Secondary" Click="@((args) => App.FinancePage.CancelCashMovementEdit(c))">
+                        <RadzenButton Icon="cancel" Size="ButtonSize.Medium" ButtonStyle="ButtonStyle.Success" Click="@((args) => App.FinancePage.CancelCashMovementEdit(c))">
                         </RadzenButton>
                     </EditTemplate>
                 </RadzenGridColumn>
-                <RadzenGridColumn TItem="CashMovementViewModel" Context="order" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="70px">
+                <RadzenGridColumn TItem="CashMovementViewModel" Context="order" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="50px">
                     <Template Context="c">
                         <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Medium" Click="@(async (args) => await App.FinancePage.DeleteCashMovementRow(c))">
                         </RadzenButton>
                     </Template>
                     <EditTemplate Context="c">
-                        <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Medium" Click="@(async (args) => await App.FinancePage.DeleteCashMovementRow(c))">
-                        </RadzenButton>
                     </EditTemplate>
                 </RadzenGridColumn>
             </Columns>

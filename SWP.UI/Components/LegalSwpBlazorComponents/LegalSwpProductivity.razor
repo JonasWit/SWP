@@ -51,18 +51,16 @@
                     <EditTemplate Context="r">
                         <RadzenButton Icon="save" Size="ButtonSize.Medium" Click="@((args) => App.ProductivityPage.SaveTimeRecordRow(r))">
                         </RadzenButton>
-                        <RadzenButton Icon="cancel" Size="ButtonSize.Medium" ButtonStyle="ButtonStyle.Secondary" Click="@((args) => App.ProductivityPage.CancelTimeRecordEdit(r))">
+                        <RadzenButton Icon="cancel" Size="ButtonSize.Medium" ButtonStyle="ButtonStyle.Success" Click="@((args) => App.ProductivityPage.CancelTimeRecordEdit(r))">
                         </RadzenButton>
                     </EditTemplate>
                 </RadzenGridColumn>
-                <RadzenGridColumn TItem="TimeRecordViewModel" Context="order" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="70px">
+                <RadzenGridColumn TItem="TimeRecordViewModel" Context="order" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="50px">
                     <Template Context="r">
                         <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Medium" Click="@(async (args) => await App.ProductivityPage.DeleteTimeRecordRow(r))">
                         </RadzenButton>
                     </Template>
                     <EditTemplate Context="r">
-                        <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Medium" Click="@(async (args) => await App.ProductivityPage.DeleteTimeRecordRow(r))">
-                        </RadzenButton>
                     </EditTemplate>
                 </RadzenGridColumn>
             </Columns>

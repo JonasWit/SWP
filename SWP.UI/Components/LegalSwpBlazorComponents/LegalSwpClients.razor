@@ -67,7 +67,6 @@
 
     <div id="list">
         <div class="client-list">
-
             <RadzenGrid @ref="App.ClientsPage.ClientsGrid" AllowFiltering="true" AllowPaging="true" PageSize="10" AllowSorting="true"
                         Data="@App.Clients" TItem="ClientViewModel" RowUpdate="@App.ClientsPage.OnUpdateClientRow" RowSelect="@(args => App.ClientsPage.ClientSelected(args))">
 
@@ -112,7 +111,7 @@
                         </EditTemplate>
                     </RadzenGridColumn>
 
-                    <RadzenGridColumn TItem="ClientViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" >
+                    <RadzenGridColumn TItem="ClientViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="100px">
                         <Template Context="client">
                             <RadzenButton Icon="edit" Size="ButtonSize.Medium" Click="@(args => App.ClientsPage.EditClientRow(client))">
                             </RadzenButton>
@@ -120,28 +119,24 @@
                         <EditTemplate Context="client">
                             <RadzenButton Icon="save" Size="ButtonSize.Medium" Click="@((args) => App.ClientsPage.SaveClientRow(client))">
                             </RadzenButton>
-                            <RadzenButton Icon="cancel" Size="ButtonSize.Medium" ButtonStyle="ButtonStyle.Secondary" Click="@((args) => App.ClientsPage.CancelClientEdit(client))">
+                            <RadzenButton Icon="cancel" Size="ButtonSize.Medium" ButtonStyle="ButtonStyle.Success" Click="@((args) => App.ClientsPage.CancelClientEdit(client))">
                             </RadzenButton>
                         </EditTemplate>
                     </RadzenGridColumn>
-                    <RadzenGridColumn TItem="ClientViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" >
+                    <RadzenGridColumn TItem="ClientViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="50px" >
                         <Template Context="client">
                             <RadzenButton ButtonStyle="ButtonStyle.Warning" Icon="archive" Size="ButtonSize.Medium" Click="@(async (args) => await App.ClientsPage.ArchivizeClient(client))">
                             </RadzenButton>
                         </Template>
                         <EditTemplate Context="client">
-                            <RadzenButton ButtonStyle="ButtonStyle.Warning" Icon="archive" Size="ButtonSize.Medium" Click="@(async (args) => await App.ClientsPage.ArchivizeClient(client))">
-                            </RadzenButton>
                         </EditTemplate>
                     </RadzenGridColumn>
-                    <RadzenGridColumn TItem="ClientViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" >
+                    <RadzenGridColumn TItem="ClientViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="50px">
                         <Template Context="client">
                             <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Medium" Click="@(async (args) => await App.ClientsPage.DeleteClientRow(client))">
                             </RadzenButton>
                         </Template>
                         <EditTemplate Context="client">
-                            <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Medium" Click="@(async (args) => await App.ClientsPage.DeleteClientRow(client))">
-                            </RadzenButton>
                         </EditTemplate>
                     </RadzenGridColumn>
                 </Columns>

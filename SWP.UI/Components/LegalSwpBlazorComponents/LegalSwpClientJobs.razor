@@ -87,7 +87,7 @@ else
                     </Template>
                 </RadzenGridColumn>
 
-                <RadzenGridColumn TItem="ClientJobViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="100px" Title="Edytuj">
+                <RadzenGridColumn TItem="ClientJobViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="100px">
                     <Template Context="job">
                         <RadzenButton Icon="edit" Size="ButtonSize.Medium" Click="@(args => App.ClientJobsPage.EditClientJobRow(job))">
                         </RadzenButton>
@@ -95,28 +95,24 @@ else
                     <EditTemplate Context="job">
                         <RadzenButton Icon="save" Size="ButtonSize.Medium" Click="@((args) => App.ClientJobsPage.SaveClientJobRow(job))">
                         </RadzenButton>
-                        <RadzenButton Icon="cancel" Size="ButtonSize.Medium" ButtonStyle="ButtonStyle.Secondary" Click="@((args) => App.ClientJobsPage.CancelClientJobEdit(job))">
+                        <RadzenButton Icon="cancel" Size="ButtonSize.Medium" ButtonStyle="ButtonStyle.Success" Click="@((args) => App.ClientJobsPage.CancelClientJobEdit(job))">
                         </RadzenButton>
                     </EditTemplate>
                 </RadzenGridColumn>
-                <RadzenGridColumn TItem="ClientJobViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="70px" Title="Archiwizuj">
+                <RadzenGridColumn TItem="ClientJobViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="50px">
                     <Template Context="job">
-                        <RadzenButton ButtonStyle="ButtonStyle.Warning" Icon="close" Size="ButtonSize.Medium" Click="@(async (args) => await App.ClientJobsPage.ArchivizeClientJob(job))">
+                        <RadzenButton ButtonStyle="ButtonStyle.Warning" Icon="archive" Size="ButtonSize.Medium" Click="@(async (args) => await App.ClientJobsPage.ArchivizeClientJob(job))">
                         </RadzenButton>
                     </Template>
                     <EditTemplate Context="job">
-                        <RadzenButton ButtonStyle="ButtonStyle.Warning" Icon="close" Size="ButtonSize.Medium" Click="@(async (args) => await App.ClientJobsPage.ArchivizeClientJob(job))">
-                        </RadzenButton>
                     </EditTemplate>
                 </RadzenGridColumn>
-                <RadzenGridColumn TItem="ClientJobViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="70px" Title="Usuń">
+                <RadzenGridColumn TItem="ClientJobViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="50px">
                     <Template Context="job">
                         <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Medium" Click="@(async (args) => await App.ClientJobsPage.DeleteClientJobRow(job))">
                         </RadzenButton>
                     </Template>
                     <EditTemplate Context="job">
-                        <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Medium" Click="@(async (args) => await App.ClientJobsPage.DeleteClientJobRow(job))">
-                        </RadzenButton>
                     </EditTemplate>
                 </RadzenGridColumn>
             </Columns>

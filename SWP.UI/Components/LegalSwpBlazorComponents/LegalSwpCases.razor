@@ -48,7 +48,7 @@ else
                 </Template>
             </RadzenGridColumn>
 
-            <RadzenGridColumn TItem="CaseViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="100px" Title="Edytuj">
+            <RadzenGridColumn TItem="CaseViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="100px">
                 <Template Context="cs">
                     <RadzenButton Icon="edit" Size="ButtonSize.Medium" Click="@((args) => App.CasesPage.EditCaseRow(cs))">
                     </RadzenButton>
@@ -56,18 +56,16 @@ else
                 <EditTemplate Context="cs">
                     <RadzenButton Icon="save" Size="ButtonSize.Medium" Click="@((args) => App.CasesPage.SaveCaseRow(cs))">
                     </RadzenButton>
-                    <RadzenButton Icon="cancel" Size="ButtonSize.Medium" ButtonStyle="ButtonStyle.Secondary" Click="@((args) => App.CasesPage.CancelEditCaseRow(cs))">
+                    <RadzenButton Icon="cancel" Size="ButtonSize.Medium" ButtonStyle="ButtonStyle.Success" Click="@((args) => App.CasesPage.CancelEditCaseRow(cs))">
                     </RadzenButton>
                 </EditTemplate>
             </RadzenGridColumn>
-            <RadzenGridColumn TItem="CaseViewModel" Context="order" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="70px" Title="Usuń">
+            <RadzenGridColumn TItem="CaseViewModel" Context="order" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="50px">
                 <Template Context="cs">
                     <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Medium" Click="@(async (args) => await App.CasesPage.DeleteCaseRow(cs))">
                     </RadzenButton>
                 </Template>
                 <EditTemplate Context="cs">
-                    <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Medium" Click="@(async (args) => await App.CasesPage.DeleteCaseRow(cs))">
-                    </RadzenButton>
                 </EditTemplate>
             </RadzenGridColumn>
 
@@ -222,7 +220,7 @@ else
                                         </Template>
                                     </RadzenGridColumn>
 
-                                    <RadzenGridColumn TItem="NoteViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="100px" Title="Edytuj">
+                                    <RadzenGridColumn TItem="NoteViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="100px">
                                         <Template Context="note">
                                             <RadzenButton Icon="edit" Size="ButtonSize.Medium" Click="@((args) => App.CasesPage.EditNoteRow(note))">
                                             </RadzenButton>
@@ -230,18 +228,16 @@ else
                                         <EditTemplate Context="note">
                                             <RadzenButton Icon="save" Size="ButtonSize.Medium" Click="@((args) => App.CasesPage.SaveNoteRow(note))">
                                             </RadzenButton>
-                                            <RadzenButton Icon="cancel" Size="ButtonSize.Medium" ButtonStyle="ButtonStyle.Secondary" Click="@((args) => App.CasesPage.CancelEditNoteRow(note))">
+                                            <RadzenButton Icon="cancel" Size="ButtonSize.Medium" ButtonStyle="ButtonStyle.Success" Click="@((args) => App.CasesPage.CancelEditNoteRow(note))">
                                             </RadzenButton>
                                         </EditTemplate>
                                     </RadzenGridColumn>
-                                    <RadzenGridColumn TItem="NoteViewModel" Context="order" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="70px" Title="Usuń">
+                                    <RadzenGridColumn TItem="NoteViewModel" Context="order" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="50px">
                                         <Template Context="note">
                                             <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Medium" Click="@(async (args) => await App.CasesPage.DeleteNoteRow (note))">
                                             </RadzenButton>
                                         </Template>
                                         <EditTemplate Context="note">
-                                            <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Medium" Click="@(async (args) => await App.CasesPage.DeleteNoteRow(note))">
-                                            </RadzenButton>
                                         </EditTemplate>
                                     </RadzenGridColumn>
                                 </Columns>

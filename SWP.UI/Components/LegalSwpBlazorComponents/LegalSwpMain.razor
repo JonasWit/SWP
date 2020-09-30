@@ -13,7 +13,7 @@
                 </div>
                 <p class="explain px-3">Wybierz Klienta by zobaczyc jego sprawy</p>
                 <div class="input-group">
-                    <Radzen.Blazor.RadzenDropDown AllowClear="true" TValue="string" AllowFiltering="true" Data="@App.Clients" TextProperty="Name" ValueProperty="IdStr" Style="margin-bottom: 20px; width: 190px;" Change="@(args => App.ActiveClientChange(args))" />
+                    <Radzen.Blazor.RadzenDropDown AllowClear="true" TValue="string" AllowFiltering="true" Data="@App.Clients" TextProperty="Name" ValueProperty="IdString" Style="margin-bottom: 20px; width: 190px;" Change="@(args => App.ActiveClientChange(args))" />
                 </div>
                 <div>
                     <ul class="nav flex-column">

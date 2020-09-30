@@ -14,8 +14,7 @@ namespace SWP.Application.LegalSwp.Clients
 
         public int CountAllArchivedClients() => legalSwpManager.CountArchivedClients();
 
-        public Task<int> ArchivizeClient(int clientId) => legalSwpManager.ArchivizeClient(clientId);
-  
-
+        public Task<int> ArchivizeClient(int clientId, string user) => legalSwpManager.ArchivizeClient(clientId, user);
+        public Task<int> RecoverClient(int clientId, string user) => legalSwpManager.RecoverClient(clientId, user);
     }
 }

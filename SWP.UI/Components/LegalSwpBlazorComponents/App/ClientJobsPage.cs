@@ -21,8 +21,10 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         private CreateClientJob CreateClientJob => serviceProvider.GetService<CreateClientJob>();
         private DeleteClientJob DeleteClientJob => serviceProvider.GetService<DeleteClientJob>();
         private UpdateClientJob UpdateClientJob => serviceProvider.GetService<UpdateClientJob>();
+        private ArchiveJob ArchiveJob => serviceProvider.GetService<ArchiveJob>();
         public CreateClientJob.Request NewClientJob { get; set; } = new CreateClientJob.Request();
         public RadzenGrid<ClientJobViewModel> ClientsJobsGrid { get; set; }
+        public ClientJobViewModel SelectedArchivizedClientJob { get; set; }
 
         public ClientJobsPage(IServiceProvider serviceProvider)
         {
@@ -126,5 +128,25 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
                 App.ActiveClientWithData.SelectedJob = null;
             }
         }
+
+        public async Task ArchivizeClientJob(ClientJobViewModel clientJob)
+        {
+            try
+            {
+                var result = await ArchiveJob.ArchivizeClientJob(clientJob.Id, App.User.UserName);
+
+                App.ActiveClientWithData.Jobs.RemoveAll(x => x.Id == clientJob.Id);
+                App.ActiveClientWithData.ArchivedJobs.Add(result);
+
+                await ClientsJobsGrid.Reload();
+                App.ShowNotification(NotificationSeverity.Success, "Sukces!", $"Zadanie: {clientJob.Name} zostało zarchwizowane.", GeneralViewModel.NotificationDuration);
+            }
+            catch (Exception ex)
+            {
+                App.ErrorPage.DisplayMessage(ex);
+            }
+        }
+
+        public void SelectedArchivizedClientJobChange(object job) => SelectedArchivizedClientJob = App.ActiveClientWithData.ArchivedJobs.FirstOrDefault(x => x.Id == int.Parse(job.ToString()));
     }
 }

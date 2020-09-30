@@ -14,7 +14,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
         [Parameter]
         public EventCallback<LegalBlazorApp> AppChanged { get; set; }
 
-        public string ArchvizedClientsFilterValue = "";
+        public string ArchvizedClientsFilterValue;
 
         protected override async Task OnInitializedAsync()
         {

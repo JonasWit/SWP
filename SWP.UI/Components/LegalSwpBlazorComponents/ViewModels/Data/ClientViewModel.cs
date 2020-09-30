@@ -5,11 +5,8 @@ using System.Linq;
 
 namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data
 {
-    public class ClientViewModel
+    public class ClientViewModel : ViewModelBase
     {
-        public int Id { get; set; }
-        public string IdString => Id.ToString();
-        public string IdStr => Id.ToString();
         public string Name { get; set; }
         public bool Active { get; set; }
         public string ProfileClaim { get; set; }
@@ -26,6 +23,8 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data
         public List<CaseViewModel> ArchivedCases { get; set; }
 
         public List<ClientJobViewModel> Jobs { get; set; }
+        public List<ClientJobViewModel> ArchivedJobs { get; set; }
+
         public List<TimeRecordViewModel> TimeRecords { get; set; }
         public List<CashMovementViewModel> CashMovements { get; set; }
 
@@ -46,7 +45,8 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data
                 PhoneNumber = input.PhoneNumber,
                 Cases = input.Cases == null ? new List<CaseViewModel>() : input.Cases.Where(x => x.Active).Select(x => (CaseViewModel)x).ToList(),
                 ArchivedCases = input.Cases == null ? new List<CaseViewModel>() : input.Cases.Where(x => !x.Active).Select(x => (CaseViewModel)x).ToList(),
-                Jobs = input.Jobs == null ? new List<ClientJobViewModel>() : input.Jobs.Select(x => (ClientJobViewModel)x).ToList(),
+                Jobs = input.Jobs == null ? new List<ClientJobViewModel>() : input.Jobs.Where(x => x.Active).Select(x => (ClientJobViewModel)x).ToList(),
+                ArchivedJobs = input.Jobs == null ? new List<ClientJobViewModel>() : input.Jobs.Where(x => !x.Active).Select(x => (ClientJobViewModel)x).ToList(),
                 TimeRecords = input.TimeRecords == null ? new List<TimeRecordViewModel>() : input.TimeRecords.Select(x => (TimeRecordViewModel)x).ToList(),
                 CashMovements = input.CashMovements == null ? new List<CashMovementViewModel>() : input.CashMovements.Select(x => (CashMovementViewModel)x).ToList(),
                 Created = input.Created,

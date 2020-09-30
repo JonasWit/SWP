@@ -3,9 +3,8 @@ using System;
 
 namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data
 {
-    public class ClientJobViewModel
+    public class ClientJobViewModel : ViewModelBase
     {
-        public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public bool Active { get; set; }

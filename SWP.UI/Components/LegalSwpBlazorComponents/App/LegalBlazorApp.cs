@@ -132,7 +132,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             Archive = 8,
         }
 
-        public ClientViewModel ActiveClientWithData { get; set; }
+        public ClientViewModel ActiveClientWithData { get; private set; }
         public Panels ActivePanel { get; private set; } = Panels.MyApp;
         public List<ClientViewModel> Clients { get; set; } = new List<ClientViewModel>();
 
@@ -186,29 +186,32 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         {
             try
             {
-                Clients = GetClients.GetClientsWithoutData(User.Profile).Select(x => (ClientViewModel)x).ToList();
+                Clients = GetClients.GetClientsWithoutData(User.Profile, true).Select(x => (ClientViewModel)x).ToList();
 
-                if (Clients.ToList().Count == 1)
-                {
-                    ActiveClient = Clients.FirstOrDefault();
-                }
+                ActiveClient = null;
+                ActiveClientWithData = null;
 
-                if (ActiveClient == null || !Clients.Any(x => x.Id == ActiveClient.Id))
-                {
-                    if (Clients.Count() == 0)
-                    {
-                        ActiveClient = null;
-                        ActiveClientWithData = null;
-                    }
-                    else
-                    {
-                        ActiveClient = Clients.FirstOrDefault();
-                    }
-                }
-                else
-                {
-                    ActiveClient = Clients.FirstOrDefault(x => x.Id == ActiveClient.Id);
-                }
+                //if (Clients.ToList().Count == 1)
+                //{
+                //    ActiveClient = Clients.FirstOrDefault();
+                //}
+
+                //if (ActiveClient == null || !Clients.Any(x => x.Id == ActiveClient.Id))
+                //{
+                //    if (Clients.Count() == 0)
+                //    {
+                //        ActiveClient = null;
+                //        ActiveClientWithData = null;
+                //    }
+                //    else
+                //    {
+                //        ActiveClient = Clients.FirstOrDefault();
+                //    }
+                //}
+                //else
+                //{
+                //    ActiveClient = Clients.FirstOrDefault(x => x.Id == ActiveClient.Id);
+                //}
             }
             catch (Exception ex)
             {
@@ -216,7 +219,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             }
             finally
             {
-                OnCallStateHasChanged(null);
+                ForceRefresh();
             }
         }
 

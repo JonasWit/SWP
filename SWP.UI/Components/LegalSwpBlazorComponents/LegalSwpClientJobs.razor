@@ -99,7 +99,17 @@ else
                         </RadzenButton>
                     </EditTemplate>
                 </RadzenGridColumn>
-                <RadzenGridColumn TItem="ClientJobViewModel" Context="order" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="70px" Title="Usuń">
+                <RadzenGridColumn TItem="ClientJobViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="70px" Title="Archiwizuj">
+                    <Template Context="job">
+                        <RadzenButton ButtonStyle="ButtonStyle.Warning" Icon="close" Size="ButtonSize.Medium" Click="@(async (args) => await App.ClientJobsPage.ArchivizeClientJob(job))">
+                        </RadzenButton>
+                    </Template>
+                    <EditTemplate Context="job">
+                        <RadzenButton ButtonStyle="ButtonStyle.Warning" Icon="close" Size="ButtonSize.Medium" Click="@(async (args) => await App.ClientJobsPage.ArchivizeClientJob(job))">
+                        </RadzenButton>
+                    </EditTemplate>
+                </RadzenGridColumn>
+                <RadzenGridColumn TItem="ClientJobViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="70px" Title="Usuń">
                     <Template Context="job">
                         <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Medium" Click="@(async (args) => await App.ClientJobsPage.DeleteClientJobRow(job))">
                         </RadzenButton>
@@ -112,6 +122,23 @@ else
             </Columns>
         </RadzenGrid>
     </div>
+
+    <RadzenListBox AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" @bind-Value="ArchvizedJobsFilterValue" Data="@App.ActiveClientWithData.ArchivedJobs" TextProperty="Name" ValueProperty="IdString" Change="@(args => App.ClientJobsPage.SelectedArchivizedClientJobChange(args))"
+                   Style="margin-bottom: 20px; height:200px;" />
+
+    @if (App.ClientJobsPage.SelectedArchivizedClientJob != null)
+    {
+        <RadzenCard Style="width:600px; margin-bottom: 20px; height:500px;">
+            <div class="row">
+                <div class="col-md-6">
+                    <div>Wybrane Zadanie:</div>
+                    <b>@App.ClientJobsPage.SelectedArchivizedClientJob.Name</b>
+                    <RadzenButton>Odzyskaj Klienta</RadzenButton>
+
+                </div>
+            </div>
+        </RadzenCard>
+    }
 
     @if (App.ActiveClientWithData.SelectedJob == null)
     {

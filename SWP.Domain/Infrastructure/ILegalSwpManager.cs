@@ -11,6 +11,7 @@ namespace SWP.Domain.Infrastructure
         #region Clients
 
         Client GetClient(int clientId);
+        TResult GetClientWithSpecificData<TResult>(int clientId, Func<Client, TResult> selector);
         Client GetClientWithoutCases(int clientId);
         List<Client> GetClientsWithoutCases(string profile, bool active = true);
 
@@ -113,15 +114,15 @@ namespace SWP.Domain.Infrastructure
         int CountArchivedCases();
         int CountArchivedClients();
 
-        Task<int> ArchivizeClient(int clientId);
-        Task<int> ArchivizeCase(int caseId);
-        Task<int> ArchiveClientJob(int jobId);
-        Task<int> ArchiveNote(int noteId);
+        Task<int> ArchivizeClient(int clientId, string user);
+        Task<int> ArchivizeCase(int caseId, string user);
+        Task<ClientJob> ArchivizeClientJob(int jobId, string user);
+        Task<int> ArchivizeNote(int noteId, string user);
 
-        Client RecoverClient(int clientId);
-        Case RecoverCase(int caseId);
-        ClientJob RecoverClientJob(int jobId);
-        Note RecoverNote(int noteId);
+        Task<int> RecoverClient(int clientId, string user);
+        Case RecoverCase(int caseId, string user);
+        ClientJob RecoverClientJob(int jobId, string user);
+        Note RecoverNote(int noteId, string user);
 
         #endregion
 

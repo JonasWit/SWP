@@ -13,7 +13,7 @@
             <div class="col-md-6">
                 <div>Wybrany Klient:</div>
                 <b>@App.ArchivePage.SelectedArchivizedClient.Name</b>
-                <RadzenButton>Odzyskaj Klienta</RadzenButton>
+                <RadzenButton Click="(async () => await App.ArchivePage.RecoverSelectedClient())">Odzyskaj Klienta</RadzenButton>
                 <RadzenButton Click="(async () => await App.ArchivePage.DeleteSelectedClient())">Usuń</RadzenButton>
             </div>
         </div>

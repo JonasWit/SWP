@@ -29,6 +29,19 @@ namespace SWP.DataBase.Managers
                 .Where(x => x.Id == clientId)
                 .FirstOrDefault();
 
+        public TResult GetClientWithSpecificData<TResult>(int clientId, Func<Client, TResult> selector) =>
+            context.Clients
+                .Include(x => x.Cases)
+                    .ThenInclude(y => y.Reminders)
+                .Include(x => x.Cases)
+                    .ThenInclude(y => y.Notes)
+                .Include(x => x.Jobs)
+                .Include(x => x.CashMovements)
+                .Include(x => x.TimeRecords)
+                .Where(x => x.Id == clientId)
+                .Select(selector)
+                .FirstOrDefault();
+
         public Client GetClientWithoutCases(int clientId) =>
             context.Clients
                 .Include(x => x.Jobs)
@@ -390,7 +403,7 @@ namespace SWP.DataBase.Managers
 
         public int CountArchivedClients() => context.Clients.Count(x => !x.Active);
 
-        public Task<int> ArchivizeClient(int clientId)
+        public Task<int> ArchivizeClient(int clientId, string user)
         {
             var client = context.Clients
                 .Include(x => x.Cases)
@@ -404,45 +417,60 @@ namespace SWP.DataBase.Managers
             foreach (var c in client.Cases)
             {
                 c.Active = false;
+                c.UpdatedBy = user;
+                c.Updated = DateTime.Now;
+
                 foreach (var n in c.Notes)
                 {
                     n.Active = false;
+                    n.UpdatedBy = user;
+                    n.Updated = DateTime.Now;
                 }
             }
 
             foreach (var j in client.Jobs)
             {
                 j.Active = false;
+                j.UpdatedBy = user;
+                j.Updated = DateTime.Now;
             }
 
             context.Clients.Update(client);
             return context.SaveChangesAsync();
         }
 
-        public Task<int> ArchivizeCase(int caseId)
+        public Task<int> ArchivizeCase(int caseId, string user)
         {
             var c = context.Cases.FirstOrDefault(x => x.Id == caseId);
             c.Active = false;
+            c.UpdatedBy = user;
+            c.Updated = DateTime.Now;
 
             foreach (var n in c.Notes)
             {
                 n.Active = false;
+                n.UpdatedBy = user;
+                n.Updated = DateTime.Now;
             }
 
             context.Cases.Update(c);
             return context.SaveChangesAsync();
         }
 
-        public Task<int> ArchiveClientJob(int jobId)
+        public async Task<ClientJob> ArchivizeClientJob(int jobId, string user)
         {
             var job = context.ClientJobs.FirstOrDefault(x => x.Id == jobId);
+
             job.Active = false;
+            job.UpdatedBy = user;
+            job.Updated = DateTime.Now;
 
             context.ClientJobs.Update(job);
-            return context.SaveChangesAsync();
+            await context.SaveChangesAsync();
+            return job;
         }
 
-        public Task<int> ArchiveNote(int noteId)
+        public Task<int> ArchivizeNote(int noteId, string user)
         {
             var note = context.Notes.FirstOrDefault(x => x.Id == noteId);
             note.Active = false;
@@ -453,22 +481,53 @@ namespace SWP.DataBase.Managers
 
         public List<Case> GetArchivedCases() => context.Cases.Where(x => !x.Active).ToList();
 
-        public Client RecoverClient(int clientId)
+        public Task<int> RecoverClient(int clientId, string user)
+        {
+            var client = context.Clients
+                .Include(x => x.Cases)
+                    .ThenInclude(y => y.Notes)
+                .Include(x => x.Jobs)
+                .Where(x => x.Id == clientId)
+                .FirstOrDefault();
+
+            client.Active = true;
+
+            foreach (var c in client.Cases)
+            {
+                c.Active = true;
+                c.UpdatedBy = user;
+                c.Updated = DateTime.Now;
+
+                foreach (var n in c.Notes)
+                {
+                    n.Active = true;
+                    n.UpdatedBy = user;
+                    n.Updated = DateTime.Now;
+                }
+            }
+
+            foreach (var j in client.Jobs)
+            {
+                j.Active = true;
+                j.UpdatedBy = user;
+                j.Updated = DateTime.Now;
+            }
+
+            context.Clients.Update(client);
+            return context.SaveChangesAsync();
+        }
+
+        public Case RecoverCase(int caseId, string user)
         {
             throw new NotImplementedException();
         }
 
-        public Case RecoverCase(int caseId)
+        public ClientJob RecoverClientJob(int jobId, string user)
         {
             throw new NotImplementedException();
         }
 
-        public ClientJob RecoverClientJob(int jobId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Note RecoverNote(int noteId)
+        public Note RecoverNote(int noteId, string user)
         {
             throw new NotImplementedException();
         }

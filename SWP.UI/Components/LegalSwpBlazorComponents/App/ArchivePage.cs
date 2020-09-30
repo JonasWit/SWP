@@ -15,8 +15,9 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
     {
         private readonly IServiceProvider serviceProvider;
 
-        private GetClients GetClients => serviceProvider.GetService<GetClients>();
-        private DeleteClient DeleteClient => serviceProvider.GetService<DeleteClient>();
+        private GetClients GetClientsService => serviceProvider.GetService<GetClients>();
+        private DeleteClient DeleteClientService => serviceProvider.GetService<DeleteClient>();
+        private ArchiveClient ArchiveClientService => serviceProvider.GetService<ArchiveClient>();
 
         public LegalBlazorApp App { get; private set; }
         public List<ClientViewModel> ArchivizedClients { get; set; }
@@ -30,10 +31,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             return Task.CompletedTask;
         }
 
-        public void RefreshData()
-        {
-            ArchivizedClients = GetClients.GetClientsWithoutData(App.User.Profile, false)?.Select(x => (ClientViewModel)x).ToList();
-        }
+        public void RefreshData() => ArchivizedClients = GetClientsService.GetClientsWithoutData(App.User.Profile, false)?.Select(x => (ClientViewModel)x).ToList();
 
         public void RefreshApp() => App.ForceRefresh();
 
@@ -45,10 +43,35 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             {
                 if (SelectedArchivizedClient != null)
                 {
-                    await DeleteClient.Delete(SelectedArchivizedClient.Id);
+                    await DeleteClientService.Delete(SelectedArchivizedClient.Id);
                     App.ShowNotification(NotificationSeverity.Warning, "Sukces!", $"Klient: {SelectedArchivizedClient.Name} został usunięty.", GeneralViewModel.NotificationDuration);
                     SelectedArchivizedClient = null;
                     RefreshData();
+                }
+                else
+                {
+                    App.ShowNotification(NotificationSeverity.Error, "Uwaga!", $"Brak zaznaczonego klienta!", GeneralViewModel.NotificationDuration);
+                    RefreshData();
+                }
+            }
+            catch (Exception ex)
+            {
+                App.ErrorPage.DisplayMessage(ex);
+            }
+        }
+
+        public async Task RecoverSelectedClient()
+        {
+            try
+            {
+                if (SelectedArchivizedClient != null)
+                {
+                    await ArchiveClientService.RecoverClient(SelectedArchivizedClient.Id, App.User.UserName);
+
+                    App.ShowNotification(NotificationSeverity.Warning, "Sukces!", $"Klient: {SelectedArchivizedClient.Name} został odzyskany.", GeneralViewModel.NotificationDuration);
+                    SelectedArchivizedClient = null;
+                    RefreshData();
+                    App.RefreshClients();
                 }
                 else
                 {

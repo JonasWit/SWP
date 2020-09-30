@@ -112,7 +112,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         {
             try
             {
-                var result = await ArchiveClient.ArchivizeClient(client.Id);
+                var result = await ArchiveClient.ArchivizeClient(client.Id, App.User.UserName);
 
                 SelectedClient = null;
 
@@ -125,6 +125,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
                     App.Clients.RemoveAll(x => x.Id == client.Id);
                 }
 
+                App.RefreshClients();
                 await ClientsGrid.Reload();
                 App.ShowNotification(NotificationSeverity.Success, "Sukces!", $"Klient: {client.Name} został zarchwizowany.", GeneralViewModel.NotificationDuration);
             }

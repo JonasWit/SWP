@@ -5,10 +5,8 @@ using System.Linq;
 
 namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data
 {
-    public class CaseViewModel
+    public class CaseViewModel : ViewModelBase
     {
-        public int Id { get; set; }
-        public string IdStr => Id.ToString();
         public string Name { get; set; }
         public string Signature { get; set; }
         public string CaseType { get; set; }
@@ -17,7 +15,10 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data
         public bool Active { get; set; }
 
         public List<ReminderViewModel> Reminders { get; set; }
+
         public List<NoteViewModel> Notes { get; set; }
+        public List<NoteViewModel> ArchivedNotes { get; set; }
+
         public NoteViewModel SelectedNote { get; set; }
 
         public int ClientId { get; set; }
@@ -38,7 +39,8 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data
                 Description = input.Description,
                 Active = input.Active,
                 Reminders = input.Reminders == null ? new List<ReminderViewModel>() : input.Reminders.Select(x => (ReminderViewModel)x).ToList(),
-                Notes = input.Notes == null ? new List<NoteViewModel>() : input.Notes.Select(x => (NoteViewModel)x).ToList(),
+                Notes = input.Notes == null ? new List<NoteViewModel>() : input.Notes.Where(x => x.Active).Select(x => (NoteViewModel)x).ToList(),
+                ArchivedNotes = input.Notes == null ? new List<NoteViewModel>() : input.Notes.Where(x => !x.Active).Select(x => (NoteViewModel)x).ToList(),
                 ClientId = input.ClientId,
                 Created = input.Created,
                 Updated = input.Updated,

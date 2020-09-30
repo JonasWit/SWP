@@ -1,26 +1,43 @@
 ﻿@inject AdminBlazorApp App
 
-<header>
-    <h2>Admin Panel</h2>
-    <RadzenButton Icon="supervised_user_circle" Click="@(() => App.SetActivePanel(AdminBlazorApp.Panels.Users))" Text="Users Management" />
-    <RadzenButton Icon="storage" Click="@(() => App.SetActivePanel(AdminBlazorApp.Panels.Database))" Text="Data Base" />
-    <RadzenButton Icon="analytics" Click="@(() => App.SetActivePanel(AdminBlazorApp.Panels.Applications))" Text="App Statistics" />
-</header>
+<nav class="navbar has-shadow is-fixed-top is-white">
+    <div class="navbar-menu">
+        <div class="navbar-start">
+            <a class="navbar-item" @onclick="@(() => App.SetActivePanel(AdminBlazorApp.Panels.Users))">
+                Users
+            </a>
+            <a class="navbar-item" @onclick="@(() => App.SetActivePanel(AdminBlazorApp.Panels.Database))">
+                Database
+            </a>
+            <a class="navbar-item" @onclick="@(() => App.SetActivePanel(AdminBlazorApp.Panels.Applications))">
+                Applications
+            </a>
+        </div>
 
+        <div class="navbar-end">
+            <a class="navbar-item" href="/Index">
+                <span>Exit</span>
+            </a>
+        </div>
+    </div>
+</nav>
 
-<div>
-    @switch (App.ActivePanel)
-    {
-        case AdminBlazorApp.Panels.Users:
-            <AdminUsers @bind-App="App"/>
-            break;
-        case AdminBlazorApp.Panels.Database:
-            <AdminDatabase @bind-App="App"/>
-            break;
-        case AdminBlazorApp.Panels.Applications:
-            <AdminApplications @bind-App="App"/>
-            break;
-        default:
-            break;
-    }
+<div class="section">
+    <div class="container">
+        @switch (App.ActivePanel)
+        {
+            case AdminBlazorApp.Panels.Users:
+                <AdminUsers @bind-App="App" />
+                break;
+            case AdminBlazorApp.Panels.Database:
+                <AdminDatabase @bind-App="App" />
+                break;
+            case AdminBlazorApp.Panels.Applications:
+                <AdminApplications @bind-App="App" />
+                break;
+            default:
+                break;
+        }
+    </div>
 </div>
+

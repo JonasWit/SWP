@@ -116,8 +116,11 @@ namespace SWP.UI.Components.AdminBlazorComponents.App
 
         public async Task RoleChanged(int input)
         {
-            if (Loading) return;
-            else Loading = true;
+            if (SelectedUser.Claims.Any(x => x.Type == "Root" && x.Value == "Creator"))
+            {
+                SelectedRole = 0;
+                return;
+            }
 
             try
             {
@@ -135,19 +138,12 @@ namespace SWP.UI.Components.AdminBlazorComponents.App
             }
             catch (Exception ex)
             {
-                throw;
-            }
-            finally
-            {
-                Loading = false;
+                App.ErrorPage.DisplayMessage(ex);
             }
         }
 
         public async Task ApplicationProfileChanged(int input)
         {
-            if (Loading) return;
-            else Loading = true;
-
             try
             {
                 var userIdentity = await userManager.FindByIdAsync(SelectedUser.Id);
@@ -163,21 +159,13 @@ namespace SWP.UI.Components.AdminBlazorComponents.App
             }
             catch (Exception ex)
             {
-
-                throw;
-            }
-            finally
-            {
-                Loading = false;
+                App.ErrorPage.DisplayMessage(ex);
             }
         }
 
         public async Task DeleteClaimRow(Claim claim)
         {
-            if (claim.Type == "Root")
-            {
-                return;
-            }
+            if (claim.Type == "Root") return;
 
             if (SelectedUser.Claims.Any(x => x.Value == claim.Value))
             {
@@ -192,23 +180,11 @@ namespace SWP.UI.Components.AdminBlazorComponents.App
                         await GetUsers();
                         SelectedUser = await GetUser(SelectedUser.Id);
                     }
-                    else
-                    {
-
-                    }
                 }
                 catch (Exception ex)
                 {
-
+                    App.ErrorPage.DisplayMessage(ex);
                 }
-                finally
-                {
-        
-                }
-            }
-            else
-            {
-
             }
 
             await ClaimsGrid.Reload();
@@ -216,9 +192,6 @@ namespace SWP.UI.Components.AdminBlazorComponents.App
 
         public async Task AddApplicationClaim()
         {
-            if (Loading) return;
-            else Loading = true;
-
             if (!SelectedUser.Claims.Any(x => x.Value == SelectedApplicationClaim) &&
                 !string.IsNullOrEmpty(SelectedApplicationClaim))
             {
@@ -240,24 +213,13 @@ namespace SWP.UI.Components.AdminBlazorComponents.App
                 }
                 catch (Exception ex)
                 {
-                    throw;
+                    App.ErrorPage.DisplayMessage(ex);
                 }
-                finally
-                {
-                    Loading = false;
-                }
-            }
-            else
-            {
-                Loading = false;
             }
         }
 
         public async Task AddStatusClaim()
         {
-            if (Loading) return;
-            else Loading = true;
-
             if (!SelectedUser.Claims.Any(x => x.Value == SelectedStatusClaim) &&
                 !string.IsNullOrEmpty(SelectedStatusClaim))
             {
@@ -279,24 +241,13 @@ namespace SWP.UI.Components.AdminBlazorComponents.App
                 }
                 catch (Exception ex)
                 {
-                    throw;
+                    App.ErrorPage.DisplayMessage(ex);
                 }
-                finally
-                {
-                    Loading = false;
-                }
-            }
-            else
-            {
-                Loading = false;
             }
         }
 
         public async Task AddProfileClaim()
         {
-            if (Loading) return;
-            else Loading = true;
-
             if (!SelectedUser.Claims.Any(x => x.Value == ProfileClaimName) &&
                 !string.IsNullOrEmpty(ProfileClaimName))
             {
@@ -318,16 +269,8 @@ namespace SWP.UI.Components.AdminBlazorComponents.App
                 }
                 catch (Exception ex)
                 {
-                    throw;
+                    App.ErrorPage.DisplayMessage(ex);
                 }
-                finally
-                {
-                    Loading = false;
-                }
-            }
-            else
-            {
-                Loading = false;
             }
         }
 

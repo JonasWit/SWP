@@ -6,3 +6,16 @@
 <RadzenListBox AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" @bind-Value="ArchvizedClientsFilterValue" Data="@App.ArchivePage.ArchivizedClients" TextProperty="Name" ValueProperty="IdString" Change="@(args => App.ArchivePage.SelectedArchivizedClientChange(args))"
                Style="margin-bottom: 20px; height:200px;" />
 
+@if (App.ArchivePage.SelectedArchivizedClient != null)
+{
+    <RadzenCard Style="width:600px; margin-bottom: 20px; height:500px;">
+        <div class="row">
+            <div class="col-md-6">
+                <div>Wybrany Klient:</div>
+                <b>@App.ArchivePage.SelectedArchivizedClient.Name</b>
+                <RadzenButton>Odzyskaj Klienta</RadzenButton>
+                <RadzenButton Click="(async () => await App.ArchivePage.DeleteSelectedClient())">Usuń</RadzenButton>
+            </div>
+        </div>
+    </RadzenCard>
+}

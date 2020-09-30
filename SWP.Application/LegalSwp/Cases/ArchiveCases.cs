@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace SWP.Application.LegalSwp.Cases
 {
@@ -13,7 +14,7 @@ namespace SWP.Application.LegalSwp.Cases
 
         public int CountAllArchivedCases() => legalSwpManager.CountArchivedCases();
 
-
+        public Task<int> ArchivizeCase(int caseId) => legalSwpManager.ArchivizeCase(caseId);
 
 
 

@@ -114,7 +114,7 @@ namespace SWP.Domain.Infrastructure
         int CountArchivedClients();
 
         Task<int> ArchivizeClient(int clientId);
-        Task<int> ArchiveCase(int caseId);
+        Task<int> ArchivizeCase(int caseId);
         Task<int> ArchiveClientJob(int jobId);
         Task<int> ArchiveNote(int noteId);
 

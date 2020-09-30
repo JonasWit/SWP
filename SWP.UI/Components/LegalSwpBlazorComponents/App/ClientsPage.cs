@@ -126,7 +126,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
                 }
 
                 await ClientsGrid.Reload();
-                App.ShowNotification(NotificationSeverity.Success, "Sukces!", $"Klient: {client.Name} został zmieniony.", GeneralViewModel.NotificationDuration);
+                App.ShowNotification(NotificationSeverity.Success, "Sukces!", $"Klient: {client.Name} został zarchwizowany.", GeneralViewModel.NotificationDuration);
             }
             catch (Exception ex)
             {

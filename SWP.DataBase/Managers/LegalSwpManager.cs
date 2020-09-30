@@ -419,7 +419,7 @@ namespace SWP.DataBase.Managers
             return context.SaveChangesAsync();
         }
 
-        public Task<int> ArchiveCase(int caseId)
+        public Task<int> ArchivizeCase(int caseId)
         {
             var c = context.Cases.FirstOrDefault(x => x.Id == caseId);
             c.Active = false;

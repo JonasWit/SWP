@@ -55,11 +55,11 @@ namespace SWP.UI.Areas.Identity.Pages.Account
             [Required]
             [StringLength(20, ErrorMessage = "Hasło musi składać się z 10 do 20 znaków!", MinimumLength = 10)]
             [DataType(DataType.Password)]
-            [Display(Name = "Password")]
+            [Display(Name = "Hasło")]
             public string Password { get; set; }
 
             [DataType(DataType.Password)]
-            [Display(Name = "Confirm password")]
+            [Display(Name = "Potwierdź hasło")]
             [Compare("Password", ErrorMessage = "Hasła nie są identyczne!")]
             public string ConfirmPassword { get; set; }
 

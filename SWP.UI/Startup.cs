@@ -95,6 +95,7 @@ namespace SWP.UI
                 options.Lockout.AllowedForNewUsers = true;
             })
             .AddRoles<IdentityRole>()
+            .AddErrorDescriber<PolishIdentityErrorDescriber>()
             .AddEntityFrameworkStores<ApplicationDbContext>();
 
             services.ConfigureApplicationCookie(options =>

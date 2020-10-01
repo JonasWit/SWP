@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Radzen;
 using SWP.UI.BlazorApp;
 using System.Collections.Generic;
 using System.Security.Claims;
@@ -10,6 +11,7 @@ namespace SWP.UI.Components.AdminBlazorComponents.App
     public class AdminBlazorApp : BlazorAppBase
     {
         private readonly UserManager<IdentityUser> userManager;
+        private readonly NotificationService notificationService;
 
         public UsersPage UsersPage { get; }
         public DatabasePage DatabasePage { get; }
@@ -21,7 +23,8 @@ namespace SWP.UI.Components.AdminBlazorComponents.App
             UsersPage usersPage,
             DatabasePage databasePage,
             ErrorPage errorPage,
-            ApplicationsPage applicationsPage)
+            ApplicationsPage applicationsPage,
+            NotificationService notificationService)
         {
             this.userManager = userManager;
 
@@ -29,6 +32,7 @@ namespace SWP.UI.Components.AdminBlazorComponents.App
             DatabasePage = databasePage;
             ErrorPage = errorPage;
             ApplicationsPage = applicationsPage;
+            this.notificationService = notificationService;
         }
 
         public Panels ActivePanel { get; private set; } = Panels.Users;
@@ -71,7 +75,8 @@ namespace SWP.UI.Components.AdminBlazorComponents.App
             await ApplicationsPage.Initialize(this);
         }
 
-
+        public void ShowNotification(NotificationSeverity severity, string summary, string detail, int duration) =>
+            notificationService.Notify(new NotificationMessage() { Severity = severity, Summary = summary, Detail = detail, Duration = duration });
 
 
 

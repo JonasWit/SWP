@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Radzen;
 using Radzen.Blazor;
 using SWP.Domain.Enums;
 using SWP.UI.BlazorApp;
@@ -16,6 +17,7 @@ namespace SWP.UI.Components.AdminBlazorComponents.App
         public AdminBlazorApp App { get; private set; }
 
         public int SelectedRole { get; set; } = 1;
+        public bool Lock { get; set; }
         public string SelectedApplicationClaim { get; set; } = "";
         public string SelectedStatusClaim { get; set; } = "";
         public string ProfileClaimName { get; set; } = "";
@@ -38,7 +40,8 @@ namespace SWP.UI.Components.AdminBlazorComponents.App
             public string Id { get; set; }
             public string Name { get; set; }
             public string Email { get; set; }
-
+            public bool LockoutEnabled { get; set; }
+            public DateTimeOffset? LockoutEnd { get; set; }
             public int UserRoleInt
             {
                 get
@@ -78,7 +81,7 @@ namespace SWP.UI.Components.AdminBlazorComponents.App
                 Id = x.Id,
                 UserName = x.UserName,
                 Email = x.Email,
-                PasswordHash = "*****"
+                PasswordHash = "*****",
             }).ToList();
 
             foreach (var user in users)
@@ -90,6 +93,10 @@ namespace SWP.UI.Components.AdminBlazorComponents.App
             {
                 SelectedUser = Users.FirstOrDefault();
             }
+            else 
+            {
+                SelectedUser = Users.FirstOrDefault(x => x.Id == SelectedUser.Id);
+            } 
         }
 
         private async Task<UserModel> GetUser(string Id)
@@ -105,6 +112,8 @@ namespace SWP.UI.Components.AdminBlazorComponents.App
                 Id = user.Id,
                 Claims = claims,
                 UserRole = (RoleType)Enum.Parse(typeof(RoleType), role.First(), true),
+                LockoutEnd = user.LockoutEnd,
+                LockoutEnabled = user.LockoutEnabled
             };
         }
 
@@ -112,6 +121,7 @@ namespace SWP.UI.Components.AdminBlazorComponents.App
         {
             SelectedUser = (UserModel)args;
             SelectedRole = SelectedUser.UserRoleInt;
+            Lock = SelectedUser.LockoutEnd != null ? true : false;
         }
 
         public async Task RoleChanged(int input)
@@ -119,11 +129,17 @@ namespace SWP.UI.Components.AdminBlazorComponents.App
             if (SelectedUser.Claims.Any(x => x.Type == "Root" && x.Value == "Creator"))
             {
                 SelectedRole = 0;
+                App.ShowNotification(NotificationSeverity.Info, "Remember!", "Creator Role cannot be changed!", 5000);
                 return;
             }
 
             try
             {
+                if (SelectedUser.UserRoleInt == input)
+                {
+                    return;
+                }
+
                 var userIdentity = await userManager.FindByIdAsync(SelectedUser.Id);
                 var selectedUserRoles = await userManager.GetRolesAsync(userIdentity) as List<string>;
 
@@ -134,7 +150,8 @@ namespace SWP.UI.Components.AdminBlazorComponents.App
 
                 await userManager.AddToRoleAsync(userIdentity, ((RoleType)input).ToString());
                 await GetUsers();
-                await GetUser(SelectedUser.Id);
+
+                App.ShowNotification(NotificationSeverity.Success, "Done!", $"Role of: {SelectedUser.Name} has been changed to: {(RoleType)input}", 5000);
             }
             catch (Exception ex)
             {
@@ -274,19 +291,44 @@ namespace SWP.UI.Components.AdminBlazorComponents.App
             }
         }
 
-        public async Task LockUser()
-        { 
-                //todo: wiadomo
-        
-        
-        }
-
-        public async Task UnlockUser()
+        public async Task LockUser(bool input)
         {
-            //todo: wiadomo
+            try
+            {
+                var userIdentity = await userManager.FindByIdAsync(SelectedUser.Id);
 
+                if (input)
+                {
+                    if (SelectedUser.LockoutEnd != null) return;
 
+                    var result = await userManager.SetLockoutEndDateAsync(userIdentity, DateTime.Now.AddYears(+25));
+
+                    if (result.Succeeded)
+                    {
+                        App.ShowNotification(NotificationSeverity.Warning, "Done!", $"User: {SelectedUser.Name} has been locked!", 5000);
+                    }
+                }
+                else
+                {
+                    if (SelectedUser.LockoutEnd == null) return;
+
+                    var result = await userManager.SetLockoutEndDateAsync(userIdentity, null);
+
+                    if (result.Succeeded)
+                    {
+                        App.ShowNotification(NotificationSeverity.Info, "Done!", $"User: {SelectedUser.Name} has been unlocked!", 5000);
+                    }
+                }
+                
+                await GetUsers();
+            }
+            catch (Exception ex)
+            {
+                App.ErrorPage.DisplayMessage(ex);
+            }
         }
+
+
 
 
     }

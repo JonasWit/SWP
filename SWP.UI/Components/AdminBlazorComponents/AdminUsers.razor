@@ -15,6 +15,8 @@
                 <RadzenGridColumn TItem="App.UsersPage.UserModel" Property="Name" Title="User Name" />
                 <RadzenGridColumn TItem="App.UsersPage.UserModel" Property="Email" Title="Email" />
                 <RadzenGridColumn TItem="App.UsersPage.UserModel" Property="UserRole" Title="Role" />
+                <RadzenGridColumn TItem="App.UsersPage.UserModel" Property="LockoutEnabled" Title="Is Lockout Possible" />
+                <RadzenGridColumn TItem="App.UsersPage.UserModel" Property="LockoutEnd" Title="Lockout End Date" />
             </Columns>
         </RadzenGrid>
     </RadzenCard>
@@ -31,12 +33,24 @@
             <h3>Current Role</h3>
         </div>
         <div class="columns is-0 is-centered">
-            <RadzenRadioButtonList @bind-Value="App.UsersPage.SelectedRole" TValue="int" Change="@((args) => App.UsersPage.RoleChanged(args))">
+            <RadzenSelectBar @bind-Value="App.UsersPage.SelectedRole" TValue="int" Change="@((args) => App.UsersPage.RoleChanged(args))">
                 <Items>
-                    <RadzenRadioButtonListItem Text="Administrators" Value="0" />
-                    <RadzenRadioButtonListItem Text="Users" Value="1" />
+                    <RadzenSelectBarItem Text="Administrators" Value="0" />
+                    <RadzenSelectBarItem Text="Users" Value="1" />
                 </Items>
-            </RadzenRadioButtonList>
+            </RadzenSelectBar>
+        </div>
+
+        <div class="columns is-0 is-centered">
+            <h3>Lock User</h3>
+        </div>
+        <div class="columns is-0 is-centered">
+            <RadzenSelectBar @bind-Value="App.UsersPage.Lock" TValue="bool" Change="@((args) => App.UsersPage.LockUser(args))">
+                <Items>
+                    <RadzenSelectBarItem Text="Locked" Value="true" />
+                    <RadzenSelectBarItem Text="Unlocked" Value="false" />
+                </Items>
+            </RadzenSelectBar>
         </div>
 
         <div class="columns is-0 is-centered">
@@ -51,7 +65,8 @@
                                 PageSize="5"
                                 AllowSorting="true"
                                 EditMode="DataGridEditMode.Single"
-                                Data="@App.UsersPage.SelectedUser.Claims" TItem="Claim">
+                                Data="@App.UsersPage.SelectedUser.Claims"
+                                TItem="Claim">
                         <Columns>
                             <RadzenGridColumn TItem="Claim" Property="Type" Title="Type" />
                             <RadzenGridColumn TItem="Claim" Property="Value" Title="Value" />

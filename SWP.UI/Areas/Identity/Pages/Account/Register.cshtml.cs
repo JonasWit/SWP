@@ -51,15 +51,16 @@ namespace SWP.UI.Areas.Identity.Pages.Account
             [Display(Name = "Email")]
             public string Email { get; set; }
 
+            //todo: validation for all password requirements
             [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            [StringLength(20, ErrorMessage = "Hasło musi składać się z 10 do 20 znaków!", MinimumLength = 10)]
             [DataType(DataType.Password)]
             [Display(Name = "Password")]
             public string Password { get; set; }
 
             [DataType(DataType.Password)]
             [Display(Name = "Confirm password")]
-            [Compare("Password", ErrorMessage = "Hasła nie są identyczne!.")]
+            [Compare("Password", ErrorMessage = "Hasła nie są identyczne!")]
             public string ConfirmPassword { get; set; }
 
             [Required]

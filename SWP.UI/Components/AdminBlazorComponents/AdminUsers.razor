@@ -24,22 +24,26 @@
     @if (App.UsersPage.SelectedUser != null)
     {
         <div class="section">
-            <RadzenCard Style="margin-bottom:20px">
+            <div class="columns is-0 is-centered mx-0 mb-3">
+                <h3 class="my-0 mx-0"><b>Selected User: @App.UsersPage.SelectedUser?.Name</b></h3>
+            </div>
 
-                <div class="columns is-0 is-centered">
-                    <b>Selected User: @App.UsersPage.SelectedUser?.Name</b>
-                </div>
-
-                <h2>Current Role</h2>
+            <div class="columns is-0 is-centered">
+                <h3>Current Role</h3>
+            </div>
+            <div class="columns is-0 is-centered">
                 <RadzenRadioButtonList @bind-Value="App.UsersPage.SelectedRole" TValue="int" Change="@((args) => App.UsersPage.RoleChanged(args))">
                     <Items>
                         <RadzenRadioButtonListItem Text="Administrators" Value="0" />
                         <RadzenRadioButtonListItem Text="Users" Value="1" />
                     </Items>
                 </RadzenRadioButtonList>
+            </div>
 
-
-                <h2>Current Claims</h2>
+            <div class="columns is-0 is-centered">
+                <h3>Current Claims</h3>
+            </div>
+            <div class="columns is-0 is-centered">
                 <div class="columns">
                     <div class="column is-full">
                         <RadzenGrid @ref="App.UsersPage.ClaimsGrid"
@@ -50,50 +54,59 @@
                                     EditMode="DataGridEditMode.Single"
                                     Data="@App.UsersPage.SelectedUser.Claims" TItem="Claim">
                             <Columns>
-                                <RadzenGridColumn Width="100px" TItem="Claim" Property="Type" Title="Type" />
-                                <RadzenGridColumn Width="100px" TItem="Claim" Property="Value" Title="Value" />
+                                <RadzenGridColumn TItem="Claim" Property="Type" Title="Type" />
+                                <RadzenGridColumn TItem="Claim" Property="Value" Title="Value" />
 
-                                <RadzenGridColumn TItem="Claim" Context="claim" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="70px">
+                                <RadzenGridColumn TItem="Claim" Context="claim" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="50px">
                                     <Template Context="claim">
                                         <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@(async args => await App.UsersPage.DeleteClaimRow(claim))">
                                         </RadzenButton>
                                     </Template>
-                                    <EditTemplate Context="claim">
-                                        <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@(async args => await App.UsersPage.DeleteClaimRow(claim))">
-                                        </RadzenButton>
-                                    </EditTemplate>
                                 </RadzenGridColumn>
                             </Columns>
                         </RadzenGrid>
-
-
-
                     </div>
                 </div>
-
-
-                <div class="columns is-vcentered is-centered">
-                    <div class="column is-one-third">
+            </div>
+            <div class="columns is-vcentered is-centered">
+                <div class="column is-one-third">
+                    <div class="columns is-0 is-centered">
                         <h3>Application Claims</h3>
+                    </div>
+                    <div class="columns is-0 is-centered">
                         <RadzenDropDown AllowClear="true" TValue="string"
                                         FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" FilterOperator="StringFilterOperator.StartsWith" AllowFiltering="true"
                                         Data="@App.UsersPage.Claims" @bind-Value="App.UsersPage.SelectedApplicationClaim" Style="width: 250px;" />
+                    </div>
+                    <div class="columns is-0 is-centered">
                         <RadzenButton Click="@(async () => await App.UsersPage.AddApplicationClaim())" Text="Add Application Claim" Style="width: 250px;" />
                     </div>
-                    <div class="column is-one-third">
+                </div>
+                <div class="column is-one-third">
+                    <div class="columns is-0 is-centered">
                         <h3>User Status Claims</h3>
+                    </div>
+                    <div class="columns is-0 is-centered">
                         <RadzenDropDown AllowClear="true" TValue="string"
                                         FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" FilterOperator="StringFilterOperator.StartsWith" AllowFiltering="true"
                                         Data="@App.UsersPage.StatusClaims" @bind-Value="App.UsersPage.SelectedStatusClaim" Style="width: 250px;" />
+                    </div>
+                    <div class="columns is-0 is-centered">
                         <RadzenButton Click="@(async () => await App.UsersPage.AddStatusClaim())" Text="Add Status Claim" Style="width: 250px;" />
                     </div>
-                    <div class="column is-one-third">
+                </div>
+                <div class="column is-one-third">
+                    <div class="columns is-0 is-centered">
                         <h3>Profile Claim Name</h3>
+                    </div>
+                    <div class="columns is-0 is-centered">
                         <RadzenTextBox @bind-Value="@App.UsersPage.ProfileClaimName" MaxLength="50" Style="width: 250px;" />
+                    </div>
+                    <div class="columns is-0 is-centered">
                         <RadzenButton Click="@(async () => await App.UsersPage.AddProfileClaim())" Text="Add Profile Claim" Style="width: 250px;" />
                     </div>
                 </div>
-            </RadzenCard>
+            </div>
         </div>
     }
 

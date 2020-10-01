@@ -31,6 +31,7 @@ namespace SWP.UI.Areas.Identity.Pages.Account
             [EmailAddress]
             public string Email { get; set; }
 
+            //todo: validation for all password requirements
             [Required]
             [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
             [DataType(DataType.Password)]

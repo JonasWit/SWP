@@ -37,7 +37,7 @@ namespace SWP.UI
                 options.Password.RequireUppercase = true;
                 options.Password.RequireLowercase = true;
                 options.SignIn.RequireConfirmedAccount = true;
-                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
                 options.Lockout.MaxFailedAccessAttempts = 3;
                 options.Lockout.AllowedForNewUsers = true;
             })

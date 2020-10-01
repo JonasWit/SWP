@@ -29,7 +29,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Components\AdminBlazorComponents\ViewModels\" />
     <Folder Include="Components\MedicalSwpBlazorComponents\ViewModels\" />
     <Folder Include="wwwroot\DownloadableFiles\" />
     <Folder Include="wwwroot\js\" />

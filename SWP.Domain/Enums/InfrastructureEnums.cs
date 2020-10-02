@@ -19,6 +19,7 @@ namespace SWP.Domain.Enums
     {
         Administrators = 0,
         Users = 1,
+        All = -1
     }
 
     public enum ClaimType

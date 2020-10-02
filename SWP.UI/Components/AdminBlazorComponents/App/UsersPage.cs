@@ -89,10 +89,10 @@ namespace SWP.UI.Components.AdminBlazorComponents.App
             {
                 SelectedUser = Users.FirstOrDefault();
             }
-            else 
+            else
             {
                 SelectedUser = Users.FirstOrDefault(x => x.Id == SelectedUser.Id);
-            } 
+            }
         }
 
         private async Task<UserModel> GetUser(string Id)
@@ -205,8 +205,13 @@ namespace SWP.UI.Components.AdminBlazorComponents.App
 
         public async Task AddApplicationClaim()
         {
-            if (!SelectedUser.Claims.Any(x => x.Value == SelectedApplicationClaim) &&
-                !string.IsNullOrEmpty(SelectedApplicationClaim))
+            if (SelectedUser.Claims.Any(x => x.Value == SelectedApplicationClaim))
+            {
+                App.ShowNotification(NotificationSeverity.Error, "Error!", $"User already have this Claim!", 5000);
+                return;
+            }
+
+            if (!string.IsNullOrEmpty(SelectedApplicationClaim))
             {
                 try
                 {
@@ -229,12 +234,21 @@ namespace SWP.UI.Components.AdminBlazorComponents.App
                     App.ErrorPage.DisplayMessage(ex);
                 }
             }
+            else
+            {
+                App.ShowNotification(NotificationSeverity.Error, "Error!", $"No claim was chosen!", 5000);
+            }
         }
 
         public async Task AddStatusClaim()
         {
-            if (!SelectedUser.Claims.Any(x => x.Value == SelectedStatusClaim) &&
-                !string.IsNullOrEmpty(SelectedStatusClaim))
+            if (SelectedUser.Claims.Any(x => x.Value == SelectedStatusClaim))
+            {
+                App.ShowNotification(NotificationSeverity.Error, "Error!", $"User already have this Claim!", 5000);
+                return;
+            }
+
+            if (!string.IsNullOrEmpty(SelectedStatusClaim))
             {
                 try
                 {
@@ -246,6 +260,7 @@ namespace SWP.UI.Components.AdminBlazorComponents.App
                     {
                         await GetUsers();
                         SelectedUser = await GetUser(SelectedUser.Id);
+                        App.ShowNotification(NotificationSeverity.Success, "Done!", $"Status Claim: {SelectedStatusClaim} has been added!", 5000);
                     }
                     else
                     {
@@ -257,12 +272,21 @@ namespace SWP.UI.Components.AdminBlazorComponents.App
                     App.ErrorPage.DisplayMessage(ex);
                 }
             }
+            else
+            {
+                App.ShowNotification(NotificationSeverity.Error, "Error!", $"No claim was chosen!", 5000);
+            }
         }
 
         public async Task AddProfileClaim()
         {
-            if (!SelectedUser.Claims.Any(x => x.Value == ProfileClaimName) &&
-                !string.IsNullOrEmpty(ProfileClaimName))
+            if (SelectedUser.Claims.Any(x => x.Type == ClaimType.Profile.ToString()))
+            {
+                App.ShowNotification(NotificationSeverity.Error, "Remember!", $"User can have only one profile!", 5000);
+                return;
+            }
+
+            if (!string.IsNullOrEmpty(ProfileClaimName))
             {
                 try
                 {
@@ -284,6 +308,10 @@ namespace SWP.UI.Components.AdminBlazorComponents.App
                 {
                     App.ErrorPage.DisplayMessage(ex);
                 }
+            }
+            else
+            {
+                App.ShowNotification(NotificationSeverity.Error, "Error!", $"No claim was chosen!", 5000);
             }
         }
 
@@ -322,7 +350,7 @@ namespace SWP.UI.Components.AdminBlazorComponents.App
                         App.ShowNotification(NotificationSeverity.Info, "Done!", $"User: {SelectedUser.Name} has been unlocked!", 5000);
                     }
                 }
-                
+
                 await GetUsers();
             }
             catch (Exception ex)

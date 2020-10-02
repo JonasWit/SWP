@@ -13,12 +13,7 @@
             <Columns>
                 <RadzenGridColumn TItem="App.UsersPage.UserModel" Property="Name" Title="User Name" />
                 <RadzenGridColumn TItem="App.UsersPage.UserModel" Property="Email" Title="Email" />
-                <RadzenGridColumn TItem="App.UsersPage.UserModel" Property="UserRole" Title="Role">
-                    <FilterTemplate>
-                        <RadzenDropDown @bind-Value="@filteredRole" TextProperty="Text" ValueProperty="Value" Style="width:100%"
-                                        Data="@(Enum.GetValues(typeof(RoleType)).Cast<RoleType>().Select(t => new { Text = $"{t}", Value = t }))" />
-                    </FilterTemplate>
-                </RadzenGridColumn>
+                <RadzenGridColumn TItem="App.UsersPage.UserModel" Property="UserRole" Title="Role" />
                 <RadzenGridColumn TItem="App.UsersPage.UserModel" Property="ProfileClaim" Title="Profile" />
                 <RadzenGridColumn TItem="App.UsersPage.UserModel" Property="LockoutEnabled" Title="Is Lockout Possible" />
                 <RadzenGridColumn TItem="App.UsersPage.UserModel" Property="LockoutEnd" Title="Lockout End Date" />

@@ -13,10 +13,28 @@ namespace SWP.UI.BlazorApp
 
         protected void LogException(string userId, string message, string stack)
         { 
-        
-        
-        
+ 
         
         }
+
+        protected void GetLogRecords()
+        {
+
+
+        }
+
+        protected void GetLogRecord(int id)
+        {
+
+
+        }
+
+        protected void DeleteLogRecord(int id)
+        {
+
+
+        }
+
+
     }
 }

@@ -31,6 +31,6 @@ namespace SWP.DataBase.Managers
 
         public LogRecord GetLogRecord(int id) => context.LogRecords.FirstOrDefault(x => x.Id == id);
 
-        public List<TResult> GetLogRecordSpecificData<TResult>(int id, Func<LogRecord, TResult> selector) => context.LogRecords.Select(selector).ToList();
+        public List<TResult> GetLogRecordsWithSpecificData<TResult>(Func<LogRecord, TResult> selector) => context.LogRecords.Select(selector).ToList();
     }
 }

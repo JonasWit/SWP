@@ -14,7 +14,7 @@ namespace SWP.Domain.Infrastructure
 
         LogRecord GetLogRecord(int id);
 
-        List<TResult> GetLogRecordSpecificData<TResult>(int id, Func<LogRecord, TResult> selector);
+        List<TResult> GetLogRecordsWithSpecificData<TResult>(Func<LogRecord, TResult> selector);
 
         List<LogRecord> GetGetLogRecords();
     }

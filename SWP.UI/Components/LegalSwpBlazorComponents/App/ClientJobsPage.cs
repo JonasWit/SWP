@@ -52,7 +52,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             }
             catch (Exception ex)
             {
-                App.ErrorPage.DisplayMessage(ex);
+                await App.ErrorPage.DisplayMessage(ex);
             }
         }
 
@@ -79,7 +79,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             }
             catch (Exception ex)
             {
-                App.ErrorPage.DisplayMessage(ex);
+                await App.ErrorPage.DisplayMessage(ex);
             }
         }
 
@@ -107,7 +107,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             }
             catch (Exception ex)
             {
-                App.ErrorPage.DisplayMessage(ex);
+                await App.ErrorPage.DisplayMessage(ex);
             }
         }
 
@@ -138,7 +138,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             }
             catch (Exception ex)
             {
-                App.ErrorPage.DisplayMessage(ex);
+                await App.ErrorPage.DisplayMessage(ex);
             }
         }
 

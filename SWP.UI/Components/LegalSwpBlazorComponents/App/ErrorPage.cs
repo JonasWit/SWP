@@ -15,18 +15,18 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
         public ErrorPage(IServiceProvider serviceProvider) : base(serviceProvider) { }
 
-
         public override Task Initialize(BlazorAppBase app)
         {
             App = app as LegalBlazorApp;
             return Task.CompletedTask;
         }
 
-        public void DisplayMessage(Exception ex)
+        public Task DisplayMessage(Exception ex)
         {
             Exception = ex;
             App.SetActivePanel(LegalBlazorApp.Panels.ErrorPage);
             RefreshApp();
+            return CreateLog(App.ActiveUserId, ex.Message, ex.StackTrace);
         }
 
         public void DismissMessage()

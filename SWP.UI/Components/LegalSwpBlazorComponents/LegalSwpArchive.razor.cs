@@ -16,9 +16,9 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
 
         public string ArchvizedClientsFilterValue;
 
-        protected override async Task OnInitializedAsync()
+        protected override void OnInitialized()
         {
-            App.ArchivePage.RefreshData();
-        }
+           App.ArchivePage.RefreshData();
+        } 
     }
 }

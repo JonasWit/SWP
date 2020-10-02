@@ -39,8 +39,6 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
             }
         }
 
-        private string RelatedUsersFilterValue = "";
-
-
+        public string RelatedUsersFilterValue = "";
     }
 }

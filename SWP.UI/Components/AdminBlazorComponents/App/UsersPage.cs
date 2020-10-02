@@ -56,6 +56,7 @@ namespace SWP.UI.Components.AdminBlazorComponents.App
             }
 
             public RoleType UserRole { get; set; } = RoleType.Users;
+            public string ProfileClaim => Claims.FirstOrDefault(x => x.Type == ClaimType.Profile.ToString())?.Value;
             public List<Claim> Claims { get; set; } = new List<Claim>();
         }
 
@@ -335,8 +336,25 @@ namespace SWP.UI.Components.AdminBlazorComponents.App
             }
         }
 
+        public async Task DeleteUser(UserModel user)
+        {
+            if (SelectedUser.Claims.Any(x => x.Type == "Root" && x.Value == "Creator"))
+            {
+                SelectedRole = 0;
+                App.ShowNotification(NotificationSeverity.Info, "Remember!", "Creator cannot be deleted!", 5000);
+                return;
+            }
+
+            try
+            {
 
 
 
+            }
+            catch (Exception ex)
+            {
+                App.ErrorPage.DisplayMessage(ex);
+            }
+        }
     }
 }

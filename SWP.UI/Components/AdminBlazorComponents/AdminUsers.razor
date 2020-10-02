@@ -15,8 +15,15 @@
                 <RadzenGridColumn TItem="App.UsersPage.UserModel" Property="Name" Title="User Name" />
                 <RadzenGridColumn TItem="App.UsersPage.UserModel" Property="Email" Title="Email" />
                 <RadzenGridColumn TItem="App.UsersPage.UserModel" Property="UserRole" Title="Role" />
+                <RadzenGridColumn TItem="App.UsersPage.UserModel" Property="ProfileClaim" Title="Profile" />
                 <RadzenGridColumn TItem="App.UsersPage.UserModel" Property="LockoutEnabled" Title="Is Lockout Possible" />
                 <RadzenGridColumn TItem="App.UsersPage.UserModel" Property="LockoutEnd" Title="Lockout End Date" />
+                <RadzenGridColumn TItem="App.UsersPage.UserModel" Context="um" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="50px">
+                    <Template Context="um">
+                        <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@(async args => await App.UsersPage.DeleteUser(um))">
+                        </RadzenButton>
+                    </Template>
+                </RadzenGridColumn>
             </Columns>
         </RadzenGrid>
     </RadzenCard>
@@ -25,14 +32,15 @@
 @if (App.UsersPage.SelectedUser != null)
 {
     <div class="section">
-        <div class="columns is-0 is-centered mx-0 mb-3">
+
+        <div class="columns is-0 is-centered mx-0 mb-6">
             <h3 class="my-0 mx-0"><b>Selected User: @App.UsersPage.SelectedUser?.Name</b></h3>
         </div>
 
         <div class="columns is-0 is-centered">
             <h3>Current Role</h3>
         </div>
-        <div class="columns is-0 is-centered">
+        <div class="columns is-0 is-centered mb-6">
             <RadzenSelectBar @bind-Value="App.UsersPage.SelectedRole" TValue="int" Change="@((args) => App.UsersPage.RoleChanged(args))">
                 <Items>
                     <RadzenSelectBarItem Text="Administrators" Value="0" />
@@ -44,7 +52,7 @@
         <div class="columns is-0 is-centered">
             <h3>Lock User</h3>
         </div>
-        <div class="columns is-0 is-centered">
+        <div class="columns is-0 is-centered mb-6">
             <RadzenSelectBar @bind-Value="App.UsersPage.Lock" TValue="bool" Change="@((args) => App.UsersPage.LockUser(args))">
                 <Items>
                     <RadzenSelectBarItem Text="Locked" Value="true" />
@@ -121,6 +129,15 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <div class="section">
+
+
+
+
+
+
     </div>
 }
 

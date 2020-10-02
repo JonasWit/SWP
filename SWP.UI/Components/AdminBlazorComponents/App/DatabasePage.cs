@@ -11,6 +11,8 @@ namespace SWP.UI.Components.AdminBlazorComponents.App
     {
         public AdminBlazorApp App { get; set; }
 
+        public DatabasePage(IServiceProvider serviceProvider) : base(serviceProvider) { }
+
         public override Task Initialize(BlazorAppBase app)
         {
             App = app as AdminBlazorApp;

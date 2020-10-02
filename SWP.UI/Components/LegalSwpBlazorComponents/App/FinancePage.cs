@@ -14,7 +14,6 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
     [UITransientService]
     public class FinancePage : BlazorPageBase
     {
-        private readonly IServiceProvider serviceProvider;
         private CreateCashMovement CreateCashMovement => serviceProvider.GetService<CreateCashMovement>();
         private DeleteCashMovement DeleteCashMovement => serviceProvider.GetService<DeleteCashMovement>();
         private UpdateCashMovement UpdateCashMovement => serviceProvider.GetService<UpdateCashMovement>();
@@ -23,7 +22,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         public CreateCashMovement.Request NewCashMovement { get; set; } = new CreateCashMovement.Request();
         public int CashMovementDirection { get; set; }
 
-        public FinancePage(IServiceProvider serviceProvider) => this.serviceProvider = serviceProvider;
+        public FinancePage(IServiceProvider serviceProvider) : base(serviceProvider) { }
 
         public override Task Initialize(BlazorAppBase app)
         {

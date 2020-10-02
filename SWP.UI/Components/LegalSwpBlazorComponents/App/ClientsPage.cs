@@ -25,16 +25,11 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         private CreateClient CreateClient => serviceProvider.GetService<CreateClient>();
         private ArchiveClient ArchiveClient => serviceProvider.GetService<ArchiveClient>();
 
-        private readonly IServiceProvider serviceProvider;
-
         public ClientViewModel SelectedClient { get; set; }
 
         public LegalBlazorApp App { get; private set; }
 
-        public ClientPage(IServiceProvider serviceProvider)
-        {
-            this.serviceProvider = serviceProvider;
-        }
+        public ClientPage(IServiceProvider serviceProvider) : base(serviceProvider) { }
 
         public override Task Initialize(BlazorAppBase app)
         {

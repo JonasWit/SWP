@@ -59,7 +59,7 @@ namespace SWP.UI.Components.AdminBlazorComponents.App
             public List<Claim> Claims { get; set; } = new List<Claim>();
         }
 
-        public UsersPage(UserManager<IdentityUser> userManager)
+        public UsersPage(UserManager<IdentityUser> userManager, IServiceProvider serviceProvider) : base(serviceProvider)
         {
             this.userManager = userManager;
         }

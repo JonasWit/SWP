@@ -16,8 +16,6 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
     [UITransientService]
     public class MyAppPage : BlazorPageBase, IDisposable
     {
-        private readonly IServiceProvider serviceProvider;
-
         private GetClients GetClients => serviceProvider.GetService<GetClients>();
         private GetCashMovements GetCashMovements => serviceProvider.GetService<GetCashMovements>();
         private GetTimeRecords GetTimeRecords => serviceProvider.GetService<GetTimeRecords>();
@@ -27,7 +25,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         public List<ClientData> ProductivityData { get; set; } = new List<ClientData>();
         public IdentityUser SelectedUser { get; set; }
         public ColorScheme ColorScheme { get; set; } = ColorScheme.Monochrome;
-        public MyAppPage(IServiceProvider serviceProvider) => this.serviceProvider = serviceProvider;
+        public MyAppPage(IServiceProvider serviceProvider) : base(serviceProvider) { }
 
         public override Task Initialize(BlazorAppBase app)
         {

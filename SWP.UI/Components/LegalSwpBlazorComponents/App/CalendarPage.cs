@@ -17,7 +17,6 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
     public class CalendarPage : BlazorPageBase, IDisposable
     {
         private readonly DialogService dialogService;
-        private readonly IServiceProvider serviceProvider;
         private readonly GeneralViewModel generalViewModel;
 
         private GetReminders GetReminders => serviceProvider.GetService<GetReminders>();
@@ -30,10 +29,9 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         public CalendarPage(
             DialogService dialogService,
             IServiceProvider serviceProvider,
-            GeneralViewModel generalViewModel)
+            GeneralViewModel generalViewModel) : base(serviceProvider)
         {
             this.dialogService = dialogService;
-            this.serviceProvider = serviceProvider;
             this.generalViewModel = generalViewModel;
         }
 

@@ -14,8 +14,6 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
     [UITransientService]
     public class ClientJobsPage : BlazorPageBase
     {
-        private readonly IServiceProvider serviceProvider;
-
         public LegalBlazorApp App { get; private set; }
 
         private CreateClientJob CreateClientJob => serviceProvider.GetService<CreateClientJob>();
@@ -26,10 +24,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         public RadzenGrid<ClientJobViewModel> ClientsJobsGrid { get; set; }
         public ClientJobViewModel SelectedArchivizedClientJob { get; set; }
 
-        public ClientJobsPage(IServiceProvider serviceProvider)
-        {
-            this.serviceProvider = serviceProvider;
-        }
+        public ClientJobsPage(IServiceProvider serviceProvider) : base(serviceProvider) { }
 
         public override Task Initialize(BlazorAppBase app)
         {

@@ -1,4 +1,5 @@
 ﻿using SWP.UI.BlazorApp;
+using System;
 using System.Threading.Tasks;
 
 namespace SWP.UI.Components.LegalSwpBlazorComponents.App
@@ -8,9 +9,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
     {
         public LegalBlazorApp App { get; private set; }
 
-        public NoProfileWarning()
-        {
-        }
+        public NoProfileWarning(IServiceProvider serviceProvider) : base(serviceProvider) { }
 
         public override Task Initialize(BlazorAppBase app)
         {

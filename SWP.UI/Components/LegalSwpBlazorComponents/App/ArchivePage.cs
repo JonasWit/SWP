@@ -13,8 +13,6 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
     [UITransientService]
     public class ArchivePage : BlazorPageBase
     {
-        private readonly IServiceProvider serviceProvider;
-
         private GetClients GetClientsService => serviceProvider.GetService<GetClients>();
         private DeleteClient DeleteClientService => serviceProvider.GetService<DeleteClient>();
         private ArchiveClient ArchiveClientService => serviceProvider.GetService<ArchiveClient>();
@@ -23,7 +21,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         public List<ClientViewModel> ArchivizedClients { get; set; }
         public ClientViewModel SelectedArchivizedClient { get; set; }
 
-        public ArchivePage(IServiceProvider serviceProvider) => this.serviceProvider = serviceProvider;
+        public ArchivePage(IServiceProvider serviceProvider) : base(serviceProvider) { }
 
         public override Task Initialize(BlazorAppBase app)
         {

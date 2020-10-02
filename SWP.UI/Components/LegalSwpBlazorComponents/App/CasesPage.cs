@@ -20,7 +20,6 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
     {
         private readonly DialogService dialogService;
         private readonly GeneralViewModel generalViewModel;
-        private readonly IServiceProvider serviceProvider;
 
         private CreateReminder CreateReminder => serviceProvider.GetService<CreateReminder>();
         private UpdateReminder UpdateReminder => serviceProvider.GetService<UpdateReminder>();
@@ -38,11 +37,10 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         public CasesPage(
                 DialogService dialogService,
                 GeneralViewModel generalViewModel,
-                IServiceProvider serviceProvider)
+                IServiceProvider serviceProvider) : base(serviceProvider)
         {
             this.dialogService = dialogService;
             this.generalViewModel = generalViewModel;
-            this.serviceProvider = serviceProvider;
         }
 
         public override Task Initialize(BlazorAppBase app)

@@ -18,12 +18,10 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         private DeleteTimeRecord DeleteTimeRecord => serviceProvider.GetService<DeleteTimeRecord>();
         private UpdateTimeRecord UpdateTimeRecord => serviceProvider.GetService<UpdateTimeRecord>();
 
-        private readonly IServiceProvider serviceProvider;
-
         public LegalBlazorApp App { get; private set; }
         public CreateTimeRecord.Request NewTimeRecord { get; set; } = new CreateTimeRecord.Request();
 
-        public ProductivityPage(IServiceProvider serviceProvider) => this.serviceProvider = serviceProvider;
+        public ProductivityPage(IServiceProvider serviceProvider) : base(serviceProvider) { }
 
         public override Task Initialize(BlazorAppBase app)
         {

@@ -13,6 +13,9 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
         public LegalBlazorApp App { get; private set; }
 
+        public ErrorPage(IServiceProvider serviceProvider) : base(serviceProvider) { }
+
+
         public override Task Initialize(BlazorAppBase app)
         {
             App = app as LegalBlazorApp;

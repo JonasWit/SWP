@@ -1,19 +1,10 @@
-﻿using Microsoft.AspNetCore.Identity.UI.Services;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Radzen;
 using SWP.Application;
 using SWP.DataBase.Managers;
 using SWP.Domain.Infrastructure;
-using SWP.Domain.Models.Licenses;
-using SWP.UI.Components.LegalSwpBlazorComponents.ViewModels;
-using SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data;
-using SWP.UI.Services;
-using System;
-using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
 
 namespace SWP.UI
 {
@@ -73,7 +64,7 @@ namespace SWP.UI
 
             @this.AddTransient<ILegalSwpManager, LegalSwpManager>();
             @this.AddTransient<IMedicalSwpManager, MedicalSwpManager>();
-            @this.AddTransient<ILicensesManager, LicensesManager>();
+            @this.AddTransient<ILogManager, LogManager>();
 
             @this.AddScoped<DialogService>();
             @this.AddScoped<NotificationService>();

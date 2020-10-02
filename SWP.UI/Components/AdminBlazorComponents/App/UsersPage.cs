@@ -129,7 +129,7 @@ namespace SWP.UI.Components.AdminBlazorComponents.App
             if (SelectedUser.Claims.Any(x => x.Type == "Root" && x.Value == "Creator"))
             {
                 SelectedRole = 0;
-                App.ShowNotification(NotificationSeverity.Info, "Remember!", "Creator Role cannot be changed!", 5000);
+                App.ShowNotification(NotificationSeverity.Info, "Remember!", "Creator cannot be changed!", 5000);
                 return;
             }
 
@@ -295,6 +295,13 @@ namespace SWP.UI.Components.AdminBlazorComponents.App
         {
             try
             {
+                if (SelectedUser.Claims.Any(x => x.Type == "Root" && x.Value == "Creator"))
+                {
+                    Lock = false;
+                    App.ShowNotification(NotificationSeverity.Info, "Remember!", "Creator cannot be locked!", 5000);
+                    return;
+                }
+
                 var userIdentity = await userManager.FindByIdAsync(SelectedUser.Id);
 
                 if (input)

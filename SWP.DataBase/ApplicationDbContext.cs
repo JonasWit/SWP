@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using SWP.Domain.Models.General;
 using SWP.Domain.Models.Log;
 using SWP.Domain.Models.SWPLegal;
 using SWP.Domain.Models.SWPMedical;
@@ -18,8 +17,6 @@ namespace SWP.DataBase
         public DbSet<Reminder> Reminders { get; set; }
         public DbSet<Note> Notes { get; set; }
         public DbSet<CashMovement> CashMovements { get; set; }
-
-        public DbSet<UserData> LicensedUsers { get; set; }
         public DbSet<LogRecord> LogRecords { get; set; }
 
         #endregion
@@ -36,20 +33,6 @@ namespace SWP.DataBase
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
-            #region Licenses
-
-            modelBuilder.Entity<UserData>()
-                .HasMany(c => c.Licenses)
-                .WithOne(e => e.UserData)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            modelBuilder.Entity<UserData>()
-                .HasMany(c => c.LogRecords)
-                .WithOne(e => e.UserData)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            #endregion
 
             #region Legal SWP
 

@@ -8,16 +8,14 @@ namespace SWP.Domain.Infrastructure
 {
     public interface ILogManager
     {
-        Task<LogRecord> CreateLogRecord(LogRecord client);
+        Task<LogRecord> CreateLogRecord(LogRecord record);
 
         Task<int> DeleteLogRecord(int id);
 
         LogRecord GetLogRecord(int id);
 
-        TResult GetLogRecordSpecificData<TResult>(int id, Func<LogRecord, TResult> selector);
+        List<TResult> GetLogRecordSpecificData<TResult>(int id, Func<LogRecord, TResult> selector);
 
         List<LogRecord> GetGetLogRecords();
-
-        List<LogRecord> GetGetLogRecordsWithoutTraces();
     }
 }

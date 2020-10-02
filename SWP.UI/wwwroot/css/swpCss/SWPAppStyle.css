@@ -314,6 +314,7 @@ ul, li {
 }
 
 /* For 1366 Resolution */
+
 @media only screen and (min-width: 1030px) and (max-width: 1366px) {
     #grid-container-3 {
         display: grid;
@@ -341,14 +342,14 @@ ul, li {
 
     .form /*form size*/ {
         height: 250px;
-        width: 800px;
+        width: 920px;
         padding: 10px;
     }
 
     .info /*Information icon*/ {
         position: absolute;
         top:;
-        right: -40%;
+        right: -60%;
         background: url(../../Images/icons8-info-squared-36.png) no-repeat;
         cursor: pointer;
         border: none;
@@ -365,8 +366,8 @@ ul, li {
             z-index: 2;
             background: white;
             opacity: 0.3;
-            height: 35px;
-            width: 50px;
+            height: 30px;
+            width: 15px;
             transform: skew(-45deg);
             background: linear-gradient(to right, white, white 5px, transparent);
             transform-origin: left bottom;
@@ -376,7 +377,7 @@ ul, li {
     .info-2 /*Information icon*/ {
         position: absolute;
         top: 310px;
-        right: -40%;
+        right: -60%;
         background: url(../../Images/icons8-info-squared-36.png) no-repeat;
         cursor: pointer;
         border: none;
@@ -393,8 +394,8 @@ ul, li {
             z-index: 2;
             background: white;
             opacity: 0.3;
-            height: 35px;
-            width: 50px;
+            height: 30px;
+            width: 15px;
             transform: skew(-45deg);
             background: linear-gradient(to right, white, white 5px, transparent);
             transform-origin: left bottom;
@@ -417,7 +418,7 @@ ul, li {
 
     .info-text {
         position: absolute;
-        left: 120px;
+        left: 160px;
         height: 75px;
         width: 100%;
         padding: 5px;
@@ -429,7 +430,7 @@ ul, li {
     .info-text-2 {
         position: absolute;
         top: 310px;
-        left: 120px;
+        left: 160px;
         height: 75px;
         width: 100%;
         padding: 5px;
@@ -447,6 +448,203 @@ ul, li {
     .client-list {
         width: 100%;
     }
+
+}
+
+@media only screen and (min-width: 1366px) {
+
+    #grid-container-3 {
+        display: grid;
+        grid-template-columns:
+        /* 1 */ auto
+        /* 2 */ auto;
+        grid-template-rows:
+        /* 4 */ auto
+        /* 5 */ auto
+        /* 6 */ auto
+        /* 7 */ auto
+        /* 8 */ auto
+        /* 9 */ auto
+        /* 10 */ auto
+        /* 11 */ auto;
+    }
+
+    #form-box {
+        grid-column: 1 /*/ span 2*/;
+        grid-row: 1 / span 2;
+        grid-gap: 25px;
+    }
+
+    #btn-add-client {
+       margin-top: 120px;
+    }
+
+    .form /*form size*/ {
+        height: 250px;
+        width: 500px;
+        padding-top: 27px;
+    }
+
+    .info /*Information icon*/ {
+        position: absolute;
+        top: 165%;
+        right: 5%;
+        background: url(../../Images/icons8-info-squared-36.png) no-repeat;
+        cursor: pointer;
+        border: none;
+        height: 50px;
+        width: 50px;
+        outline: none !important;
+    }
+
+        .info:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 2;
+            background: white;
+            opacity: 0.3;
+            height: 30px;
+            width: 25px;
+            transform: skew(-45deg);
+            background: linear-gradient(to right, white, /*white 5px,*/ transparent);
+            transform-origin: left bottom;
+            animation: shine 5s ease-in infinite;
+        }
+
+    .info-2 /*Information icon*/ {
+        position: absolute;
+        top: 10px;
+        right: -130%;
+        background: url(../../Images/icons8-info-squared-36.png) no-repeat;
+        cursor: pointer;
+        border: none;
+        height: 50px;
+        width: 50px;
+        outline: none !important;
+    }
+
+        .info-2:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 2;
+            background: white;
+            opacity: 0.3;
+            height: 30px;
+            width: 25px;
+            transform: skew(-45deg);
+            background: linear-gradient(to right, white, /*white 5px,*/ transparent);
+            transform-origin: left bottom;
+            animation: shine 5s ease-in infinite;
+        }
+
+    @keyframes shine {
+        0% {
+            transform: skewX(-45deg) translateX(-10%);
+        }
+
+        10% {
+            transform: skewX(-45deg) translateX(100%);
+        }
+
+        100% {
+            transform: skewX(-45deg) translateX(80%);
+        }
+    }
+
+    .info-text {
+        position: absolute;
+        left: 90px;
+        height: 85px;
+        width: 350px;
+        padding: 5px;
+        background-color: #ffffff;
+        border-radius: 5px 0px 5px 0px;
+        border: 2px solid #0094ff;
+    }
+
+    .info-text-2 {
+        position: absolute;
+        right: -610px ;
+        height: 75px;
+        width: 100%;
+        padding: 5px;
+        background-color: #ffffff;
+        border-radius: 5px 0px 5px 0px;
+        border: 2px solid #0094ff;
+    }
+
+    #list {
+        grid-column: 2 /*/ span 2*/;
+        grid-row: 1 / span 3;
+        padding: 25px 5px 5px 5px;
+    }
+
+    .client-list {
+        width: 100%;
+        padding: 10px;
+        margin-right: 20px;
+    }
+    .contact-details {
+        width: 100%;
+        padding: 0;
+        margin: 0;
+    }
+
+
+    .grid-container /*form layout*/ {
+        display: grid;
+        grid-template-columns:
+        /* 1 */ 80px
+        /* 2 */ auto;
+        grid-template-rows:
+        /* 4 */ auto
+        /* 5 */ auto
+        /* 6 */ auto
+        /* 7 */ auto;
+        
+    }
+
+    #client-label {
+        grid-column: 1;
+        grid-row: 1 ;
+    }
+    #client-text {
+        grid-column: 2;
+        grid-row: 1;
+    }
+    #adress-label {
+        grid-column: 1;
+        grid-row: 2;
+    }
+    #adress-text {
+        grid-column: 2;
+        grid-row: 2;
+    }
+
+    #phone-label {
+        grid-column: 1;
+        grid-row: 3;
+    }
+
+    #phone-text {
+        grid-column: 2;
+        grid-row: 3;
+    }
+
+    #email-label {
+        grid-column: 1;
+        grid-row: 4;
+    }
+
+    #email-text {
+        grid-column: 2;
+        grid-row: 4;
+    }
+
 
 }
 

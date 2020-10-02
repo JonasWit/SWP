@@ -14,24 +14,19 @@ namespace SWP.UI.Components.AdminBlazorComponents.App
     [UITransientService]
     public class UsersPage : BlazorPageBase
     {
-        public AdminBlazorApp App { get; private set; }
+        private readonly UserManager<IdentityUser> userManager;
 
+        public AdminBlazorApp App { get; private set; }
         public int SelectedRole { get; set; } = 1;
         public bool Lock { get; set; }
         public string SelectedApplicationClaim { get; set; } = "";
         public string SelectedStatusClaim { get; set; } = "";
         public string ProfileClaimName { get; set; } = "";
-
         public RadzenGrid<Claim> ClaimsGrid { get; set; }
-
-        private readonly UserManager<IdentityUser> userManager;
-
         public List<string> StatusClaims => Enum.GetNames(typeof(UserStatus)).ToList();
         public List<string> Claims => Enum.GetNames(typeof(ApplicationType)).ToList();
         public List<string> Roles => Enum.GetNames(typeof(RoleType)).ToList();
-
         public bool Loading { get; set; }
-
         public UserModel SelectedUser { get; set; }
         public List<UserModel> Users { get; set; } = new List<UserModel>();
 

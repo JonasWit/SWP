@@ -1,7 +1,10 @@
 ﻿@using System.Security.Claims
 
 <div class="section">
-    <RadzenCard Style="margin-bottom:20px">
+    <div class="columns is-0 is-centered">
+        <h2>Users</h2>
+    </div>
+    <div class="columns is-0 is-centered">
         <RadzenGrid AllowFiltering="true"
                     AllowPaging="true"
                     PageSize="5"
@@ -25,7 +28,7 @@
                 </RadzenGridColumn>
             </Columns>
         </RadzenGrid>
-    </RadzenCard>
+    </div>
 </div>
 
 @if (App.UsersPage.SelectedUser != null)
@@ -61,33 +64,29 @@
         </div>
 
         <div class="columns is-0 is-centered">
-            <h3>Current Claims</h3>
+            <h2>Current Claims</h2>
         </div>
         <div class="columns is-0 is-centered">
-            <div class="columns">
-                <div class="column is-full">
-                    <RadzenGrid @ref="App.UsersPage.ClaimsGrid"
-                                AllowFiltering="true"
-                                AllowPaging="true"
-                                PageSize="5"
-                                AllowSorting="true"
-                                EditMode="DataGridEditMode.Single"
-                                Data="@App.UsersPage.SelectedUser.Claims"
-                                TItem="Claim">
-                        <Columns>
-                            <RadzenGridColumn TItem="Claim" Property="Type" Title="Type" />
-                            <RadzenGridColumn TItem="Claim" Property="Value" Title="Value" />
+            <RadzenGrid @ref="App.UsersPage.ClaimsGrid"
+                        AllowFiltering="true"
+                        AllowPaging="true"
+                        PageSize="5"
+                        AllowSorting="true"
+                        EditMode="DataGridEditMode.Single"
+                        Data="@App.UsersPage.SelectedUser.Claims"
+                        TItem="Claim">
+                <Columns>
+                    <RadzenGridColumn TItem="Claim" Property="Type" Title="Type" />
+                    <RadzenGridColumn TItem="Claim" Property="Value" Title="Value" />
 
-                            <RadzenGridColumn TItem="Claim" Context="claim" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="50px">
-                                <Template Context="claim">
-                                    <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@(async args => await App.UsersPage.DeleteClaimRow(claim))">
-                                    </RadzenButton>
-                                </Template>
-                            </RadzenGridColumn>
-                        </Columns>
-                    </RadzenGrid>
-                </div>
-            </div>
+                    <RadzenGridColumn TItem="Claim" Context="claim" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="50px">
+                        <Template Context="claim">
+                            <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@(async args => await App.UsersPage.DeleteClaimRow(claim))">
+                            </RadzenButton>
+                        </Template>
+                    </RadzenGridColumn>
+                </Columns>
+            </RadzenGrid>
         </div>
         <div class="columns is-vcentered is-centered">
             <div class="column is-one-third">

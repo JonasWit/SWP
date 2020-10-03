@@ -5,7 +5,6 @@ html, body {
     color: rgb(0, 0, 0);
     font-size: 12px;
     margin: 0;
-    
 }
 
 #grid-container-2 {
@@ -85,9 +84,263 @@ ul, li {
     align-self: start;
 }
 
+#footer {
+    grid-column: 2/ span 3;
+    grid-row: 10;
+
+}
+
 /*Legal SWP Clients*/
 
-.grid-container-i /*information box*/ {
+/*Page layout - main container*/
+
+.grid-container-main {
+    display: grid;
+    grid-template-columns:
+    /* 1*/ auto;
+    grid-template-rows:
+    /* 2*/ auto
+    /* 3*/ auto
+    /* 4*/ auto;
+    grid-gap: 25px;
+    padding: 25px;
+}
+
+.row-one {
+    grid-column: 1;
+    grid-row: 1;
+}
+
+.row-two {
+    grid-column: 1;
+    grid-row: 2;
+}
+
+
+/*Add client form*/
+
+.grid-form {
+    display: grid;
+    grid-template-columns:
+    /* 1*/ auto
+    /* 2*/ auto
+    /* 3*/ auto
+    /* 4*/ auto;
+    grid-template-rows:
+    /* 2*/ auto
+    /* 3*/ auto
+    /* 4*/ auto;
+  grid-gap: 10px;
+}
+.user-icon {
+    grid-column: 1;
+    grid-row: 1;
+}
+
+.info-text {
+    grid-column: 2 / span 3;
+    grid-row: 1;
+}
+.info {
+    grid-column: 4;
+    grid-row: 1;
+}
+
+
+
+#client-label {
+    grid-column: 1;
+    grid-row: 2;
+}
+
+#client-text {
+    grid-column: 2;
+    grid-row: 2;
+}
+
+#adress-label {
+    grid-column: 3;
+    grid-row: 2;
+}
+
+#adress-text {
+    grid-column: 4;
+    grid-row: 2;
+}
+
+#phone-label {
+    grid-column: 1;
+    grid-row: 3;
+}
+
+#phone-text {
+    grid-column: 2;
+    grid-row: 3;
+}
+
+#email-label {
+    grid-column: 3;
+    grid-row: 3;
+}
+
+#email-text {
+    grid-column: 4;
+    grid-row: 3;
+}
+
+    
+/*Information box and icon*/
+.info  {
+    
+    background: url(../../Images/icons8-info-squared-36.png) no-repeat;
+    cursor: pointer;
+    border: none;
+    height: 50px;
+    width: 50px;
+    outline: none !important;
+}
+
+.info:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    background: white;
+    opacity: 0.3;
+    height: 35px;
+    width: 50px;
+    transform: skew(-45deg);
+    background: linear-gradient(to right, white, white 5px, transparent);
+    transform-origin: left bottom;
+    animation: shine 5s ease-in infinite;
+}
+
+.info-text {
+    position: absolute;
+    left: 350px;
+    height: 80px;
+    width: 100%;
+    padding: 5px;
+    background-color: #ffffff;
+    border-radius: 5px 0px 5px 0px;
+    border: 2px solid #0094ff;
+}
+
+
+@keyframes shine {
+    0% {
+        transform: skewX(-45deg) translateX(-100%);
+    }
+
+    10% {
+        transform: skewX(-45deg) translateX(100%);
+    }
+
+    100% {
+        transform: skewX(-45deg) translateX(100%);
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*.grid-container form layout {
+    display: grid;
+    grid-template-columns: 45px auto 45px auto;
+    align-content: center;
+    grid-gap: 10px;
+    padding: 25px;
+    margin-top: 20px;
+}
+
+
+.grid-container form layout {
+    display: grid;
+    grid-template-columns:
+     1  80px
+     2  auto
+     3  auto;
+    grid-template-rows:
+     4 auto
+     5  auto
+     6  auto
+     7  auto;
+    grid-gap: 1em;
+}
+
+
+
+
+#client-label {
+    grid-column: 1;
+    grid-row: 1;
+}
+
+#client-text {
+    grid-column: 2;
+    grid-row: 1;
+}
+
+#adress-label {
+    grid-column: 1;
+    grid-row: 2;
+}
+
+#adress-text {
+    grid-column: 2;
+    grid-row: 2;
+}
+
+#phone-label {
+    grid-column: 1;
+    grid-row: 3;
+}
+
+#phone-text {
+    grid-column: 2;
+    grid-row: 3;
+}
+
+#email-label {
+    grid-column: 1;
+    grid-row: 4;
+}
+
+#email-text {
+    grid-column: 2;
+    grid-row: 4;
+}
+
+
+.form form size {
+    height: 250px;
+    width: 650px;
+}
+
+.grid-container-i*/ /*information box {
     display: grid;
     grid-template-columns: 500px 20px;
     align-content: center;
@@ -98,24 +351,12 @@ ul, li {
     top: 90px;
 }
 
-.grid-container /*form layout*/ {
-    display: grid;
-    grid-template-columns: 45px auto 45px auto;
-    align-content: center;
-    grid-gap: 10px;
-    padding: 25px;
-    margin-top: 20px;
-}
 
-/*.form*/ /*form size*/ /*{
-    height: 250px;
-    width: 650px;
-}*/
 
-/*.info*/ /*Information icon*/ /*{
-    position: absolute;
-    top: 5px;
-    right: -15%;
+
+.info Information icon {
+    grid-column: 3;
+    grid-row: 1;
     background: url(../../Images/icons8-info-squared-36.png) no-repeat;
     cursor: pointer;
     border: none;
@@ -140,6 +381,18 @@ ul, li {
         animation: shine 5s ease-in infinite;
     }
 
+.info-text {
+    position: absolute;
+    left: 350px;
+    height: 80px;
+    width: 100%;
+    padding: 5px;
+    background-color: #ffffff;
+    border-radius: 5px 0px 5px 0px;
+    border: 2px solid #0094ff;
+}
+
+
 @keyframes shine {
     0% {
         transform: skewX(-45deg) translateX(-100%);
@@ -152,23 +405,13 @@ ul, li {
     100% {
         transform: skewX(-45deg) translateX(100%);
     }
-}*/
-
-/*.info-text {
-    position: absolute;
-    left: 350px;
-    height: 80px;
-    width: 100%;
-    padding: 5px;
-    background-color: #ffffff;
-    border-radius: 5px 0px 5px 0px;
-    border: 2px solid #0094ff;
 }
-*/
 
 
 
-/* For 1280 Resolution */
+
+
+ For 1280 Resolution 
 @media only screen and (min-device-width : 768px) and (max-device-width : 1280px) {
 
 
@@ -176,12 +419,12 @@ ul, li {
     #grid-container-3 {
         display: grid;
         grid-template-columns:
-        /* 1 */ auto
-        /* 2 */ auto;
+ 1  auto
+ 2  auto;
         grid-template-rows:
-        /* 4 */ auto
-        /* 5 */ auto
-        /* 6 */ auto;
+ 4  auto
+ 5  auto
+ 6  auto;
         
         
     }
@@ -199,13 +442,13 @@ ul, li {
         align-content: center;
     }
 
-    .form /*form size*/ {
+    .form form size {
         height: 250px;
         width: 800px;
         padding: 10px;
     }
 
-    .info /*Information icon*/ {
+    .info Information icon {
         position: absolute;
         top: ;
         right: -40%;
@@ -233,7 +476,7 @@ ul, li {
             animation: shine 5s ease-in infinite;
         }
 
-    .info-2 /*Information icon*/ {
+    .info-2 Information icon {
         position: absolute;
         top: 310px;
         right: -40%;
@@ -313,18 +556,18 @@ ul, li {
     }
 }
 
-/* For 1366 Resolution */
+ For 1366 Resolution 
 
 @media only screen and (min-width: 1030px) and (max-width: 1366px) {
     #grid-container-3 {
         display: grid;
         grid-template-columns:
-        /* 1 */ auto
-        /* 2 */ auto;
+ 1  auto
+ 2  auto;
         grid-template-rows:
-        /* 4 */ auto
-        /* 5 */ auto
-        /* 6 */ auto;
+ 4  auto
+ 5  auto
+ 6  auto;
     }
 
     #form-box {
@@ -340,13 +583,13 @@ ul, li {
         align-content: center;
     }
 
-    .form /*form size*/ {
+    .form form size {
         height: 250px;
         width: 920px;
         padding: 10px;
     }
 
-    .info /*Information icon*/ {
+    .info Information icon {
         position: absolute;
         top:;
         right: -60%;
@@ -374,7 +617,7 @@ ul, li {
             animation: shine 5s ease-in infinite;
         }
 
-    .info-2 /*Information icon*/ {
+    .info-2 Information icon {
         position: absolute;
         top: 310px;
         right: -60%;
@@ -456,21 +699,21 @@ ul, li {
     #grid-container-3 {
         display: grid;
         grid-template-columns:
-        /* 1 */ auto
-        /* 2 */ auto;
+ 1  auto
+ 2  auto;
         grid-template-rows:
-        /* 4 */ auto
-        /* 5 */ auto
-        /* 6 */ auto
-        /* 7 */ auto
-        /* 8 */ auto
-        /* 9 */ auto
-        /* 10 */ auto
-        /* 11 */ auto;
+ 4  auto
+ 5  auto
+ 6  auto
+ 7  auto
+ 8  auto
+ 9  auto
+ 10  auto
+ 11  auto;
     }
 
     #form-box {
-        grid-column: 1 /*/ span 2*/;
+        grid-column: 1 / span 2 ;
         grid-row: 1 / span 2;
         grid-gap: 25px;
     }
@@ -479,13 +722,13 @@ ul, li {
        margin-top: 120px;
     }
 
-    .form /*form size*/ {
+    .form form size {
         height: 250px;
         width: 500px;
         padding-top: 27px;
     }
 
-    .info /*Information icon*/ {
+    .info Information icon {
         position: absolute;
         top: 165%;
         right: 5%;
@@ -508,12 +751,12 @@ ul, li {
             height: 30px;
             width: 25px;
             transform: skew(-45deg);
-            background: linear-gradient(to right, white, /*white 5px,*/ transparent);
+            background: linear-gradient(to right, white, white 5px, transparent);
             transform-origin: left bottom;
             animation: shine 5s ease-in infinite;
         }
 
-    .info-2 /*Information icon*/ {
+    .info-2 Information icon {
         position: absolute;
         top: 10px;
         right: -130%;
@@ -536,7 +779,7 @@ ul, li {
             height: 30px;
             width: 25px;
             transform: skew(-45deg);
-            background: linear-gradient(to right, white, /*white 5px,*/ transparent);
+            background: linear-gradient(to right, white, white 5px, transparent);
             transform-origin: left bottom;
             animation: shine 5s ease-in infinite;
         }
@@ -578,7 +821,7 @@ ul, li {
     }
 
     #list {
-        grid-column: 2 /*/ span 2*/;
+        grid-column: 2 / span 2 ;
         grid-row: 1 / span 3;
         padding: 25px 5px 5px 5px;
     }
@@ -595,16 +838,16 @@ ul, li {
     }
 
 
-    .grid-container /*form layout*/ {
+    .grid-container form layout {
         display: grid;
         grid-template-columns:
-        /* 1 */ 80px
-        /* 2 */ auto;
+ 1  80px
+ 2  auto;
         grid-template-rows:
-        /* 4 */ auto
-        /* 5 */ auto
-        /* 6 */ auto
-        /* 7 */ auto;
+ 4  auto
+ 5  auto
+ 6  auto
+ 7  auto;
         
     }
 
@@ -677,11 +920,11 @@ ul, li {
 
 
 
-/*.contact-details {
+.contact-details {
     margin-bottom: 50px;
     height: 180px;
-}*/
-/*/*.info-text {
+}
+/*.info-text {
     animation: moveLeft ease 1s;
     animation-timing-function: ease;
 }
@@ -714,12 +957,6 @@ ul, li {
     100% {
         opacity: 1;
     }
-}
-*/
-#footer {
-    grid-column: 2/ span 3;
-    grid-row: 10;
-    /*background-image: url(../../Images/19366.jpg);
-    background-repeat: no-repeat;
-    background-position: right center;*/
-}
+}*/
+
+

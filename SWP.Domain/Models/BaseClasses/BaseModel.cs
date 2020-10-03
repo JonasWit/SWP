@@ -9,15 +9,11 @@ namespace SWP.Domain.Models.BaseClasses
     {
         [Key]
         public int Id { get; set; }
-
         public DateTime Created { get; set; }
-
         public DateTime Updated { get; set; }
-
         [MaxLength(50)]
         [Required]
         public string UpdatedBy { get; set; }
-
         [MaxLength(50)]
         [Required]
         public string CreatedBy { get; set; }

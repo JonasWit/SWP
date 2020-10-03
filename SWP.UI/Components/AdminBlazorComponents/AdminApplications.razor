@@ -3,7 +3,8 @@
         <h2>Recorded Exceptions</h2>
     </div>
     <div class="columns is-0 is-centered">
-        <RadzenGrid AllowFiltering="true"
+        <RadzenGrid @ref="App.ApplicationsPage.LogGrid"
+                    AllowFiltering="true"
                     AllowPaging="true"
                     PageSize="5"
                     AllowSorting="true"
@@ -26,3 +27,27 @@
         </RadzenGrid>
     </div>
 </div>
+
+@if (App.ApplicationsPage.SelectedLogRecord != null)
+{
+    <div class="section">
+        <div class="columns is-0 is-centered">
+            <h2>Exception Message</h2>
+        </div>
+        <div class="columns is-0 is-centered">
+            <p>@App.ApplicationsPage.SelectedLogRecord.Message</p>
+        </div>
+    </div>
+    <div class="section">
+        <div class="columns is-0 is-centered">
+            <h2>Exception Stack</h2>
+        </div>
+        <div class="columns is-0 is-centered">
+            <p>@App.ApplicationsPage.SelectedLogRecord.StackTrace</p>
+        </div>
+    </div>
+}
+
+
+<RadzenButton Click="App.ApplicationsPage.TestExceptionThrow">Test Exception</RadzenButton>
+<RadzenButton Click="App.ApplicationsPage.RefreshLog">Refresh</RadzenButton>

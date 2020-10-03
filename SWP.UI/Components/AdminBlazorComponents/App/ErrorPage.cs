@@ -21,16 +21,17 @@ namespace SWP.UI.Components.AdminBlazorComponents.App
             return Task.CompletedTask;
         }
 
-        public void DisplayMessage(Exception ex)
+        public Task DisplayMessage(Exception ex)
         {
             Exception = ex;
             App.SetActivePanel(AdminBlazorApp.Panels.Error);
             RefreshApp();
+            return CreateLog(App.User.UserName, ex.Message, ex.StackTrace);
         }
 
         public void DismissMessage()
         {
-            App.SetActivePanel(AdminBlazorApp.Panels.Error);
+            App.SetActivePanel(AdminBlazorApp.Panels.Applications);
             RefreshApp();
         }
 

@@ -15,7 +15,7 @@ namespace SWP.UI.Components.AdminBlazorComponents.ViewModels
         public DateTime Created { get; set; }
 
         public static implicit operator LogRecordViewModel(LogRecord input) =>
-            new LogRecord
+            new LogRecordViewModel
             {
                 Id = input.Id,
                 UserId = input.UserId,

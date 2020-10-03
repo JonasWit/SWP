@@ -36,6 +36,9 @@
             case AdminBlazorApp.Panels.Applications:
                 <AdminApplications @bind-App="App" />
                 break;
+            case AdminBlazorApp.Panels.Error:
+                <AdminError @bind-App="App" />
+                break;
             default:
                 break;
         }

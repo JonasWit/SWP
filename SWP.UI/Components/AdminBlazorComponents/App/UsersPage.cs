@@ -23,6 +23,7 @@ namespace SWP.UI.Components.AdminBlazorComponents.App
         public string SelectedStatusClaim { get; set; } = "";
         public string ProfileClaimName { get; set; } = "";
         public RadzenGrid<Claim> ClaimsGrid { get; set; }
+        public RadzenGrid<UserModel> UsersGrid { get; set; }
         public List<string> StatusClaims => Enum.GetNames(typeof(UserStatus)).ToList();
         public List<string> Claims => Enum.GetNames(typeof(ApplicationType)).ToList();
         public List<string> Roles => Enum.GetNames(typeof(RoleType)).ToList();
@@ -151,7 +152,7 @@ namespace SWP.UI.Components.AdminBlazorComponents.App
             }
             catch (Exception ex)
             {
-                App.ErrorPage.DisplayMessage(ex);
+                await App.ErrorPage.DisplayMessage(ex);
             }
         }
 
@@ -172,7 +173,7 @@ namespace SWP.UI.Components.AdminBlazorComponents.App
             }
             catch (Exception ex)
             {
-                App.ErrorPage.DisplayMessage(ex);
+                await App.ErrorPage.DisplayMessage(ex);
             }
         }
 
@@ -196,7 +197,7 @@ namespace SWP.UI.Components.AdminBlazorComponents.App
                 }
                 catch (Exception ex)
                 {
-                    App.ErrorPage.DisplayMessage(ex);
+                    await App.ErrorPage.DisplayMessage(ex);
                 }
             }
 
@@ -231,7 +232,7 @@ namespace SWP.UI.Components.AdminBlazorComponents.App
                 }
                 catch (Exception ex)
                 {
-                    App.ErrorPage.DisplayMessage(ex);
+                    await App.ErrorPage.DisplayMessage(ex);
                 }
             }
             else
@@ -269,7 +270,7 @@ namespace SWP.UI.Components.AdminBlazorComponents.App
                 }
                 catch (Exception ex)
                 {
-                    App.ErrorPage.DisplayMessage(ex);
+                    await App.ErrorPage.DisplayMessage(ex);
                 }
             }
             else
@@ -306,7 +307,7 @@ namespace SWP.UI.Components.AdminBlazorComponents.App
                 }
                 catch (Exception ex)
                 {
-                    App.ErrorPage.DisplayMessage(ex);
+                    await App.ErrorPage.DisplayMessage(ex);
                 }
             }
             else
@@ -355,7 +356,7 @@ namespace SWP.UI.Components.AdminBlazorComponents.App
             }
             catch (Exception ex)
             {
-                App.ErrorPage.DisplayMessage(ex);
+                await App.ErrorPage.DisplayMessage(ex);
             }
         }
 
@@ -376,7 +377,7 @@ namespace SWP.UI.Components.AdminBlazorComponents.App
             }
             catch (Exception ex)
             {
-                App.ErrorPage.DisplayMessage(ex);
+                await App.ErrorPage.DisplayMessage(ex);
             }
         }
     }

@@ -5,7 +5,8 @@
         <h2>Users</h2>
     </div>
     <div class="columns is-0 is-centered">
-        <RadzenGrid AllowFiltering="true"
+        <RadzenGrid @ref="App.UsersPage.UsersGrid"
+                    AllowFiltering="true"
                     AllowPaging="true"
                     PageSize="5"
                     AllowSorting="true"

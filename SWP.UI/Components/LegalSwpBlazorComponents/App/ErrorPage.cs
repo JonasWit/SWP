@@ -26,7 +26,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             Exception = ex;
             App.SetActivePanel(LegalBlazorApp.Panels.ErrorPage);
             RefreshApp();
-            return CreateLog(App.ActiveUserId, ex.Message, ex.StackTrace);
+            return CreateLog(App.User.UserName, ex.Message, ex.StackTrace);
         }
 
         public void DismissMessage()

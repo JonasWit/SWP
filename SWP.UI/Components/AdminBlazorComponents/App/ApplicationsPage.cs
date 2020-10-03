@@ -1,6 +1,9 @@
-﻿using SWP.Domain.Models.Log;
+﻿using Radzen;
+using Radzen.Blazor;
+using SWP.Domain.Models.Log;
 using SWP.UI.BlazorApp;
 using SWP.UI.Components.AdminBlazorComponents.ViewModels;
+using SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +17,7 @@ namespace SWP.UI.Components.AdminBlazorComponents.App
         public AdminBlazorApp App { get; set; }
         public LogRecordViewModel SelectedLogRecord { get; set; }
         public List<LogRecordViewModel> LogRecords { get; set; } = new List<LogRecordViewModel>();
+        public RadzenGrid<LogRecordViewModel> LogGrid { get; set; }
 
         public ApplicationsPage(IServiceProvider serviceProvider) : base(serviceProvider) { }
 
@@ -28,17 +32,30 @@ namespace SWP.UI.Components.AdminBlazorComponents.App
 
         public void RowSelected(object args) => SelectedLogRecord = (LogRecordViewModel)args;
 
-        public async Task DeleteLogRecord(LogRecordViewModel logRecord)
+        public void TestExceptionThrow()
         {
             try
             {
-
-
-
+                throw new Exception("Test Exception");
             }
             catch (Exception ex)
             {
                 App.ErrorPage.DisplayMessage(ex);
+            }
+        }
+
+        public async Task DeleteLogRecord(LogRecordViewModel logRecord)
+        {
+            try
+            {
+                await DeleteLog(logRecord.Id);
+                LogRecords.RemoveAll(x => x.Id == logRecord.Id);
+                await LogGrid.Reload();
+                App.ShowNotification(NotificationSeverity.Warning, "Deleted!", $"Rekord: {logRecord.Message} has been deleted.", 5000);
+            }
+            catch (Exception ex)
+            {
+                await App.ErrorPage.DisplayMessage(ex);
             }
         }
     }

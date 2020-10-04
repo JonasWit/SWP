@@ -134,7 +134,7 @@ else
                         <div class="col-md-6">
                             <RadzenScheduler @ref="App.CasesPage.CasesScheduler" style="height: 768px;" TItem="ReminderViewModel" Data="@App.ActiveClientWithData.SelectedCase.Reminders" StartProperty="Start" EndProperty="End" TextProperty="Name" SelectedIndex="2" SlotSelect="@App.CasesPage.OnSlotSelect" AppointmentSelect="@App.CasesPage.OnAppointmentSelect" AppointmentRender="@App.CasesPage.OnAppointmentRender" TodayText="Dzisiaj">
                                 <Template Context="data">
-                                    <strong>@data.Name</strong>
+                                    <span>@($"{data.Start.ToString("HH:mm")} {data.Name}")</span>
                                 </Template>
                                 <ChildContent>
                                     <RadzenDayView Text="Dzień" StartTime="@(new TimeSpan(0, 0, 0))" EndTime="@(new TimeSpan(24, 0, 0))" />
@@ -245,7 +245,7 @@ else
                         </div>
                         <div class="col-md-4">
                             @if (App.ActiveClientWithData.SelectedCase != null &&
-                                App.ActiveClientWithData.SelectedCase.SelectedNote != null)
+                               App.ActiveClientWithData.SelectedCase.SelectedNote != null)
                             {
                                 <RadzenCard Style="margin-bottom:20px">
                                     Note:

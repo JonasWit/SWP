@@ -20,6 +20,9 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
         public bool clientListInfoVisible = false;
         public void ShowHideClientI() => clientListInfoVisible = !clientListInfoVisible;
 
+        public bool showFormVisible = false;
+        public void ShowHideForm() => showFormVisible = !showFormVisible;
+
 
 
     }

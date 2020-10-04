@@ -87,7 +87,6 @@ ul, li {
 #footer {
     grid-column: 2/ span 3;
     grid-row: 10;
-
 }
 
 /*Legal SWP Clients*/
@@ -97,24 +96,39 @@ ul, li {
 .grid-container-main {
     display: grid;
     grid-template-columns:
-    /* 1*/ auto;
+    /* 1*/ auto
+    /* 2*/ auto;
     grid-template-rows:
     /* 2*/ auto
     /* 3*/ auto
     /* 4*/ auto;
-    grid-gap: 25px;
     padding: 25px;
 }
 
-.row-one {
+.show-hide {
     grid-column: 1;
     grid-row: 1;
+    border-bottom: 2px solid #0094ff;
+}
+
+.show-hide-btn {
+    border-radius: 5px 0px 5px 0px;
+    border: 2px solid #0094ff;
+    padding: 5px;
+}
+
+
+.row-one {
+    grid-column: 1;
+    grid-row: 2;
+    border: 2px solid #0094ff;
 }
 
 .row-two {
     grid-column: 1;
-    grid-row: 2;
+    grid-row: 3;
 }
+
 
 
 /*Add client form*/
@@ -122,76 +136,86 @@ ul, li {
 .grid-form {
     display: grid;
     grid-template-columns:
-    /* 1*/ auto
+    /* 1*/ 50px
     /* 2*/ auto
-    /* 3*/ auto
+    /* 3*/ 50px
     /* 4*/ auto;
     grid-template-rows:
     /* 2*/ auto
     /* 3*/ auto
-    /* 4*/ auto;
-  grid-gap: 10px;
+    /* 4*/ auto
+    /* 5*/ auto
+    /* 6*/ auto;
+    grid-column-gap: 5px;
+    grid-row-gap: 25px;
 }
+
 .user-icon {
     grid-column: 1;
     grid-row: 1;
 }
 
 .info-text {
-    grid-column: 2 / span 3;
-    grid-row: 1;
+    grid-column: 1 / span 4;
+    grid-row: 2;
 }
+
 .info {
     grid-column: 4;
     grid-row: 1;
+    justify-self: end;
 }
-
-
 
 #client-label {
     grid-column: 1;
-    grid-row: 2;
+    grid-row: 3;
 }
 
 #client-text {
     grid-column: 2;
-    grid-row: 2;
+    grid-row: 3;
 }
 
 #adress-label {
     grid-column: 3;
-    grid-row: 2;
+    grid-row: 3;
 }
 
 #adress-text {
     grid-column: 4;
-    grid-row: 2;
+    grid-row: 3;
 }
 
 #phone-label {
     grid-column: 1;
-    grid-row: 3;
+    grid-row: 4;
 }
 
 #phone-text {
     grid-column: 2;
-    grid-row: 3;
+    grid-row: 4;
 }
 
 #email-label {
     grid-column: 3;
-    grid-row: 3;
+    grid-row: 4;
 }
 
 #email-text {
     grid-column: 4;
-    grid-row: 3;
+    grid-row: 4;
 }
 
-    
+#btn-add-client {
+    grid-column: 1 / span 4;
+    grid-row: 5;
+    justify-self: center;
+}
+
+
 /*Information box and icon*/
-.info  {
-    
+.info {
+    position: relative;
     background: url(../../Images/icons8-info-squared-36.png) no-repeat;
     cursor: pointer;
     border: none;
@@ -200,31 +224,31 @@ ul, li {
     outline: none !important;
 }
 
-.info:before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 2;
-    background: white;
-    opacity: 0.3;
-    height: 35px;
-    width: 50px;
-    transform: skew(-45deg);
-    background: linear-gradient(to right, white, white 5px, transparent);
-    transform-origin: left bottom;
-    animation: shine 5s ease-in infinite;
-}
+    .info:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 2;
+        background: white;
+        opacity: 0.3;
+        height: 35px;
+        width: 50px;
+        transform: skew(-45deg);
+        background: linear-gradient(to right, white, white 5px, transparent);
+        transform-origin: left bottom;
+        animation: shine 5s ease-in infinite;
+    }
+
+
 
 .info-text {
-    position: absolute;
-    left: 350px;
-    height: 80px;
-    width: 100%;
-    padding: 5px;
+    height: auto;
+    width: auto;
     background-color: #ffffff;
     border-radius: 5px 0px 5px 0px;
     border: 2px solid #0094ff;
+    padding: 5px;
 }
 
 
@@ -241,7 +265,6 @@ ul, li {
         transform: skewX(-45deg) translateX(100%);
     }
 }
-
 
 
 

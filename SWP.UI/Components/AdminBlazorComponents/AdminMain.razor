@@ -1,7 +1,14 @@
 ﻿@inject AdminBlazorApp App
 
 <nav class="navbar has-shadow is-fixed-top is-white">
-    <div class="navbar-menu">
+    <div class="navbar-brand">
+        <a @onclick="ActivateNavBurger" class="navbar-burger @(hamburgerNavActive ? "is-active" : "")">
+            <span></span>
+            <span></span>
+            <span></span>
+        </a>
+    </div>
+    <div class="navbar-menu @(hamburgerNavActive ? "is-active" : "")">
         <div class="navbar-start">
             <a class="navbar-item" @onclick="@(() => App.SetActivePanel(AdminBlazorApp.Panels.Users))">
                 Users
@@ -13,7 +20,6 @@
                 Applications
             </a>
         </div>
-
         <div class="navbar-end">
             <a class="navbar-item" href="/Index">
                 <span>Exit</span>

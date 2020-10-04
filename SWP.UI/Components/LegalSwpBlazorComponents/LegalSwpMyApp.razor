@@ -6,8 +6,8 @@
     <RadzenListBox AllowFiltering="true" @bind-Value="RelatedUsersFilterValue" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" Data="@App.User.RelatedUsers" TextProperty="UserName" ValueProperty="Id" Style="margin-bottom: 20px; height:200px;" Change="@(args => App.MyAppPage.SelectedUserChange(args))" />
 
     @if (App.MyAppPage.SelectedUser != null &&
-    App.User.RootClient &&
-    App.ActiveUserId != App.MyAppPage.SelectedUser.Id)
+ App.User.RootClient &&
+ App.ActiveUserId != App.MyAppPage.SelectedUser.Id)
     {
         <h1>Mozna skasowac</h1>
         <RadzenButton Text="Usuń powiązanie!" Click="App.MyAppPage.RemoveRelation"></RadzenButton>
@@ -30,12 +30,13 @@
                     <RadzenMarkers MarkerType="MarkerType.Circle" />
                 </RadzenLineSeries>
             }
-            <RadzenCategoryAxis Padding="20" />
+            <RadzenCategoryAxis>
+                <RadzenAxisTitle Text="Czas" />
+            </RadzenCategoryAxis>
             <RadzenValueAxis Formatter="@FormatAsPLN">
                 <RadzenGridLines Visible="true" />
                 <RadzenAxisTitle Text="Bilans w PLN" />
             </RadzenValueAxis>
-
         </RadzenChart>
     </div>
 
@@ -47,7 +48,9 @@
                     <RadzenMarkers MarkerType="MarkerType.Circle" />
                 </RadzenLineSeries>
             }
-            <RadzenCategoryAxis />
+            <RadzenCategoryAxis>
+                <RadzenAxisTitle Text="Czas" />
+            </RadzenCategoryAxis>
             <RadzenValueAxis Formatter="@FormatAsTime">
                 <RadzenGridLines Visible="true" />
                 <RadzenAxisTitle Text="Czas poświęcony klientom" />
@@ -63,7 +66,9 @@
                     <RadzenMarkers MarkerType="MarkerType.Circle" />
                 </RadzenLineSeries>
             }
-            <RadzenCategoryAxis Padding="20" />
+            <RadzenCategoryAxis>
+                <RadzenAxisTitle Text="Czas" />
+            </RadzenCategoryAxis>
             <RadzenValueAxis Formatter="@FormatAsPLN">
                 <RadzenGridLines Visible="true" />
                 <RadzenAxisTitle Text="PLN / godzinę" />

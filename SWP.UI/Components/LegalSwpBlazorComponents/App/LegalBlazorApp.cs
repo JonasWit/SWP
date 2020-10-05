@@ -151,8 +151,6 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
         public void SetActivePanel(Panels panel) => ActivePanel = panel;
 
-        public void ForceRefresh() => OnCallStateHasChanged(null);
-
         public void ShowNotification(NotificationSeverity severity, string summary, string detail, int duration) =>
             notificationService.Notify(new NotificationMessage() { Severity = severity, Summary = summary, Detail = detail, Duration = duration });
 
@@ -224,6 +222,5 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         }
 
         #endregion
-
     }
 }

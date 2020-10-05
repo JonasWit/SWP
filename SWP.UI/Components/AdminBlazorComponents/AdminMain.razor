@@ -10,13 +10,13 @@
     </div>
     <div class="navbar-menu @(hamburgerNavActive ? "is-active" : "")">
         <div class="navbar-start">
-            <a class="navbar-item" @onclick="@(() => App.SetActivePanel(AdminBlazorApp.Panels.Users))">
+            <a class="navbar-item @(App.ActivePanel == AdminBlazorApp.Panels.Users ? "is-active" : "")" @onclick="@(() => App.SetActivePanel(AdminBlazorApp.Panels.Users))">
                 Users
             </a>
-            <a class="navbar-item" @onclick="@(() => App.SetActivePanel(AdminBlazorApp.Panels.Database))">
+            <a class="navbar-item @(App.ActivePanel == AdminBlazorApp.Panels.Database ? "is-active" : "")" @onclick="@(() => App.SetActivePanel(AdminBlazorApp.Panels.Database))">
                 Database
             </a>
-            <a class="navbar-item" @onclick="@(() => App.SetActivePanel(AdminBlazorApp.Panels.Applications))">
+            <a class="navbar-item @(App.ActivePanel == AdminBlazorApp.Panels.Applications ? "is-active" : "")" @onclick="@(() => App.SetActivePanel(AdminBlazorApp.Panels.Applications))">
                 Applications
             </a>
         </div>

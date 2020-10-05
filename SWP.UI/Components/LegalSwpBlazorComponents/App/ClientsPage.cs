@@ -156,7 +156,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             var input = (ClientViewModel)value;
             if (value != null)
             {
-                SelectedClient = input;
+                SelectedClient = App.Clients.FirstOrDefault(x => x.Id == input.Id);
             }
             else
             {

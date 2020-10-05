@@ -47,8 +47,6 @@ namespace SWP.UI.Components.AdminBlazorComponents.App
             Applications = 3
         }
 
-        public void ForceRefresh() => OnCallStateHasChanged(null);
-
         public override async Task Initialize(string activeUserId)
         {
             if (Initialized)

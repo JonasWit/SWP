@@ -30,7 +30,18 @@ namespace SWP.UI.Components.AdminBlazorComponents.App
 
         public void RefreshLog() => LogRecords = new List<LogRecordViewModel>(GetLogs().Select(x => (LogRecordViewModel)x));
 
-        public void RowSelected(object args) => SelectedLogRecord = (LogRecordViewModel)args;
+        public void RowSelected(object value)
+        {
+            var input = (LogRecordViewModel)value;
+            if (value != null)
+            {
+                SelectedLogRecord = LogRecords.FirstOrDefault(x => x.Id == input.Id);
+            }
+            else
+            {
+                SelectedLogRecord = null;
+            }
+        }
 
         public void TestExceptionThrow()
         {
@@ -51,7 +62,13 @@ namespace SWP.UI.Components.AdminBlazorComponents.App
                 await DeleteLog(logRecord.Id);
                 LogRecords.RemoveAll(x => x.Id == logRecord.Id);
                 await LogGrid.Reload();
-                App.ShowNotification(NotificationSeverity.Warning, "Deleted!", $"Rekord: {logRecord.Message} has been deleted.", 5000);
+
+                if (SelectedLogRecord.Id == logRecord.Id)
+                {
+                    SelectedLogRecord = null;
+                }
+                    
+                App.ShowNotification(NotificationSeverity.Warning, "Deleted!", $"Record: {logRecord.Message} has been deleted.", 5000);
             }
             catch (Exception ex)
             {

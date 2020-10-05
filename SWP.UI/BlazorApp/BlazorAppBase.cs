@@ -19,5 +19,7 @@ namespace SWP.UI.BlazorApp
         protected virtual void OnCallStateHasChanged(EventArgs e) => CallStateHasChanged?.Invoke(this, e);
 
         public abstract Task Initialize(string activeUserId);
+
+        public void ForceRefresh() => OnCallStateHasChanged(null);
     }
 }

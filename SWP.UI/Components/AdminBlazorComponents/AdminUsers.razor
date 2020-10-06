@@ -32,6 +32,16 @@
     </div>
 </div>
 
+<div class="section">
+    <div class="columns is-0 is-centered">
+        <h2>All Active Profiles</h2>
+    </div>
+    <div class="columns is-0 is-centered">
+        @*<RadzenListBox AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" @bind-Value="value" Data="@customers" TextProperty="CompanyName" ValueProperty="CustomerID"
+                       Change="@(args => Change(args, "ListBox with filtering"))" Style="margin-bottom: 20px; height:200px;" />*@
+    </div>
+</div>
+
 @if (App.UsersPage.SelectedUser != null)
 {
     <div class="section">

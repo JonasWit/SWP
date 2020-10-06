@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace SWP.UI.Components.AdminBlazorComponents.App
 {
@@ -27,9 +28,11 @@ namespace SWP.UI.Components.AdminBlazorComponents.App
         public List<string> StatusClaims => Enum.GetNames(typeof(UserStatus)).ToList();
         public List<string> Claims => Enum.GetNames(typeof(ApplicationType)).ToList();
         public List<string> Roles => Enum.GetNames(typeof(RoleType)).ToList();
+        private UserManager<IdentityUser> UserManager => serviceProvider.GetService<UserManager<IdentityUser>>();
         public bool Loading { get; set; }
         public UserModel SelectedUser { get; set; }
         public List<UserModel> Users { get; set; } = new List<UserModel>();
+        public List<string> AllProfiles { get; set; } = new List<string>();
 
         public class UserModel
         {
@@ -64,9 +67,33 @@ namespace SWP.UI.Components.AdminBlazorComponents.App
         public override async Task Initialize(BlazorAppBase app)
         {
             App = app as AdminBlazorApp;
-
+            await GetActiveProfiles();
             await GetUsers();
             SelectedRole = SelectedUser.UserRoleInt;
+        }
+
+        private async Task<List<string>> GetActiveProfiles()
+        {
+            var results = new List<string>();
+            var users = UserManager.Users.ToList();
+
+            foreach (var user in users)
+            {
+                var claims = await UserManager.GetClaimsAsync(user);
+
+                foreach (var claim in claims)
+                {
+                    if (claim.Type == ClaimType.Profile.ToString())
+                    {
+                        if (!results.Contains(claim.Value))
+                        {
+                            results.Add(claim.Value);
+                        }
+                    }
+                }
+            }
+
+            return results;
         }
 
         public async Task GetUsers()

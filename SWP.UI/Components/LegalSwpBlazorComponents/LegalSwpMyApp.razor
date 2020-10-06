@@ -20,6 +20,7 @@
 
     @if (App.MyAppPage.ClientsCases.Count != 0)
     {
+        <h1>Liczba spraw poszczególnych klientów</h1>
         <div class="row">
             <RadzenChart ColorScheme="@App.MyAppPage.ColorScheme">
                 <RadzenPieSeries Data="@App.MyAppPage.ClientsCases" Title="Sprawy" CategoryProperty="Category" ValueProperty="Number" />

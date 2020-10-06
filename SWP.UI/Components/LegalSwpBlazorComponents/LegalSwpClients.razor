@@ -62,95 +62,95 @@
         </div>
     }
 
-
     <div class="show-hide second-tab-section"><button class="show-hide-btn show-hide-btn-1 @(showClientListVisible ? "button-active" : "")" @onclick="ShowHideClientsList"><span>Pokaż Listę Klientów</span></button></div>
     @if (showClientListVisible)
     {
         <div class="row-two" id="list">
             <div class="client-list">
-                <RadzenGrid @ref="App.ClientsPage.ClientsGrid" AllowFiltering="true" AllowPaging="true" PageSize="10" AllowSorting="true"
-                            Data="@App.Clients" TItem="ClientViewModel" RowUpdate="@App.ClientsPage.OnUpdateClientRow" RowSelect="@(args => App.ClientsPage.ClientSelected(args))">
-                    <Columns>
-                        <div class="grid-container-i">
-                            @if (clientListInfoVisible)
-                            {
-                                <div class="info-text-2">
-                                    <p>Zarządzaj listą swoich klientów. Użyj guzika "Dodaj Nowego Klienta",aby uzupełnić listę kontaktów.</p>
-                                    <p>Edytuj oraz usuwaj Klientów z głównej listy. Tekst do zupełnienia.</p>
-                                </div>
-                            }
-                            <div>
-                                <button class="info-2" @onclick="ShowHideClientI"></button>
-                            </div>
-                        </div>
+                <i class="user-icon"><img src="/Images/icons8-reception-36.png" /></i>
 
-                        <RadzenGridColumn TItem="ClientViewModel" Property="Name" Title="Nazwa" Width="100px">
-                            <EditTemplate Context="client">
-                                <RadzenTextBox @bind-Value="client.Name" Name="Nazwa" />
-                                <RadzenRequiredValidator Text="Nazwa nie może być pusta!" Component="Nazwa" Popup="true" />
-                                <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Nazwa" Popup="true" />
-                            </EditTemplate>
-                        </RadzenGridColumn>
-                        <RadzenGridColumn TItem="ClientViewModel" Property="Address" Title="Adres" Width="100px">
-                            <EditTemplate Context="client">
-                                <RadzenTextBox @bind-Value="client.Address" Name="Adres" />
-                                <RadzenLengthValidator Max="200" Text="Maksymalnie 200 znaków!" Component="Adres" Popup="true" Style="position: absolute" />
-                            </EditTemplate>
-                        </RadzenGridColumn>
-                        <RadzenGridColumn TItem="ClientViewModel" Property="Email" Width="100px" Title="Email" >
-                            <EditTemplate Context="client">
-                                <RadzenTextBox @bind-Value="client.Email" Name="Email" />
-                                <RadzenEmailValidator Component="Email" Text="Nieprawidłowy adres Email!" Popup="true" />
-                                <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Email" Popup="true" Style="position: absolute" />
-                            </EditTemplate>
-                        </RadzenGridColumn>
-                        <RadzenGridColumn TItem="ClientViewModel" Property="PhoneNumber" Width="100px" Title="Telefon">
-                            <EditTemplate Context="client">
-                                <RadzenTextBox @bind-Value="client.PhoneNumber" Name="Telefon" />
-                                <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Telefon" Popup="true" Style="position: absolute" />
-                            </EditTemplate>
-                        </RadzenGridColumn>
+                @if (clientListInfoVisible)
+                {
+                    <div class="info-text">
+                        <p>Zarządzaj listą swoich klientów. Użyj guzika "Dodaj Nowego Klienta",aby uzupełnić listę kontaktów.</p>
+                        <p>Edytuj oraz usuwaj Klientów z głównej listy. Tekst do zupełnienia.</p>
+                    </div>
+                }
+                <button class="info" @onclick="ShowHideClientI"></button>
+                <div class="client-list-table">
+                    <RadzenGrid @ref="App.ClientsPage.ClientsGrid" AllowFiltering="true" AllowPaging="true" PageSize="10" AllowSorting="true"
+                                Data="@App.Clients" TItem="ClientViewModel" RowUpdate="@App.ClientsPage.OnUpdateClientRow" RowSelect="@(args => App.ClientsPage.ClientSelected(args))">
+                        <Columns>
+                            <RadzenGridColumn TItem="ClientViewModel" Property="Name" Title="Nazwa" Width="100px">
+                                <EditTemplate Context="client">
+                                    <RadzenTextBox @bind-Value="client.Name" Name="Nazwa" />
+                                    <RadzenRequiredValidator Text="Nazwa nie może być pusta!" Component="Nazwa" Popup="true" />
+                                    <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Nazwa" Popup="true" />
+                                </EditTemplate>
+                            </RadzenGridColumn>
+                            <RadzenGridColumn TItem="ClientViewModel" Property="Address" Title="Adres" Width="100px">
+                                <EditTemplate Context="client">
+                                    <RadzenTextBox @bind-Value="client.Address" Name="Adres" />
+                                    <RadzenLengthValidator Max="200" Text="Maksymalnie 200 znaków!" Component="Adres" Popup="true" Style="position: absolute" />
+                                </EditTemplate>
+                            </RadzenGridColumn>
+                            <RadzenGridColumn TItem="ClientViewModel" Property="Email" Width="100px" Title="Email">
+                                <EditTemplate Context="client">
+                                    <RadzenTextBox @bind-Value="client.Email" Name="Email" />
+                                    <RadzenEmailValidator Component="Email" Text="Nieprawidłowy adres Email!" Popup="true" />
+                                    <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Email" Popup="true" Style="position: absolute" />
+                                </EditTemplate>
+                            </RadzenGridColumn>
+                            <RadzenGridColumn TItem="ClientViewModel" Property="PhoneNumber" Width="100px" Title="Telefon">
+                                <EditTemplate Context="client">
+                                    <RadzenTextBox @bind-Value="client.PhoneNumber" Name="Telefon" />
+                                    <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Telefon" Popup="true" Style="position: absolute" />
+                                </EditTemplate>
+                            </RadzenGridColumn>
 
-                        <RadzenGridColumn TItem="ClientViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="100px">
-                            <Template Context="client">
-                                <RadzenButton Icon="edit" Size="ButtonSize.Medium" Click="@(args => App.ClientsPage.EditClientRow(client))">
-                                </RadzenButton>
-                            </Template>
-                            <EditTemplate Context="client">
-                                <RadzenButton Icon="save" Size="ButtonSize.Medium" Click="@((args) => App.ClientsPage.SaveClientRow(client))">
-                                </RadzenButton>
-                                <RadzenButton Icon="cancel" Size="ButtonSize.Medium" ButtonStyle="ButtonStyle.Success" Click="@((args) => App.ClientsPage.CancelClientEdit(client))">
-                                </RadzenButton>
-                            </EditTemplate>
-                        </RadzenGridColumn>
-                        <RadzenGridColumn TItem="ClientViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="50px">
-                            <Template Context="client">
-                                <RadzenButton ButtonStyle="ButtonStyle.Warning" Icon="archive" Size="ButtonSize.Medium" Click="@(async (args) => await App.ClientsPage.ArchivizeClient(client))">
-                                </RadzenButton>
-                            </Template>
-                            <EditTemplate Context="client">
-                            </EditTemplate>
-                        </RadzenGridColumn>
-                        <RadzenGridColumn TItem="ClientViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="50px">
-                            <Template Context="client">
-                                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Medium" Click="@(async (args) => await App.ClientsPage.DeleteClientRow(client))">
-                                </RadzenButton>
-                            </Template>
-                            <EditTemplate Context="client">
-                            </EditTemplate>
-                        </RadzenGridColumn>
-                    </Columns>
-                </RadzenGrid>
+                            <RadzenGridColumn TItem="ClientViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="100px">
+                                <Template Context="client">
+                                    <RadzenButton Icon="edit" Size="ButtonSize.Medium" Click="@(args => App.ClientsPage.EditClientRow(client))">
+                                    </RadzenButton>
+                                </Template>
+                                <EditTemplate Context="client">
+                                    <RadzenButton Icon="save" Size="ButtonSize.Medium" Click="@((args) => App.ClientsPage.SaveClientRow(client))">
+                                    </RadzenButton>
+                                    <RadzenButton Icon="cancel" Size="ButtonSize.Medium" ButtonStyle="ButtonStyle.Success" Click="@((args) => App.ClientsPage.CancelClientEdit(client))">
+                                    </RadzenButton>
+                                </EditTemplate>
+                            </RadzenGridColumn>
+                            <RadzenGridColumn TItem="ClientViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="50px">
+                                <Template Context="client">
+                                    <RadzenButton ButtonStyle="ButtonStyle.Warning" Icon="archive" Size="ButtonSize.Medium" Click="@(async (args) => await App.ClientsPage.ArchivizeClient(client))">
+                                    </RadzenButton>
+                                </Template>
+                                <EditTemplate Context="client">
+                                </EditTemplate>
+                            </RadzenGridColumn>
+                            <RadzenGridColumn TItem="ClientViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="50px">
+                                <Template Context="client">
+                                    <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Medium" Click="@(async (args) => await App.ClientsPage.DeleteClientRow(client))">
+                                    </RadzenButton>
+                                </Template>
+                                <EditTemplate Context="client">
+                                </EditTemplate>
+                            </RadzenGridColumn>
+                        </Columns>
+                    </RadzenGrid>
+                </div>
             </div>
 
             @if (App.ClientsPage.SelectedClient != null)
             {
-                <div class="contact-details shadow bg-white rounded">
-                    <p class="p-5">@App.ClientsPage.SelectedClient.Name</p>
-                    <p class="p-5">Placeholder, zeby wyswietlac detale kontaktow.</p>
+                <div class="contact-details">
+                    <div><strong>Nazwa:</strong> @App.ClientsPage.SelectedClient.Name</div>
+                    <div><strong>Adres:</strong> @App.ClientsPage.SelectedClient.Address</div>
+                    <div><strong>Telefon:</strong> @App.ClientsPage.SelectedClient.PhoneNumber</div>
+                    <div><strong>Email:</strong> @App.ClientsPage.SelectedClient.Email</div>
                 </div>
             }
 
         </div>
     }
-    </div>
+</div>

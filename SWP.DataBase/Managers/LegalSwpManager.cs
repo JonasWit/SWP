@@ -76,17 +76,7 @@ namespace SWP.DataBase.Managers
 
         public Task<int> DeleteProfileClients(string profile)
         {
-            var clients = context.Clients
-                .Include(x => x.Cases)
-                    .ThenInclude(y => y.Reminders)
-                .Include(x => x.Cases)
-                    .ThenInclude(y => y.Notes)
-                .Include(x => x.Jobs)
-                .Where(x => x.ProfileClaim == profile)
-                .Select(x => x.Id)
-                .ToList();
-
-            context.Clients.RemoveRange(context.Clients.Where(x => clients.Contains(x.Id)));
+            context.Clients.RemoveRange(context.Clients.Where(x => x.ProfileClaim == profile));
             return context.SaveChangesAsync();
         }
 

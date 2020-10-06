@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
+using Radzen;
 using Radzen.Blazor;
 using SWP.Application.LegalSwp.CashMovements;
 using SWP.Application.LegalSwp.Clients;
 using SWP.Application.LegalSwp.TimeRecords;
 using SWP.UI.BlazorApp;
+using SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data;
 using SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data.Statistics;
 using System;
 using System.Collections.Generic;
@@ -20,6 +22,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         private GetCashMovements GetCashMovements => serviceProvider.GetService<GetCashMovements>();
         private GetTimeRecords GetTimeRecords => serviceProvider.GetService<GetTimeRecords>();
         private UserManager<IdentityUser> UserManager => serviceProvider.GetService<UserManager<IdentityUser>>();
+        private DeleteClient DeleteClient => serviceProvider.GetService<DeleteClient>();
         public LegalBlazorApp App { get; private set; }
         public List<CategoryDataItem> ClientsCases { get; set; } = new List<CategoryDataItem>();
         public List<ClientData> ProductivityData { get; set; } = new List<ClientData>();
@@ -168,6 +171,22 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
                 SelectedUser = App.User.User;
                 await App.RefreshRelatedUsers();
+            }
+            catch (Exception ex)
+            {
+                await App.ErrorPage.DisplayMessage(ex);
+            }
+        }
+
+        public async Task RemoveProfileData()
+        {
+            try
+            {
+                await DeleteClient.Delete(App.User.Profile);
+
+                App.RefreshClients();
+                App.ForceRefresh();
+                App.ShowNotification(NotificationSeverity.Success, "Sukces!", $"Usunięto wszystkie dane powiązane z profilem: {App.User.Profile}", GeneralViewModel.NotificationDuration);
             }
             catch (Exception ex)
             {

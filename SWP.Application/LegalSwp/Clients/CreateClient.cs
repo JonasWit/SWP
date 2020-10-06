@@ -34,17 +34,14 @@ namespace SWP.Application.LegalSwp.Clients
         {
             [Required(ErrorMessage = "Nazwa Klienta nie może być pusta!")]
             public string Name { get; set; }
-
+            [Required]
             public string ProfileClaim { get; set; }
-
             public string Address { get; set; }
-
             [DataType(DataType.EmailAddress)]
             [EmailAddress(ErrorMessage = "Niepoprawny adres Email!")]
             public string Email { get; set; }
-
             public string PhoneNumber { get; set; }
-
+            [Required]
             public string UpdatedBy { get; set; }
         }
     }

@@ -23,6 +23,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         public LegalBlazorApp App { get; private set; }
         public List<CategoryDataItem> ClientsCases { get; set; } = new List<CategoryDataItem>();
         public List<ClientData> ProductivityData { get; set; } = new List<ClientData>();
+        public double TotalBalance => ProductivityData.Count != 0 ? ProductivityData.Sum(x => x.DataByDate.Sum(y => y.Number)) : 0;
         public IdentityUser SelectedUser { get; set; }
         public ColorScheme ColorScheme { get; set; } = ColorScheme.Monochrome;
         public MyAppPage(IServiceProvider serviceProvider) : base(serviceProvider) { }

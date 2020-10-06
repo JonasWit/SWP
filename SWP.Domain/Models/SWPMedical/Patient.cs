@@ -20,6 +20,16 @@ namespace SWP.Domain.Models.SWPMedical
         [Required]
         public string PhoneNumber { get; set; }
 
+        //[MaxLength(50)]
+        //[Required]
+        //public string AlternativePhoneNumber { get; set; }
+
+        //[MaxLength(300)]
+        //[Required]
+        //public string Address { get; set; }
+
+
+
         [MaxLength(50)]
         [Required]
         public int PESEL { get; set; }

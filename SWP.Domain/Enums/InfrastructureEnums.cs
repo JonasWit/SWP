@@ -29,5 +29,11 @@ namespace SWP.Domain.Enums
         Status = 2,
     }
 
+    public enum ApplicationPolicy
+    {
+        LegalApplication = 0,
+        MedicalApplication = 1,
+    }
+
 
 }

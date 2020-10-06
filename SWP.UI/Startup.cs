@@ -11,6 +11,7 @@ using Microsoft.Extensions.Hosting;
 using NETCore.MailKit.Extensions;
 using NETCore.MailKit.Infrastructure.Internal;
 using SWP.DataBase;
+using SWP.Domain.Enums;
 using SWP.UI.Localization;
 using SWP.UI.Services;
 using System;
@@ -58,8 +59,8 @@ namespace SWP.UI
 
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("LegalApplication", policy => policy.RequireClaim("Application", "LegalSwp"));
-                options.AddPolicy("MedicalApplication", policy => policy.RequireClaim("Application", "MedicalSwp"));
+                options.AddPolicy(ApplicationPolicy.LegalApplication.ToString(), policy => policy.RequireClaim(ClaimType.Application.ToString(), ApplicationType.LegalSwp.ToString()));
+                options.AddPolicy(ApplicationPolicy.MedicalApplication.ToString(), policy => policy.RequireClaim(ClaimType.Application.ToString(), ApplicationType.MedicalSwp.ToString()));
             });
 
             services.AddServerSideBlazor();
@@ -110,8 +111,8 @@ namespace SWP.UI
 
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("LegalApplication", policy => policy.RequireClaim("Application", "LegalSwp"));
-                options.AddPolicy("MedicalApplication", policy => policy.RequireClaim("Application", "MedicalSwp"));
+                options.AddPolicy(ApplicationPolicy.LegalApplication.ToString(), policy => policy.RequireClaim(ClaimType.Application.ToString(), ApplicationType.LegalSwp.ToString()));
+                options.AddPolicy(ApplicationPolicy.MedicalApplication.ToString(), policy => policy.RequireClaim(ClaimType.Application.ToString(), ApplicationType.MedicalSwp.ToString()));
             });
 
             services.AddServerSideBlazor();

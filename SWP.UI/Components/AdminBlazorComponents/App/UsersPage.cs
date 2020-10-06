@@ -32,7 +32,7 @@ namespace SWP.UI.Components.AdminBlazorComponents.App
         public bool Loading { get; set; }
         public UserModel SelectedUser { get; set; }
         public List<UserModel> Users { get; set; } = new List<UserModel>();
-        public List<string> AllProfiles { get; set; } = new List<string>();
+        public List<ProfileModel> AllProfiles { get; set; } = new List<ProfileModel>();
 
         public class UserModel
         {
@@ -59,6 +59,12 @@ namespace SWP.UI.Components.AdminBlazorComponents.App
             public List<Claim> Claims { get; set; } = new List<Claim>();
         }
 
+        public class ProfileModel
+        {
+            public int Id { get; set; }
+            public string ProfileName { get; set; }
+        }
+
         public UsersPage(UserManager<IdentityUser> userManager, IServiceProvider serviceProvider) : base(serviceProvider)
         {
             this.userManager = userManager;
@@ -67,15 +73,17 @@ namespace SWP.UI.Components.AdminBlazorComponents.App
         public override async Task Initialize(BlazorAppBase app)
         {
             App = app as AdminBlazorApp;
-            await GetActiveProfiles();
+            AllProfiles = await GetActiveProfiles();
             await GetUsers();
             SelectedRole = SelectedUser.UserRoleInt;
         }
 
-        private async Task<List<string>> GetActiveProfiles()
+        private async Task<List<ProfileModel>> GetActiveProfiles()
         {
-            var results = new List<string>();
+            var results = new List<ProfileModel>();
             var users = UserManager.Users.ToList();
+
+            var id = 0;
 
             foreach (var user in users)
             {
@@ -85,9 +93,10 @@ namespace SWP.UI.Components.AdminBlazorComponents.App
                 {
                     if (claim.Type == ClaimType.Profile.ToString())
                     {
-                        if (!results.Contains(claim.Value))
+                        if (!results.Any(x => x.ProfileName == claim.Value))
                         {
-                            results.Add(claim.Value);
+                            results.Add(new ProfileModel { Id = id, ProfileName = claim.Value });
+                            id++;
                         }
                     }
                 }

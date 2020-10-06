@@ -9,5 +9,7 @@ namespace SWP.UI.Components.AdminBlazorComponents
         public AdminBlazorApp App { get; set; }
         [Parameter]
         public EventCallback<AdminBlazorApp> AppChanged { get; set; }
+
+        public string ProfilesFilterValue = "";
     }
 }

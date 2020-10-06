@@ -2,6 +2,15 @@
 
 <div class="section">
     <div class="columns is-0 is-centered">
+        <h2>All Active Profiles</h2>
+    </div>
+    <div class="columns is-0 is-centered">
+        <RadzenListBox AllowFiltering="true" @bind-Value="ProfilesFilterValue" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" Data="@App.UsersPage.AllProfiles" TextProperty="ProfileName" ValueProperty="Id" Style="width:600px; height:200px;" />
+    </div>
+</div>
+
+<div class="section">
+    <div class="columns is-0 is-centered">
         <h2>Users</h2>
     </div>
     <div class="columns is-0 is-centered">
@@ -29,16 +38,6 @@
                 </RadzenGridColumn>
             </Columns>
         </RadzenGrid>
-    </div>
-</div>
-
-<div class="section">
-    <div class="columns is-0 is-centered">
-        <h2>All Active Profiles</h2>
-    </div>
-    <div class="columns is-0 is-centered">
-        @*<RadzenListBox AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" @bind-Value="value" Data="@customers" TextProperty="CompanyName" ValueProperty="CustomerID"
-                       Change="@(args => Change(args, "ListBox with filtering"))" Style="margin-bottom: 20px; height:200px;" />*@
     </div>
 </div>
 

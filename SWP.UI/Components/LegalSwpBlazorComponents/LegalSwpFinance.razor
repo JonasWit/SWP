@@ -68,61 +68,52 @@
                     </div>
                 }
                 else
-                { 
-                    <p>Wybierz kwotę!</p>  
+                {
+                    <p>Wybierz kwotę!</p>
                 }
             </div>
         </RadzenCard>
-        <RadzenTabs>
-            <Tabs>
-                <RadzenTabsItem Text="Dodaj Nową Pozycję">
-                    <RadzenTemplateForm Data="@App.FinancePage.NewCashMovement" Submit="@(async (CreateCashMovement.Request args) => { await App.FinancePage.SubmitNewCashMovement(args); })">
+
+        <RadzenCard>
+            <RadzenTemplateForm Data="@App.FinancePage.NewCashMovement" Submit="@(async (CreateCashMovement.Request args) => { await App.FinancePage.SubmitNewCashMovement(args); })">
+                <div class="row">
+                    <RadzenFieldset Text="Nowa pozycja">
                         <div class="row">
-                            <RadzenFieldset Text="Nowa pozycja">
-                                <div class="row">
-                                    <div class="col-md-8 m-5">
-                                        <RadzenTextBox Placeholder="Nazwa Srawy..." Style="margin-bottom: 30px" @bind-Value="App.FinancePage.NewCashMovement.Name" Name="Name" />
-                                        <RadzenRequiredValidator Text="Nazwa nie może być pusta!" Component="Name" Popup="true" />
-                                        <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Name" Popup="true" />
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <RadzenSelectBar @bind-Value="App.FinancePage.NewCashMovement.CashFlowDirection" TValue="int" Style="margin-bottom: 20px;">
-                                        <Items>
-                                            <RadzenSelectBarItem Text="Wpływ" Value="1" />
-                                            <RadzenSelectBarItem Text="Wydatek" Value="0" />
-                                        </Items>
-                                    </RadzenSelectBar>
-                                </div>
-                                <div class="row">
-
-                                    <h3>Kwota</h3>
-                                    <RadzenNumeric TValue="double" Placeholder="0.0" Step="0.01" @bind-Value="@App.FinancePage.NewCashMovement.Amount" Style="margin-bottom: 20px" />
-
-                                </div>
-                                <div class="row">
-
-                                    <h3>Data</h3>
-                                    <RadzenDatePicker @bind-Value="App.FinancePage.NewCashMovement.EventDate" DateFormat="d" Name="EventDate" />
-                                    <RadzenRequiredValidator Component="EventDate" Text="Data nie może być pusta!" Popup="true" />
-                                </div>
-                            </RadzenFieldset>
-                        </div>
-                        <div class="row justify-content-center">
-                            <div class="col-md-12 d-flex align-items-end justify-content-center" style="margin-top: 16px;">
-                                <RadzenButton ButtonType="ButtonType.Submit" Icon="save" Text="Zapisz" />
+                            <div class="col-md-8 m-5">
+                                <RadzenTextBox Placeholder="Nazwa Srawy..." Style="margin-bottom: 30px" @bind-Value="App.FinancePage.NewCashMovement.Name" Name="Name" />
+                                <RadzenRequiredValidator Text="Nazwa nie może być pusta!" Component="Name" Popup="true" />
+                                <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Name" Popup="true" />
                             </div>
                         </div>
-                    </RadzenTemplateForm>
+                        <div class="row">
+                            <RadzenSelectBar @bind-Value="App.FinancePage.NewCashMovement.CashFlowDirection" TValue="int" Style="margin-bottom: 20px;">
+                                <Items>
+                                    <RadzenSelectBarItem Text="Wpływ" Value="1" />
+                                    <RadzenSelectBarItem Text="Wydatek" Value="0" />
+                                </Items>
+                            </RadzenSelectBar>
+                        </div>
+                        <div class="row">
 
-                </RadzenTabsItem>
+                            <h3>Kwota</h3>
+                            <RadzenNumeric TValue="double" Placeholder="0.0" Step="0.01" @bind-Value="@App.FinancePage.NewCashMovement.Amount" Style="margin-bottom: 20px" />
 
-                <RadzenTabsItem Text="Statystyki">
+                        </div>
+                        <div class="row">
 
+                            <h3>Data</h3>
+                            <RadzenDatePicker @bind-Value="App.FinancePage.NewCashMovement.EventDate" DateFormat="d" Name="EventDate" />
+                            <RadzenRequiredValidator Component="EventDate" Text="Data nie może być pusta!" Popup="true" />
+                        </div>
+                    </RadzenFieldset>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-md-12 d-flex align-items-end justify-content-center" style="margin-top: 16px;">
+                        <RadzenButton ButtonType="ButtonType.Submit" Icon="save" Text="Zapisz" />
+                    </div>
+                </div>
+            </RadzenTemplateForm>
+        </RadzenCard>
 
-
-                </RadzenTabsItem>
-            </Tabs>
-        </RadzenTabs>
     </div>
 </div>

@@ -69,6 +69,7 @@
     <div class="col-md-6">
         <RadzenCard Style="margin-bottom:20px">
             Klient: <b>@App.ActiveClient.Name</b>
+            Poświęcony czas: <b>@App.ActiveClientWithData.GetTimeSpent()</b>
         </RadzenCard>
         <RadzenCard>
             <div class="row">
@@ -87,58 +88,51 @@
                 }
             </div>
         </RadzenCard>
-        <RadzenTabs>
-            <Tabs>
-                <RadzenTabsItem Text="Dodaj Nową Pozycję">
-                    <RadzenTemplateForm Data="@App.ProductivityPage.NewTimeRecord" Submit="@(async (CreateTimeRecord.Request args) => { await App.ProductivityPage.SubmitNewTimeRecord(args); })">
+
+        <RadzenCard>
+            <RadzenTemplateForm Data="@App.ProductivityPage.NewTimeRecord" Submit="@(async (CreateTimeRecord.Request args) => { await App.ProductivityPage.SubmitNewTimeRecord(args); })">
+                <div class="row">
+                    <RadzenFieldset Text="Wprowadź nową czynność i czas">
                         <div class="row">
-                            <RadzenFieldset Text="Wprowadź nową czynność i czas">
-                                <div class="row">
-                                    <div class="col-md-8 m-5">
-                                        <RadzenTextBox Placeholder="Nazwa Srawy..." Style="margin-bottom: 30px" @bind-Value="App.ProductivityPage.NewTimeRecord.Name" Name="Name" />
-                                        <RadzenRequiredValidator Text="Nazwa nie może być pusta!" Component="Name" Popup="true" />
-                                        <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Name" Popup="true" />
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-8 m-5">
-                                        <RadzenTextArea Placeholder="Opis..." Style="margin-bottom: 30px" @bind-Value="App.ProductivityPage.NewTimeRecord.Description" Name="Description" />
-                                        <RadzenLengthValidator Max="500" Text="Maksymalnie 500 znaków!" Component="Description" Popup="true" />
-                                    </div>
-                                </div>
-                                <div class="row">
-
-                                    <RadzenLabel Text="Godziny"></RadzenLabel>
-                                    <RadzenNumeric TValue="int" Style="margin-bottom: 20px" @bind-Value="App.ProductivityPage.NewTimeRecord.RecordedHours" Name="Hours" Placeholder="0" />
-                                    <RadzenRequiredValidator Text="Czas musi być wprowadzony!" Component="Hours" Popup="true" />
-                                    <RadzenNumericRangeValidator Component="Hours" Min="0" Text="Wartość dla godzin nie może być mniejsza od zera!" Style="position: absolute" />
-
-                                    <RadzenLabel Text="Minuty"></RadzenLabel>
-                                    <RadzenNumeric TValue="int" Style="margin-bottom: 20px" @bind-Value="App.ProductivityPage.NewTimeRecord.RecordedMinutes" Name="Minutes" Placeholder="1" />
-                                    <RadzenRequiredValidator Text="Czas musi być wprowadzony!" Component="Minutes" Popup="true" />
-                                    <RadzenNumericRangeValidator Component="Minutes" Min="0" Text="Wartość dla minut nie może być mniejsza od zera!" Style="position: absolute" />
-                                    <RadzenNumericRangeValidator Component="Minutes" Max="59" Text="Wartość dla minut nie może być większa od 59!" Style="position: absolute" />
-                                </div>
-                                <div class="row">
-
-                                    <h3>Data</h3>
-                                    <RadzenDatePicker @bind-Value="App.ProductivityPage.NewTimeRecord.EventDate" DateFormat="d" Name="EventDate" />
-                                    <RadzenRequiredValidator Component="EventDate" Text="Data nie może być pusta!" Popup="true" />
-                                </div>
-                            </RadzenFieldset>
-                        </div>
-                        <div class="row justify-content-center">
-                            <div class="col-md-12 d-flex align-items-end justify-content-center" style="margin-top: 16px;">
-                                <RadzenButton ButtonStyle="ButtonStyle.Secondary" ButtonType="ButtonType.Submit" Icon="save" Text="Zapisz" />
+                            <div class="col-md-8 m-5">
+                                <RadzenTextBox Placeholder="Nazwa Srawy..." Style="margin-bottom: 30px" @bind-Value="App.ProductivityPage.NewTimeRecord.Name" Name="Name" />
+                                <RadzenRequiredValidator Text="Nazwa nie może być pusta!" Component="Name" Popup="true" />
+                                <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Name" Popup="true" />
                             </div>
                         </div>
-                    </RadzenTemplateForm>
-                </RadzenTabsItem>
-                <RadzenTabsItem Text="Detale">
+                        <div class="row">
+                            <div class="col-md-8 m-5">
+                                <RadzenTextArea Placeholder="Opis..." Style="margin-bottom: 30px" @bind-Value="App.ProductivityPage.NewTimeRecord.Description" Name="Description" />
+                                <RadzenLengthValidator Max="500" Text="Maksymalnie 500 znaków!" Component="Description" Popup="true" />
+                            </div>
+                        </div>
+                        <div class="row">
 
+                            <RadzenLabel Text="Godziny"></RadzenLabel>
+                            <RadzenNumeric TValue="int" Style="margin-bottom: 20px" @bind-Value="App.ProductivityPage.NewTimeRecord.RecordedHours" Name="Hours" Placeholder="0" />
+                            <RadzenRequiredValidator Text="Czas musi być wprowadzony!" Component="Hours" Popup="true" />
+                            <RadzenNumericRangeValidator Component="Hours" Min="0" Text="Wartość dla godzin nie może być mniejsza od zera!" Style="position: absolute" />
 
-                </RadzenTabsItem>
-            </Tabs>
-        </RadzenTabs>
+                            <RadzenLabel Text="Minuty"></RadzenLabel>
+                            <RadzenNumeric TValue="int" Style="margin-bottom: 20px" @bind-Value="App.ProductivityPage.NewTimeRecord.RecordedMinutes" Name="Minutes" Placeholder="1" />
+                            <RadzenRequiredValidator Text="Czas musi być wprowadzony!" Component="Minutes" Popup="true" />
+                            <RadzenNumericRangeValidator Component="Minutes" Min="0" Text="Wartość dla minut nie może być mniejsza od zera!" Style="position: absolute" />
+                            <RadzenNumericRangeValidator Component="Minutes" Max="59" Text="Wartość dla minut nie może być większa od 59!" Style="position: absolute" />
+                        </div>
+                        <div class="row">
+
+                            <h3>Data</h3>
+                            <RadzenDatePicker @bind-Value="App.ProductivityPage.NewTimeRecord.EventDate" DateFormat="d" Name="EventDate" />
+                            <RadzenRequiredValidator Component="EventDate" Text="Data nie może być pusta!" Popup="true" />
+                        </div>
+                    </RadzenFieldset>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-md-12 d-flex align-items-end justify-content-center" style="margin-top: 16px;">
+                        <RadzenButton ButtonStyle="ButtonStyle.Secondary" ButtonType="ButtonType.Submit" Icon="save" Text="Zapisz" />
+                    </div>
+                </div>
+            </RadzenTemplateForm>
+        </RadzenCard>
     </div>
 </div>

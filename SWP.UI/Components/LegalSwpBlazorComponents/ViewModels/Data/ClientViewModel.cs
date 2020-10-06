@@ -33,6 +33,16 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data
         public string UpdatedBy { get; set; }
         public string CreatedBy { get; set; }
 
+        public string GetTimeSpent()
+        {
+            if (TimeRecords.Count == 0) return "Brak zarejestrowanego czasu.";
+
+            var spentTime = new TimeSpan(TimeRecords.Sum(x => x.RecordedHours), TimeRecords.Sum(x => x.RecordedMinutes), 0);
+            var result = $"Poświęcony czas: {spentTime.Days} dn. {spentTime.Hours} godz. {spentTime.Minutes} min.";
+
+            return result;
+        }
+
         public static implicit operator ClientViewModel(Client input) =>
             new ClientViewModel
             { 

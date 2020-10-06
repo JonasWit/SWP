@@ -1,7 +1,7 @@
 ﻿<div class="row">
     <div class="col-md-6">
         <RadzenGrid @ref="App.FinancePage.CashMovementGrid" AllowFiltering="true" AllowPaging="true" PageSize="10" AllowSorting="true" RowSelect="@(args => App.FinancePage.ActiveCashMovementChange(args))"
-                    Data="@App.ActiveClientWithData.CashMovements" TItem="CashMovementViewModel" RowUpdate="@App.FinancePage.OnUpdateCashMovementRow" RowRender="@App.FinancePage.RowRender" CellRender="@App.FinancePage.CellRender">
+                    Data="@App.ActiveClientWithData.CashMovements" TItem="CashMovementViewModel" RowUpdate="@App.FinancePage.OnUpdateCashMovementRow">
             <Columns>
                 <RadzenGridColumn TItem="CashMovementViewModel" Property="Name" Title="Nazwa">
                     <EditTemplate Context="c">

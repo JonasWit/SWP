@@ -109,7 +109,6 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             try
             {
                 var result = await ArchiveClient.ArchivizeClient(client.Id, App.User.UserName);
-
                 SelectedClient = null;
 
                 if (App.ActiveClient != null && App.ActiveClient.Id == client.Id)

@@ -35,6 +35,18 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             RefreshApp();
         }
 
+        public Task ThrowTestException()
+        {
+            try
+            {
+                throw new Exception("bablabla");
+            }
+            catch (Exception ex)
+            {
+                return DisplayMessage(ex);
+            }
+        }
+
         public void RefreshApp() => App.ForceRefresh();
     }
 }

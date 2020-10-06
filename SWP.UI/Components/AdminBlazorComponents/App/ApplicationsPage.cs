@@ -1,9 +1,7 @@
 ﻿using Radzen;
 using Radzen.Blazor;
-using SWP.Domain.Models.Log;
 using SWP.UI.BlazorApp;
 using SWP.UI.Components.AdminBlazorComponents.ViewModels;
-using SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -63,7 +61,7 @@ namespace SWP.UI.Components.AdminBlazorComponents.App
                 LogRecords.RemoveAll(x => x.Id == logRecord.Id);
                 await LogGrid.Reload();
 
-                if (SelectedLogRecord.Id == logRecord.Id)
+                if (SelectedLogRecord != null && SelectedLogRecord.Id == logRecord.Id)
                 {
                     SelectedLogRecord = null;
                 }

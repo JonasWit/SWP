@@ -105,19 +105,6 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             }
         }
 
-        public void RowRender(RowRenderEventArgs<CashMovementViewModel> args)
-        {
-            //args.Attributes.Add("style", $"font-weight: {(args.Data.Amount < 0 ? "bold" : "normal")};");
-        }
-
-        public void CellRender(CellRenderEventArgs<CashMovementViewModel> args)
-        {
-            //if (args.Column.Property == "Amount")
-            //{
-            //    args.Attributes.Add("style", $"background-color: {(args.Data.Amount < 0 ? "#ff6d41" : "white")};");
-            //}
-        }
-
         public void ActiveCashMovementChange(object value)
         {
             var input = (CashMovementViewModel)value;

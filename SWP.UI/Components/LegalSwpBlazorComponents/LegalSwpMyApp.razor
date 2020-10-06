@@ -2,6 +2,8 @@
 {
     <RadzenButton ButtonStyle="ButtonStyle.Secondary" Click="App.MyAppPage.RefreshData">Odśwież Dane</RadzenButton>
 
+    <RadzenButton Click="App.ErrorPage.ThrowTestException">Zrob Bład zeby zobaczyc Error Page!</RadzenButton>
+
     <RadzenListBox AllowFiltering="true" @bind-Value="RelatedUsersFilterValue" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" Data="@App.User.RelatedUsers" TextProperty="UserName" ValueProperty="Id" Style="margin-bottom: 20px; height:200px;" Change="@(args => App.MyAppPage.SelectedUserChange(args))" />
 
     @if (App.MyAppPage.SelectedUser != null && App.User.RootClient && App.ActiveUserId != App.MyAppPage.SelectedUser.Id)

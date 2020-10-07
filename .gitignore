@@ -14,6 +14,7 @@
 #My ignorables
 wwwroot/DownloadableFiles/
 *.exe
+appsettings.json
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs

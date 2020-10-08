@@ -28,7 +28,9 @@ namespace SWP.Domain.Models.SWPMedical
         //[Required]
         //public string Address { get; set; }
 
-
+        //[MaxLength(300)]
+        //[Required]
+        //public string AddressCorrespondence { get; set; }
 
         [MaxLength(50)]
         [Required]

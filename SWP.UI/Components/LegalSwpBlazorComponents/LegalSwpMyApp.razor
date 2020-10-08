@@ -12,7 +12,7 @@
         <RadzenButton Text="Usuń powiązanie!" Click="App.MyAppPage.RemoveRelation"></RadzenButton>
     }
 
-    @if (App.MyAppPage.SelectedUser != null && App.User.RootClient)
+    @if (App.MyAppPage.SelectedUser != null && App.User.RootClient && App.ActiveUserId == App.MyAppPage.SelectedUser.Id)
     {
         <h1>Uwaga!</h1>
         <RadzenButton Text="Usuń wszystkie dane powiązane z profilem!" Click="App.MyAppPage.RemoveProfileData"></RadzenButton>

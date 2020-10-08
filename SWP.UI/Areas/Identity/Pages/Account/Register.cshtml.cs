@@ -46,13 +46,13 @@ namespace SWP.UI.Areas.Identity.Pages.Account
 
         public class InputModel
         {
-            [Required]
+            [Required(ErrorMessage = "Adres Email jest wymagany!")]
             [EmailAddress]
             [Display(Name = "Email")]
             public string Email { get; set; }
 
             //todo: validation for all password requirements
-            [Required]
+            [Required(ErrorMessage = "Hasło jest wymagane!")]
             [StringLength(20, ErrorMessage = "Hasło musi składać się z 10 do 20 znaków!", MinimumLength = 10)]
             [DataType(DataType.Password)]
             [Display(Name = "Hasło")]
@@ -63,9 +63,13 @@ namespace SWP.UI.Areas.Identity.Pages.Account
             [Compare("Password", ErrorMessage = "Hasła nie są identyczne!")]
             public string ConfirmPassword { get; set; }
 
-            [Required]
             [Display(Name = "Akceptuję regulamin i warunki korzytania z serwisu.")]
+            [RegularExpression("(True|true)", ErrorMessage = "Akceptacja regulaminu jest wymagana!")]
             public bool RulesAccepted { get; set; }
+
+            [Display(Name = "Akceptuję politykę prywatności.")]
+            [RegularExpression("(True|true)", ErrorMessage = "Akceptacja polityki prywatności jest wymagana!")]
+            public bool PrivacyAccepted { get; set; }
         }
 
         public async Task OnGetAsync(string returnUrl = null)
@@ -78,11 +82,6 @@ namespace SWP.UI.Areas.Identity.Pages.Account
         {
             returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-
-            if (!Input.RulesAccepted)
-            {
-                return Page();
-            }
 
             if (ModelState.IsValid)
             {

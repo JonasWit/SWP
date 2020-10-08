@@ -7,5 +7,6 @@ namespace SWP.Domain.Models.SWPMedical
 {
     public class MedicalExpense : BaseModel
     {
+        public string Reason { get; set; }
     }
 }

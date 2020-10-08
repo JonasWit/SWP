@@ -1,5 +1,4 @@
 ﻿using SWP.Domain.Models.BaseClasses;
-using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace SWP.Domain.Models.SWPLegal

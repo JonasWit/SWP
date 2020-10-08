@@ -7,7 +7,7 @@ namespace SWP.Domain.Models.SWPMedical
 {
     public class MedicalIncome : BaseModel
     {
-        public int PatientId { get; set; }
+        public string Source { get; set; }
 
 
     }

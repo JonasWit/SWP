@@ -126,5 +126,16 @@ namespace SWP.Domain.Infrastructure
 
         #endregion
 
+        #region Contact People
+
+        ContactPerson GetContactPerson(int id);
+        List<ContactPerson> GetContactPeopleForClient(int clientId);
+        List<ContactPerson> GetContactPeopleForCase(int caseId);
+        Task<ContactPerson> CreateClientContactPerson(int clientId, ContactPerson contactPerson);
+        Task<ContactPerson> CreateCaseContactPerson(int caseId, ContactPerson contactPerson);
+        Task<ContactPerson> UpdateContactPerson(ContactPerson contactPerson);
+        Task<int> DeleteContactPerson(int id);
+
+        #endregion
     }
 }

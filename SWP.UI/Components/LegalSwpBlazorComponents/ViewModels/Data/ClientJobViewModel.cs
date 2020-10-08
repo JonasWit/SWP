@@ -12,11 +12,6 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data
 
         public int ClientId { get; set; }
 
-        public DateTime Created { get; set; }
-        public DateTime Updated { get; set; }
-        public string UpdatedBy { get; set; }
-        public string CreatedBy { get; set; }
-
         public static implicit operator ClientJobViewModel(ClientJob input) =>
             new ClientJobViewModel
             {

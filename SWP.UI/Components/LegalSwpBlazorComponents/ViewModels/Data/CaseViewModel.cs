@@ -11,23 +11,13 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data
         public string Signature { get; set; }
         public string CaseType { get; set; }
         public string Description { get; set; }
-
         public bool Active { get; set; }
-
         public List<ReminderViewModel> Reminders { get; set; }
-
         public List<NoteViewModel> Notes { get; set; }
         public List<NoteViewModel> ArchivedNotes { get; set; }
-
         public NoteViewModel SelectedNote { get; set; }
-
-        public int ClientId { get; set; }
-
-        public DateTime Created { get; set; }
-        public DateTime Updated { get; set; }
-        public string UpdatedBy { get; set; }
-        public string CreatedBy { get; set; }
-
+        public List<ContactPersonViewModel> ContactPeople { get; set; }
+        public long ClientId { get; set; }
 
         public static implicit operator CaseViewModel(Case input) =>
             new CaseViewModel
@@ -41,6 +31,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data
                 Reminders = input.Reminders == null ? new List<ReminderViewModel>() : input.Reminders.Select(x => (ReminderViewModel)x).ToList(),
                 Notes = input.Notes == null ? new List<NoteViewModel>() : input.Notes.Where(x => x.Active).Select(x => (NoteViewModel)x).ToList(),
                 ArchivedNotes = input.Notes == null ? new List<NoteViewModel>() : input.Notes.Where(x => !x.Active).Select(x => (NoteViewModel)x).ToList(),
+                ContactPeople = input.ContactPeople == null ? new List<ContactPersonViewModel>() : input.ContactPeople.Select(x => (ContactPersonViewModel)x).ToList(),
                 ClientId = input.ClientId,
                 Created = input.Created,
                 Updated = input.Updated,

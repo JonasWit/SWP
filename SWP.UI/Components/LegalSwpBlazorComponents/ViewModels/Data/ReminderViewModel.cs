@@ -3,9 +3,8 @@ using System;
 
 namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data
 {
-    public class ReminderViewModel
+    public class ReminderViewModel : ViewModelBase
     {
-        public int Id { get; set; }
         public string Name { get; set; }
         public string ParentCaseName { get; set; }
         public string ParentClientName { get; set; }
@@ -21,11 +20,6 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data
 
         public DateTime Start { get; set; }
         public DateTime End { get; set; }
-
-        public DateTime Created { get; set; }
-        public DateTime Updated { get; set; }
-        public string UpdatedBy { get; set; }
-        public string CreatedBy { get; set; }
 
         public static implicit operator ReminderViewModel(Reminder input) =>
             new ReminderViewModel

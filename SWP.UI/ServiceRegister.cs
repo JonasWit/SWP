@@ -63,7 +63,6 @@ namespace SWP.UI
             #endregion
 
             @this.AddTransient<ILegalSwpManager, LegalSwpManager>();
-            @this.AddTransient<IMedicalSwpManager, MedicalSwpManager>();
             @this.AddTransient<ILogManager, LogManager>();
 
             @this.AddScoped<DialogService>();

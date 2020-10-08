@@ -13,7 +13,7 @@ namespace SWP.Domain.Models.SWPLegal
         [MaxLength(50)]
         [Required]
         public string ProfileClaim { get; set; }
-        [MaxLength(200)]
+        [MaxLength(500)]
         public string Address { get; set; }
         [MaxLength(50)]
         public string Email { get; set; }
@@ -23,5 +23,6 @@ namespace SWP.Domain.Models.SWPLegal
         public List<Case> Cases { get; set; }
         public List<ClientJob> Jobs { get; set; }
         public List<CashMovement> CashMovements { get; set; }
+        public List<ContactPerson> ContactPeople { get; set; }
     }
 }

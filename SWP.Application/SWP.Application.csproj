@@ -8,8 +8,4 @@
     <ProjectReference Include="..\SWP.Domain\SWP.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="MedicalSwp\" />
-  </ItemGroup>
-
 </Project>

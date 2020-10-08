@@ -6,19 +6,13 @@ using System.Threading.Tasks;
 
 namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data
 {
-    public class CashMovementViewModel
+    public class CashMovementViewModel : ViewModelBase
     {
-        public int Id { get; set; }
         public string Name { get; set; }
         public double Amount { get; set; }
         public int ClientId { get; set; }
 
         public DateTime EventDate { get; set; }
-
-        public DateTime Created { get; set; }
-        public DateTime Updated { get; set; }
-        public string UpdatedBy { get; set; }
-        public string CreatedBy { get; set; }
 
         public static implicit operator CashMovementViewModel(CashMovement input) =>
             new CashMovementViewModel

@@ -280,7 +280,7 @@ namespace SWP.DataBase.Managers
 
         public List<CashMovement> GetCashMovementsForClient(int clientId) =>
             context.CashMovements
-                .Where(x => x.ClientId ==clientId)
+                .Where(x => x.ClientId == clientId)
                 .ToList();
 
         public async Task<CashMovement> CreateCashMovement(int clientId, string profile, CashMovement cashMovement)
@@ -522,6 +522,57 @@ namespace SWP.DataBase.Managers
             throw new NotImplementedException();
         }
 
+        #endregion
+
+        #region Contact Person
+
+        public ContactPerson GetContactPerson(int id) => context.ContactPeople.AsNoTracking().FirstOrDefault(x => x.Id == id);
+
+        public List<ContactPerson> GetContactPeopleForClient(int clientId) =>
+            context.ContactPeople
+                .Where(x => x.ClientId == clientId)
+                .ToList();
+
+        public List<ContactPerson> GetContactPeopleForCase(int caseId) =>
+            context.ContactPeople
+                .Where(x => x.CaseId == caseId)
+                .ToList();
+
+        public async Task<ContactPerson> CreateClientContactPerson(int clientId, ContactPerson contactPerson)
+        {
+            var client = context.Clients
+                .Include(x => x.ContactPeople)
+                .FirstOrDefault(x => x.Id == clientId);
+
+            client.ContactPeople.Add(contactPerson);
+            await context.SaveChangesAsync();
+            return contactPerson;
+        }
+
+        public async Task<ContactPerson> CreateCaseContactPerson(int caseId, ContactPerson contactPerson)
+        {
+            var client = context.Cases
+                .Include(x => x.ContactPeople)
+                .FirstOrDefault(x => x.Id == caseId);
+
+            client.ContactPeople.Add(contactPerson);
+            await context.SaveChangesAsync();
+            return contactPerson;
+        }
+
+        public async Task<ContactPerson> UpdateContactPerson(ContactPerson contactPerson)
+        {
+            context.ContactPeople.Update(contactPerson);
+            await context.SaveChangesAsync();
+            return contactPerson;
+        }
+
+        public Task<int> DeleteContactPerson(int id)
+        {
+            var cp = context.ContactPeople.FirstOrDefault(x => x.Id == id);
+            context.ContactPeople.Remove(cp);
+            return context.SaveChangesAsync();
+        }
 
         #endregion
     }

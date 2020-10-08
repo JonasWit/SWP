@@ -3,9 +3,8 @@ using System;
 
 namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data
 {
-    public class TimeRecordViewModel
+    public class TimeRecordViewModel : ViewModelBase
     {
-        public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
 
@@ -15,11 +14,6 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data
         public int ClientId { get; set; }
 
         public DateTime EventDate { get; set; }
-
-        public DateTime Created { get; set; }
-        public DateTime Updated { get; set; }
-        public string UpdatedBy { get; set; }
-        public string CreatedBy { get; set; }
 
         public static implicit operator TimeRecordViewModel(TimeRecord input) =>
             new TimeRecordViewModel

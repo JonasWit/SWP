@@ -10,9 +10,9 @@ namespace SWP.Domain.Models.SWPLegal
         [MaxLength(50)]
         [Required]
         public string Name { get; set; }
+        public bool Expense { get; set; }
         public DateTime EventDate { get; set; }
         public int ClientId { get; set; }
-
         public Client Client { get; set; }
     }
 }

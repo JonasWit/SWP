@@ -1,5 +1,6 @@
 ﻿using SWP.Domain.Infrastructure;
 using SWP.Domain.Models.SWPLegal;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 

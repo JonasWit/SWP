@@ -8,8 +8,10 @@ namespace SWP.Domain.Models.BaseClasses
     public class Person : BaseModel
     {
         [MaxLength(50)]
+        [Required]
         public string Name { get; set; }
         [MaxLength(50)]
+        [Required]
         public string Surname { get; set; }
         [MaxLength(500)]
         public string Address { get; set; }

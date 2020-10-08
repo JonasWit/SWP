@@ -21,6 +21,6 @@ namespace SWP.Domain.Models.SWPLegal
         public List<Note> Notes { get; set; }
         public int ClientId { get; set; }
         public Client Client { get; set; }
-        public List<ContactPerson> ContactPeople { get; set; }
+        public List<CaseContactPerson> ContactPeople { get; set; }
     }
 }

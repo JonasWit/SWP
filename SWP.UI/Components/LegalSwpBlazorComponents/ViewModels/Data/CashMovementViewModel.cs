@@ -11,7 +11,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data
         public string Name { get; set; }
         public double Amount { get; set; }
         public int ClientId { get; set; }
-
+        public bool Expense { get; set; }
         public DateTime EventDate { get; set; }
 
         public static implicit operator CashMovementViewModel(CashMovement input) =>
@@ -25,7 +25,8 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data
                 Updated = input.Updated,
                 UpdatedBy = input.UpdatedBy,
                 CreatedBy = input.CreatedBy,
-                EventDate = input.EventDate
+                EventDate = input.EventDate,
+                Expense = input.Expense
             };
     }
 }

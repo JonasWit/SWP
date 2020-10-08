@@ -14,8 +14,23 @@ namespace SWP.Application.LegalSwp.ContactPeopleAdmin
         private readonly ILegalSwpManager legalSwpManager;
         public CreateContactPerson(ILegalSwpManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
 
-        public Task<ContactPerson> CreateContactPersonForClient(int clientId, Request request) =>
-            legalSwpManager.CreateClientContactPerson(clientId, new ContactPerson
+        public Task<ClientContactPerson> CreateContactPersonForClient(int clientId, Request request) =>
+            legalSwpManager.CreateClientContactPerson(clientId, new ClientContactPerson
+            {
+                Name = request.Name,
+                Surname = request.Surname,
+                Address = request.Address,
+                PhoneNumber = request.PhoneNumber,
+                AlternativePhoneNumber = request.AlternativePhoneNumber,
+                Email = request.Email,
+                Created = DateTime.Now,
+                Updated = DateTime.Now,
+                UpdatedBy = request.UpdatedBy,
+                CreatedBy = request.UpdatedBy
+            });
+
+        public Task<CaseContactPerson> CreateContactPersonForCase(int clientId, Request request) =>
+            legalSwpManager.CreateCaseContactPerson(clientId, new CaseContactPerson
             {
                 Name = request.Name,
                 Surname = request.Surname,

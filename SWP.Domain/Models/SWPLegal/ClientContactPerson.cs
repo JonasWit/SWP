@@ -5,11 +5,9 @@ using System.Text;
 
 namespace SWP.Domain.Models.SWPLegal
 {
-    public class ContactPerson : Person
+    public class ClientContactPerson : Person
     {
         public int ClientId { get; set; }
         public Client Client { get; set; }
-        public int CaseId { get; set; }
-        public Case Case { get; set; }
     }
 }

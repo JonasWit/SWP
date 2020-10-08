@@ -526,19 +526,20 @@ namespace SWP.DataBase.Managers
 
         #region Contact Person
 
-        public ContactPerson GetContactPerson(int id) => context.ContactPeople.AsNoTracking().FirstOrDefault(x => x.Id == id);
+        public CaseContactPerson GetCaseContactPerson(int id) => context.CaseContactPeople.AsNoTracking().FirstOrDefault(x => x.Id == id);
+        public ClientContactPerson GetClientContactPerson(int id) => context.ClientContactPeople.AsNoTracking().FirstOrDefault(x => x.Id == id);
 
-        public List<ContactPerson> GetContactPeopleForClient(int clientId) =>
-            context.ContactPeople
+        public List<ClientContactPerson> GetContactPeopleForClient(int clientId) =>
+            context.ClientContactPeople
                 .Where(x => x.ClientId == clientId)
                 .ToList();
 
-        public List<ContactPerson> GetContactPeopleForCase(int caseId) =>
-            context.ContactPeople
+        public List<CaseContactPerson> GetContactPeopleForCase(int caseId) =>
+            context.CaseContactPeople
                 .Where(x => x.CaseId == caseId)
                 .ToList();
 
-        public async Task<ContactPerson> CreateClientContactPerson(int clientId, ContactPerson contactPerson)
+        public async Task<ClientContactPerson> CreateClientContactPerson(int clientId, ClientContactPerson contactPerson)
         {
             var client = context.Clients
                 .Include(x => x.ContactPeople)
@@ -549,7 +550,7 @@ namespace SWP.DataBase.Managers
             return contactPerson;
         }
 
-        public async Task<ContactPerson> CreateCaseContactPerson(int caseId, ContactPerson contactPerson)
+        public async Task<CaseContactPerson> CreateCaseContactPerson(int caseId, CaseContactPerson contactPerson)
         {
             var client = context.Cases
                 .Include(x => x.ContactPeople)
@@ -560,17 +561,31 @@ namespace SWP.DataBase.Managers
             return contactPerson;
         }
 
-        public async Task<ContactPerson> UpdateContactPerson(ContactPerson contactPerson)
+        public async Task<ClientContactPerson> UpdateClientContactPerson(ClientContactPerson contactPerson)
         {
-            context.ContactPeople.Update(contactPerson);
+            context.ClientContactPeople.Update(contactPerson);
             await context.SaveChangesAsync();
             return contactPerson;
         }
 
-        public Task<int> DeleteContactPerson(int id)
+        public async Task<CaseContactPerson> UpdateCaseContactPerson(CaseContactPerson contactPerson)
         {
-            var cp = context.ContactPeople.FirstOrDefault(x => x.Id == id);
-            context.ContactPeople.Remove(cp);
+            context.CaseContactPeople.Update(contactPerson);
+            await context.SaveChangesAsync();
+            return contactPerson;
+        }
+
+        public Task<int> DeleteClientContactPerson(int id)
+        {
+            var cp = context.ClientContactPeople.FirstOrDefault(x => x.Id == id);
+            context.ClientContactPeople.Remove(cp);
+            return context.SaveChangesAsync();
+        }
+
+        public Task<int> DeleteCaseContactPerson(int id)
+        {
+            var cp = context.CaseContactPeople.FirstOrDefault(x => x.Id == id);
+            context.CaseContactPeople.Remove(cp);
             return context.SaveChangesAsync();
         }
 

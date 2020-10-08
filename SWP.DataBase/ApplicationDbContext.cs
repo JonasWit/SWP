@@ -17,7 +17,8 @@ namespace SWP.DataBase
         public DbSet<Note> Notes { get; set; }
         public DbSet<CashMovement> CashMovements { get; set; }
         public DbSet<LogRecord> LogRecords { get; set; }
-        public DbSet<ContactPerson> ContactPeople { get; set; }
+        public DbSet<ClientContactPerson> ClientContactPeople { get; set; }
+        public DbSet<CaseContactPerson> CaseContactPeople { get; set; }
 
         #endregion
 

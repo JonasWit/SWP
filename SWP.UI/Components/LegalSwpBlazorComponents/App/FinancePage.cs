@@ -21,16 +21,52 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         public LegalBlazorApp App { get; private set; }
         public CreateCashMovement.Request NewCashMovement { get; set; } = new CreateCashMovement.Request();
         public int CashMovementDirection { get; set; }
+        public MonthFilterRecord SelectedMonth { get; set; }
 
         public FinancePage(IServiceProvider serviceProvider) : base(serviceProvider) { }
 
         public override Task Initialize(BlazorAppBase app)
         {
             App = app as LegalBlazorApp;
+            GetDataForMonthFilter();
             return Task.CompletedTask;
         }
 
         public RadzenGrid<CashMovementViewModel> CashMovementGrid { get; set; }
+        public List<MonthFilterRecord> MonthsFilterData { get; set; } = new List<MonthFilterRecord>();
+
+        public class MonthFilterRecord
+        {
+            public int Id { get; set; }
+            public string DisplayText => $"{Month}/{Year}";
+            public int Month { get; set; }
+            public int Year { get; set; }
+        }
+
+        public void GetDataForMonthFilter()
+        {
+            if (App.ActiveClientWithData == null) return;
+
+            int id = 1;
+            MonthsFilterData.Clear();
+
+            foreach (var record in App.ActiveClientWithData.CashMovements)
+            {
+                var year = record.EventDate.Year;
+                var month = record.EventDate.Month;
+
+                if (!MonthsFilterData.Any(x => x.Month == month && x.Year == year))
+                {
+                    MonthsFilterData.Add(new MonthFilterRecord { Id = id, Month = month, Year = year });
+                    id++;
+                }
+            }
+
+            if (MonthsFilterData.Count != 0)
+            {
+                MonthsFilterData.OrderBy(x => x.Year + x.Month);
+            }
+        }
 
         public void EditCashMovementRow(CashMovementViewModel cash) => CashMovementGrid.EditRow(cash);
 
@@ -43,6 +79,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
                     Id = cash.Id,
                     Amount = cash.Amount,
                     Name = cash.Name,
+                    Expense = cash.Expense,
                     Updated = DateTime.Now,
                     UpdatedBy = App.User.UserName,
                     EventDate = cash.EventDate
@@ -54,6 +91,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
                 }
 
                 await CashMovementGrid.Reload();
+                GetDataForMonthFilter();
                 App.ShowNotification(NotificationSeverity.Success, "Sukces!", $"Kwota: {result.Amount} zł, została zmieniona.", GeneralViewModel.NotificationDuration);
             }
             catch (Exception ex)
@@ -78,6 +116,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
                 App.ActiveClientWithData.CashMovements.RemoveAll(x => x.Id == cash.Id);
 
                 await CashMovementGrid.Reload();
+                GetDataForMonthFilter();
                 App.ShowNotification(NotificationSeverity.Warning, "Sukces!", $"Kwota: {cash.Amount} zł, została usunięta.", GeneralViewModel.NotificationDuration);
             }
             catch (Exception ex)
@@ -97,6 +136,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
                 App.ActiveClientWithData.CashMovements.Add(result);
                 await CashMovementGrid.Reload();
+                GetDataForMonthFilter();
                 App.ShowNotification(NotificationSeverity.Success, "Sukces!", $"Kwota: {result.Amount} zł, została dodana.", GeneralViewModel.NotificationDuration);
             }
             catch (Exception ex)
@@ -115,6 +155,19 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             else
             {
                 App.ActiveClientWithData.SelectedCashMovement = null;
+            }
+        }
+
+        public void SelectedMonthChange(object value)
+        {
+            var input = (int?)value;
+            if (input != null)
+            {
+                SelectedMonth = MonthsFilterData.FirstOrDefault(x => x.Id == input);
+            }
+            else
+            {
+                SelectedMonth = null;
             }
         }
     }

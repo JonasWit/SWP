@@ -103,7 +103,8 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
                 {
                     Date = date,
                     Time = new TimeSpan(timeRecords.Where(x => x.EventDate <= date).Sum(x => x.Hours), timeRecords.Where(x => x.EventDate <= date).Sum(x => x.Minutes), 0),
-                    Number = Math.Round(cashMovements.Where(x => x.EventDate <= date).Sum(x => x.Amount), 2),
+                    Number = Math.Round(cashMovements.Where(x => x.EventDate <= date && !x.Expense).Sum(x => x.Amount), 2),
+                    Expenses = Math.Abs(Math.Round(cashMovements.Where(x => x.EventDate <= date && x.Expense).Sum(x => x.Amount), 2)),
                 });
             }
 
@@ -133,7 +134,8 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
                     {
                         Date = date,
                         Time = new TimeSpan(timeRecords.Where(x => x.EventDate <= date).Sum(x => x.Hours), timeRecords.Where(x => x.EventDate <= date).Sum(x => x.Minutes), 0),
-                        Number = Math.Round(cashMovements.Where(x => x.EventDate <= date).Sum(x => x.Amount), 2),
+                        Number = Math.Round(cashMovements.Where(x => x.EventDate <= date && !x.Expense).Sum(x => x.Amount), 2),
+                        Expenses = Math.Abs(Math.Round(cashMovements.Where(x => x.EventDate <= date && x.Expense).Sum(x => x.Amount), 2)),
                     });
                 }
 

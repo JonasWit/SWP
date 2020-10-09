@@ -210,7 +210,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
     
                 App.ActiveClientWithData.ContactPeople[App.ActiveClientWithData.ContactPeople.FindIndex(x => x.Id == result.Id)] = result;
                
-                await ClientsGrid.Reload();
+                await ContactsGrid.Reload();
                 App.ShowNotification(NotificationSeverity.Success, "Sukces!", $"Kontakt: {result.Name} {result.Surname} został zmieniony.", GeneralViewModel.NotificationDuration);
             }
             catch (Exception ex)
@@ -234,7 +234,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
                 await DeleteContactPerson.DeleteForClient(contact.Id);
                 App.ActiveClientWithData.ContactPeople.RemoveAll(x => x.Id == contact.Id);
 
-                await ClientsGrid.Reload();
+                await ContactsGrid.Reload();
                 App.ShowNotification(NotificationSeverity.Warning, "Sukces!", $"Kontakt: {contact.Name} {contact.Surname} został usunięty.", GeneralViewModel.NotificationDuration);
             }
             catch (Exception ex)
@@ -253,7 +253,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
                 NewContact = new CreateContactPerson.Request();
 
                 App.ActiveClientWithData.ContactPeople.Add(result);
-                await ClientsGrid.Reload();
+                await ContactsGrid.Reload();
                 App.ShowNotification(NotificationSeverity.Success, "Sukces!", $"Kontakt: {result.Name} {result.Surname} został dodany.", GeneralViewModel.NotificationDuration);
             }
             catch (Exception ex)

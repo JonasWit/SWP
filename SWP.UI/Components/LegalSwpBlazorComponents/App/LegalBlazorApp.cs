@@ -48,6 +48,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
                 if (activeClient != null)
                 {
                     ActiveClientWithData = GetClient.Get(activeClient.Id);
+                    FinancePage.GetDataForMonthFilter();
                 }
             }
         }

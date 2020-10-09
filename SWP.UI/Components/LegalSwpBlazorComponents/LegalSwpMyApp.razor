@@ -65,6 +65,24 @@
             <RadzenChart ColorScheme="@App.MyAppPage.ColorScheme">
                 @foreach (var data in App.MyAppPage.ProductivityData)
                 {
+                    <RadzenLineSeries Smooth="true" Data="@data.DataByDate" CategoryProperty="Date" Title="@data.Name" LineType="LineType.Solid" ValueProperty="Expenses">
+                        <RadzenMarkers MarkerType="MarkerType.Circle" />
+                    </RadzenLineSeries>
+                }
+                <RadzenCategoryAxis>
+                    <RadzenAxisTitle Text="Czas" />
+                </RadzenCategoryAxis>
+                <RadzenValueAxis Formatter="@FormatAsPLN">
+                    <RadzenGridLines Visible="true" />
+                    <RadzenAxisTitle Text="Koszty w PLN" />
+                </RadzenValueAxis>
+            </RadzenChart>
+        </div>
+
+        <div style="width: 1000px; height:500px">
+            <RadzenChart ColorScheme="@App.MyAppPage.ColorScheme">
+                @foreach (var data in App.MyAppPage.ProductivityData)
+                {
                     <RadzenLineSeries Smooth="true" Data="@data.DataByDate" CategoryProperty="Date" Title="@data.Name" LineType="LineType.Solid" ValueProperty="TimeNumber">
                         <RadzenMarkers MarkerType="MarkerType.Circle" />
                     </RadzenLineSeries>

@@ -12,6 +12,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data.Statistics
         public TimeSpan Time { get; set; }
         public DateTime Date { get; set; }
         public double Number { get; set; } = 0;
+        public double Expenses { get; set; } = 0;
         public double ProductivityRatio => TotalHours != 0 ? Math.Round((Number / TotalHours), 2) : 0;
     }
 }

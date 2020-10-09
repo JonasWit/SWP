@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
+using SWP.Application.LegalSwp.ContactPeopleAdmin;
 
 namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 {
@@ -31,6 +32,9 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         private CreateNote CreateNote => serviceProvider.GetService<CreateNote>();
         private DeleteNote DeleteNote => serviceProvider.GetService<DeleteNote>();
         private UpdateNote UpdateNote => serviceProvider.GetService<UpdateNote>();
+        private UpdateContactPerson UpdateContactPerson => serviceProvider.GetService<UpdateContactPerson>();
+        private CreateContactPerson CreateContactPerson => serviceProvider.GetService<CreateContactPerson>();
+        private DeleteContactPerson DeleteContactPerson => serviceProvider.GetService<DeleteContactPerson>();
 
         public LegalBlazorApp App { get; private set; }
 
@@ -51,9 +55,12 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
         public CreateCase.Request NewCase { get; set; } = new CreateCase.Request();
         public CreateNote.Request NewNote { get; set; } = new CreateNote.Request();
+        public CreateContactPerson.Request NewContact { get; set; } = new CreateContactPerson.Request();
         public RadzenGrid<CaseViewModel> CasesGrid { get; set; }
         public RadzenGrid<NoteViewModel> NotesGrid { get; set; }
+        public RadzenGrid<ContactPersonViewModel> ContactsGrid { get; set; }
         public RadzenScheduler<ReminderViewModel> CasesScheduler { get; set; }
+        public ContactPersonViewModel SelectedContact { get; set; }
 
         #region Cases Management
 
@@ -320,6 +327,96 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             {
                 var scheme = generalViewModel.PrioritiesColors.FirstOrDefault(x => x.Number == args.Data.Priority);
                 args.Attributes["style"] = $"background: {scheme?.BackgroundColor}; color: {scheme?.TextColor};";
+            }
+        }
+
+        #endregion
+
+        #region Contact
+
+        public void EditContactRow(ContactPersonViewModel contact) => ContactsGrid.EditRow(contact);
+
+        public async Task OnUpdateContactRow(ContactPersonViewModel contact)
+        {
+            try
+            {
+                var result = await UpdateContactPerson.UpdateForCase(new UpdateContactPerson.Request
+                {
+                    Id = contact.Id,
+                    Address = contact.Address,
+                    Email = contact.Email,
+                    Name = contact.Name,
+                    Surname = contact.Surname,
+                    PhoneNumber = contact.PhoneNumber,
+                    AlternativePhoneNumber = contact.AlternativePhoneNumber,
+                    Updated = DateTime.Now,
+                    UpdatedBy = App.User.UserName
+                });
+
+                App.ActiveClientWithData.SelectedCase.ContactPeople[App.ActiveClientWithData.SelectedCase.ContactPeople.FindIndex(x => x.Id == result.Id)] = result;
+
+                await ContactsGrid.Reload();
+                App.ShowNotification(NotificationSeverity.Success, "Sukces!", $"Kontakt: {result.Name} {result.Surname} został zmieniony.", GeneralViewModel.NotificationDuration);
+            }
+            catch (Exception ex)
+            {
+                await App.ErrorPage.DisplayMessage(ex);
+            }
+        }
+
+        public void SaveContactRow(ContactPersonViewModel contact) => ContactsGrid.UpdateRow(contact);
+
+        public void CancelContactEdit(ContactPersonViewModel contact)
+        {
+            ContactsGrid.CancelEditRow(contact);
+            App.RefreshClientWithData();
+        }
+
+        public async Task DeleteContactRow(ContactPersonViewModel contact)
+        {
+            try
+            {
+                await DeleteContactPerson.DeleteForCase(contact.Id);
+                App.ActiveClientWithData.SelectedCase.ContactPeople.RemoveAll(x => x.Id == contact.Id);
+
+                await ContactsGrid.Reload();
+                App.ShowNotification(NotificationSeverity.Warning, "Sukces!", $"Kontakt: {contact.Name} {contact.Surname} został usunięty.", GeneralViewModel.NotificationDuration);
+            }
+            catch (Exception ex)
+            {
+                await App.ErrorPage.DisplayMessage(ex);
+            }
+        }
+
+        public async Task SubmitNewContact(CreateContactPerson.Request arg)
+        {
+            NewContact.UpdatedBy = App.User.UserName;
+
+            try
+            {
+                var result = await CreateContactPerson.CreateContactPersonForCase(App.ActiveClientWithData.SelectedCase.Id, NewContact);
+                NewContact = new CreateContactPerson.Request();
+
+                App.ActiveClientWithData.SelectedCase.ContactPeople.Add(result);
+                await ContactsGrid.Reload();
+                App.ShowNotification(NotificationSeverity.Success, "Sukces!", $"Kontakt: {result.Name} {result.Surname} został dodany.", GeneralViewModel.NotificationDuration);
+            }
+            catch (Exception ex)
+            {
+                await App.ErrorPage.DisplayMessage(ex);
+            }
+        }
+
+        public void ContactSelected(object value)
+        {
+            var input = (ContactPersonViewModel)value;
+            if (value != null)
+            {
+                SelectedContact = App.ActiveClientWithData.SelectedCase.ContactPeople.FirstOrDefault(x => x.Id == input.Id);
+            }
+            else
+            {
+                SelectedContact = null;
             }
         }
 

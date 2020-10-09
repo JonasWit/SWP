@@ -23,7 +23,10 @@ namespace SWP.DataBase.Managers
                     .ThenInclude(y => y.Reminders)
                 .Include(x => x.Cases)
                     .ThenInclude(y => y.Notes)
+                .Include(x => x.Cases)
+                    .ThenInclude(y => y.ContactPeople)
                 .Include(x => x.Jobs)
+                .Include(x => x.ContactPeople)
                 .Include(x => x.CashMovements)
                 .Include(x => x.TimeRecords)
                 .Where(x => x.Id == clientId)
@@ -35,7 +38,10 @@ namespace SWP.DataBase.Managers
                     .ThenInclude(y => y.Reminders)
                 .Include(x => x.Cases)
                     .ThenInclude(y => y.Notes)
+                .Include(x => x.Cases)
+                    .ThenInclude(y => y.ContactPeople)
                 .Include(x => x.Jobs)
+                .Include(x => x.ContactPeople)
                 .Include(x => x.CashMovements)
                 .Include(x => x.TimeRecords)
                 .Where(x => x.Id == clientId)
@@ -45,12 +51,14 @@ namespace SWP.DataBase.Managers
         public Client GetClientWithoutCases(int clientId) =>
             context.Clients
                 .Include(x => x.Jobs)
+                .Include(x => x.ContactPeople)
                 .Where(x => x.Id == clientId)
                 .FirstOrDefault();
 
         public List<Client> GetClientsWithoutCases(string profile, bool active = true) =>
             context.Clients
                 .Include(x => x.Jobs)
+                .Include(x => x.ContactPeople)
                 .Where(x => x.ProfileClaim == profile && active ? x.Active : !x.Active)
                 .ToList();
 
@@ -184,7 +192,7 @@ namespace SWP.DataBase.Managers
             throw new NotImplementedException();
         }
 
-        public List<Reminder> GetUpcomingReminders(int clientId, DateTime startDate) => 
+        public List<Reminder> GetUpcomingReminders(int clientId, DateTime startDate) =>
             context.Clients
                 .Where(x => x.Id == clientId)
                 .Include(x => x.Cases)
@@ -349,21 +357,21 @@ namespace SWP.DataBase.Managers
 
         #region Statistics
 
-        public int CountCasesPerClient(int clientId) => 
+        public int CountCasesPerClient(int clientId) =>
             context.Cases.AsNoTracking().Count(x => x.ClientId == clientId);
 
-        public int CountJobsPerClient(int clientId) => 
+        public int CountJobsPerClient(int clientId) =>
             context.ClientJobs.AsNoTracking().Count(x => x.ClientId == clientId);
 
-        public int CountRemindersPerCase(int caseId) => 
+        public int CountRemindersPerCase(int caseId) =>
             context.Reminders.AsNoTracking()
                 .Count(y => y.CaseId == caseId && y.End >= DateTime.Now);
 
-        public int CountDeadlineRemindersPerCase(int caseId) => 
+        public int CountDeadlineRemindersPerCase(int caseId) =>
             context.Reminders.AsNoTracking()
                 .Count(y => y.CaseId == caseId && y.End >= DateTime.Now && y.IsDeadline);
 
-        public int CountNotesPerCase(int caseId) => 
+        public int CountNotesPerCase(int caseId) =>
             context.Notes.AsNoTracking().Count(x => x.CaseId == caseId && x.Active);
 
         public IEnumerable<int> GetClientCasesIds(int clientId) =>

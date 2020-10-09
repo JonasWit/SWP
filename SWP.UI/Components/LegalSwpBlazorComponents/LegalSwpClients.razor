@@ -212,7 +212,7 @@
                                 <RadzenLabel Text="Telefon2" Style="font-size: 14px; font-weight:bold" />
                             </div>
                             <div class="text">
-                                <RadzenTextBox Placeholder="Telefon..." @bind-Value="App.ClientsPage.NewContact.PhoneNumber" style="width: 100%;" Name="PhoneNumber2" />
+                                <RadzenTextBox Placeholder="Telefon..." @bind-Value="App.ClientsPage.NewContact.AlternativePhoneNumber" style="width: 100%;" Name="PhoneNumber2" />
                                 <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="PhoneNumber2" Style="position: absolute" />
                             </div>
 
@@ -250,7 +250,7 @@
 
                         <RadzenGridColumn TItem="ContactPersonViewModel" Property="Surname" Title="Nazwisko" >
                             <EditTemplate Context="contact">
-                                <RadzenTextBox @bind-Value="contact.Name" Name="Surname" />
+                                <RadzenTextBox @bind-Value="contact.Surname" Name="Surname" />
                                 <RadzenRequiredValidator Text="Nazwosko nie może być puste!" Component="Surname" Popup="true" />
                                 <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Surname" Popup="true" />
                             </EditTemplate>

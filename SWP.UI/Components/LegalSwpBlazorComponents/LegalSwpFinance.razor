@@ -1,7 +1,17 @@
 ﻿<div class="row">
+
+    <div>
+        <h2>Pokaz dane za miesiac</h2>
+
+        <RadzenDropDown AllowClear="true" TValue="int"
+                        FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" FilterOperator="StringFilterOperator.StartsWith" AllowFiltering="true"
+                        Data="@App.FinancePage.MonthsFilterData" TextProperty="DisplayText" ValueProperty="Id" Style="margin-bottom: 20px" Change="@(args => App.FinancePage.SelectedMonthChange(args))" />
+
+    </div>
+
     <div class="col-md-6">
         <RadzenGrid @ref="App.FinancePage.CashMovementGrid" AllowFiltering="true" AllowPaging="true" PageSize="10" AllowSorting="true" RowSelect="@(args => App.FinancePage.ActiveCashMovementChange(args))"
-                    Data="@App.ActiveClientWithData.CashMovements" TItem="CashMovementViewModel" RowUpdate="@App.FinancePage.OnUpdateCashMovementRow">
+                    Data="@(App.FinancePage.SelectedMonth == null ? App.ActiveClientWithData.CashMovements : App.ActiveClientWithData.CashMovements.Where(x => x.EventDate.Month == App.FinancePage.SelectedMonth.Month &&  x.EventDate.Year == App.FinancePage.SelectedMonth.Year))" TItem="CashMovementViewModel" RowUpdate="@App.FinancePage.OnUpdateCashMovementRow">
             <Columns>
                 <RadzenGridColumn TItem="CashMovementViewModel" Property="Name" Title="Nazwa">
                     <EditTemplate Context="c">
@@ -16,10 +26,18 @@
                         <RadzenRequiredValidator Component="Amount" Text="Kwota nie może być pusta!" Popup="true" />
                     </EditTemplate>
                 </RadzenGridColumn>
+                <RadzenGridColumn TItem="CashMovementViewModel" Property="Expense" Title="Koszt">
+                    <Template Context="c">
+                        @(c.Expense ? "Koszt" : "")
+                    </Template>
+                    <EditTemplate Context="c">
+                        <RadzenCheckBox @bind-Value="@c.Expense" TValue="bool" />
+                    </EditTemplate>
+                </RadzenGridColumn>
 
                 <RadzenGridColumn TItem="CashMovementViewModel" Property="EventDate" Title="Data">
-                    <Template Context="r">
-                        @String.Format("{0:d}", r.EventDate)
+                    <Template Context="c">
+                        @String.Format("{0:d}", c.EventDate)
                     </Template>
                     <EditTemplate Context="c">
                         <RadzenDatePicker @bind-Value="c.EventDate" DateFormat="d" Name="EventDate" />
@@ -93,6 +111,11 @@
                                 </Items>
                             </RadzenSelectBar>
                         </div>
+                        <div class="row">
+                            <RadzenCheckBox @bind-Value="@App.FinancePage.NewCashMovement.Expense" Style="margin-bottom: 20px" TValue="bool" />
+                            <RadzenLabel Text="Koszt Dodatkowy" Component="ExpenseBox" Style="margin-left: 5px;margin-bottom: 20px" />
+                        </div>
+
                         <div class="row">
 
                             <h3>Kwota</h3>

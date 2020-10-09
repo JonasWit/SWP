@@ -1,6 +1,6 @@
 ﻿@inject GeneralViewModel generalViewModel
 
-<div class="grid-container-main">
+<div class="flex-container-main">
 
     <div class="show-hide first-tab-section"><button class="show-hide-btn show-hide-btn-1 @(showFormVisible ? "button-active" : "")" @onclick="ShowHideForm"><span>Dodaj Nowego Klienta</span></button></div>
     @if (showFormVisible)
@@ -87,14 +87,14 @@
                     <RadzenGrid @ref="App.ClientsPage.ClientsGrid" AllowFiltering="true" AllowPaging="true" PageSize="10" AllowSorting="true"
                                 Data="@App.Clients" TItem="ClientViewModel" RowUpdate="@App.ClientsPage.OnUpdateClientRow" RowSelect="@(args => App.ClientsPage.ClientSelected(args))">
                         <Columns>
-                            <RadzenGridColumn TItem="ClientViewModel" Property="Name" Title="Nazwa" >
+                            <RadzenGridColumn TItem="ClientViewModel" Property="Name" Title="Nazwa">
                                 <EditTemplate Context="client">
                                     <RadzenTextBox @bind-Value="client.Name" Name="Nazwa" />
                                     <RadzenRequiredValidator Text="Nazwa nie może być pusta!" Component="Nazwa" Popup="true" />
                                     <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Nazwa" Popup="true" />
                                 </EditTemplate>
                             </RadzenGridColumn>
-                            <RadzenGridColumn TItem="ClientViewModel" Property="Address" Title="Adres" >
+                            <RadzenGridColumn TItem="ClientViewModel" Property="Address" Title="Adres">
                                 <EditTemplate Context="client">
                                     <RadzenTextBox @bind-Value="client.Address" Name="Adres" />
                                     <RadzenLengthValidator Max="200" Text="Maksymalnie 200 znaków!" Component="Adres" Popup="true" Style="position: absolute" />
@@ -126,7 +126,7 @@
                                     </RadzenButton>
                                 </EditTemplate>
                             </RadzenGridColumn>
-                            <RadzenGridColumn TItem="ClientViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" >
+                            <RadzenGridColumn TItem="ClientViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center">
                                 <Template Context="client">
                                     <RadzenButton ButtonStyle="ButtonStyle.Warning" Icon="archive" Size="ButtonSize.Medium" Click="@(async (args) => await App.ClientsPage.ArchivizeClient(client))">
                                     </RadzenButton>
@@ -134,7 +134,7 @@
                                 <EditTemplate Context="client">
                                 </EditTemplate>
                             </RadzenGridColumn>
-                            <RadzenGridColumn TItem="ClientViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" >
+                            <RadzenGridColumn TItem="ClientViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center">
                                 <Template Context="client">
                                     <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Medium" Click="@(async (args) => await App.ClientsPage.DeleteClientRow(client))">
                                     </RadzenButton>
@@ -228,19 +228,20 @@
 
 
                         </div>
-                        <div id="btn-add-client">
-                            <div>
-                                <RadzenButton ButtonType="ButtonType.Submit" Icon="save" Text="Dodaj Klienta" ButtonStyle="ButtonStyle.Secondary" />
+                        <div class="contact-form">
+                            <div id="btn-add-contact">
+                                <div>
+                                    <RadzenButton ButtonType="ButtonType.Submit" Icon="save" Text="Zapisz Kontakt" ButtonStyle="ButtonStyle.Secondary" />
+                                </div>
                             </div>
                         </div>
-
                     </RadzenFieldset>
                 </RadzenTemplateForm>
 
                 <RadzenGrid @ref="App.ClientsPage.ContactsGrid" AllowFiltering="true" AllowPaging="true" PageSize="10" AllowSorting="true"
                             Data="@App.ActiveClientWithData.ContactPeople" TItem="ContactPersonViewModel" RowUpdate="@App.ClientsPage.OnUpdateContactRow" RowSelect="@(args => App.ClientsPage.ContactSelected(args))">
                     <Columns>
-                        <RadzenGridColumn TItem="ContactPersonViewModel" Property="Name" Title="Nazwa" >
+                        <RadzenGridColumn TItem="ContactPersonViewModel" Property="Name" Title="Nazwa">
                             <EditTemplate Context="contact">
                                 <RadzenTextBox @bind-Value="contact.Name" Name="Name" />
                                 <RadzenRequiredValidator Text="Inię nie może być puste!" Component="Name" Popup="true" />
@@ -248,7 +249,7 @@
                             </EditTemplate>
                         </RadzenGridColumn>
 
-                        <RadzenGridColumn TItem="ContactPersonViewModel" Property="Surname" Title="Nazwisko" >
+                        <RadzenGridColumn TItem="ContactPersonViewModel" Property="Surname" Title="Nazwisko">
                             <EditTemplate Context="contact">
                                 <RadzenTextBox @bind-Value="contact.Surname" Name="Surname" />
                                 <RadzenRequiredValidator Text="Nazwosko nie może być puste!" Component="Surname" Popup="true" />
@@ -260,24 +261,24 @@
                                 <RadzenTextBox @bind-Value="contact.Email" Name="Nazwa" />
                             </EditTemplate>
                         </RadzenGridColumn>
-                        <RadzenGridColumn TItem="ContactPersonViewModel" Property="PhoneNumber" Title="Telefon" >
+                        <RadzenGridColumn TItem="ContactPersonViewModel" Property="PhoneNumber" Title="Telefon">
                             <EditTemplate Context="contact">
                                 <RadzenTextBox @bind-Value="contact.PhoneNumber" Name="PhoneNumber" />
                             </EditTemplate>
                         </RadzenGridColumn>
-                        <RadzenGridColumn TItem="ContactPersonViewModel" Property="AlternativePhoneNumber" Title="Drugi Telefon" >
+                        <RadzenGridColumn TItem="ContactPersonViewModel" Property="AlternativePhoneNumber" Title="Drugi Telefon">
                             <EditTemplate Context="contact">
                                 <RadzenTextBox @bind-Value="contact.AlternativePhoneNumber" Name="AlternativePhoneNumber" />
                             </EditTemplate>
                         </RadzenGridColumn>
-                        <RadzenGridColumn TItem="ContactPersonViewModel" Property="Address" Title="Addres" >
+                        <RadzenGridColumn TItem="ContactPersonViewModel" Property="Address" Title="Addres">
                             <EditTemplate Context="contact">
                                 <RadzenTextBox @bind-Value="contact.Address" Name="Address" />
                             </EditTemplate>
                         </RadzenGridColumn>
 
 
-                        <RadzenGridColumn TItem="ContactPersonViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" >
+                        <RadzenGridColumn TItem="ContactPersonViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center">
                             <Template Context="c">
                                 <RadzenButton Icon="edit" Size="ButtonSize.Medium" Click="@(args => App.ClientsPage.EditContactRow(c))">
                                 </RadzenButton>
@@ -289,7 +290,7 @@
                                 </RadzenButton>
                             </EditTemplate>
                         </RadzenGridColumn>
-                        <RadzenGridColumn TItem="ContactPersonViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" >
+                        <RadzenGridColumn TItem="ContactPersonViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center">
                             <Template Context="c">
                                 <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Medium" Click="@(async (args) => await App.ClientsPage.DeleteContactRow(c))">
                                 </RadzenButton>

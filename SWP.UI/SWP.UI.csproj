@@ -32,7 +32,6 @@
     <Folder Include="Components\MedicalSwpBlazorComponents\ViewModels\" />
     <Folder Include="Controllers\" />
     <Folder Include="wwwroot\DownloadableFiles\" />
-    <Folder Include="wwwroot\js\" />
   </ItemGroup>
 
 </Project>

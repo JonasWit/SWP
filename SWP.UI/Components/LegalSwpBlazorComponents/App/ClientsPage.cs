@@ -15,23 +15,11 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
     [UITransientService]
     public class ClientPage : BlazorPageBase
     {
-        public enum Panels
-        {
-            Admin = 0,
-            Jobs = 1,
-        }
-
         private DeleteClient DeleteClient => serviceProvider.GetService<DeleteClient>();
         private UpdateClient UpdateClient => serviceProvider.GetService<UpdateClient>();
         private CreateClient CreateClient => serviceProvider.GetService<CreateClient>();
-        private UpdateContactPerson UpdateContactPerson => serviceProvider.GetService<UpdateContactPerson>();
-        private CreateContactPerson CreateContactPerson => serviceProvider.GetService<CreateContactPerson>();
-        private DeleteContactPerson DeleteContactPerson => serviceProvider.GetService<DeleteContactPerson>();
         private ArchiveClient ArchiveClient => serviceProvider.GetService<ArchiveClient>();
-
         public ClientViewModel SelectedClient { get; set; }
-        public ContactPersonViewModel SelectedContact { get; set; }
-
         public LegalBlazorApp App { get; private set; }
 
         public ClientPage(IServiceProvider serviceProvider) : base(serviceProvider) { }
@@ -42,14 +30,8 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             return Task.CompletedTask;
         }
 
-        public Panels ActivePanel { get; set; }
-        public void SetActivePanel(Panels panel) => ActivePanel = panel;
-
         public CreateClient.Request NewClient { get; set; } = new CreateClient.Request();
-        public CreateContactPerson.Request NewContact { get; set; } = new CreateContactPerson.Request();
-
         public RadzenGrid<ClientViewModel> ClientsGrid { get; set; }
-        public RadzenGrid<ContactPersonViewModel> ContactsGrid { get; set; }
 
         public void ClientSelected(object value)
         {
@@ -64,20 +46,9 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             }
         }
 
-        public void ContactSelected(object value)
-        {
-            var input = (ContactPersonViewModel)value;
-            if (value != null)
-            {
-                SelectedContact = App.ActiveClientWithData.ContactPeople.FirstOrDefault(x => x.Id == input.Id);
-            }
-            else
-            {
-                SelectedContact = null;
-            }
-        }
-
         #region Client
+
+        private void RefreshSelectedClient() => SelectedClient = App.Clients.FirstOrDefault(x => x.Id == SelectedClient.Id);
 
         public void EditClientRow(ClientViewModel client) => ClientsGrid.EditRow(client);
 
@@ -121,6 +92,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         {
             ClientsGrid.CancelEditRow(client);
             App.RefreshClients();
+            RefreshSelectedClient();
         }
 
         public async Task DeleteClientRow(ClientViewModel client)
@@ -186,84 +158,6 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         }
 
         #endregion
-
-        #region Contact
-
-        public void EditContactRow(ContactPersonViewModel contact) => ContactsGrid.EditRow(contact);
-
-        public async Task OnUpdateContactRow(ContactPersonViewModel contact)
-        {
-            try
-            {
-                var result = await UpdateContactPerson.UpdateForClient(new UpdateContactPerson.Request
-                {
-                    Id = contact.Id,
-                    Address = contact.Address,
-                    Email = contact.Email,
-                    Name = contact.Name,
-                    Surname = contact.Surname,
-                    PhoneNumber = contact.PhoneNumber,
-                    AlternativePhoneNumber = contact.AlternativePhoneNumber,
-                    Updated = DateTime.Now,
-                    UpdatedBy = App.User.UserName
-                });
-    
-                App.ActiveClientWithData.ContactPeople[App.ActiveClientWithData.ContactPeople.FindIndex(x => x.Id == result.Id)] = result;
-               
-                await ContactsGrid.Reload();
-                App.ShowNotification(NotificationSeverity.Success, "Sukces!", $"Kontakt: {result.Name} {result.Surname} został zmieniony.", GeneralViewModel.NotificationDuration);
-            }
-            catch (Exception ex)
-            {
-                await App.ErrorPage.DisplayMessage(ex);
-            }
-        }
-
-        public void SaveContactRow(ContactPersonViewModel contact) => ContactsGrid.UpdateRow(contact);
-
-        public void CancelContactEdit(ContactPersonViewModel contact)
-        {
-            ContactsGrid.CancelEditRow(contact);
-            App.RefreshClientWithData();
-        }
-
-        public async Task DeleteContactRow(ContactPersonViewModel contact)
-        {
-            try
-            {
-                await DeleteContactPerson.DeleteForClient(contact.Id);
-                App.ActiveClientWithData.ContactPeople.RemoveAll(x => x.Id == contact.Id);
-
-                await ContactsGrid.Reload();
-                App.ShowNotification(NotificationSeverity.Warning, "Sukces!", $"Kontakt: {contact.Name} {contact.Surname} został usunięty.", GeneralViewModel.NotificationDuration);
-            }
-            catch (Exception ex)
-            {
-                await App.ErrorPage.DisplayMessage(ex);
-            }
-        }
-
-        public async Task SubmitNewContact(CreateContactPerson.Request arg)
-        {
-            NewContact.UpdatedBy = App.User.UserName;
-
-            try
-            {
-                var result = await CreateContactPerson.CreateContactPersonForClient(App.ActiveClient.Id, NewContact);
-                NewContact = new CreateContactPerson.Request();
-
-                App.ActiveClientWithData.ContactPeople.Add(result);
-                await ContactsGrid.Reload();
-                App.ShowNotification(NotificationSeverity.Success, "Sukces!", $"Kontakt: {result.Name} {result.Surname} został dodany.", GeneralViewModel.NotificationDuration);
-            }
-            catch (Exception ex)
-            {
-                await App.ErrorPage.DisplayMessage(ex);
-            }
-        }
-
-        #endregion
-
 
     }
 }

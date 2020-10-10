@@ -71,21 +71,6 @@ else
                         <RadzenLengthValidator Max="500" Text="Maksymalnie 500 znaków!" Component="Description" Popup="true" Style="position: absolute" />
                     </EditTemplate>
                 </RadzenGridColumn>
-                <RadzenGridColumn TItem="ClientJobViewModel" Property="Created" Title="@GeneralViewModel.Created">
-                    <Template Context="job">
-                        @job.Created.ToString(GeneralViewModel.DateFormant)
-                    </Template>
-                </RadzenGridColumn>
-                <RadzenGridColumn TItem="ClientJobViewModel" Property="Updated" Title="@GeneralViewModel.Updated">
-                    <Template Context="job">
-                        @job.Updated.ToString(GeneralViewModel.DateFormant)
-                    </Template>
-                </RadzenGridColumn>
-                <RadzenGridColumn TItem="ClientJobViewModel" Property="UpdatedBy" Title="@GeneralViewModel.UpdatedBy">
-                    <Template Context="job">
-                        @job.UpdatedBy
-                    </Template>
-                </RadzenGridColumn>
 
                 <RadzenGridColumn TItem="ClientJobViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="100px">
                     <Template Context="job">

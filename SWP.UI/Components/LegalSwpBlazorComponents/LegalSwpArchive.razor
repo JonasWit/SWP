@@ -1,8 +1,5 @@
 ﻿<h3>Archive</h3>
 
-
-
-
 <RadzenListBox AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" @bind-Value="ArchvizedClientsFilterValue" Data="@App.ArchivePage.ArchivizedClients" TextProperty="Name" ValueProperty="IdString" Change="@(args => App.ArchivePage.SelectedArchivizedClientChange(args))"
                Style="margin-bottom: 20px; height:200px;" />
 

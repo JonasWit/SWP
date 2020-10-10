@@ -35,6 +35,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         public ProductivityPage ProductivityPage { get; }
         public ClientJobsPage ClientJobsPage { get; }
         public ArchivePage ArchivePage { get; }
+        public ClientDetailsPage ClientDetailsPage { get; }
 
         private ClientViewModel activeClient;
         public string SelectedClientString { get; set; }
@@ -61,6 +62,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             ProductivityPage productivityPage,
             ClientJobsPage clientJobsPage,
             ArchivePage archivePage,
+            ClientDetailsPage clientDetailsPage,
             IServiceProvider serviceProvider)
         {
             this.notificationService = notificationService;
@@ -70,6 +72,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             ProductivityPage = productivityPage;
             ClientJobsPage = clientJobsPage;
             ArchivePage = archivePage;
+            ClientDetailsPage = clientDetailsPage;
             CalendarPage = calendarPanel;
             CasesPage = casesPanel;
             ClientsPage = clientsPanel;
@@ -120,6 +123,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             await ProductivityPage.Initialize(this);
             await ClientJobsPage.Initialize(this);
             await ArchivePage.Initialize(this);
+            await ClientDetailsPage.Initialize(this);
         }
 
         #region Main Component
@@ -135,6 +139,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             Productivity = 6,
             ClientJobs = 7,
             Archive = 8,
+            ClientDetails = 9,
         }
 
         public ClientViewModel ActiveClientWithData { get; private set; }

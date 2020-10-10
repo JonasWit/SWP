@@ -32,21 +32,6 @@ else
                     <RadzenLengthValidator Max="500" Text="Maksymalnie 500 znaków!" Component="Description" Popup="true" />
                 </EditTemplate>
             </RadzenGridColumn>
-            <RadzenGridColumn TItem="CaseViewModel" Property="Created" Title="@GeneralViewModel.Created">
-                <Template Context="cs">
-                    @cs.Created.ToString(GeneralViewModel.DateFormant)
-                </Template>
-            </RadzenGridColumn>
-            <RadzenGridColumn TItem="CaseViewModel" Property="Updated" Title="@GeneralViewModel.Updated">
-                <Template Context="cs">
-                    @cs.Updated.ToString(GeneralViewModel.DateFormant)
-                </Template>
-            </RadzenGridColumn>
-            <RadzenGridColumn TItem="CaseViewModel" Property="UpdatedBy" Title="@GeneralViewModel.UpdatedBy">
-                <Template Context="cs">
-                    @cs.UpdatedBy
-                </Template>
-            </RadzenGridColumn>
 
             <RadzenGridColumn TItem="CaseViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="100px">
                 <Template Context="cs">
@@ -204,21 +189,6 @@ else
                                             <RadzenLengthValidator Max="500" Text="Max 500 characters!" Component="Message" Popup="true" />
                                         </EditTemplate>
                                     </RadzenGridColumn>
-                                    <RadzenGridColumn TItem="NoteViewModel" Property="Created" Title="@GeneralViewModel.Created">
-                                        <Template Context="note">
-                                            @note.Created.ToString(GeneralViewModel.DateFormant)
-                                        </Template>
-                                    </RadzenGridColumn>
-                                    <RadzenGridColumn TItem="NoteViewModel" Property="Updated" Title="@GeneralViewModel.Updated">
-                                        <Template Context="note">
-                                            @note.Updated.ToString(GeneralViewModel.DateFormant)
-                                        </Template>
-                                    </RadzenGridColumn>
-                                    <RadzenGridColumn TItem="NoteViewModel" Property="UpdatedBy" Title="@GeneralViewModel.UpdatedBy">
-                                        <Template Context="note">
-                                            @note.UpdatedBy
-                                        </Template>
-                                    </RadzenGridColumn>
 
                                     <RadzenGridColumn TItem="NoteViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="100px">
                                         <Template Context="note">
@@ -319,8 +289,6 @@ else
                                         <RadzenEmailValidator Component="Email" Text="Nieprawidłowy adres Email!" />
                                         <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Email" Style="position: absolute" />
                                     </div>
-
-
                                 </div>
                                 <div id="btn-add-client">
                                     <div>
@@ -369,7 +337,6 @@ else
                                         <RadzenTextBox @bind-Value="contact.Address" Name="Address" />
                                     </EditTemplate>
                                 </RadzenGridColumn>
-
 
                                 <RadzenGridColumn TItem="ContactPersonViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center">
                                     <Template Context="c">

@@ -29,6 +29,9 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
         public bool showContactsListVisible = false;
         public void ShowHideContactsList() => showContactsListVisible = !showContactsListVisible;
 
+        public bool contactsListInfoVisible = false;
+        public void ShowHideContactsI() => contactsListInfoVisible = !contactsListInfoVisible;
+
 
     }
 }

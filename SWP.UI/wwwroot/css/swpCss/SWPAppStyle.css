@@ -11,7 +11,7 @@ html, body {
     display: grid;
     grid-template-columns:
     /* 1 */ 250px
-    /* 2 */ 70%; 
+    /* 2 */ 70%;
     grid-template-rows:
     /* 4 */ auto
     /* 5 */ auto
@@ -59,7 +59,6 @@ ul, li {
     background-image: url(../../Images/19366.jpg);
     background-repeat: no-repeat;
     background-position: right center;
- 
 }
 
 .nav-item {
@@ -80,7 +79,6 @@ ul, li {
 #main-window {
     grid-column: 2;
     grid-row: 2 / span 8;
-  
 }
 
 #footer {
@@ -89,40 +87,40 @@ ul, li {
 }
 
 /*Clients Page*/
+
 .flex-container-main {
     display: flex;
     flex-direction: column;
-
 }
+/*Form*/
 
-.contact-form {
+.form {
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
+    flex-grow: 1;
+}
+
+.form-btn {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
 }
 
 .label {
     width: 70px;
-    padding: 35px;
-   
+    padding: 8px;
 }
 
 .text {
     width: 450px;
-    padding: 35px;
+    padding: 8px;
 }
 
-#btn-add-contact {
-    align-self: center;
-}
-.first-tab-section {
-    /* grid-column: 1;
-    grid-row: 1;*/
-    border-bottom: 2px solid #80ccff;
-    margin-bottom: 20px;
-}
+
 
 .show-hide-btn {
-    /* background: ;*/
+
     background: #b3e0ff;
     border: none;
     font-weight: 700;
@@ -167,9 +165,8 @@ ul, li {
 }
 
 
-.row-one {
-    /*  grid-column: 1;
-    grid-row: 2;*/
+.row-section {
+    margin-top: 20px;
     padding-bottom: 20px;
     animation: fadeInAnimation ease 1s;
     animation-iteration-count: 1;
@@ -188,104 +185,10 @@ ul, li {
     }
 }
 
-.second-tab-section {
-    /*grid-column: 1;
-    grid-row: 3;*/
+.tab-section {
+    
     border-bottom: 2px solid #80ccff;
     margin-bottom: 20px;
-}
-
-
-
-.row-two {
-    /*  grid-column: 1;
-    grid-row: 4;*/
-    margin-top: 20px;
-    animation: fadeInAnimation ease 1s;
-    animation-iteration-count: 1;
-    animation-fill-mode: forwards;
-}
-
-
-/*Add client form*/
-
-.grid-form {
-    display: grid;
-    grid-template-columns:
-    /* 1*/ 50px
-    /* 2*/ auto
-    /* 3*/ 50px
-    /* 4*/ auto;
-    grid-template-rows:
-    /* 2*/ auto
-    /* 3*/ auto
-    /* 4*/ auto
-    /* 5*/ auto
-    /* 6*/ auto;
-    grid-column-gap: 5px;
-    grid-row-gap: 25px;
-}
-
-.user-icon {
-    grid-column: 1;
-    grid-row: 1;
-}
-
-.info-text {
-    grid-column: 1 / span 4;
-    grid-row: 2;
-}
-
-.info {
-    grid-column: 4;
-    grid-row: 1;
-    justify-self: end;
-}
-
-#client-label {
-    grid-column: 1;
-    grid-row: 3;
-}
-
-#client-text {
-    grid-column: 2;
-    grid-row: 3;
-}
-
-#adress-label {
-    grid-column: 3;
-    grid-row: 3;
-}
-
-#adress-text {
-    grid-column: 4;
-    grid-row: 3;
-}
-
-#phone-label {
-    grid-column: 1;
-    grid-row: 4;
-}
-
-#phone-text {
-    grid-column: 2;
-    grid-row: 4;
-}
-
-#email-label {
-    grid-column: 3;
-    grid-row: 4;
-}
-
-#email-text {
-    grid-column: 4;
-    grid-row: 4;
-}
-
-#btn-add-client {
-    grid-column: 1 / span 4;
-    grid-row: 5;
-    justify-self: center;
 }
 
 

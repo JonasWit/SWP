@@ -5,11 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SWP.Domain\SWP.Domain.csproj" />
+    <PackageReference Include="iTextSharp.LGPLv2.Core" Version="1.6.7" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="LegalSwp\TimeSheetReports\" />
+    <ProjectReference Include="..\SWP.Domain\SWP.Domain.csproj" />
   </ItemGroup>
 
 </Project>

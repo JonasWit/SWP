@@ -1,14 +1,4 @@
 ﻿<div class="row">
-
-    <div>
-        <h2>Pokaz dane za miesiac</h2>
-
-        <RadzenDropDown AllowClear="true" TValue="int"
-                        FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" FilterOperator="StringFilterOperator.StartsWith" AllowFiltering="true"
-                        Data="@App.FinancePage.MonthsFilterData" TextProperty="DisplayText" ValueProperty="Id" Style="margin-bottom: 20px" Change="@(args => App.FinancePage.SelectedMonthChange(args))" />
-
-    </div>
-
     <div class="col-md-6">
         <RadzenGrid @ref="App.FinancePage.CashMovementGrid" AllowFiltering="true" AllowPaging="true" PageSize="10" AllowSorting="true" RowSelect="@(args => App.FinancePage.ActiveCashMovementChange(args))"
                     Data="@(App.FinancePage.SelectedMonth == null ? App.ActiveClientWithData.CashMovements : App.ActiveClientWithData.CashMovements.Where(x => x.EventDate.Month == App.FinancePage.SelectedMonth.Month &&  x.EventDate.Year == App.FinancePage.SelectedMonth.Year))" TItem="CashMovementViewModel" RowUpdate="@App.FinancePage.OnUpdateCashMovementRow">
@@ -43,6 +33,11 @@
                         <RadzenDatePicker @bind-Value="c.EventDate" DateFormat="d" Name="EventDate" />
                         <RadzenRequiredValidator Component="EventDate" Text="Data nie może być pusta!" Popup="true" />
                     </EditTemplate>
+                    <FilterTemplate>
+                        <RadzenDropDown AllowClear="true" TValue="int"
+                                        FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" FilterOperator="StringFilterOperator.StartsWith" AllowFiltering="true"
+                                        Data="@App.FinancePage.MonthsFilterData" TextProperty="DisplayText" ValueProperty="Id" Change="@(args => App.FinancePage.SelectedMonthChange(args))" />
+                    </FilterTemplate>
                 </RadzenGridColumn>
 
                 <RadzenGridColumn TItem="CashMovementViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="100px">

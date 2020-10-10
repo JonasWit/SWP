@@ -21,8 +21,6 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         public LegalBlazorApp App { get; private set; }
         public CreateCashMovement.Request NewCashMovement { get; set; } = new CreateCashMovement.Request();
         public int CashMovementDirection { get; set; }
-        public MonthFilterRecord SelectedMonth { get; set; }
-
         public FinancePage(IServiceProvider serviceProvider) : base(serviceProvider) { }
 
         public override Task Initialize(BlazorAppBase app)
@@ -33,15 +31,6 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         }
 
         public RadzenGrid<CashMovementViewModel> CashMovementGrid { get; set; }
-        public List<MonthFilterRecord> MonthsFilterData { get; set; } = new List<MonthFilterRecord>();
-
-        public class MonthFilterRecord
-        {
-            public int Id { get; set; }
-            public string DisplayText => $"{Month}/{Year}";
-            public int Month { get; set; }
-            public int Year { get; set; }
-        }
 
         public void GetDataForMonthFilter()
         {

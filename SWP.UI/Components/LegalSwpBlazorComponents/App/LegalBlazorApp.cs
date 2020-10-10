@@ -45,11 +45,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             set
             {
                 activeClient = value;
-                if (activeClient != null)
-                {
-                    ActiveClientWithData = GetClient.Get(activeClient.Id);
-                    FinancePage.GetDataForMonthFilter();
-                }
+                if (activeClient != null) FireUpdatesAfterActiveClientChange();
             }
         }
 
@@ -101,6 +97,13 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
                 await InitializePages();
             }
+        }
+
+        private void FireUpdatesAfterActiveClientChange()
+        {
+            ActiveClientWithData = GetClient.Get(activeClient.Id);
+            FinancePage.GetDataForMonthFilter();
+            ProductivityPage.GetDataForMonthFilter();
         }
 
         public async Task RefreshRelatedUsers() => User.RelatedUsers = await UserManager.GetUsersForClaimAsync(User.ProfileClaim);

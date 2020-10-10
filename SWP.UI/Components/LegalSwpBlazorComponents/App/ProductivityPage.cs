@@ -26,6 +26,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         public override Task Initialize(BlazorAppBase app)
         {
             App = app as LegalBlazorApp;
+            GetDataForMonthFilter();
             return Task.CompletedTask;
         }
 
@@ -55,6 +56,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
                 }
 
                 await TimeRecordsGrid.Reload();
+                GetDataForMonthFilter();
                 App.ShowNotification(NotificationSeverity.Success, "Sukces!", $"Wpis: {result.Name}, został zmieniony.", GeneralViewModel.NotificationDuration);
             }
             catch (Exception ex)
@@ -80,6 +82,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
                 App.ActiveClientWithData.SelectedTimeRecord = null;
 
                 await TimeRecordsGrid.Reload();
+                GetDataForMonthFilter();
                 App.ShowNotification(NotificationSeverity.Warning, "Sukces!", $"Wpis: {time.Name}, został usunięty.", GeneralViewModel.NotificationDuration);
             }
             catch (Exception ex)
@@ -104,6 +107,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
                 App.ActiveClientWithData.TimeRecords.Add(result);
                 await TimeRecordsGrid.Reload();
+                GetDataForMonthFilter();
                 App.ShowNotification(NotificationSeverity.Success, "Sukces!", $"Wpis: {result.Name}, został dodany.", GeneralViewModel.NotificationDuration);
             }
             catch (Exception ex)
@@ -122,6 +126,44 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             else
             {
                 App.ActiveClientWithData.SelectedTimeRecord = null;
+            }
+        }
+
+        public void GetDataForMonthFilter()
+        {
+            if (App.ActiveClientWithData == null) return;
+
+            int id = 1;
+            MonthsFilterData.Clear();
+
+            foreach (var record in App.ActiveClientWithData.TimeRecords)
+            {
+                var year = record.EventDate.Year;
+                var month = record.EventDate.Month;
+
+                if (!MonthsFilterData.Any(x => x.Month == month && x.Year == year))
+                {
+                    MonthsFilterData.Add(new MonthFilterRecord { Id = id, Month = month, Year = year });
+                    id++;
+                }
+            }
+
+            if (MonthsFilterData.Count != 0)
+            {
+                MonthsFilterData.OrderBy(x => x.Year + x.Month);
+            }
+        }
+
+        public void SelectedMonthChange(object value)
+        {
+            var input = (int?)value;
+            if (input != null)
+            {
+                SelectedMonth = MonthsFilterData.FirstOrDefault(x => x.Id == input);
+            }
+            else
+            {
+                SelectedMonth = null;
             }
         }
     }

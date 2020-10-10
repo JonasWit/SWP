@@ -1,13 +1,21 @@
-﻿<div class="row">
+﻿
+<div class="row">
     <div class="col-md-6">
         <RadzenGrid @ref="App.ProductivityPage.TimeRecordsGrid" AllowFiltering="true" AllowPaging="true" PageSize="10" AllowSorting="true"
-                    Data="@App.ActiveClientWithData.TimeRecords" TItem="TimeRecordViewModel" RowUpdate="@App.ProductivityPage.OnUpdateTimeRecordRow" RowSelect="@(args => App.ProductivityPage.ActiveTimeRecordChange(args))">
+                    Data="@(App.ProductivityPage.SelectedMonth == null ? App.ActiveClientWithData.TimeRecords : App.ActiveClientWithData.TimeRecords.Where(x => x.EventDate.Month == App.ProductivityPage.SelectedMonth.Month &&  x.EventDate.Year == App.ProductivityPage.SelectedMonth.Year))" TItem="TimeRecordViewModel" RowUpdate="@App.ProductivityPage.OnUpdateTimeRecordRow" RowSelect="@(args => App.ProductivityPage.ActiveTimeRecordChange(args))">
             <Columns>
                 <RadzenGridColumn TItem="TimeRecordViewModel" Property="Name" Title="Nazwa">
                     <EditTemplate Context="r">
                         <RadzenTextBox @bind-Value="r.Name" Style="width:100%; display: block" Name="Name" />
-                        <RadzenRequiredValidator Component="Name" Text="Nazwa nie może być pusta!" Popup="true" />
-                        <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Name" Popup="true" />
+                        <RadzenRequiredValidator Component="Name" Text="Nazwa nie może być pusta" Popup="true" />
+                        <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków" Component="Name" Popup="true" />
+                    </EditTemplate>
+                </RadzenGridColumn>
+                <RadzenGridColumn TItem="TimeRecordViewModel" Property="Lawyer" Title="Prawnik">
+                    <EditTemplate Context="r">
+                        <RadzenTextBox @bind-Value="r.Lawyer" Style="width:100%; display: block" Name="Name" />
+                        <RadzenRequiredValidator Component="Lawyer" Text="Wpisz prawnika, który pracował w tym czasie" Popup="true" />
+                        <RadzenLengthValidator Max="200" Text="Maksymalnie 200 znaków" Component="Lawyer" Popup="true" />
                     </EditTemplate>
                 </RadzenGridColumn>
                 <RadzenGridColumn TItem="TimeRecordViewModel" Property="Description" Title="Opis">
@@ -19,7 +27,7 @@
 
                 <RadzenGridColumn TItem="TimeRecordViewModel" Property="RecordedHours" Title="Godziny">
                     <EditTemplate Context="r">
-                        <RadzenNumeric TValue="int" Step="1" @bind-Value="@r.RecordedHours" Name="Hours"  Placeholder="0"/>
+                        <RadzenNumeric TValue="int" Step="1" @bind-Value="@r.RecordedHours" Name="Hours" Placeholder="0" />
                         <RadzenRequiredValidator Text="Czas musi być wprowadzony!" Component="Hours" Popup="true" />
                         <RadzenNumericRangeValidator Component="Hours" Min="0" Text="Wartość dla godzin nie może być mniejsza od zera!" Style="position: absolute" />
                     </EditTemplate>
@@ -32,6 +40,12 @@
                         <RadzenNumericRangeValidator Component="Minutes" Max="59" Text="Wartość dla minut nie może być większa od 59!" Style="position: absolute" />
                     </EditTemplate>
                 </RadzenGridColumn>
+                <RadzenGridColumn TItem="TimeRecordViewModel" Property="Rate" Title="Stawka">
+                    <EditTemplate Context="r">
+                        <RadzenNumeric TValue="double" Step="0.01" @bind-Value="@r.Rate" Name="Rate" Placeholder="0.00" />
+                    </EditTemplate>
+                </RadzenGridColumn>
+                <RadzenGridColumn TItem="TimeRecordViewModel" Property="Total" Title="Suma" />
 
                 <RadzenGridColumn TItem="TimeRecordViewModel" Property="EventDate" Title="Data">
                     <Template Context="r">
@@ -41,6 +55,11 @@
                         <RadzenDatePicker @bind-Value="r.EventDate" Name="EventDate" DateFormat="dd/MM/yyyy" />
                         <RadzenRequiredValidator Component="EventDate" Text="Data nie może być pusta!" Popup="true" />
                     </EditTemplate>
+                    <FilterTemplate>
+                        <RadzenDropDown AllowClear="true" TValue="int"
+                                        FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" FilterOperator="StringFilterOperator.StartsWith" AllowFiltering="true"
+                                        Data="@App.ProductivityPage.MonthsFilterData" TextProperty="DisplayText" ValueProperty="Id" Change="@(args => App.ProductivityPage.SelectedMonthChange(args))" />
+                    </FilterTemplate>
                 </RadzenGridColumn>
 
                 <RadzenGridColumn TItem="TimeRecordViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="100px">
@@ -103,7 +122,13 @@
                         <div class="row">
                             <div class="col-md-8 m-5">
                                 <RadzenTextArea Placeholder="Opis..." Style="margin-bottom: 30px" @bind-Value="App.ProductivityPage.NewTimeRecord.Description" Name="Description" />
-                                <RadzenLengthValidator Max="500" Text="Maksymalnie 500 znaków!" Component="Description" Popup="true" />
+                                <RadzenLengthValidator Max="500" Text="Maksymalnie 500 znaków" Component="Description" Popup="true" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8 m-5">
+                                <RadzenTextArea Placeholder="Prawnik..." Style="margin-bottom: 30px" @bind-Value="App.ProductivityPage.NewTimeRecord.Lawyer" Name="Lawyer" />
+                                <RadzenLengthValidator Max="200" Text="Maksymalnie 200 znaków" Component="Lawyer" Popup="true" />
                             </div>
                         </div>
                         <div class="row">
@@ -112,6 +137,9 @@
                             <RadzenNumeric TValue="int" Style="margin-bottom: 20px" @bind-Value="App.ProductivityPage.NewTimeRecord.RecordedHours" Name="Hours" Placeholder="0" />
                             <RadzenRequiredValidator Text="Czas musi być wprowadzony!" Component="Hours" Popup="true" />
                             <RadzenNumericRangeValidator Component="Hours" Min="0" Text="Wartość dla godzin nie może być mniejsza od zera!" Style="position: absolute" />
+
+                            <RadzenLabel Text="Stawka"></RadzenLabel>
+                            <RadzenNumeric TValue="double" Placeholder="0.0" Step="0.01" @bind-Value="@App.ProductivityPage.NewTimeRecord.Rate" Style="margin-bottom: 20px" />
 
                             <RadzenLabel Text="Minuty"></RadzenLabel>
                             <RadzenNumeric TValue="int" Style="margin-bottom: 20px" @bind-Value="App.ProductivityPage.NewTimeRecord.RecordedMinutes" Name="Minutes" Placeholder="1" />

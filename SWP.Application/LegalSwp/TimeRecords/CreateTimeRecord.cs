@@ -31,6 +31,8 @@ namespace SWP.Application.LegalSwp.TimeRecords
         {
             public string Name { get; set; }
             public string Description { get; set; }
+            public string Lawyer { get; set; }
+            public double Rate { get; set; }
             public int RecordedHours { get; set; } = 0;
             public int RecordedMinutes { get; set; } = 0;
             public DateTime EventDate { get; set; } = DateTime.Now;

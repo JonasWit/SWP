@@ -75,8 +75,8 @@
     <div class="show-hide tab-section"><button class="show-hide-btn show-hide-btn-1 @(showClientListVisible ? "button-active" : "")" @onclick="ShowHideClientsList"><span>Lista Klientów</span></button></div>
     @if (showClientListVisible)
     {
-        <div class="row-section" id="list">
-            <div class="client-list">
+        <div class="row-section second">
+            <div class="form">
                 <i class="user-icon"><img src="/Images/icons8-reception-36.png" /></i>
 
                 @if (clientListInfoVisible)
@@ -87,87 +87,96 @@
                     </div>
                 }
                 <button class="info" @onclick="ShowHideClientI"></button>
-                <div class="client-list-table">
-                    <RadzenGrid @ref="App.ClientsPage.ClientsGrid" AllowFiltering="true" AllowPaging="true" PageSize="10" AllowSorting="true"
-                                Data="@App.Clients" TItem="ClientViewModel" RowUpdate="@App.ClientsPage.OnUpdateClientRow" RowSelect="@(args => App.ClientsPage.ClientSelected(args))">
-                        <Columns>
-                            <RadzenGridColumn TItem="ClientViewModel" Property="Name" Title="Nazwa">
-                                <EditTemplate Context="client">
-                                    <RadzenTextBox @bind-Value="client.Name" Name="Nazwa" />
-                                    <RadzenRequiredValidator Text="Nazwa nie może być pusta!" Component="Nazwa" Popup="true" />
-                                    <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Nazwa" Popup="true" />
-                                </EditTemplate>
-                            </RadzenGridColumn>
-                            <RadzenGridColumn TItem="ClientViewModel" Property="Address" Title="Adres">
-                                <EditTemplate Context="client">
-                                    <RadzenTextBox @bind-Value="client.Address" Name="Adres" />
-                                    <RadzenLengthValidator Max="200" Text="Maksymalnie 200 znaków!" Component="Adres" Popup="true" Style="position: absolute" />
-                                </EditTemplate>
-                            </RadzenGridColumn>
-                            <RadzenGridColumn TItem="ClientViewModel" Property="Email" Title="Email">
-                                <EditTemplate Context="client">
-                                    <RadzenTextBox @bind-Value="client.Email" Name="Email" />
-                                    <RadzenEmailValidator Component="Email" Text="Nieprawidłowy adres Email!" Popup="true" />
-                                    <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Email" Popup="true" Style="position: absolute" />
-                                </EditTemplate>
-                            </RadzenGridColumn>
-                            <RadzenGridColumn TItem="ClientViewModel" Property="PhoneNumber" Title="Telefon">
-                                <EditTemplate Context="client">
-                                    <RadzenTextBox @bind-Value="client.PhoneNumber" Name="Telefon" />
-                                    <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Telefon" Popup="true" Style="position: absolute" />
-                                </EditTemplate>
-                            </RadzenGridColumn>
-
-                            <RadzenGridColumn TItem="ClientViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center">
-                                <Template Context="client">
-                                    <RadzenButton Icon="edit" Size="ButtonSize.Medium" Click="@(args => App.ClientsPage.EditClientRow(client))">
-                                    </RadzenButton>
-                                </Template>
-                                <EditTemplate Context="client">
-                                    <RadzenButton Icon="save" Size="ButtonSize.Medium" Click="@((args) => App.ClientsPage.SaveClientRow(client))">
-                                    </RadzenButton>
-                                    <RadzenButton Icon="cancel" Size="ButtonSize.Medium" ButtonStyle="ButtonStyle.Success" Click="@((args) => App.ClientsPage.CancelClientEdit(client))">
-                                    </RadzenButton>
-                                </EditTemplate>
-                            </RadzenGridColumn>
-                            <RadzenGridColumn TItem="ClientViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center">
-                                <Template Context="client">
-                                    <RadzenButton ButtonStyle="ButtonStyle.Warning" Icon="archive" Size="ButtonSize.Medium" Click="@(async (args) => await App.ClientsPage.ArchivizeClient(client))">
-                                    </RadzenButton>
-                                </Template>
-                                <EditTemplate Context="client">
-                                </EditTemplate>
-                            </RadzenGridColumn>
-                            <RadzenGridColumn TItem="ClientViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center">
-                                <Template Context="client">
-                                    <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Medium" Click="@(async (args) => await App.ClientsPage.DeleteClientRow(client))">
-                                    </RadzenButton>
-                                </Template>
-                                <EditTemplate Context="client">
-                                </EditTemplate>
-                            </RadzenGridColumn>
-                        </Columns>
-                    </RadzenGrid>
-                </div>
             </div>
 
-            @if (App.ClientsPage.SelectedClient != null)
-            {
-                <div class="contact-details">
-                    <div><strong>Nazwa:</strong> @App.ClientsPage.SelectedClient.Name</div>
-                    <div><strong>Adres:</strong> @App.ClientsPage.SelectedClient.Address</div>
-                    <div><strong>Telefon:</strong> @App.ClientsPage.SelectedClient.PhoneNumber</div>
-                    <div><strong>Email:</strong> @App.ClientsPage.SelectedClient.Email</div>
-                </div>
-            }
+            <div class="list-table">
+                <RadzenGrid @ref="App.ClientsPage.ClientsGrid" AllowFiltering="true" AllowPaging="true" PageSize="10" AllowSorting="true"
+                            Data="@App.Clients" TItem="ClientViewModel" RowUpdate="@App.ClientsPage.OnUpdateClientRow" RowSelect="@(args => App.ClientsPage.ClientSelected(args))">
+                    <Columns>
+                        <RadzenGridColumn TItem="ClientViewModel" Property="Name" Title="Nazwa">
+                            <EditTemplate Context="client">
+                                <RadzenTextBox @bind-Value="client.Name" Name="Nazwa" />
+                                <RadzenRequiredValidator Text="Nazwa nie może być pusta!" Component="Nazwa" Popup="true" />
+                                <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Nazwa" Popup="true" />
+                            </EditTemplate>
+                        </RadzenGridColumn>
+                        <RadzenGridColumn TItem="ClientViewModel" Property="Address" Title="Adres">
+                            <EditTemplate Context="client">
+                                <RadzenTextBox @bind-Value="client.Address" Name="Adres" />
+                                <RadzenLengthValidator Max="200" Text="Maksymalnie 200 znaków!" Component="Adres" Popup="true" Style="position: absolute" />
+                            </EditTemplate>
+                        </RadzenGridColumn>
+                        <RadzenGridColumn TItem="ClientViewModel" Property="Email" Title="Email">
+                            <EditTemplate Context="client">
+                                <RadzenTextBox @bind-Value="client.Email" Name="Email" />
+                                <RadzenEmailValidator Component="Email" Text="Nieprawidłowy adres Email!" Popup="true" />
+                                <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Email" Popup="true" Style="position: absolute" />
+                            </EditTemplate>
+                        </RadzenGridColumn>
+                        <RadzenGridColumn TItem="ClientViewModel" Property="PhoneNumber" Title="Telefon">
+                            <EditTemplate Context="client">
+                                <RadzenTextBox @bind-Value="client.PhoneNumber" Name="Telefon" />
+                                <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Telefon" Popup="true" Style="position: absolute" />
+                            </EditTemplate>
+                        </RadzenGridColumn>
+
+                        <RadzenGridColumn TItem="ClientViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center">
+                            <Template Context="client">
+                                <RadzenButton Icon="edit" Size="ButtonSize.Medium" Click="@(args => App.ClientsPage.EditClientRow(client))">
+                                </RadzenButton>
+                            </Template>
+                            <EditTemplate Context="client">
+                                <RadzenButton Icon="save" Size="ButtonSize.Medium" Click="@((args) => App.ClientsPage.SaveClientRow(client))">
+                                </RadzenButton>
+                                <RadzenButton Icon="cancel" Size="ButtonSize.Medium" ButtonStyle="ButtonStyle.Success" Click="@((args) => App.ClientsPage.CancelClientEdit(client))">
+                                </RadzenButton>
+                            </EditTemplate>
+                        </RadzenGridColumn>
+                        <RadzenGridColumn TItem="ClientViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center">
+                            <Template Context="client">
+                                <RadzenButton ButtonStyle="ButtonStyle.Warning" Icon="archive" Size="ButtonSize.Medium" Click="@(async (args) => await App.ClientsPage.ArchivizeClient(client))">
+                                </RadzenButton>
+                            </Template>
+                            <EditTemplate Context="client">
+                            </EditTemplate>
+                        </RadzenGridColumn>
+                        <RadzenGridColumn TItem="ClientViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center">
+                            <Template Context="client">
+                                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Medium" Click="@(async (args) => await App.ClientsPage.DeleteClientRow(client))">
+                                </RadzenButton>
+                            </Template>
+                            <EditTemplate Context="client">
+                            </EditTemplate>
+                        </RadzenGridColumn>
+                    </Columns>
+                </RadzenGrid>
+            </div>
         </div>
+
+        @if (App.ClientsPage.SelectedClient != null)
+        {
+            <div class="contact-details">
+                <div>
+                    <div class="text"><strong>Nazwa:</strong> @App.ClientsPage.SelectedClient.Name</div>
+                    <div class="text"><strong>Adres:</strong> @App.ClientsPage.SelectedClient.Address</div>
+                    <div class="text"><strong>Telefon:</strong> @App.ClientsPage.SelectedClient.PhoneNumber</div>
+                    <div class="text"><strong>Email:</strong> @App.ClientsPage.SelectedClient.Email</div>
+                </div>
+                <div>
+                    <div class="text"><strong>Zmienione przez:</strong> @App.ClientsPage.SelectedClient.UpdatedBy</div>
+                    <div class="text"><strong>Data zmiany:</strong> @App.ClientsPage.SelectedClient.Updated</div>
+                    <div class="text"><strong>Data utworzenia:</strong> @App.ClientsPage.SelectedClient.Created</div>
+                </div>
+            </div>
+        }
+
     }
 
 
 
     @if (App.ActiveClientWithData != null)
     {
-        
+
     }
 
 </div>

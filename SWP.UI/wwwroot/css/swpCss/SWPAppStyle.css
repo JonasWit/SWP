@@ -11,7 +11,7 @@ html, body {
     display: grid;
     grid-template-columns:
     /* 1 */ 250px
-    /* 2 */ 70%;
+    /* 2 */ 65%;
     grid-template-rows:
     /* 4 */ auto
     /* 5 */ auto
@@ -259,33 +259,31 @@ ul, li {
 }
 
 .client-list {
-    display: grid;
-    grid-template-columns:
-    /* 1*/ auto
-    /* 2*/ auto
-    /* 3*/ auto
-    /* 4*/ auto;
-    grid-template-rows:
-    /* 5*/ auto
-    /* 6*/ auto;
-    grid-column-gap: 5px;
-    grid-row-gap: 5px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
 }
 
 
-.client-list-table {
-    grid-column: 1 / span 4;
-    grid-row: 3;
+.list-table {
+   margin-top: 20px;
 }
+
+.second {
+    border: 1px solid #dcdcdc;
+    padding: 15px;
+
+}
+
 
 .contact-details {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
     -webkit-box-shadow: 10px 10px 61px 1px rgba(184,222,242,0.39);
     -moz-box-shadow: 10px 10px 61px 1px rgba(184,222,242,0.39);
     box-shadow: 10px 10px 61px 1px rgba(184,222,242,0.39);
-    display: grid;
-    grid-template-columns: auto auto auto auto;
-    grid-gap: 40px;
-    padding: 25px;
     background: linear-gradient(135deg, #ffffff 0%, #f6f6f6 47%, #ededed 100%);
     animation: fadeInAnimation ease 1s;
     animation-iteration-count: 1;

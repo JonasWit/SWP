@@ -23,6 +23,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
         public LegalBlazorApp App { get; private set; }
         public CreateTimeRecord.Request NewTimeRecord { get; set; } = new CreateTimeRecord.Request();
+        public LegalTimeSheetReport.ReportData NewTimesheetReport { get; set; } = new LegalTimeSheetReport.ReportData();
 
         public ProductivityPage(IServiceProvider serviceProvider) : base(serviceProvider) { }
 
@@ -174,6 +175,9 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         {
             var productivityRecords = App.ActiveClientWithData.TimeRecords
                 .Where(x => x.EventDate <= reportData.StartDate && x.EventDate >= reportData.EndDate);
+
+            reportData.ReportName = $"{reportData.ReportName}_{DateTime.Now:yyyy-MM-dd-hh-mm-ss}";
+
 
             //LegalTimeSheetReport.Report(new LegalTimeSheetReport.ReportData 
             //{ 

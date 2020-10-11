@@ -53,11 +53,11 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App.Reporting
             _jSRuntime.InvokeAsync<List<TimeRecordViewModel>>(
                     "saveAsFile",
                     $"{_reportData.ReportName}.pdf",
-                    Convert.ToBase64String(Report(_reportData))
+                    Convert.ToBase64String(Report())
                 );
         }
 
-        public byte[] Report(ReportData reportData)
+        public byte[] Report()
         {
             _document = new Document(PageSize.A4, 10f, 10f, 20f, 30f);
             _pdfPTable.WidthPercentage = 100;
@@ -174,6 +174,26 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App.Reporting
             _pdfPTable.AddCell(_pdfPCell);
 
             _pdfPCell = new PdfPCell(new Phrase(_reportData.InvoiceNumber, headersFontStyle))
+            {
+                Colspan = 2,
+                HorizontalAlignment = Element.ALIGN_LEFT,
+                Border = 0,
+                ExtraParagraphSpace = 0
+            };
+            _pdfPTable.AddCell(_pdfPCell);
+
+            _pdfPTable.CompleteRow();
+
+            _pdfPCell = new PdfPCell(new Phrase("Przedział czasowy : ", headersFontStyle))
+            {
+                Colspan = 2,
+                HorizontalAlignment = Element.ALIGN_RIGHT,
+                Border = 0,
+                ExtraParagraphSpace = 0
+            };
+            _pdfPTable.AddCell(_pdfPCell);
+
+            _pdfPCell = new PdfPCell(new Phrase($"{_reportData.StartDate:dd.MM.yyyy} - {_reportData.EndDate:dd.MM.yyyy}", headersFontStyle))
             {
                 Colspan = 2,
                 HorizontalAlignment = Element.ALIGN_LEFT,

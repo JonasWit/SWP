@@ -163,5 +163,41 @@
                 </div>
             </RadzenTemplateForm>
         </RadzenCard>
+
+        <RadzenCard>
+
+            <RadzenTemplateForm Data="@App.ProductivityPage.NewTimesheetReport" Submit="@((LegalTimeSheetReport.ReportData args) => { App.ProductivityPage.GenerateTimesheetReport(args); })">
+                <div class="row">
+                    <RadzenFieldset Text="Wprowadź nową czynność i czas">
+                        <div class="row">
+                            <div class="col-md-8 m-5">
+                                <RadzenLabel Text="NIP" Component="NIP" Style="margin-left: 5px;margin-bottom: 20px" />
+                                <RadzenMask Mask="***-**-**-***" Pattern="[^0-9]" Placeholder="000-00-00-000" Name="NIP" @bind-Value="@App.ProductivityPage.NewTimesheetReport.NIP" Style="margin-bottom: 20px" />
+                            </div>
+                        </div>
+
+                        <RadzenLabel Text="Uzyj tego przefiltrowanego miesiaca" Component="UseSelected" Style="margin-left: 5px;margin-bottom: 20px" />
+                        <RadzenCheckBox @bind-Value="@App.ProductivityPage.NewTimesheetReport.UseSelectedMonth" Style="margin-bottom: 20px" TValue="bool" Name="UseSelected" />
+
+                        <RadzenLabel Text="Data Faktury" Component="InvoiceDate" Style="margin-left: 5px;margin-bottom: 20px" />
+                        <RadzenDatePicker @bind-Value="App.ProductivityPage.NewTimesheetReport.InvoiceDate" DateFormat="d" Name="InvoiceDate" />
+                        <RadzenRequiredValidator Component="InvoiceDate" Text="Data Faktury nie moze byc pusta!" Popup="true" />
+
+                        <RadzenLabel Text="Data Początkowa" Component="StartDate" Style="margin-left: 5px;margin-bottom: 20px" />
+                        <RadzenDatePicker @bind-Value="App.ProductivityPage.NewTimesheetReport.StartDate" DateFormat="d" Name="StartDate" />
+
+                        <RadzenLabel Text="Data Końcowa" Component="EndDate" Style="margin-left: 5px;margin-bottom: 20px" />
+                        <RadzenDatePicker @bind-Value="App.ProductivityPage.NewTimesheetReport.EndDate" DateFormat="d" Name="EndDate" />
+
+                    </RadzenFieldset>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-md-12 d-flex align-items-end justify-content-center" style="margin-top: 16px;">
+                        <RadzenButton ButtonStyle="ButtonStyle.Secondary" ButtonType="ButtonType.Submit" Icon="save" Text="Zapisz" />
+                    </div>
+                </div>
+            </RadzenTemplateForm>
+
+        </RadzenCard>
     </div>
 </div>

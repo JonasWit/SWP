@@ -78,6 +78,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
                 App.RefreshClients();
                 await ClientsGrid.Reload();
+                RefreshSelectedClient();
                 App.ShowNotification(NotificationSeverity.Success, "Sukces!", $"Klient: {result.Name} został zmieniony.", GeneralViewModel.NotificationDuration);
             }
             catch (Exception ex)

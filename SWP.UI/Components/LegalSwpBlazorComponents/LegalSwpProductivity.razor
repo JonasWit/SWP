@@ -43,6 +43,7 @@
                 <RadzenGridColumn TItem="TimeRecordViewModel" Property="Rate" Title="Stawka">
                     <EditTemplate Context="r">
                         <RadzenNumeric TValue="double" Step="0.01" @bind-Value="@r.Rate" Name="Rate" Placeholder="0.00" />
+                        <RadzenNumericRangeValidator Component="Rate" Min="0" Text="Stawka nie może być mniejsza od zera!" Style="position: absolute" />
                     </EditTemplate>
                 </RadzenGridColumn>
                 <RadzenGridColumn TItem="TimeRecordViewModel" Property="Total" Title="Suma" />

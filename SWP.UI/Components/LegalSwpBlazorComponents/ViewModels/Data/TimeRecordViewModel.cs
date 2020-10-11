@@ -11,6 +11,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data
         public double Rate { get; set; } = 0;
         public int RecordedHours { get; set; } = 0;
         public int RecordedMinutes { get; set; } = 0;
+        public string TimeSpent => $"{RecordedHours}:{RecordedMinutes}";
         public double Total => Rate != 0 ? Math.Floor((double)(RecordedHours + ((double)RecordedMinutes * 60)) * Rate) : 0;
         public int ClientId { get; set; }
         public DateTime EventDate { get; set; }

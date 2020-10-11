@@ -1,8 +1,11 @@
 ﻿using iTextSharp.text;
 using iTextSharp.text.pdf;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace SWP.Application.PdfReportBase
+namespace SWP.UI.Components.LegalSwpBlazorComponents.App.Reporting
 {
     public class PdfReportFooterStandard : PdfPageEventHelper
     {
@@ -10,7 +13,7 @@ namespace SWP.Application.PdfReportBase
 
         public override void OnEndPage(PdfWriter writer, Document document)
         {
-            this.AddPageNumber(writer, document);
+            AddPageNumber(writer, document);
         }
 
         public void AddPageNumber(PdfWriter writer, Document document)

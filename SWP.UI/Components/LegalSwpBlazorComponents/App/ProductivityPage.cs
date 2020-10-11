@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
+using SWP.UI.Components.LegalSwpBlazorComponents.App.Reporting;
+using Org.BouncyCastle.Asn1.X509;
 
 namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 {
@@ -17,6 +19,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         private CreateTimeRecord CreateTimeRecord => serviceProvider.GetService<CreateTimeRecord>();
         private DeleteTimeRecord DeleteTimeRecord => serviceProvider.GetService<DeleteTimeRecord>();
         private UpdateTimeRecord UpdateTimeRecord => serviceProvider.GetService<UpdateTimeRecord>();
+        private LegalTimeSheetReport LegalTimeSheetReport => serviceProvider.GetService<LegalTimeSheetReport>();
 
         public LegalBlazorApp App { get; private set; }
         public CreateTimeRecord.Request NewTimeRecord { get; set; } = new CreateTimeRecord.Request();
@@ -93,7 +96,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
         public async Task SubmitNewTimeRecord(CreateTimeRecord.Request arg)
         {
-            if (arg.RecordedTime == new TimeSpan(0,0,0))
+            if (arg.RecordedTime == new TimeSpan(0, 0, 0))
             {
                 return;
             }
@@ -165,6 +168,21 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             {
                 SelectedMonth = null;
             }
+        }
+
+        public void GenerateTimesheetReport(LegalTimeSheetReport.ReportData reportData)
+        {
+            var productivityRecords = App.ActiveClientWithData.TimeRecords
+                .Where(x => x.EventDate <= reportData.StartDate && x.EventDate >= reportData.EndDate);
+
+            //LegalTimeSheetReport.Report(new LegalTimeSheetReport.ReportData 
+            //{ 
+            //    ClientName = App.ActiveClient.Name,
+            //    ReportName
+
+
+
+            //});
         }
     }
 }

@@ -102,13 +102,13 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             }
         }
 
-        public async Task SubmitNewContact(CreateContactPerson.Request arg)
+        public async Task SubmitNewContact(CreateContactPerson.Request request)
         {
-            NewContact.UpdatedBy = App.User.UserName;
+            request.UpdatedBy = App.User.UserName;
 
             try
             {
-                var result = await CreateContactPerson.CreateContactPersonForClient(App.ActiveClient.Id, NewContact);
+                var result = await CreateContactPerson.CreateContactPersonForClient(App.ActiveClient.Id, request);
                 NewContact = new CreateContactPerson.Request();
 
                 App.ActiveClientWithData.ContactPeople.Add(result);

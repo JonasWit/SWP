@@ -108,15 +108,15 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             }
         }
 
-        public async Task SubmitNewTimeRecord(CreateTimeRecord.Request arg)
+        public async Task SubmitNewTimeRecord(CreateTimeRecord.Request request)
         {
-            if (arg.RecordedTime == new TimeSpan(0, 0, 0)) return;
+            if (request.RecordedTime == new TimeSpan(0, 0, 0)) return;
 
             try
             {
-                NewTimeRecord.UpdatedBy = App.User.UserName;
+                request.UpdatedBy = App.User.UserName;
 
-                var result = await CreateTimeRecord.Create(App.ActiveClient.Id, App.User.Profile, NewTimeRecord);
+                var result = await CreateTimeRecord.Create(App.ActiveClient.Id, App.User.Profile, request);
                 NewTimeRecord = new CreateTimeRecord.Request();
 
                 App.ActiveClientWithData.TimeRecords.Add(result);

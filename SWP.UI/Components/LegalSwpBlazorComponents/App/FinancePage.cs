@@ -114,13 +114,13 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             }
         }
 
-        public async Task SubmitNewCashMovement(CreateCashMovement.Request arg)
+        public async Task SubmitNewCashMovement(CreateCashMovement.Request request)
         {
             try
             {
-                NewCashMovement.UpdatedBy = App.User.UserName;
+                request.UpdatedBy = App.User.UserName;
 
-                var result = await CreateCashMovement.Create(App.ActiveClient.Id, App.User.Profile, NewCashMovement);
+                var result = await CreateCashMovement.Create(App.ActiveClient.Id, App.User.Profile, request);
                 NewCashMovement = new CreateCashMovement.Request();
 
                 App.ActiveClientWithData.CashMovements.Add(result);

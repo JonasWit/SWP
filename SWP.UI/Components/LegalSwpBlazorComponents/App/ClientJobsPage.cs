@@ -32,14 +32,14 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             return Task.CompletedTask;
         }
 
-        public async Task SubmitNewClientJob(CreateClientJob.Request arg)
+        public async Task SubmitNewClientJob(CreateClientJob.Request request)
         {
             try
             {
-                NewClientJob.ClientId = App.ActiveClient.Id;
-                NewClientJob.UpdatedBy = App.User.UserName;
+                request.ClientId = App.ActiveClient.Id;
+                request.UpdatedBy = App.User.UserName;
 
-                var result = await CreateClientJob.Create(NewClientJob);
+                var result = await CreateClientJob.Create(request);
                 NewClientJob = new CreateClientJob.Request();
 
                 if (App.ActiveClientWithData != null)

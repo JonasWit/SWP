@@ -138,14 +138,16 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             }
         }
 
-        public async Task SubmitNewClient(CreateClient.Request arg)
+        public async Task SubmitNewClient(CreateClient.Request request)
         {
-            NewClient.ProfileClaim = App.User.Profile;
-            NewClient.UpdatedBy = App.User.UserName;
+            if (request == null) return;
+
+            request.ProfileClaim = App.User.Profile;
+            request.UpdatedBy = App.User.UserName;
 
             try
             {
-                var result = await CreateClient.Do(NewClient);
+                var result = await CreateClient.Do(request);
                 NewClient = new CreateClient.Request();
 
                 App.Clients.Add(result);

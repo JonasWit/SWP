@@ -74,12 +74,12 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             App.ActiveClientWithData.SelectedCase = caseEntity;
         }
 
-        public async Task CreateNewCase(CreateCase.Request arg)
+        public async Task CreateNewCase(CreateCase.Request request)
         {
             try
             {
-                NewCase.UpdatedBy = App.User.UserName;
-                var result = await CreateCase.Create(App.ActiveClientWithData.Id, App.User.Profile, NewCase);
+                request.UpdatedBy = App.User.UserName;
+                var result = await CreateCase.Create(App.ActiveClientWithData.Id, App.User.Profile, request);
                 NewCase = new CreateCase.Request();
 
                 App.ActiveClientWithData.Cases.Add(result);
@@ -179,12 +179,12 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             }
         }
 
-        public async Task CreateNewNote(CreateNote.Request arg)
+        public async Task CreateNewNote(CreateNote.Request request)
         {
             try
             {
-                NewNote.UpdatedBy = App.User.UserName;
-                var result = await CreateNote.Create(App.ActiveClientWithData.SelectedCase.Id, NewNote);
+                request.UpdatedBy = App.User.UserName;
+                var result = await CreateNote.Create(App.ActiveClientWithData.SelectedCase.Id, request);
                 NewNote = new CreateNote.Request();
 
                 App.ActiveClientWithData.SelectedCase.Notes.Add(result);
@@ -388,13 +388,13 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             }
         }
 
-        public async Task SubmitNewContact(CreateContactPerson.Request arg)
+        public async Task SubmitNewContact(CreateContactPerson.Request request)
         {
-            NewContact.UpdatedBy = App.User.UserName;
+            request.UpdatedBy = App.User.UserName;
 
             try
             {
-                var result = await CreateContactPerson.CreateContactPersonForCase(App.ActiveClientWithData.SelectedCase.Id, NewContact);
+                var result = await CreateContactPerson.CreateContactPersonForCase(App.ActiveClientWithData.SelectedCase.Id, request);
                 NewContact = new CreateContactPerson.Request();
 
                 App.ActiveClientWithData.SelectedCase.ContactPeople.Add(result);

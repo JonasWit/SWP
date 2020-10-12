@@ -45,6 +45,8 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
                 var result = await UpdateTimeRecord.Update(new UpdateTimeRecord.Request
                 {
                     Id = time.Id,
+                    Rate = time.Rate,
+                    Lawyer = time.Lawyer,
                     Description = time.Description,
                     Name = time.Name,
                     EventDate = time.EventDate,
@@ -171,22 +173,52 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             }
         }
 
-        public void GenerateTimesheetReport(LegalTimeSheetReport.ReportData reportData)
+        public async Task GenerateTimesheetReport(LegalTimeSheetReport.ReportData reportData)
         {
-            var productivityRecords = App.ActiveClientWithData.TimeRecords
-                .Where(x => x.EventDate <= reportData.StartDate && x.EventDate >= reportData.EndDate);
+            try
+            {
+                var productivityRecords = new List<TimeRecordViewModel>();
 
-            reportData.ReportName = $"{reportData.ReportName}_{DateTime.Now:yyyy-MM-dd-hh-mm-ss}";
+                if (reportData.UseSelectedMonth)
+                {
+                    if (SelectedMonth != null)
+                    {
+                        var month = App.ProductivityPage.SelectedMonth.Month;
+                        var year = App.ProductivityPage.SelectedMonth.Year;
 
+                        productivityRecords = App.ActiveClientWithData.TimeRecords
+                            .Where(x => x.EventDate.Month == month && x.EventDate.Year == year).ToList();
 
-            //LegalTimeSheetReport.Report(new LegalTimeSheetReport.ReportData 
-            //{ 
-            //    ClientName = App.ActiveClient.Name,
-            //    ReportName
+                        reportData.StartDate = new DateTime(year, month, 1);
+                        reportData.EndDate = new DateTime(year, month, DateTime.DaysInMonth(year, month));
+                    }
+                    else
+                    {
+                        App.ShowNotification(NotificationSeverity.Warning, "Uwaga!", $"Najpierw przefiltruj dane po wybranym miesiącu", GeneralViewModel.NotificationDuration);
+                        return;
+                    }
+                }
+                else
+                {
+                    productivityRecords = App.ActiveClientWithData.TimeRecords
+                        .Where(x => x.EventDate >= reportData.StartDate && x.EventDate <= reportData.EndDate).ToList();
+                }
 
+                if (productivityRecords.Count == 0)
+                {
+                    App.ShowNotification(NotificationSeverity.Warning, "Uwaga!", $"Nie wykryto żadnych wpisów w wybranym przedziale dat", GeneralViewModel.NotificationDuration);
+                    return;
+                }
 
-
-            //});
+                reportData.ClientName = App.ActiveClient.Name;
+                reportData.Records = productivityRecords;
+                reportData.ReportName = $"{reportData.ClientName}_{DateTime.Now:yyyy-MM-dd-hh-mm-ss}";
+                LegalTimeSheetReport.GeneratePDF(reportData);
+            }
+            catch (Exception ex)
+            {
+                await App.ErrorPage.DisplayMessage(ex);
+            }
         }
     }
 }

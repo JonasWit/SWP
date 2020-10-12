@@ -16,6 +16,8 @@ namespace SWP.Application.LegalSwp.TimeRecords
             var tr = legalSwpManager.GetTimeRecord(request.Id);
 
             tr.Name = request.Name;
+            tr.Lawyer = request.Lawyer;
+            tr.Rate = request.Rate;
             tr.Description = request.Description;
             tr.Hours = request.RecordedHours;
             tr.Minutes = request.RecordedMinutes;
@@ -30,6 +32,8 @@ namespace SWP.Application.LegalSwp.TimeRecords
         {
             public int Id { get; set; }
             public string Name { get; set; }
+            public string Lawyer { get; set; }
+            public double Rate { get; set; }
             public string Description { get; set; }
             public int RecordedHours { get; set; } = 0;
             public int RecordedMinutes { get; set; } = 0;

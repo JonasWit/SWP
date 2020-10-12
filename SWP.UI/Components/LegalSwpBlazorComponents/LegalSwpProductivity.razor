@@ -13,7 +13,7 @@
                 </RadzenGridColumn>
                 <RadzenGridColumn TItem="TimeRecordViewModel" Property="Lawyer" Title="Prawnik">
                     <EditTemplate Context="r">
-                        <RadzenTextBox @bind-Value="r.Lawyer" Style="width:100%; display: block" Name="Name" />
+                        <RadzenTextBox @bind-Value="r.Lawyer" Style="width:100%; display: block" Name="Lawyer" />
                         <RadzenRequiredValidator Component="Lawyer" Text="Wpisz prawnika, który pracował w tym czasie" Popup="true" />
                         <RadzenLengthValidator Max="200" Text="Maksymalnie 200 znaków" Component="Lawyer" Popup="true" />
                     </EditTemplate>
@@ -165,8 +165,7 @@
         </RadzenCard>
 
         <RadzenCard>
-
-            <RadzenTemplateForm Data="@App.ProductivityPage.NewTimesheetReport" Submit="@((LegalTimeSheetReport.ReportData args) => { App.ProductivityPage.GenerateTimesheetReport(args); })">
+            <RadzenTemplateForm Data="@App.ProductivityPage.NewTimesheetReport" Submit="@(async (LegalTimeSheetReport.ReportData args) => { await App.ProductivityPage.GenerateTimesheetReport(args); })">
                 <div class="row">
                     <RadzenFieldset Text="Wprowadź nową czynność i czas">
                         <div class="row">
@@ -175,6 +174,9 @@
                                 <RadzenMask Mask="***-**-**-***" Pattern="[^0-9]" Placeholder="000-00-00-000" Name="NIP" @bind-Value="@App.ProductivityPage.NewTimesheetReport.NIP" Style="margin-bottom: 20px" />
                             </div>
                         </div>
+
+                        <RadzenLabel Text="Numer Faktury" Component="InvoiceNo" Style="margin-left: 5px;margin-bottom: 20px" />
+                        <RadzenTextArea Placeholder="Numer Faktury..." Style="margin-bottom: 30px" @bind-Value="App.ProductivityPage.NewTimesheetReport.InvoiceNumber" Name="InvoiceNo" />
 
                         <RadzenLabel Text="Uzyj tego przefiltrowanego miesiaca" Component="UseSelected" Style="margin-left: 5px;margin-bottom: 20px" />
                         <RadzenCheckBox @bind-Value="@App.ProductivityPage.NewTimesheetReport.UseSelectedMonth" Style="margin-bottom: 20px" TValue="bool" Name="UseSelected" />

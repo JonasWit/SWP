@@ -19,8 +19,8 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App.Reporting
         public void AddPageNumber(PdfWriter writer, Document document)
         {
             var numberTable = new PdfPTable(1);
-            string text = "Strona : " + writer.PageNumber.ToString("00"),
-                text1 = "Wygenerowano : " + DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss");
+            string text = $"Strona : {writer.PageNumber:00}",
+                text1 = $"Wygenerowano : {DateTime.Now:dd-MM-yyyy HH:mm:ss}" ;
 
             var pdfCell = new PdfPCell(new Phrase(text, pageNumberFont))
             {
@@ -32,14 +32,14 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App.Reporting
 
             pdfCell = new PdfPCell(new Phrase(text1, pageNumberFont))
             {
-                HorizontalAlignment = Element.ALIGN_CENTER,
+                HorizontalAlignment = Element.ALIGN_LEFT,
                 Border = 0,
                 BackgroundColor = BaseColor.White
             };
             numberTable.AddCell(pdfCell);
 
             numberTable.TotalWidth = 450;
-            numberTable.WriteSelectedRows(0, -1, document.Left + 80, document.Bottom + 10, writer.DirectContent);
+            numberTable.WriteSelectedRows(0, -1, document.Left, document.Bottom, writer.DirectContent);
         }
     }
 }

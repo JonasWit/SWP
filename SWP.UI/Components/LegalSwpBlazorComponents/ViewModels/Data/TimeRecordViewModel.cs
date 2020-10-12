@@ -12,7 +12,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data
         public int RecordedHours { get; set; } = 0;
         public int RecordedMinutes { get; set; } = 0;
         public string TimeSpent => $"{RecordedHours}:{RecordedMinutes}";
-        public double Total => Rate != 0 ? Math.Floor((double)(RecordedHours + ((double)RecordedMinutes * 60)) * Rate) : 0;
+        public double Total => Rate != 0 ? Math.Floor((double)(RecordedHours + ((double)RecordedMinutes / 60)) * Rate) : 0;
         public int ClientId { get; set; }
         public DateTime EventDate { get; set; }
 
@@ -20,6 +20,8 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data
             new TimeRecordViewModel
             {
                 Id = input.Id,
+                Lawyer = input.Lawyer,
+                Rate = input.Rate,
                 Description = input.Description,
                 RecordedHours = input.Hours,
                 RecordedMinutes = input.Minutes,

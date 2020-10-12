@@ -9,14 +9,10 @@ namespace SWP.Domain.Models.SWPLegal
         [MaxLength(50)]
         [Required]
         public string Name { get; set; }
-
-        //[MaxLength(200)]
-        //[Required]
-        //public string Lawyer { get; set; }
-
-        //[Required]
-        //public double Rate { get; set; }
-
+        [MaxLength(200)]
+        public string Lawyer { get; set; }
+        [Required]
+        public double Rate { get; set; }
         [MaxLength(500)]
         public string Description { get; set; }
         public int Hours { get; set; }

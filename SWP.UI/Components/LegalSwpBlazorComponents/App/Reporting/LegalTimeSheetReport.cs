@@ -2,14 +2,11 @@
 using iTextSharp.text.pdf;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.JSInterop;
-using Radzen;
 using SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data;
 using SWP.UI.Utilities;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace SWP.UI.Components.LegalSwpBlazorComponents.App.Reporting
 {
@@ -59,12 +56,9 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App.Reporting
 
         public byte[] Report()
         {
-            _document = new Document(PageSize.A4, 10f, 10f, 20f, 30f);
+            _document = new Document(PageSize.A4.Rotate(), 10f, 10f, 20f, 30f);
             _pdfPTable.WidthPercentage = 100;
             _pdfPTable.HorizontalAlignment = Element.ALIGN_LEFT;
-
-            FontFactory.Register(FontPath);
-
             _pdfWriter = PdfWriter.GetInstance(_document, _memoryStream);
             _pdfWriter.PageEvent = new PdfReportFooterStandard();
 
@@ -93,7 +87,6 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App.Reporting
             _document.Add(_pdfPTable);
 
             this.OnEndPage(_pdfWriter, _document);
-
             _document.Close();
 
             return _memoryStream.ToArray();
@@ -101,32 +94,21 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App.Reporting
 
         private void ReportBody()
         {
-            var headersFontStyle = FontFactory.GetFont("Anonymous_Pro", 10f, 0);
-            var dataFontStyle = FontFactory.GetFont("Anonymous_Pro", 8f, 0);
-
-            _pdfPCell = new PdfPCell(new Phrase($"NIP : ", headersFontStyle))
+            var headersFontStyle = new Font(BaseFont.CreateFont(Path.Combine(FontPath, "Anonymous_Pro.ttf"), BaseFont.CP1250, true))
             {
-                Colspan = 4,
-                HorizontalAlignment = Element.ALIGN_RIGHT,
-                Border = 0,
-                ExtraParagraphSpace = 0
+                Size = 10f
             };
-            _pdfPTable.AddCell(_pdfPCell);
 
-            _pdfPCell = new PdfPCell(new Phrase(_reportData.NIP, headersFontStyle))
+            var dataFontStyle = new Font(BaseFont.CreateFont(Path.Combine(FontPath, "Anonymous_Pro.ttf"), BaseFont.CP1250, true))
             {
-                Colspan = 4,
-                HorizontalAlignment = Element.ALIGN_LEFT,
-                Border = 0,
-                ExtraParagraphSpace = 0
+                Size = 8f
             };
-            _pdfPTable.AddCell(_pdfPCell);
 
-            _pdfPTable.CompleteRow();
+            #region Top Data
 
-            _pdfPCell = new PdfPCell(new Phrase($"Nazwa Klienta : ", headersFontStyle))
+            _pdfPCell = new PdfPCell(new Phrase($"Nazwa Klienta (Client Name): ", headersFontStyle))
             {
-                Colspan = 4,
+                Colspan = 3,
                 HorizontalAlignment = Element.ALIGN_RIGHT,
                 Border = 0,
                 ExtraParagraphSpace = 0
@@ -135,18 +117,17 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App.Reporting
 
             _pdfPCell = new PdfPCell(new Phrase(_reportData.ClientName, headersFontStyle))
             {
-                Colspan = 4,
+                Colspan = 5,
                 HorizontalAlignment = Element.ALIGN_LEFT,
                 Border = 0,
                 ExtraParagraphSpace = 0
             };
             _pdfPTable.AddCell(_pdfPCell);
-
             _pdfPTable.CompleteRow();
 
-            _pdfPCell = new PdfPCell(new Phrase("Data Faktury : ", headersFontStyle))
+            _pdfPCell = new PdfPCell(new Phrase("Data Faktury (Invoice Date): ", headersFontStyle))
             {
-                Colspan = 2,
+                Colspan = 3,
                 HorizontalAlignment = Element.ALIGN_RIGHT,
                 Border = 0,
                 ExtraParagraphSpace = 0
@@ -155,38 +136,17 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App.Reporting
 
             _pdfPCell = new PdfPCell(new Phrase(_reportData.InvoiceDate.ToString("dd.MM.yyyy"), headersFontStyle))
             {
-                Colspan = 2,
+                Colspan = 5,
                 HorizontalAlignment = Element.ALIGN_LEFT,
                 Border = 0,
                 ExtraParagraphSpace = 0
             };
             _pdfPTable.AddCell(_pdfPCell);
-
             _pdfPTable.CompleteRow();
 
-            _pdfPCell = new PdfPCell(new Phrase("Numer Faktury : ", headersFontStyle))
+            _pdfPCell = new PdfPCell(new Phrase("Przedział czasowy (Time Period) : ", headersFontStyle))
             {
-                Colspan = 2,
-                HorizontalAlignment = Element.ALIGN_RIGHT,
-                Border = 0,
-                ExtraParagraphSpace = 0
-            };
-            _pdfPTable.AddCell(_pdfPCell);
-
-            _pdfPCell = new PdfPCell(new Phrase(_reportData.InvoiceNumber, headersFontStyle))
-            {
-                Colspan = 2,
-                HorizontalAlignment = Element.ALIGN_LEFT,
-                Border = 0,
-                ExtraParagraphSpace = 0
-            };
-            _pdfPTable.AddCell(_pdfPCell);
-
-            _pdfPTable.CompleteRow();
-
-            _pdfPCell = new PdfPCell(new Phrase("Przedział czasowy : ", headersFontStyle))
-            {
-                Colspan = 2,
+                Colspan = 3,
                 HorizontalAlignment = Element.ALIGN_RIGHT,
                 Border = 0,
                 ExtraParagraphSpace = 0
@@ -195,14 +155,15 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App.Reporting
 
             _pdfPCell = new PdfPCell(new Phrase($"{_reportData.StartDate:dd.MM.yyyy} - {_reportData.EndDate:dd.MM.yyyy}", headersFontStyle))
             {
-                Colspan = 2,
+                Colspan = 5,
                 HorizontalAlignment = Element.ALIGN_LEFT,
                 Border = 0,
-                ExtraParagraphSpace = 0
+                ExtraParagraphSpace = 6
             };
             _pdfPTable.AddCell(_pdfPCell);
-
             _pdfPTable.CompleteRow();
+
+            #endregion
 
             #region Table Header
 
@@ -293,7 +254,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App.Reporting
                     Colspan = 1,
                     HorizontalAlignment = Element.ALIGN_CENTER,
                     VerticalAlignment = Element.ALIGN_MIDDLE,
-                    BackgroundColor = BaseColor.LightGray
+                    BackgroundColor = BaseColor.White
                 };
                 _pdfPTable.AddCell(_pdfPCell);
 
@@ -302,7 +263,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App.Reporting
                     Colspan = 1,
                     HorizontalAlignment = Element.ALIGN_CENTER,
                     VerticalAlignment = Element.ALIGN_MIDDLE,
-                    BackgroundColor = BaseColor.LightGray
+                    BackgroundColor = BaseColor.White
                 };
                 _pdfPTable.AddCell(_pdfPCell);
 
@@ -311,7 +272,16 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App.Reporting
                     Colspan = 1,
                     HorizontalAlignment = Element.ALIGN_CENTER,
                     VerticalAlignment = Element.ALIGN_MIDDLE,
-                    BackgroundColor = BaseColor.LightGray
+                    BackgroundColor = BaseColor.White
+                };
+                _pdfPTable.AddCell(_pdfPCell);
+
+                _pdfPCell = new PdfPCell(new Phrase(record.Name, dataFontStyle))
+                {
+                    Colspan = 1,
+                    HorizontalAlignment = Element.ALIGN_CENTER,
+                    VerticalAlignment = Element.ALIGN_MIDDLE,
+                    BackgroundColor = BaseColor.White
                 };
                 _pdfPTable.AddCell(_pdfPCell);
 
@@ -320,7 +290,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App.Reporting
                     Colspan = 1,
                     HorizontalAlignment = Element.ALIGN_CENTER,
                     VerticalAlignment = Element.ALIGN_MIDDLE,
-                    BackgroundColor = BaseColor.LightGray
+                    BackgroundColor = BaseColor.White
                 };
                 _pdfPTable.AddCell(_pdfPCell);
 
@@ -329,7 +299,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App.Reporting
                     Colspan = 1,
                     HorizontalAlignment = Element.ALIGN_CENTER,
                     VerticalAlignment = Element.ALIGN_MIDDLE,
-                    BackgroundColor = BaseColor.LightGray
+                    BackgroundColor = BaseColor.White
                 };
                 _pdfPTable.AddCell(_pdfPCell);
 
@@ -338,7 +308,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App.Reporting
                     Colspan = 1,
                     HorizontalAlignment = Element.ALIGN_CENTER,
                     VerticalAlignment = Element.ALIGN_MIDDLE,
-                    BackgroundColor = BaseColor.LightGray
+                    BackgroundColor = BaseColor.White
                 };
                 _pdfPTable.AddCell(_pdfPCell);
 
@@ -347,7 +317,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App.Reporting
                     Colspan = 1,
                     HorizontalAlignment = Element.ALIGN_CENTER,
                     VerticalAlignment = Element.ALIGN_MIDDLE,
-                    BackgroundColor = BaseColor.LightGray
+                    BackgroundColor = BaseColor.White
                 };
                 _pdfPTable.AddCell(_pdfPCell);
 
@@ -359,14 +329,42 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App.Reporting
 
         private void ReportHeader()
         {
-            var fontStyle = FontFactory.GetFont("Anonymous_Pro", 18f, 1);
+            var fontStyle = new Font(BaseFont.CreateFont(Path.Combine(FontPath, "Anonymous_Pro.ttf"), BaseFont.CP1250, true))
+            {
+                Size = 14f
+            };
+
+            var dataFontStyle = new Font(BaseFont.CreateFont(Path.Combine(FontPath, "Anonymous_Pro.ttf"), BaseFont.CP1250, true))
+            {
+                Size = 9f
+            };
+
+            _pdfPCell = new PdfPCell(new Phrase($"NIP : {_reportData.NIP}", dataFontStyle))
+            {
+                Colspan = 4,
+                HorizontalAlignment = Element.ALIGN_LEFT,
+                Border = 0,
+                ExtraParagraphSpace = 0
+            };
+            _pdfPTable.AddCell(_pdfPCell);
+
+            _pdfPCell = new PdfPCell(new Phrase($"Numer Faktury (Invoice Number): {_reportData.InvoiceNumber}", dataFontStyle))
+            {
+                Colspan = 4,
+                HorizontalAlignment = Element.ALIGN_RIGHT,
+                Border = 0,
+                ExtraParagraphSpace = 0
+            };
+            _pdfPTable.AddCell(_pdfPCell);
+
+            _pdfPTable.CompleteRow();
 
             _pdfPCell = new PdfPCell(new Phrase("Wykaz czynności objętych fakturą (Invoice Details)", fontStyle))
             {
                 Colspan = _maxColumn,
                 HorizontalAlignment = Element.ALIGN_CENTER,
                 Border = 0,
-                ExtraParagraphSpace = 0
+                ExtraParagraphSpace = 6
             };
 
             _pdfPTable.AddCell(_pdfPCell);

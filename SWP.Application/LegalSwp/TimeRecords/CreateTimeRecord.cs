@@ -16,6 +16,8 @@ namespace SWP.Application.LegalSwp.TimeRecords
         public Task<TimeRecord> Create(int clientId, string profile, Request request) =>
             legalSwpManager.CreateTimeRecord(clientId, profile, new TimeRecord
             {
+                Lawyer = request.Lawyer,
+                Rate = request.Rate,
                 Name = request.Name,
                 Hours = request.RecordedHours,
                 Minutes = request.RecordedMinutes,

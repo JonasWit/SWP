@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Radzen;
 using SWP.UI.Components.LegalSwpBlazorComponents.App;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,8 +16,26 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
         public LegalBlazorApp App { get; set; }
         [Parameter]
         public EventCallback<LegalBlazorApp> AppChanged { get; set; }
+        [Inject]
+        public DialogService DialogService { get; set; }
 
-        private string FormatAsPLN(object value) => ((double)value).ToString(CultureInfo.CreateSpecificCulture("pl"));
+        protected override void OnInitialized()
+        {
+            DialogService.OnOpen += Open;
+            DialogService.OnClose += Close;
+        }
+
+        private void Open(string title, Type type, Dictionary<string, object> parameters, DialogOptions options)
+        {
+            StateHasChanged();
+        }
+
+        private void Close(dynamic result)
+        {
+            StateHasChanged();
+        }
+
+        private string FormatAsPLN(object value) => $"{((double)value).ToString(CultureInfo.CreateSpecificCulture("pl"))} zł";
 
         private string FormatAsTime(object value)
         {

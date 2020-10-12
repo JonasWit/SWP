@@ -120,7 +120,7 @@
                             </EditTemplate>
                         </RadzenGridColumn>
 
-                        <RadzenGridColumn TItem="ClientViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center">
+                        <RadzenGridColumn TItem="ClientViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="100px">
                             <Template Context="client">
                                 <RadzenButton Icon="edit" Size="ButtonSize.Medium" Click="@(args => App.ClientsPage.EditClientRow(client))">
                                 </RadzenButton>
@@ -132,7 +132,7 @@
                                 </RadzenButton>
                             </EditTemplate>
                         </RadzenGridColumn>
-                        <RadzenGridColumn TItem="ClientViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center">
+                        <RadzenGridColumn TItem="ClientViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="50px">
                             <Template Context="client">
                                 <RadzenButton ButtonStyle="ButtonStyle.Warning" Icon="archive" Size="ButtonSize.Medium" Click="@(async (args) => await App.ClientsPage.ArchivizeClient(client))">
                                 </RadzenButton>
@@ -140,7 +140,7 @@
                             <EditTemplate Context="client">
                             </EditTemplate>
                         </RadzenGridColumn>
-                        <RadzenGridColumn TItem="ClientViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center">
+                        <RadzenGridColumn TItem="ClientViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="50px">
                             <Template Context="client">
                                 <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Medium" Click="@(async (args) => await App.ClientsPage.DeleteClientRow(client))">
                                 </RadzenButton>

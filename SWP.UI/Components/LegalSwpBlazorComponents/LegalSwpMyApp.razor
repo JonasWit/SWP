@@ -16,6 +16,7 @@
     {
         <h1>Uwaga!</h1>
         <RadzenButton Text="Usuń wszystkie dane powiązane z profilem!" Click="App.MyAppPage.RemoveProfileData"></RadzenButton>
+        <RadzenButton Text=@($"Show confirm dialog") Click="@(args => DialogService.Confirm("Are you sure?", "MyTitle", new ConfirmOptions() { OkButtonText = "Yes", CancelButtonText = "No" }))" />
     }
 
     @if (App.MyAppPage.ClientsCases.Count != 0)

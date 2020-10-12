@@ -4,9 +4,6 @@
 
 <div class="row">
     <div class="col-md-12">
-        <RadzenDialog />
-        <RadzenNotification />
-
         <RadzenScheduler @ref="App.CalendarPage.RemindersScheduler" style="height: 768px;" TItem="ReminderViewModel" Data="@App.CalendarPage.Reminders" StartProperty="Start" EndProperty="End" TextProperty="Name" SelectedIndex="2" AppointmentSelect="@App.CalendarPage.OnAppointmentSelect" TodayText="Dzisiaj" AppointmentRender="@App.CalendarPage.OnAppointmentRender">
             <Template Context="data">
                 <span>@($"{data.Start.ToString("HH:mm")} {data.Name}")</span>

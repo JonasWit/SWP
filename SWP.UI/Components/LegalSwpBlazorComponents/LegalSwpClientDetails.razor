@@ -147,10 +147,24 @@
                 </RadzenGridColumn>
             </Columns>
         </RadzenGrid>
-    </div>
+        @if (App.ClientDetailsPage.SelectedContact != null)
+        {
+            <div class="contact-details">
+                <div>
+                    <div class="text"><strong>Imię:</strong> @App.ClientDetailsPage.SelectedContact.Name</div>
+                    <div class="text"><strong>Nazwisko:</strong> @App.ClientDetailsPage.SelectedContact.Surname</div>
+                    <div class="text"><strong>Telefon:</strong> @App.ClientDetailsPage.SelectedContact.PhoneNumber</div>
+                    <div class="text"><strong>Telefon 2:</strong> @App.ClientDetailsPage.SelectedContact.AlternativePhoneNumber</div>
+                </div>
+                <div>
+                    <div class="text"><strong>Adres:</strong> @App.ClientDetailsPage.SelectedContact.Address</div>
+                    <div class="text"><strong>Zmienione przez:</strong> @App.ClientDetailsPage.SelectedContact.UpdatedBy</div>
+                    <div class="text"><strong>Data zmiany:</strong>@App.ClientDetailsPage.SelectedContact.Updated</div>
+                    <div class="text"><strong>Data utworzenia:</strong> @App.ClientDetailsPage.SelectedContact.Created</div>
+                </div>
+            </div>
+        }
 
-    @if (App.ClientDetailsPage.SelectedContact != null)
-    {
-        <p>@($"Wybrany kontakt {App.ClientDetailsPage.SelectedContact.Name} {App.ClientDetailsPage.SelectedContact.Surname}")</p>
-    }
+
+    </div>
 }

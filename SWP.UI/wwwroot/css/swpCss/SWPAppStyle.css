@@ -280,7 +280,7 @@ ul, li {
 .contact-details {
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: space-between;
     -webkit-box-shadow: 10px 10px 61px 1px rgba(184,222,242,0.39);
     -moz-box-shadow: 10px 10px 61px 1px rgba(184,222,242,0.39);
     box-shadow: 10px 10px 61px 1px rgba(184,222,242,0.39);
@@ -289,3 +289,4 @@ ul, li {
     animation-iteration-count: 1;
     animation-fill-mode: forwards;
 }
+

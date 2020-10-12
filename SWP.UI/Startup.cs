@@ -60,7 +60,6 @@ namespace SWP.UI
             services.AddAuthorization(options =>
             {
                 options.AddPolicy(ApplicationPolicy.LegalApplication.ToString(), policy => policy.RequireClaim(ClaimType.Application.ToString(), ApplicationType.LegalSwp.ToString()));
-                options.AddPolicy(ApplicationPolicy.MedicalApplication.ToString(), policy => policy.RequireClaim(ClaimType.Application.ToString(), ApplicationType.MedicalSwp.ToString()));
             });
 
             services.AddServerSideBlazor();
@@ -112,7 +111,6 @@ namespace SWP.UI
             services.AddAuthorization(options =>
             {
                 options.AddPolicy(ApplicationPolicy.LegalApplication.ToString(), policy => policy.RequireClaim(ClaimType.Application.ToString(), ApplicationType.LegalSwp.ToString()));
-                options.AddPolicy(ApplicationPolicy.MedicalApplication.ToString(), policy => policy.RequireClaim(ClaimType.Application.ToString(), ApplicationType.MedicalSwp.ToString()));
             });
 
             services.AddServerSideBlazor();

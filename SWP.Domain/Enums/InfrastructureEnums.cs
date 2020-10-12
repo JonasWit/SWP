@@ -7,7 +7,6 @@ namespace SWP.Domain.Enums
     public enum ApplicationType
     { 
         LegalSwp = 0,
-        MedicalSwp = 1,
     }
 
     public enum UserStatus
@@ -32,7 +31,6 @@ namespace SWP.Domain.Enums
     public enum ApplicationPolicy
     {
         LegalApplication = 0,
-        MedicalApplication = 1,
     }
 
 

@@ -9,70 +9,33 @@
 
 @if ((await authService.AuthorizeAsync(User, "LegalApplication")).Succeeded)
 {
-<div class="card app-card shadow-lg p-3 mb-5 bg-white rounded">
-    <h5 class="text-center mt-5 mb-3">Twoja Kancelaria</h5>
-    <i class="text-center"><img src="~/Images/icons8-courthouse-80.png" /></i>
-    <div class="card-body mt-4 mb-4">
-        <div class="row">
-            <div class="col-4 text-left">
-                <p><strong>Użytkownik:</strong> </p>
-                <p><strong>Liczba powiązanych użytkowników:</strong></p>
-                <p><strong>Ważność licencji:</strong></p>
-
-            </div>
-            <div class="col-4 text-left">
-
-                <div>
-                    <p>@Model.User.Identity.Name</p>
+    <div class="card app-card shadow-lg p-3 mb-5 bg-white rounded">
+        <h5 class="text-center mt-5 mb-3">Twoja Kancelaria</h5>
+        <i class="text-center"><img src="~/Images/icons8-courthouse-80.png" /></i>
+        <div class="card-body mt-4 mb-4">
+            <div class="row">
+                <div class="col-4 text-left">
+                    <p><strong>Użytkownik:</strong> </p>
+                    <p><strong>Liczba powiązanych użytkowników:</strong></p>
+                    <p><strong>Ważność licencji:</strong></p>
 
                 </div>
+                <div class="col-4 text-left">
 
-                <p>7</p>
-                <p>01/10/2022</p>
+                    <div>
+                        <p>@Model.User.Identity.Name</p>
 
-            </div>
-            <div class="col-4">
-                <p class="text-center"><a class="btn-2" asp-page="/Applications/LegalSwp/Index">Przejdź do aplikacji</a></p>
-                <p class="text-center"><a data-toggle="tooltip" data-placement="bottom" title="Przejdź do pomocy" asp-page="/Applications/Help"><img src="/Images/icons8-get-help-96.png"/></a>@Model.UserData.Profile</p>
+                    </div>
+
+                    <p>7</p>
+                    <p>01/10/2022</p>
+
+                </div>
+                <div class="col-4">
+                    <p class="text-center"><a class="btn-2" asp-page="/Applications/LegalSwp/Index">Przejdź do aplikacji</a></p>
+                    <p class="text-center"><a data-toggle="tooltip" data-placement="bottom" title="Przejdź do pomocy" asp-page="/Applications/Help"><img src="/Images/icons8-get-help-96.png" /></a>@Model.UserData.Profile</p>
+                </div>
             </div>
         </div>
     </div>
-</div>
-
-}
-
-@if ((await authService.AuthorizeAsync(User, "MedicalApplication")).Succeeded)
-{
-<div class="card app-card mt-4 shadow-lg p-3 mb-5 bg-white rounded">
-    <h5 class="text-center mt-5 mb-3">Gabinet</h5>
-    <i class="text-center"><img src="~/Images/icons8-medical-doctor-80.png" /></i>
-    <div class="card-body mt-4 mb-4">
-        <div class="row">
-            <div class="col-4 text-left">
-                <p><strong>Użytkownik:</strong> </p>
-                <p><strong>Liczba powiązanych użytkowników:</strong></p>
-                <p><strong>Ważność licencji:</strong></p>
-
-
-            </div>
-            <div class="col-4 text-left">
-
-                <div>
-                    <p>@Model.User.Identity.Name</p>
-
-                </div>
-
-                <p>7</p>
-                <p>01/10/2022</p>
-
-            </div>
-            <div class="col-4">
-                <p class="text-center"><a class="btn-2" asp-page="/Applications/MedicalSwp/Index">Przejdź do aplikacj</a></p>
-                <p class="text-center"><a data-toggle="tooltip" data-placement="bottom" title="Przejdź do pomocy" asp-page="/Applications/Help"><img src="/Images/icons8-get-help-96.png" /></a>@Model.UserData.Profile</p>
-            </div>
-        </div>
-
-    </div>
-</div>
-
 }

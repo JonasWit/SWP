@@ -144,7 +144,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App.Reporting
             _pdfPTable.AddCell(_pdfPCell);
             _pdfPTable.CompleteRow();
 
-            _pdfPCell = new PdfPCell(new Phrase("Przedział czasowy (Time Period) : ", headersFontStyle))
+            _pdfPCell = new PdfPCell(new Phrase("Przedział czasowy (Time Period): ", headersFontStyle))
             {
                 Colspan = 3,
                 HorizontalAlignment = Element.ALIGN_RIGHT,

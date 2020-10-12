@@ -210,6 +210,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
                     return;
                 }
 
+                reportData.FontName = "Anonymous_Pro";
                 reportData.ClientName = App.ActiveClient.Name;
                 reportData.Records = productivityRecords;
                 reportData.ReportName = $"{reportData.ClientName}_{DateTime.Now:yyyy-MM-dd-hh-mm-ss}";

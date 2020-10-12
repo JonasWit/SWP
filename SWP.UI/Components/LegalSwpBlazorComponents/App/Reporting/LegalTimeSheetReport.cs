@@ -26,6 +26,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App.Reporting
         public class ReportData
         {
             public string NIP { get; set; }
+            public string FontName { get; set; }
             public List<TimeRecordViewModel> Records { get; set; }
             public string ClientName { get; set; }
             public string ReportName { get; set; }
@@ -56,7 +57,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App.Reporting
 
         public byte[] Report()
         {
-            _document = new Document(PageSize.A4.Rotate(), 10f, 10f, 20f, 30f);
+            _document = new Document(PageSize.A4.Rotate(), 20f, 20f, 20f, 30f);
             _pdfPTable.WidthPercentage = 100;
             _pdfPTable.HorizontalAlignment = Element.ALIGN_LEFT;
             _pdfWriter = PdfWriter.GetInstance(_document, _memoryStream);
@@ -94,12 +95,12 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App.Reporting
 
         private void ReportBody()
         {
-            var headersFontStyle = new Font(BaseFont.CreateFont(Path.Combine(FontPath, "Anonymous_Pro.ttf"), BaseFont.CP1250, true))
+            var headersFontStyle = new Font(BaseFont.CreateFont(Path.Combine(FontPath, $"{_reportData.FontName}.ttf"), BaseFont.CP1250, true))
             {
                 Size = 10f
             };
 
-            var dataFontStyle = new Font(BaseFont.CreateFont(Path.Combine(FontPath, "Anonymous_Pro.ttf"), BaseFont.CP1250, true))
+            var dataFontStyle = new Font(BaseFont.CreateFont(Path.Combine(FontPath, $"{_reportData.FontName}.ttf"), BaseFont.CP1250, true))
             {
                 Size = 8f
             };
@@ -329,12 +330,12 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App.Reporting
 
         private void ReportHeader()
         {
-            var fontStyle = new Font(BaseFont.CreateFont(Path.Combine(FontPath, "Anonymous_Pro.ttf"), BaseFont.CP1250, true))
+            var fontStyle = new Font(BaseFont.CreateFont(Path.Combine(FontPath, $"{_reportData.FontName}.ttf"), BaseFont.CP1250, true))
             {
                 Size = 14f
             };
 
-            var dataFontStyle = new Font(BaseFont.CreateFont(Path.Combine(FontPath, "Anonymous_Pro.ttf"), BaseFont.CP1250, true))
+            var dataFontStyle = new Font(BaseFont.CreateFont(Path.Combine(FontPath, $"{_reportData.FontName}.ttf"), BaseFont.CP1250, true))
             {
                 Size = 9f
             };

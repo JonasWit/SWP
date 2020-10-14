@@ -107,8 +107,6 @@ namespace SWP.UI.Components.AdminBlazorComponents.App
 
         public async Task GetUsers()
         {
-            Users = new List<UserModel>();
-
             var users = userManager.Users.Select(x => new IdentityUser
             {
                 Id = x.Id,

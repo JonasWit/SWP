@@ -1,9 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
 using SWP.UI.Components.LegalSwpBlazorComponents.App;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace SWP.UI.Components.LegalSwpBlazorComponents
 {
@@ -19,6 +15,6 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
         protected override void OnInitialized()
         {
            App.ArchivePage.RefreshData();
-        } 
+        }
     }
 }

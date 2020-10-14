@@ -18,6 +18,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         private GetClient GetClient => serviceProvider.GetService<GetClient>();
         private GetClients GetClients => serviceProvider.GetService<GetClients>();
         private UserManager<IdentityUser> UserManager => serviceProvider.GetService<UserManager<IdentityUser>>();
+        private ClientViewModel activeClient;
 
         private readonly NotificationService notificationService;
 
@@ -36,8 +37,6 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         public ClientJobsPage ClientJobsPage { get; }
         public ArchivePage ArchivePage { get; }
         public ClientDetailsPage ClientDetailsPage { get; }
-
-        private ClientViewModel activeClient;
         public string SelectedClientString { get; set; }
 
         public ClientViewModel ActiveClient

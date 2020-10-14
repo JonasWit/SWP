@@ -15,17 +15,14 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
     [UITransientService]
     public class LegalBlazorApp : BlazorAppBase
     {
+        private readonly IServiceProvider serviceProvider;
+        public event EventHandler ActiveClientChanged;
+        private ClientViewModel activeClient;
+
         private GetClient GetClient => serviceProvider.GetService<GetClient>();
         private GetClients GetClients => serviceProvider.GetService<GetClients>();
         private UserManager<IdentityUser> UserManager => serviceProvider.GetService<UserManager<IdentityUser>>();
-        private ClientViewModel activeClient;
-
-        private readonly NotificationService notificationService;
-
-        private readonly IServiceProvider serviceProvider;
-
-        public event EventHandler ActiveClientChanged;
-
+        private NotificationService NotificationService => serviceProvider.GetService<NotificationService>();
         public CalendarPage CalendarPage { get; }
         public CasesPage CasesPage { get; }
         public ClientPage ClientsPage { get; }
@@ -64,7 +61,6 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             ClientDetailsPage clientDetailsPage,
             IServiceProvider serviceProvider)
         {
-            this.notificationService = notificationService;
             this.serviceProvider = serviceProvider;
 
             FinancePage = financePage;
@@ -160,7 +156,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         public void SetActivePanel(Panels panel) => ActivePanel = panel;
 
         public void ShowNotification(NotificationSeverity severity, string summary, string detail, int duration) =>
-            notificationService.Notify(new NotificationMessage() { Severity = severity, Summary = summary, Detail = detail, Duration = duration });
+            NotificationService.Notify(new NotificationMessage() { Severity = severity, Summary = summary, Detail = detail, Duration = duration });
 
         public void ThrowTestException()
         {

@@ -18,10 +18,5 @@ namespace SWP.UI.Components.AdminBlazorComponents.App
             App = app as AdminBlazorApp;
             return Task.CompletedTask;
         }
-
-
-
-
-
     }
 }

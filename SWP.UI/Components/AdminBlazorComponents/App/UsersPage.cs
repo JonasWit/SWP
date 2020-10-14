@@ -15,8 +15,6 @@ namespace SWP.UI.Components.AdminBlazorComponents.App
     [UITransientService]
     public class UsersPage : BlazorPageBase
     {
-        private readonly UserManager<IdentityUser> userManager;
-
         public AdminBlazorApp App { get; private set; }
         public int SelectedRole { get; set; } = 1;
         public bool Lock { get; set; }
@@ -65,10 +63,7 @@ namespace SWP.UI.Components.AdminBlazorComponents.App
             public string ProfileName { get; set; }
         }
 
-        public UsersPage(UserManager<IdentityUser> userManager, IServiceProvider serviceProvider) : base(serviceProvider)
-        {
-            this.userManager = userManager;
-        }
+        public UsersPage(IServiceProvider serviceProvider) : base(serviceProvider) { }
 
         public override async Task Initialize(BlazorAppBase app)
         {
@@ -107,7 +102,7 @@ namespace SWP.UI.Components.AdminBlazorComponents.App
 
         public async Task GetUsers()
         {
-            var users = userManager.Users.Select(x => new IdentityUser
+            var users = UserManager.Users.Select(x => new IdentityUser
             {
                 Id = x.Id,
                 UserName = x.UserName,
@@ -132,9 +127,9 @@ namespace SWP.UI.Components.AdminBlazorComponents.App
 
         private async Task<UserModel> GetUser(string Id)
         {
-            var user = await userManager.FindByIdAsync(Id);
-            var claims = await userManager.GetClaimsAsync(user) as List<Claim>;
-            var role = await userManager.GetRolesAsync(user) as List<string>;
+            var user = await UserManager.FindByIdAsync(Id);
+            var claims = await UserManager.GetClaimsAsync(user) as List<Claim>;
+            var role = await UserManager.GetRolesAsync(user) as List<string>;
 
             return new UserModel
             {
@@ -171,15 +166,15 @@ namespace SWP.UI.Components.AdminBlazorComponents.App
                     return;
                 }
 
-                var userIdentity = await userManager.FindByIdAsync(SelectedUser.Id);
-                var selectedUserRoles = await userManager.GetRolesAsync(userIdentity) as List<string>;
+                var userIdentity = await UserManager.FindByIdAsync(SelectedUser.Id);
+                var selectedUserRoles = await UserManager.GetRolesAsync(userIdentity) as List<string>;
 
                 foreach (var role in selectedUserRoles)
                 {
-                    await userManager.RemoveFromRoleAsync(userIdentity, role);
+                    await UserManager.RemoveFromRoleAsync(userIdentity, role);
                 }
 
-                await userManager.AddToRoleAsync(userIdentity, ((RoleType)input).ToString());
+                await UserManager.AddToRoleAsync(userIdentity, ((RoleType)input).ToString());
                 await GetUsers();
 
                 App.ShowNotification(NotificationSeverity.Success, "Done!", $"Role of: {SelectedUser.Name} has been changed to: {(RoleType)input}", 5000);
@@ -194,15 +189,15 @@ namespace SWP.UI.Components.AdminBlazorComponents.App
         {
             try
             {
-                var userIdentity = await userManager.FindByIdAsync(SelectedUser.Id);
-                var selectedUserRoles = await userManager.GetRolesAsync(userIdentity) as List<string>;
+                var userIdentity = await UserManager.FindByIdAsync(SelectedUser.Id);
+                var selectedUserRoles = await UserManager.GetRolesAsync(userIdentity) as List<string>;
 
                 foreach (var role in selectedUserRoles)
                 {
-                    await userManager.RemoveFromRoleAsync(userIdentity, role);
+                    await UserManager.RemoveFromRoleAsync(userIdentity, role);
                 }
 
-                await userManager.AddToRoleAsync(userIdentity, ((RoleType)input).ToString());
+                await UserManager.AddToRoleAsync(userIdentity, ((RoleType)input).ToString());
                 await GetUsers();
             }
             catch (Exception ex)
@@ -219,9 +214,9 @@ namespace SWP.UI.Components.AdminBlazorComponents.App
             {
                 try
                 {
-                    var userIdentity = await userManager.FindByIdAsync(SelectedUser.Id);
+                    var userIdentity = await UserManager.FindByIdAsync(SelectedUser.Id);
                     var deletedClaim = SelectedUser.Claims.FirstOrDefault(x => x.Value == claim.Value);
-                    var result = await userManager.RemoveClaimAsync(userIdentity, deletedClaim);
+                    var result = await UserManager.RemoveClaimAsync(userIdentity, deletedClaim);
 
                     if (result.Succeeded)
                     {
@@ -250,9 +245,9 @@ namespace SWP.UI.Components.AdminBlazorComponents.App
             {
                 try
                 {
-                    var userIdentity = await userManager.FindByIdAsync(SelectedUser.Id);
+                    var userIdentity = await UserManager.FindByIdAsync(SelectedUser.Id);
                     var newClaim = new Claim(ClaimType.Application.ToString(), SelectedApplicationClaim);
-                    var result = await userManager.AddClaimAsync(userIdentity, newClaim);
+                    var result = await UserManager.AddClaimAsync(userIdentity, newClaim);
 
                     if (result.Succeeded)
                     {
@@ -287,9 +282,9 @@ namespace SWP.UI.Components.AdminBlazorComponents.App
             {
                 try
                 {
-                    var userIdentity = await userManager.FindByIdAsync(SelectedUser.Id);
+                    var userIdentity = await UserManager.FindByIdAsync(SelectedUser.Id);
                     var newClaim = new Claim(ClaimType.Status.ToString(), SelectedStatusClaim);
-                    var result = await userManager.AddClaimAsync(userIdentity, newClaim);
+                    var result = await UserManager.AddClaimAsync(userIdentity, newClaim);
 
                     if (result.Succeeded)
                     {
@@ -325,9 +320,9 @@ namespace SWP.UI.Components.AdminBlazorComponents.App
             {
                 try
                 {
-                    var userIdentity = await userManager.FindByIdAsync(SelectedUser.Id);
+                    var userIdentity = await UserManager.FindByIdAsync(SelectedUser.Id);
                     var newClaim = new Claim(ClaimType.Profile.ToString(), ProfileClaimName);
-                    var result = await userManager.AddClaimAsync(userIdentity, newClaim);
+                    var result = await UserManager.AddClaimAsync(userIdentity, newClaim);
 
                     if (result.Succeeded)
                     {
@@ -361,13 +356,13 @@ namespace SWP.UI.Components.AdminBlazorComponents.App
                     return;
                 }
 
-                var userIdentity = await userManager.FindByIdAsync(SelectedUser.Id);
+                var userIdentity = await UserManager.FindByIdAsync(SelectedUser.Id);
 
                 if (input)
                 {
                     if (SelectedUser.LockoutEnd != null) return;
 
-                    var result = await userManager.SetLockoutEndDateAsync(userIdentity, DateTime.Now.AddYears(+25));
+                    var result = await UserManager.SetLockoutEndDateAsync(userIdentity, DateTime.Now.AddYears(+25));
 
                     if (result.Succeeded)
                     {
@@ -378,7 +373,7 @@ namespace SWP.UI.Components.AdminBlazorComponents.App
                 {
                     if (SelectedUser.LockoutEnd == null) return;
 
-                    var result = await userManager.SetLockoutEndDateAsync(userIdentity, null);
+                    var result = await UserManager.SetLockoutEndDateAsync(userIdentity, null);
 
                     if (result.Succeeded)
                     {

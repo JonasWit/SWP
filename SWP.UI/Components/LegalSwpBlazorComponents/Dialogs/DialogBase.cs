@@ -12,6 +12,8 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.Dialogs
         [Parameter]
         public string Title { get; set; }
         [Parameter]
+        public string Description { get; set; }
+        [Parameter]
         public Func<Task> TaskToExecuteAsync { get; set; }
         [Parameter]
         public Action TaskToExecute { get; set; }

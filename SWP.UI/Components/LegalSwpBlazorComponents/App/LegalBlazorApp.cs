@@ -251,6 +251,12 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         {
             var payload = result as DialogResult;
 
+            if (result == null)
+            {
+                ForceRefresh();
+                return;
+            }
+
             if (!payload.Allowed)
             {
                 ForceRefresh();

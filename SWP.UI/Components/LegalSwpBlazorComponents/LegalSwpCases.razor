@@ -1,5 +1,4 @@
-﻿@inject GeneralViewModel generalViewModel
-
+﻿
 @if (App.Loading)
 {
 
@@ -119,7 +118,7 @@ else
                         <div class="col-md-6">
                             <RadzenScheduler @ref="App.CasesPage.CasesScheduler" style="height: 768px;" TItem="ReminderViewModel" Data="@App.ActiveClientWithData.SelectedCase.Reminders" StartProperty="Start" EndProperty="End" TextProperty="Name" SelectedIndex="2" SlotSelect="@App.CasesPage.OnSlotSelect" AppointmentSelect="@App.CasesPage.OnAppointmentSelect" AppointmentRender="@App.CasesPage.OnAppointmentRender" TodayText="Dzisiaj">
                                 <Template Context="data">
-                                    <span>@($"{data.Start.ToString("HH:mm")} {data.Name}")</span>
+                                    <SchedulerAppointmentName DisplayText="@data.Name"></SchedulerAppointmentName>
                                 </Template>
                                 <ChildContent>
                                     <RadzenDayView Text="Dzień" StartTime="@(new TimeSpan(0, 0, 0))" EndTime="@(new TimeSpan(24, 0, 0))" />

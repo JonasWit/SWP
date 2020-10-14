@@ -15,7 +15,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
     public class ClientJobsPage : BlazorPageBase
     {
         public LegalBlazorApp App { get; private set; }
-
+        public GeneralViewModel GeneralViewModel => serviceProvider.GetService<GeneralViewModel>();
         private CreateClientJob CreateClientJob => serviceProvider.GetService<CreateClientJob>();
         private DeleteClientJob DeleteClientJob => serviceProvider.GetService<DeleteClientJob>();
         private UpdateClientJob UpdateClientJob => serviceProvider.GetService<UpdateClientJob>();
@@ -23,7 +23,6 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         public CreateClientJob.Request NewClientJob { get; set; } = new CreateClientJob.Request();
         public RadzenGrid<ClientJobViewModel> ClientsJobsGrid { get; set; }
         public ClientJobViewModel SelectedArchivizedClientJob { get; set; }
-
         public ClientJobsPage(IServiceProvider serviceProvider) : base(serviceProvider) { }
 
         public override Task Initialize(BlazorAppBase app)

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using SWP.UI.Components.LegalSwpBlazorComponents.App;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,8 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
     {
         [Parameter]
         public string ActiveUserId { get; set; }
+        [Inject]
+        public LegalBlazorApp App { get; set; }
 
         public bool initializing = false;
 

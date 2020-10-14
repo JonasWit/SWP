@@ -66,7 +66,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
                 {
                     await ArchiveClientService.RecoverClient(SelectedArchivizedClient.Id, App.User.UserName);
 
-                    App.ShowNotification(NotificationSeverity.Warning, "Sukces!", $"Klient: {SelectedArchivizedClient.Name} został odzyskany.", GeneralViewModel.NotificationDuration);
+                    App.ShowNotification(NotificationSeverity.Success, "Sukces!", $"Klient: {SelectedArchivizedClient.Name} został odzyskany.", GeneralViewModel.NotificationDuration);
                     SelectedArchivizedClient = null;
                     RefreshData();
                     App.RefreshClients();

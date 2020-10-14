@@ -15,6 +15,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
     [UITransientService]
     public class ClientPage : BlazorPageBase
     {
+        private GeneralViewModel GeneralViewModel => serviceProvider.GetService<GeneralViewModel>();
         private DeleteClient DeleteClient => serviceProvider.GetService<DeleteClient>();
         private UpdateClient UpdateClient => serviceProvider.GetService<UpdateClient>();
         private CreateClient CreateClient => serviceProvider.GetService<CreateClient>();

@@ -1,5 +1,4 @@
-﻿@inject GeneralViewModel generalViewModel
-
+﻿
 @if (App.ActiveClientWithData == null)
 {
     <h2>In order to see tasks please select a client!</h2>
@@ -36,7 +35,7 @@ else
                             <RadzenLabel Text="Priorytet" />
                         </div>
                         <div class="col-md-8">
-                            <RadzenDropDown @bind-Value="App.ClientJobsPage.NewClientJob.Priority" Data="@generalViewModel.Priorities" TextProperty="Number" ValueProperty="Number" Style="width:100%" />
+                            <RadzenDropDown @bind-Value="App.ClientJobsPage.NewClientJob.Priority" Data="@App.ClientJobsPage.GeneralViewModel.Priorities" TextProperty="Number" ValueProperty="Number" Style="width:100%" />
                         </div>
                     </div>
                     <div class="row justify-content-center">
@@ -62,7 +61,7 @@ else
                 </RadzenGridColumn>
                 <RadzenGridColumn TItem="ClientJobViewModel" Property="Priority" Title="Priorytet">
                     <EditTemplate Context="job">
-                        <RadzenDropDown @bind-Value="job.Priority" Data="@generalViewModel.Priorities" TextProperty="Number" ValueProperty="Number" Style="width:100%" Name="Priority" />
+                        <RadzenDropDown @bind-Value="job.Priority" Data="@App.ClientJobsPage.GeneralViewModel.Priorities" TextProperty="Number" ValueProperty="Number" Style="width:100%" Name="Priority" />
                     </EditTemplate>
                 </RadzenGridColumn>
                 <RadzenGridColumn TItem="ClientJobViewModel" Property="Description" Title="Description">

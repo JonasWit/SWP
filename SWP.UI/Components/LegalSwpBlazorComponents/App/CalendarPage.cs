@@ -16,9 +16,8 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
     [UITransientService]
     public class CalendarPage : BlazorPageBase, IDisposable
     {
-        private readonly DialogService dialogService;
-        private readonly GeneralViewModel generalViewModel;
-
+        private DialogService DialogService => serviceProvider.GetService<DialogService>();
+        private GeneralViewModel GeneralViewModel => serviceProvider.GetService<GeneralViewModel>();
         private GetReminders GetReminders => serviceProvider.GetService<GetReminders>();
         private UpdateReminder UpdateReminder => serviceProvider.GetService<UpdateReminder>();
         private DeleteReminder DeleteReminder => serviceProvider.GetService<DeleteReminder>();
@@ -26,14 +25,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
         public LegalBlazorApp App { get; private set; }
 
-        public CalendarPage(
-            DialogService dialogService,
-            IServiceProvider serviceProvider,
-            GeneralViewModel generalViewModel) : base(serviceProvider)
-        {
-            this.dialogService = dialogService;
-            this.generalViewModel = generalViewModel;
-        }
+        public CalendarPage(IServiceProvider serviceProvider) : base(serviceProvider) { }
 
         public override Task Initialize(BlazorAppBase app)
         {
@@ -82,7 +74,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
         public async Task OnAppointmentSelect(SchedulerAppointmentSelectEventArgs<ReminderViewModel> args)
         {
-            ReminderViewModel result = await dialogService.OpenAsync<EditReminderPage>($"Client: {GetCase.GetCaseParentName(args.Data.CaseId)} Case: {GetCase.GetCaseName(args.Data.CaseId)}", new Dictionary<string, object> { { "Reminder", args.Data } });
+            ReminderViewModel result = await DialogService.OpenAsync<EditReminderPage>($"Client: {GetCase.GetCaseParentName(args.Data.CaseId)} Case: {GetCase.GetCaseName(args.Data.CaseId)}", new Dictionary<string, object> { { "Reminder", args.Data } });
 
             if (result != null)
             {
@@ -145,11 +137,11 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
             if (args.Data.IsDeadline)
             {
-                args.Attributes["style"] = $"background: {generalViewModel.DeadlineColor};";
+                args.Attributes["style"] = $"background: {GeneralViewModel.DeadlineColor};";
             }
             else
             {
-                var scheme = generalViewModel.PrioritiesColors.FirstOrDefault(x => x.Number == args.Data.Priority);
+                var scheme = GeneralViewModel.PrioritiesColors.FirstOrDefault(x => x.Number == args.Data.Priority);
                 args.Attributes["style"] = $"background: {scheme?.BackgroundColor}; color: {scheme?.TextColor};";
             }
         }

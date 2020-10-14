@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using SWP.UI.Components.AdminBlazorComponents.App;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,8 @@ namespace SWP.UI.Components.AdminBlazorComponents
     {
         [Parameter]
         public string ActiveUserId { get; set; }
+        [Inject]
+        public AdminBlazorApp App { get; set; }
 
         protected override async Task OnInitializedAsync()
         {

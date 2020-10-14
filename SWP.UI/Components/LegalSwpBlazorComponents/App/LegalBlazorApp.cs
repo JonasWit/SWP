@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Radzen;
 using SWP.Application.LegalSwp.Clients;
 using SWP.UI.BlazorApp;
+using SWP.UI.Components.LegalSwpBlazorComponents.Dialogs;
 using SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,7 @@ using System.Threading.Tasks;
 namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 {
     [UITransientService]
-    public class LegalBlazorApp : BlazorAppBase
+    public class LegalBlazorApp : BlazorAppBase, IDisposable
     {
         private readonly IServiceProvider serviceProvider;
         public event EventHandler ActiveClientChanged;
@@ -21,6 +22,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
         private GetClient GetClient => serviceProvider.GetService<GetClient>();
         private GetClients GetClients => serviceProvider.GetService<GetClients>();
+        public DialogService DialogService => serviceProvider.GetService<DialogService>();
         private UserManager<IdentityUser> UserManager => serviceProvider.GetService<UserManager<IdentityUser>>();
         private NotificationService NotificationService => serviceProvider.GetService<NotificationService>();
         public CalendarPage CalendarPage { get; }
@@ -83,6 +85,8 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             }
             else
             {
+                WireUpEvents();
+
                 ActiveUserId = activeUserId;
 
                 User.User = await UserManager.FindByIdAsync(ActiveUserId);
@@ -94,6 +98,12 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
                 await InitializePages();
             }
+        }
+
+        private void WireUpEvents()
+        {
+            DialogService.OnOpen += OpenDialog;
+            DialogService.OnClose += CloseDialog;
         }
 
         private void FireUpdatesAfterActiveClientChange()
@@ -224,6 +234,42 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             ActiveClientChanged?.Invoke(this, null);
         }
 
+        public void Dispose()
+        {
+            DialogService.OnOpen -= OpenDialog;
+            DialogService.OnClose -= CloseDialog;
+        }
+
         #endregion
+
+        private void OpenDialog(string title, Type type, Dictionary<string, object> parameters, DialogOptions options)
+        {
+            ForceRefresh();
+        }
+
+        private async void CloseDialog(dynamic result)
+        {
+            var payload = result as DialogResult;
+
+            if (!payload.Allowed)
+            {
+                ForceRefresh();
+                return;
+            }
+
+            if (payload.TaskToExecuteAsync != null)
+            {
+                await payload.TaskToExecuteAsync.Invoke();
+                ForceRefresh();
+                return;
+            }
+
+            if (payload.TaskToExecute != null)
+            {
+                payload.TaskToExecute.Invoke();
+                ForceRefresh();
+                return;
+            }
+        }
     }
 }

@@ -75,6 +75,12 @@
                         </RadzenButton>
                     </EditTemplate>
                 </RadzenGridColumn>
+                <RadzenGridColumn TItem="TimeRecordViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="50px">
+                    <Template Context="r">
+                        <RadzenButton ButtonStyle="ButtonStyle.Success" Icon="monetization_on" Size="ButtonSize.Medium" Click="@(async (args) => await App.ProductivityPage.AddRecordRowToCashMovements(r))">
+                        </RadzenButton>
+                    </Template>
+                </RadzenGridColumn>
                 <RadzenGridColumn TItem="TimeRecordViewModel" Context="order" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="50px">
                     <Template Context="r">
                         <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Medium" Click="@(async (args) => await App.ProductivityPage.DeleteTimeRecordRow(r))">

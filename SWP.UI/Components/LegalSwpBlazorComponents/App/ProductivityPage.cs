@@ -10,12 +10,15 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using SWP.UI.Components.LegalSwpBlazorComponents.App.Reporting;
 using Org.BouncyCastle.Asn1.X509;
+using SWP.Application.LegalSwp.CashMovements;
+using SWP.Domain.Models.SWPLegal;
 
 namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 {
     [UITransientService]
     public class ProductivityPage : BlazorPageBase
     {
+        private CreateCashMovement CreateCashMovement => serviceProvider.GetService<CreateCashMovement>();
         private CreateTimeRecord CreateTimeRecord => serviceProvider.GetService<CreateTimeRecord>();
         private DeleteTimeRecord DeleteTimeRecord => serviceProvider.GetService<DeleteTimeRecord>();
         private UpdateTimeRecord UpdateTimeRecord => serviceProvider.GetService<UpdateTimeRecord>();
@@ -48,6 +51,43 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         public RadzenGrid<TimeRecordViewModel> TimeRecordsGrid { get; set; }
 
         public void EditTimeRecordRow(TimeRecordViewModel time) => TimeRecordsGrid.EditRow(time);
+
+        public async Task AddRecordRowToCashMovements(TimeRecordViewModel time)
+        {
+            if (time.Total == 0)
+            {
+                App.ShowNotification(NotificationSeverity.Warning, "Błąd!", $"Nie można przenieść do Finansów wejscia, z kwotą 0 zł", GeneralViewModel.NotificationDuration);
+                return;
+            }
+
+            try
+            {
+                var request = new CreateCashMovement.Request
+                {
+                    Amount = time.Total,
+                    CashFlowDirection = 1,
+                    EventDate = time.EventDate,
+                    Expense = false,
+                    Name = time.Name,
+                    UpdatedBy = App.User.UserName
+                };
+
+                var result = await CreateCashMovement.Create(App.ActiveClient.Id, App.User.Profile, request);
+
+                App.ActiveClientWithData.CashMovements.Add(result);
+
+                if (App.FinancePage.CashMovementGrid != null)
+                {
+                    await App.FinancePage.CashMovementGrid.Reload();
+                }
+
+                App.ShowNotification(NotificationSeverity.Success, "Sukces!", $"Kwota: {result.Amount} zł, została dodana do Panelu Finanse", GeneralViewModel.NotificationDuration);
+            }
+            catch (Exception ex)
+            {
+                await App.ErrorPage.DisplayMessage(ex);
+            }
+        }
 
         public async Task OnUpdateTimeRecordRow(TimeRecordViewModel time)
         {

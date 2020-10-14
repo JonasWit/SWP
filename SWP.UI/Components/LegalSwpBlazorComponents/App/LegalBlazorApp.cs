@@ -53,7 +53,6 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             MyAppPage myAppPanel,
             ErrorPage errorPage,
             NoProfileWarning noProfileWarning,
-            NotificationService notificationService,
             FinancePage financePage,
             ProductivityPage productivityPage,
             ClientJobsPage clientJobsPage,

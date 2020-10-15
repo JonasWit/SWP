@@ -82,6 +82,9 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
                 }
 
                 App.ShowNotification(NotificationSeverity.Success, "Sukces!", $"Kwota: {result.Amount} zł, została dodana do Panelu Finanse", GeneralViewModel.NotificationDuration);
+                App.SetActivePanel(LegalBlazorApp.Panels.Finance);
+                App.ForceRefresh();
+                App.FinancePage.CashMovementGrid.LastPage();
             }
             catch (Exception ex)
             {

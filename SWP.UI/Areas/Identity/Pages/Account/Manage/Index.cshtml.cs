@@ -22,6 +22,7 @@ namespace SWP.UI.Areas.Identity.Pages.Account.Manage
             _signInManager = signInManager;
         }
 
+        [Display(Name = "Nazwa użytkownika (Jest to adres email użyty do rejestracji)")]
         public string Username { get; set; }
 
         [TempData]
@@ -33,14 +34,63 @@ namespace SWP.UI.Areas.Identity.Pages.Account.Manage
         public class InputModel
         {
             [Phone]
-            [Display(Name = "Phone number")]
+            [Display(Name = "Numer Kontaktowy")]
             public string PhoneNumber { get; set; }
+
+            [Display(Name = "Imię")]
+            public string Name { get; set; }
+
+            [Display(Name = "Nazwisko")]
+            public string Surname { get; set; }
+
+            [Display(Name = "Adres")]
+            public string Address { get; set; }
+
+            [Display(Name = "Adres Korespondencyjny")]
+            public string AddressCorrespondence { get; set; }
+
+            [Display(Name = "Miasto")]
+            public string City { get; set; }
+
+            [Display(Name = "Województwo")]
+            public string Vivodership { get; set; }
+
+            [Display(Name = "Kraj")]
+            public string Country { get; set; }
+
+            [Display(Name = "Kod Pocztowy")]
+            public string PostCode { get; set; }
+
+            [Display(Name = "Pełna Nazwa Firmy")]
+            public string CompanyFullName { get; set; }
+
+            [Display(Name = "NIP")]
+            [StringLength(10, ErrorMessage = "NIP musi składać się z 10 znaków!")]
+            [RegularExpression(@"[0-9]{10}$", ErrorMessage = "Nieprawidłowy NIP!")]
+            public string NIP { get; set; }
+
+            [Display(Name = "REGON")]
+            public string REGON { get; set; }
+
+            [Display(Name = "PESEL")]
+            public string PESEL { get; set; }
+
+            [Display(Name = "KRS")]
+            public string KRS { get; set; }
+
         }
 
+        /// <summary>
+        /// Load All Data Related to User
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
         private async Task LoadAsync(IdentityUser user)
         {
             var userName = await _userManager.GetUserNameAsync(user);
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
+
+            var claims = await _userManager.GetClaimsAsync(user);
 
             Username = userName;
 

@@ -400,9 +400,12 @@ namespace SWP.UI.Components.AdminBlazorComponents.App
 
             try
             {
-
-
-
+                await UserManager.DeleteAsync(await UserManager.FindByIdAsync(user.Id));
+                App.ShowNotification(NotificationSeverity.Warning, "Done!", $"User: {SelectedUser.Name} has been deleted!", 5000);
+                Users.RemoveAll(x => x.Id == user.Id);
+                await UsersGrid.Reload();
+                SelectedUser = null;
+                App.ForceRefresh();
             }
             catch (Exception ex)
             {

@@ -34,7 +34,7 @@ namespace SWP.UI
             services.AddDefaultIdentity<IdentityUser>(options =>
             {
                 options.Password.RequireDigit = true;
-                options.Password.RequiredLength = 10;
+                options.Password.RequiredLength = 12;
                 options.Password.RequireNonAlphanumeric = true;
                 options.Password.RequireUppercase = true;
                 options.Password.RequireLowercase = true;
@@ -90,7 +90,7 @@ namespace SWP.UI
                 options.Password.RequireUppercase = true;
                 options.Password.RequireLowercase = true;
                 options.SignIn.RequireConfirmedAccount = true;
-                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
                 options.Lockout.MaxFailedAccessAttempts = 3;
                 options.Lockout.AllowedForNewUsers = true;
             })

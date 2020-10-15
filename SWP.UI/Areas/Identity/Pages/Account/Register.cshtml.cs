@@ -53,7 +53,7 @@ namespace SWP.UI.Areas.Identity.Pages.Account
 
             //todo: validation for all password requirements
             [Required(ErrorMessage = "Hasło jest wymagane!")]
-            [StringLength(20, ErrorMessage = "Hasło musi składać się z 10 do 20 znaków!", MinimumLength = 10)]
+            [StringLength(20, ErrorMessage = "Hasło musi składać się z 12 do 20 znaków!", MinimumLength = 12)]
             [DataType(DataType.Password)]
             [Display(Name = "Hasło")]
             public string Password { get; set; }
@@ -100,8 +100,7 @@ namespace SWP.UI.Areas.Identity.Pages.Account
                         values: new { area = "Identity", userId = user.Id, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
 
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                         $"Kliknij w link by potwierdzić: <a href='{callbackUrl}'>Potwierdzam</a>.");
+                    await _emailSender.SendEmailAsync(Input.Email, "Potwierdź swój adres Email", $"<a href=\"{callbackUrl}\">Potwierdzam</a>.");
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {

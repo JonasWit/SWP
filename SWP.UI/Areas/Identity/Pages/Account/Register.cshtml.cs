@@ -100,7 +100,7 @@ namespace SWP.UI.Areas.Identity.Pages.Account
                         values: new { area = "Identity", userId = user.Id, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
 
-                    await _emailSender.SendEmailAsync(Input.Email, "Potwierdź swój adres Email", $"<a href=\"{callbackUrl}\">Potwierdzam</a>.");
+                    await _emailSender.SendEmailAsync(Input.Email, "Potwierdź adres Email", $"<a href=\"{callbackUrl}\">Potwierdzam</a>.");
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {

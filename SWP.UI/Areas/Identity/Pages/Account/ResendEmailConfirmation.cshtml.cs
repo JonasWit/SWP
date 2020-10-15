@@ -4,7 +4,6 @@ using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -50,22 +49,15 @@ namespace SWP.UI.Areas.Identity.Pages.Account
             var user = await _userManager.FindByEmailAsync(Input.Email);
             if (user == null)
             {
-                ModelState.AddModelError(string.Empty, "Email został do Ciebie wysłany. Sprawdź swoją skrzynkę.");
+                ModelState.AddModelError(string.Empty, "Użytkownik o podanym adresie Email nie jest zarejestrowany");
                 return Page();
             }
 
             var userId = await _userManager.GetUserIdAsync(user);
             var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
             code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-            var callbackUrl = Url.Page(
-                "/Account/ConfirmEmail",
-                pageHandler: null,
-                values: new { userId = userId, code = code },
-                protocol: Request.Scheme);
-            await _emailSender.SendEmailAsync(
-                Input.Email,
-                "Confirm your email",
-                $"Kliknij w link by potwierdzić: <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>Potwierdzam</a>.");
+            var callbackUrl = Url.Page("/Account/ConfirmEmail", pageHandler: null, values: new { userId = userId, code = code }, protocol: Request.Scheme);
+            await _emailSender.SendEmailAsync(Input.Email, "Potwierdź adres Email", $"Kliknij w link by potwierdzić: <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>Potwierdzam</a>.");
 
             ModelState.AddModelError(string.Empty, "Email został do Ciebie wysłany. Sprawdź swoją skrzynkę.");
             return Page();

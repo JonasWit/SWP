@@ -30,7 +30,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Components\MedicalSwpBlazorComponents\ViewModels\" />
     <Folder Include="Controllers\" />
     <Folder Include="wwwroot\DownloadableFiles\" />
   </ItemGroup>

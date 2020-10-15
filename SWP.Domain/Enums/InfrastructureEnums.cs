@@ -33,5 +33,20 @@ namespace SWP.Domain.Enums
         LegalApplication = 0,
     }
 
-
+    public enum UserDataClaims
+    {
+        ProfileName = 0,
+        ProfileSurname = 1,
+        ProfileAddress = 2,
+        ProfileAddressCorrespondence = 3,
+        City = 4,
+        Vivodership = 5,
+        Country = 6,
+        PostCode = 7,
+        CompanyFullName = 8,
+        NIP = 9,
+        REGON = 10,
+        PESEL = 11,
+        KRS = 12,
+    }
 }

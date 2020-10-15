@@ -16,9 +16,13 @@
                         <RadzenRequiredValidator Component="Amount" Text="Kwota nie może być pusta!" Popup="true" />
                     </EditTemplate>
                 </RadzenGridColumn>
-                <RadzenGridColumn TItem="CashMovementViewModel" Property="Expense" Title="Koszt">
+                <RadzenGridColumn TItem="CashMovementViewModel" Property="Expense" Title="Koszt" Width="50px">
                     <Template Context="c">
-                        @(c.Expense ? "Koszt" : "")
+                        @if (c.Expense)
+                        {
+                            <RadzenIcon Icon="money_off" />
+                
+                        }
                     </Template>
                     <EditTemplate Context="c">
                         <RadzenCheckBox @bind-Value="@c.Expense" TValue="bool" />

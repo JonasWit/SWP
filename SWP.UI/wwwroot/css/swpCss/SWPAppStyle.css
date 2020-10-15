@@ -110,10 +110,12 @@ ul, li {
 .label {
     width: 70px;
     padding: 8px;
+    font-size: 14px;
+    font-weight:bold;
 }
 
 .text {
-    width: 450px;
+    width: 450px !important;
     padding: 8px;
 }
 

@@ -16,5 +16,12 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
         public EventCallback<LegalBlazorApp> AppChanged { get; set; }
 
         public string ArchvizedJobsFilterValue;
+
+        public bool showFormVisible = false;
+        public void ShowHideForm() => showFormVisible = !showFormVisible;
+
+        public bool addClientformVisible = false;
+        public void ShowHideClientFormI() => addClientformVisible = !addClientformVisible;
+
     }
 }

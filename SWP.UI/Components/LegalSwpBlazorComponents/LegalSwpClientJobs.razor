@@ -7,47 +7,60 @@ else
 {
     <h2>Zarządzaj zadaniami klienta: @App.ActiveClientWithData.Name</h2>
 
-    <div class="row justify-content-center">
-        <RadzenTemplateForm Data="@App.ClientJobsPage.NewClientJob" Submit="@(async (CreateClientJob.Request args) => { await App.ClientJobsPage.SubmitNewClientJob(args); })">
-            <div class="row">
-                <RadzenFieldset Text="Nowe Zadanie">
-                    <div class="row">
-                        <div class="col-md-4 align-items-center d-flex">
-                            <RadzenLabel Text="Nazwa" />
+    <div class="show-hide tab-section"><button class="show-hide-btn show-hide-btn-1 @(showFormVisible ? "button-active" : "")" @onclick="ShowHideForm"><span>Dodaj zadanie</span></button></div>
+    @if (showFormVisible)
+    {
+        <div class="row-section">
+            <RadzenTemplateForm Data="@App.ClientJobsPage.NewClientJob" Submit="@(async (CreateClientJob.Request args) => { await App.ClientJobsPage.SubmitNewClientJob(args); })">
+                <div class="row">
+                    <RadzenFieldset Text="Nowe Zadanie">
+                        <div class="form">
+                            <i class="user-icon"><img src="/Images/icons8-reception-36.png" /></i>
+                            @if (addClientformVisible)
+                            {
+                                <div class="info-text">
+                                    <p>Zarządzaj listą swoich klientów. Użyj guzika "Dodaj Nowego Klienta",aby uzupełnić listę kontaktów.</p>
+                                    <p>Edytuj oraz usuwaj Klientów z głównej listy. Tekst do zupełnienia.</p>
+                                </div>
+                            }
+                            <button class="info" @onclick="ShowHideClientFormI"></button>
                         </div>
-                        <div class="col-md-8">
-                            <RadzenTextBox Placeholder="Nazwa..." @bind-Value="App.ClientJobsPage.NewClientJob.Name" Name="Nazwa" />
-                            <RadzenRequiredValidator Component="Nazwa" Text="Nazwa nie może być pusta!" Popup="true" />
-                            <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Nazwa" Popup="true" Style="position: absolute" />
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-4 align-items-center d-flex">
-                            <RadzenLabel Text="Opis" />
-                        </div>
-                        <div class="col-md-8">
-                            <RadzenTextArea Placeholder="Opis..." Style="margin-bottom: 30px" @bind-Value="App.ClientJobsPage.NewClientJob.Description" Name="Description" />
-                            <RadzenLengthValidator Max="500" Text="Maksymalnie 500 znaków!" Component="Description" Popup="true" Style="position: absolute" />
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-4 align-items-center d-flex">
-                            <RadzenLabel Text="Priorytet" />
-                        </div>
-                        <div class="col-md-8">
-                            <RadzenDropDown @bind-Value="App.ClientJobsPage.NewClientJob.Priority" Data="@App.ClientJobsPage.GeneralViewModel.Priorities" TextProperty="Number" ValueProperty="Number" Style="width:100%" />
-                        </div>
-                    </div>
-                    <div class="row justify-content-center">
-                        <div class="d-flex justify-content-center">
-                            <RadzenButton ButtonType="ButtonType.Submit" Icon="save" Text="Dodaj Zadanie" />
-                        </div>
-                    </div>
-                </RadzenFieldset>
-            </div>
-        </RadzenTemplateForm>
-    </div>
+                        <div class="form">
+                            <div class="text">
+                                <div class="label">
+                                    <RadzenLabel Text="Priorytet" />
+                                </div>
+                                <RadzenDropDown @bind-Value="App.ClientJobsPage.NewClientJob.Priority" Data="@App.ClientJobsPage.GeneralViewModel.Priorities" TextProperty="Number" ValueProperty="Number" style="width: 100%;" />
+                            </div>
+                            <div class="text">
+                                <div class="label">
+                                    <RadzenLabel Text="Nazwa" />
+                                </div>
+                                <RadzenTextBox Placeholder="Nazwa..." @bind-Value="App.ClientJobsPage.NewClientJob.Name" Name="Nazwa" style="width: 100%;" />
+                                <RadzenRequiredValidator Component="Nazwa" Text="Nazwa nie może być pusta!" />
+                                <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Nazwa" />
+                            </div>
 
+                            <div class="text">
+                                <div class="label">
+                                    <RadzenLabel Text="Opis" />
+                                </div>
+                                <RadzenTextArea Placeholder="Opis..." @bind-Value="App.ClientJobsPage.NewClientJob.Description" Name="Description" style="width: 100%;" />
+                                <RadzenLengthValidator Max="500" Text="Maksymalnie 500 znaków!" Component="Description" />
+                            </div>
+                        </div>
+                        <div class="form-btn">
+                            <div class="btn-add">
+                                <div>
+                                    <RadzenButton ButtonType="ButtonType.Submit" Icon="save" Text="Dodaj Zadanie" ButtonStyle="ButtonStyle.Secondary"/>
+                                </div>
+                            </div>
+                        </div>
+                    </RadzenFieldset>
+                </div>
+            </RadzenTemplateForm>
+        </div>
+    }
     <div class="row justify-content-center">
         <RadzenGrid @ref="App.ClientJobsPage.ClientsJobsGrid" AllowFiltering="true" AllowPaging="true" PageSize="10" AllowSorting="true" RowSelect="@(args => App.ClientJobsPage.ActiveJobChange(args))"
                     Data="@App.ActiveClientWithData.Jobs" TItem="ClientJobViewModel" RowUpdate="@App.ClientJobsPage.OnUpdateClientJobRow">

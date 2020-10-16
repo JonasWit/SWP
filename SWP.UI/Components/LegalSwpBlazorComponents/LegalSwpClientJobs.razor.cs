@@ -23,5 +23,6 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
         public bool addClientformVisible = false;
         public void ShowHideClientFormI() => addClientformVisible = !addClientformVisible;
 
+
     }
 }

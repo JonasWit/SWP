@@ -13,5 +13,19 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
         public LegalBlazorApp App { get; set; }
         [Parameter]
         public EventCallback<LegalBlazorApp> AppChanged { get; set; }
+
+
+        public bool showFirstSection = false;
+        public void ShowHideFirstSection() => showFirstSection = !showFirstSection;
+
+        public bool showSecondSection = false;
+        public void ShowHideSecondSection() => showSecondSection = !showSecondSection;
+
+        public bool infoBoxVisibleI = false;
+        public void ShowHideInfoBoxI() => infoBoxVisibleI = !infoBoxVisibleI;
+
+        public bool infoBoxVisibleII = false;
+        public void ShowHideInfoBoxII() => infoBoxVisibleII = !infoBoxVisibleII;
+
     }
 }

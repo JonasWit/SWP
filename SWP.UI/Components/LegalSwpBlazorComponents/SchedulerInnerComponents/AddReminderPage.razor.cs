@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Radzen;
 using SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,8 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.SchedulerInnerComponents
         public DateTime Start { get; set; }
         [Parameter]
         public DateTime End { get; set; }
+        [Inject]
+        public DialogService DialogService { get; set; }
 
         public ReminderViewModel model = new ReminderViewModel();
         public GeneralViewModel generalVm = new GeneralViewModel();

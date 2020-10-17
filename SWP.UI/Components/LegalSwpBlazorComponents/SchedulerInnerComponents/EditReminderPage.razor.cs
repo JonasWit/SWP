@@ -33,5 +33,10 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.SchedulerInnerComponents
             Reminder.Active = false;
             DialogService.Close(Reminder);
         }
+
+        public void Close()
+        {
+            DialogService.Close();
+        }
     }
 }

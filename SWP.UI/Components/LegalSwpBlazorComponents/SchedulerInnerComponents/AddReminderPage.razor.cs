@@ -30,5 +30,10 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.SchedulerInnerComponents
         {
             DialogService.Close(model);
         }
+
+        public void Close()
+        {
+            DialogService.Close();
+        }
     }
 }

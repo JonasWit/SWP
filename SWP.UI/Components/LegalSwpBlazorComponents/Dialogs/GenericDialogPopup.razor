@@ -5,8 +5,8 @@
 <RadzenCard Style="margin-bottom: 20px;">
     <div class="row">
         <div class="col-md-12">
-            <RadzenButton Click="@((args) => DialogService.Close( new DialogResult { Allowed = true, TaskToExecuteAsync = TaskToExecuteAsync, TaskToExecute = TaskToExecute }))" ButtonStyle="ButtonStyle.Danger" Text="Tak" Style="margin-bottom: 10px; width: 150px" />
-            <RadzenButton Click="@((args) => DialogService.Close( new DialogResult { Allowed = false, TaskToExecuteAsync = TaskToExecuteAsync, TaskToExecute = TaskToExecute }))" ButtonStyle="ButtonStyle.Success" Text="Nie" Style="margin-bottom: 10px; width: 150px" />
+            <RadzenButton Click="@(async (args) => await Agree( new DialogResult { Allowed = true, TaskToExecuteAsync = TaskToExecuteAsync, TaskToExecute = TaskToExecute }))" ButtonStyle="ButtonStyle.Danger" Text="Tak" Style="margin-bottom: 10px; width: 150px" />
+            <RadzenButton Click="@(async (args) => await Disagree( new DialogResult { Allowed = false, TaskToExecuteAsync = TaskToExecuteAsync, TaskToExecute = TaskToExecute }))" ButtonStyle="ButtonStyle.Success" Text="Nie" Style="margin-bottom: 10px; width: 150px" />
         </div>
     </div>
 </RadzenCard>

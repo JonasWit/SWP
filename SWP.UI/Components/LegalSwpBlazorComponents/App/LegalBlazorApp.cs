@@ -102,8 +102,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
         private void WireUpEvents()
         {
-            //DialogService.OnOpen += OpenDialog;
-            //DialogService.OnClose += CloseDialog;
+
         }
 
         private void FireUpdatesAfterActiveClientChange()
@@ -236,46 +235,10 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
         public void Dispose()
         {
-            //DialogService.OnOpen -= OpenDialog;
-            //DialogService.OnClose -= CloseDialog;
+
         }
 
         #endregion
 
-        //private void OpenDialog(string title, Type type, Dictionary<string, object> parameters, DialogOptions options)
-        //{
-        //    ForceRefresh();
-        //}
-
-        //private async void CloseDialog(dynamic result)
-        //{
-        //    var payload = result as DialogResult;
-
-        //    if (result == null)
-        //    {
-        //        ForceRefresh();
-        //        return;
-        //    }
-
-        //    if (!payload.Allowed)
-        //    {
-        //        ForceRefresh();
-        //        return;
-        //    }
-
-        //    if (payload.TaskToExecuteAsync != null)
-        //    {
-        //        await payload.TaskToExecuteAsync.Invoke();
-        //        ForceRefresh();
-        //        return;
-        //    }
-
-        //    if (payload.TaskToExecute != null)
-        //    {
-        //        payload.TaskToExecute.Invoke();
-        //        ForceRefresh();
-        //        return;
-        //    }
-        //}
     }
 }

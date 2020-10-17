@@ -19,6 +19,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
         public EventCallback<LegalBlazorApp> AppChanged { get; set; }
 
         private string FormatAsPLN(object value) => $"{((double)value).ToString(CultureInfo.CreateSpecificCulture("pl"))} zł";
+
         private string FormatAsTime(object value)
         {
             var stringValue = value.ToString();

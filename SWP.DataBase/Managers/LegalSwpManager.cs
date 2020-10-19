@@ -520,9 +520,17 @@ namespace SWP.DataBase.Managers
             throw new NotImplementedException();
         }
 
-        public ClientJob RecoverClientJob(int jobId, string user)
+        public async Task<ClientJob> RecoverClientJob(int jobId, string user)
         {
-            throw new NotImplementedException();
+            var job = context.ClientJobs.FirstOrDefault(x => x.Id == jobId);
+
+            job.Active = true;
+            job.UpdatedBy = user;
+            job.Updated = DateTime.Now;
+
+            context.ClientJobs.Update(job);
+            await context.SaveChangesAsync();
+            return job;
         }
 
         public Note RecoverNote(int noteId, string user)

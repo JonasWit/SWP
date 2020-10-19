@@ -123,8 +123,11 @@ else
                 <div>
                     <div>Wybrane Zadanie:</div>
                     <b>@App.ClientJobsPage.SelectedArchivizedClientJob.Name</b>
-                    <RadzenButton>Odzyskaj Klienta</RadzenButton>
-
+                    <div>Opis:</div>
+                    <b>@App.ClientJobsPage.SelectedArchivizedClientJob.Description</b>
+                    <div>Priorytet:</div>
+                    <b>@App.ClientJobsPage.SelectedArchivizedClientJob.Priority</b>
+                    <RadzenButton Click="@(async () =>  await App.ClientJobsPage.RecoverSelectedJob())">Odzyskaj Zadanie</RadzenButton>
                 </div>
             </div>
         </RadzenCard>

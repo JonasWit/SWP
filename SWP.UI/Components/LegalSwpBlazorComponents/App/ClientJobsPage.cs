@@ -142,5 +142,31 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         }
 
         public void SelectedArchivizedClientJobChange(object job) => SelectedArchivizedClientJob = App.ActiveClientWithData.ArchivedJobs.FirstOrDefault(x => x.Id == int.Parse(job.ToString()));
+
+        public async Task RecoverSelectedJob()
+        {
+            try
+            {
+                if (SelectedArchivizedClientJob != null)
+                {
+                    var result = await ArchiveJob.RecoverClientJob(SelectedArchivizedClientJob.Id, App.User.UserName);
+
+                    App.ActiveClientWithData.ArchivedJobs.RemoveAll(x => x.Id == SelectedArchivizedClientJob.Id);
+                    App.ActiveClientWithData.Jobs.Add(result);
+                    SelectedArchivizedClientJob = null;
+
+                    await ClientsJobsGrid.Reload();
+                    App.ShowNotification(NotificationSeverity.Success, "Sukces!", $"Zadanie: {result.Name} zostało odzyskane.", GeneralViewModel.NotificationDuration);
+                }
+                else
+                {
+                    App.ShowNotification(NotificationSeverity.Error, "Uwaga!", $"Brak zaznaczonego klienta!", GeneralViewModel.NotificationDuration);
+                }
+            }
+            catch (Exception ex)
+            {
+                await App.ErrorPage.DisplayMessage(ex);
+            }
+        }
     }
 }

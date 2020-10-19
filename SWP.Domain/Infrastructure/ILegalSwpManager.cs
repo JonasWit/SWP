@@ -121,7 +121,7 @@ namespace SWP.Domain.Infrastructure
 
         Task<int> RecoverClient(int clientId, string user);
         Case RecoverCase(int caseId, string user);
-        ClientJob RecoverClientJob(int jobId, string user);
+        Task<ClientJob> RecoverClientJob(int jobId, string user);
         Note RecoverNote(int noteId, string user);
 
         #endregion

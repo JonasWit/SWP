@@ -1,0 +1,15 @@
+﻿
+<div class="section">
+    <RadzenCard>
+        <div class="columns is-0 is-centered">
+            <h2>Select Profile</h2>
+        </div>
+        <div class="columns is-0 is-centered">
+            <RadzenDropDown AllowClear="true" TValue="int"
+                            FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" FilterOperator="StringFilterOperator.StartsWith" AllowFiltering="true"
+                            Data="@ProfileFilterRecords" TextProperty="Profile" ValueProperty="Id" Change="@(args => SelectedProfileChange(args))" />
+        </div>
+    </RadzenCard>
+</div>
+
+

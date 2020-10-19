@@ -63,24 +63,12 @@ namespace SWP.UI
             #endregion
 
             @this.AddTransient<ILegalSwpManager, LegalSwpManager>();
+            @this.AddTransient<IStatisticsManager, StatisticsManager>();
             @this.AddTransient<ILogManager, LogManager>();
 
             @this.AddScoped<DialogService>();
             @this.AddScoped<NotificationService>();
 
-            //@this.AddTransient<CasesPanel>();
-            //@this.AddTransient<CalendarPanel>();
-            //@this.AddTransient<ClientsPanel>();
-            //@this.AddTransient<LegalSwpApp>();
-
-
-            //@this.AddTransient<IProductManager, ProductManager>();
-            //@this.AddTransient<IOrderManager, OrderManager>();
-            //@this.AddTransient<IFileManager, FileManager>();
-            //@this.AddTransient<INewsManager, NewsManager>();
-            //@this.AddTransient<ILogManager, LogManager>();
-            //@this.AddTransient<IShopManager, ShopManager>();
-            //@this.AddTransient<ICrawlersDataBaseManager, CrawlersDataBaseManager>();
 
             //@this.AddScoped<ISessionManager, SessionManager>();
 

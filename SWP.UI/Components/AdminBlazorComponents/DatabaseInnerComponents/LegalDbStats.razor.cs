@@ -13,6 +13,7 @@ namespace SWP.UI.Components.AdminBlazorComponents.DatabaseInnerComponents
         public GetStatistics GetStatistics { get; set; }
         public ProfileFilterRecord SelectedProfile { get; set; }
         public List<ProfileFilterRecord> ProfileFilterRecords { get; set; } = new List<ProfileFilterRecord>();
+        public ProfileStats Statistics { get; set; }
 
         public class ProfileFilterRecord
         {
@@ -23,7 +24,7 @@ namespace SWP.UI.Components.AdminBlazorComponents.DatabaseInnerComponents
         public class ProfileStats
         {
             public int CasesCount { get; set; }
-            public int CustomersCount { get; set; }
+            public int ClientsCount { get; set; }
             public int ClientJobsCount { get; set; }
             public int ClientContactsCount { get; set; }
         }
@@ -33,12 +34,12 @@ namespace SWP.UI.Components.AdminBlazorComponents.DatabaseInnerComponents
             GetAllProfiles();
         }
 
-        public void GetStatsForProfile()
-        { 
-            
-        
-        
-        
+        private void GetStatsForProfile()
+        {
+            Statistics = new ProfileStats
+            {
+                ClientsCount = GetStatistics.CountClients(SelectedProfile.Profile)
+            };
         }
 
         public void GetAllProfiles()
@@ -62,10 +63,12 @@ namespace SWP.UI.Components.AdminBlazorComponents.DatabaseInnerComponents
             if (input != null)
             {
                 SelectedProfile = ProfileFilterRecords.FirstOrDefault(x => x.Id == input);
+                GetStatsForProfile();
             }
             else
             {
                 SelectedProfile = null;
+                Statistics = null;
             }
         }
     }

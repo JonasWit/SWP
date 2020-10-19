@@ -12,21 +12,26 @@
     </RadzenCard>
 </div>
 
-<div class="section">
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Data</th>
-                <th>Count</th>
-                <th>Checked</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <th>Clients</th>
-                <td>38</td>
-                <td>23</td>
-            </tr>
-        </tbody>
-    </table>
-</div>
+@if (Statistics != null)
+{
+    <div class="section">
+        <RadzenCard>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Data</th>
+                        <th>Count</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th>Clients</th>
+                        <td>@Statistics.ClientsCount</td>
+                    </tr>
+                </tbody>
+            </table>
+        </RadzenCard>
+    </div>
+}
+
+

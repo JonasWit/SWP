@@ -7,13 +7,13 @@ namespace SWP.Domain.Infrastructure
 {
     public interface IStatisticsManager
     {
-        Task<int> CountCases(int clientId);
-        Task<int> CountClientContacts(int clientId);
-        Task<int> CountClientJobs(int clientId);
-        Task<int> CountReminders(int caseId);
-        Task<int> CountNotes(int caseId);
-        Task<int> CountCaseContacts(int caseId);
-        Task<int> CountClients(string profile);
+        int CountCases(int clientId);
+        int CountClientContacts(int clientId);
+        int CountClientJobs(int clientId);
+        int CountReminders(int caseId);
+        int CountNotes(int caseId);
+        int CountCaseContacts(int caseId);
+        int CountClients(string profile);
         List<string> GetProfiles();
     }
 }

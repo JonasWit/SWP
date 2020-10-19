@@ -12,37 +12,34 @@ namespace SWP.DataBase.Managers
         private readonly ApplicationDbContext context;
         public StatisticsManager(ApplicationDbContext context) => this.context = context;
 
-        public Task<int> CountCaseContacts(int caseId)
+        public int CountCaseContacts(int caseId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<int> CountCases(int clientId)
+        public int CountCases(int clientId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<int> CountClientContacts(int clientId)
+        public int CountClientContacts(int clientId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<int> CountClientJobs(int clientId)
+        public int CountClientJobs(int clientId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<int> CountClients(string profile)
+        public int CountClients(string profile) => context.Clients.Where(x => x.ProfileClaim == profile).Count();
+
+        public int CountNotes(int caseId)
         {
             throw new NotImplementedException();
         }
 
-        public Task<int> CountNotes(int caseId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<int> CountReminders(int caseId)
+        public int CountReminders(int caseId)
         {
             throw new NotImplementedException();
         }

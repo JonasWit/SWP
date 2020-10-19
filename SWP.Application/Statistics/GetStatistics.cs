@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace SWP.Application.Statistics
 {
@@ -12,7 +13,7 @@ namespace SWP.Application.Statistics
         public GetStatistics(IStatisticsManager statisticsManager) => this.statisticsManager = statisticsManager;
 
         public List<string> GetProfiles() => statisticsManager.GetProfiles();
-
+        public int CountClients(string profile) => statisticsManager.CountClients(profile);
 
     }
 }

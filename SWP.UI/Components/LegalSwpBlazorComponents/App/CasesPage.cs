@@ -243,8 +243,9 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
         public async Task OnSlotSelect(SchedulerSlotSelectEventArgs args)
         {
-            ReminderViewModel result = await DialogService.OpenAsync<AddReminderPage>("Add Reminder",
-                new Dictionary<string, object> { { "Start", args.Start }, { "End", args.End } });
+            ReminderViewModel result = await DialogService.OpenAsync<AddReminderPage>("Dodaj Przypomnienie",
+                new Dictionary<string, object> { { "Start", args.Start }, { "End", args.End } },
+                new DialogOptions() { Width = "500px", Height = "530px", Left = "calc(50% - 500px)", Top = "calc(50% - 265px)" });
 
             if (result != null)
             {
@@ -270,7 +271,11 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
         public async Task OnAppointmentSelect(SchedulerAppointmentSelectEventArgs<ReminderViewModel> args)
         {
-            ReminderViewModel result = await DialogService.OpenAsync<EditReminderPage>($"Edit Reminder for Case: {args.Data.ParentCaseName}", new Dictionary<string, object> { { "Reminder", args.Data } });
+            ReminderViewModel result = await DialogService.OpenAsync<EditReminderPage>($"Edytuj Przypomnienie dla Sprawy: {args.Data.ParentCaseName}", 
+                new Dictionary<string, object> { { "Reminder", args.Data } },
+                new DialogOptions() { Width = "500px", Height = "630px", Left = "calc(50% - 500px)", Top = "calc(50% - 265px)" }
+
+                );
 
             if (result != null)
             {

@@ -1,85 +1,63 @@
 ﻿@using SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data
-
-<RadzenTemplateForm TItem="ReminderViewModel" Data="@model" Submit=@OnSubmit>
-    <div class="row" style="margin-bottom: 16px">
-        <div class="col-md-3">
-            <RadzenLabel Text="Name (Max 50 characters)" />
+<div class="popup-box">
+    <RadzenTemplateForm TItem="ReminderViewModel" Data="@model" Submit=@OnSubmit>
+        <div class="popup">
+            <div>
+                <strong> <RadzenLabel Text="Nazwa" Style="width: 100%; margin-bottom: 10px;" /></strong>
+            </div>
+            <div>
+                <RadzenTextBox @bind-Value="@model.Name" Name="Name" Style="width: 100%; margin-bottom: 10px; " />
+                <RadzenRequiredValidator Text="Nazwa jest wymagana" Component="Name" />
+                <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków" Component="Name" />
+            </div>
+            <div>
+                <strong><RadzenLabel Text="Treść" Style="width: 100%; margin-bottom: 10px;" /></strong>
+            </div>
+            <div>
+                <RadzenTextArea @bind-Value="@model.Message" Name="Message" Style="width: 100%; margin-bottom: 10px; " />
+                <RadzenLengthValidator Max="500" Text="Maksymalnie 500 znaków!" Component="Message" />
+            </div>
+            <div>
+                <strong> <RadzenLabel Text="Priorytet" Style="width: 100%; margin-bottom: 10px; " /></strong>
+            </div>
+            <div>
+                <RadzenDropDown @bind-Value="model.Priority" Data="@generalVm.Priorities" TextProperty="Number" ValueProperty="Number" Style="width: 100%; margin-bottom: 10px; " />
+            </div>
+            <div>
+                <strong><RadzenLabel Text="Termin procesowy" Style="margin: auto; margin-bottom: 10px; " /></strong>
+            </div>
+            <div>
+                <RadzenCheckBox @bind-Value="@model.IsDeadline" TValue="bool" Style="margin-bottom: 10px; width: 100%; " />
+            </div>
+            <div>
+                <strong><RadzenLabel Text="Start" Style="margin-bottom: 10px; width: 100%;" /></strong>
+            </div>
+            <div>
+                <RadzenDatePicker @bind-Value="@model.Start" Name="Start" ShowTime="true" Style="margin-bottom: 10px; width: 100%; " />
+                <RadzenRequiredValidator Text="Start is required" Component="Start" Style="margin-bottom: 10px; width: 100%;" />
+            </div>
+            <div>
+                <strong><RadzenLabel Text="Koniec" Style="margin-bottom: 10px; width: 100%;" /></strong>
+            </div>
+            <div>
+                <RadzenDatePicker Name="End" @bind-Value="@model.End" ShowTime="true" Style="margin-bottom: 10px; width: 100%; " />
+                <RadzenRequiredValidator Component="End" Text="End is required" />
+            </div>
+            <div>
+                <strong><RadzenLabel Text="@model.UpdatedDescription" Style="margin-top: 15px; width: 100%; " /></strong>
+            </div>
+            <div>
+                <strong> <RadzenLabel Text="@model.CreatedDescription" Style="margin-top: 15px; width: 100%; " /></strong>
+            </div>
         </div>
-        <div class="col">
-            <RadzenTextBox @bind-Value="@model.Name" Name="Name" />
-            <RadzenRequiredValidator Text="Name is required" Component="Name" />
-            <RadzenLengthValidator Max="50" Text="Maximum 50 characters!" Component="Name" />
+        <div class="form-btn">
+            <div class="btn-add">
+                <div Style="margin-top: 25px;">
+                    <RadzenButton ButtonType="ButtonType.Submit" Text="Save" ButtonStyle="ButtonStyle.Secondary" />
+                    <RadzenButton Click="@(() => Delete())" Text="Delete" ButtonStyle="ButtonStyle.Secondary" />
+                    <RadzenButton ButtonType="ButtonType.Submit" Click="Close" Text="Anuluj" ButtonStyle="ButtonStyle.Secondary" />
+                </div>
+            </div>
         </div>
-    </div>
-    <div class="row" style="margin-bottom: 16px">
-        <div class="col-md-3">
-            <RadzenLabel Text="Message (Max 500 characters)" />
-        </div>
-        <div class="col">
-            <RadzenTextArea @bind-Value="@model.Message" Name="Message" />
-            <RadzenLengthValidator Max="500" Text="Maximum 500 characters!" Component="Message" />
-        </div>
-    </div>
-    <div class="row" style="margin-bottom: 16px">
-        <div class="col-md-3">
-            <RadzenLabel Text="Priority (If empty then it will be default to 10)" />
-        </div>
-        <div class="col">
-            <RadzenDropDown @bind-Value="model.Priority" Data="@generalVm.Priorities" TextProperty="Number" ValueProperty="Number" Style="position: absolute" />
-        </div>
-    </div>
-    <div class="row" style="margin-bottom: 16px">
-        <div class="col-md-3">
-            <RadzenLabel Text="Is it deadline? (Not by default)" />
-        </div>
-        <div class="col">
-            <RadzenCheckBox @bind-Value="@model.IsDeadline" TValue="bool" />
-        </div>
-    </div>
-    <div class="row" style="margin-bottom: 16px">
-        <div class="col-md-3">
-            <RadzenLabel Text="Start" />
-        </div>
-        <div class="col">
-            <RadzenDatePicker @bind-Value="@model.Start" Name="Start" ShowTime="true" />
-            <RadzenRequiredValidator Text="Start is required" Component="Start" />
-        </div>
-    </div>
-    <div class="row" style="margin-bottom: 16px">
-        <div class="col-md-3">
-            <RadzenLabel Text="End" />
-        </div>
-        <div class="col">
-            <RadzenDatePicker Name="End" @bind-Value="@model.End" ShowTime="true" />
-            <RadzenRequiredValidator Component="End" Text="End is required" />
-        </div>
-    </div>
-    <div class="row" style="margin-bottom: 16px">
-        <div class="col-md-3">
-            <RadzenLabel Text="Updated" />
-        </div>
-        <div class="col">
-            <RadzenLabel Text="@model.UpdatedDescription" />
-        </div>
-    </div>
-    <div class="row" style="margin-bottom: 16px">
-        <div class="col-md-3">
-            <RadzenLabel Text="Created" />
-        </div>
-        <div class="col">
-            <RadzenLabel Text="@model.CreatedDescription" />
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-3"></div>
-        <div class="col">
-            <RadzenButton ButtonType="ButtonType.Submit" Text="Save" />
-        </div>
-        <div class="col">
-            <RadzenButton Click="@(() => Delete())" Text="Delete" />
-        </div>
-        <div class="col">
-            <RadzenButton ButtonType="ButtonType.Submit" Click="Close" Text="Anuluj" />
-        </div>
-    </div>
-</RadzenTemplateForm>
+    </RadzenTemplateForm>
+</div>

@@ -127,14 +127,10 @@ else
 }
 
 @code {
-    void ShowTooltipWithHtml(ElementReference elementReference, TooltipOptions options = null) => TooltipService.Open(elementReference, ds =>
-    @<div>
-        Some <b>HTML</b> content
-    </div>, 
-        new TooltipOptions()
-        {
-            Duration = 2000,
-            Position = TooltipPosition.Bottom,
-            Style = "background-color: #ffffca; color:#000",
-        });
+
+private void ShowTooltipWithHtml(ElementReference elementReference, TooltipOptions options = null) => TooltipService.Open(elementReference, ds =>
+@<div>
+    Some <b>HTML</b> content
+</div>, new TooltipOptions() { Duration = 2000, Position = TooltipPosition.Bottom, Style = "background-color: #ffffca; color:#000" });
+
 }

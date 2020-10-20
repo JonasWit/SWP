@@ -50,8 +50,6 @@ namespace SWP.DataBase.Managers
 
         public Client GetClientWithoutCases(int clientId) =>
             context.Clients
-                .Include(x => x.Jobs)
-                .Include(x => x.ContactPeople)
                 .Where(x => x.Id == clientId)
                 .FirstOrDefault();
 

@@ -1,4 +1,5 @@
 ﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Radzen;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -25,6 +26,8 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data
 
         public const string DateFormant = "dd/MM/yy HH:mm";
         public const int NotificationDuration = 4000;
+
+        public DialogOptions DefaultDialogOptions => new DialogOptions() { Width = "500px", Height = "530px", Left = "calc(50% - 500px)", Top = "calc(50% - 265px)" };
 
         public class Priority
         {

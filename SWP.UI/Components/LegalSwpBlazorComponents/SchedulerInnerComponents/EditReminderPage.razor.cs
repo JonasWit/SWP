@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SWP.UI.Components.LegalSwpBlazorComponents.SchedulerInnerComponents
 {
-    public partial class EditReminderPage
+    public partial class EditReminderPage : ComponentBase
     {
         [Parameter]
         public ReminderViewModel Reminder { get; set; }

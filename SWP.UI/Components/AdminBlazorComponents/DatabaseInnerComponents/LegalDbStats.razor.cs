@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SWP.UI.Components.AdminBlazorComponents.DatabaseInnerComponents
 {
-    public partial class LegalDbStats
+    public partial class LegalDbStats : ComponentBase
     {
         [Inject]
         public GetStatistics GetStatistics { get; set; }

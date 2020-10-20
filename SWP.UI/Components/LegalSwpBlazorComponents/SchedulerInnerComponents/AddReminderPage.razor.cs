@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SWP.UI.Components.LegalSwpBlazorComponents.SchedulerInnerComponents
 {
-    public partial class AddReminderPage
+    public partial class AddReminderPage : ComponentBase
     {
         [Parameter]
         public DateTime Start { get; set; }

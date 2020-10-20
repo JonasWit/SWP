@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Radzen;
+using Radzen.Blazor;
 using SWP.UI.Components.LegalSwpBlazorComponents.App;
 using SWP.UI.Components.LegalSwpBlazorComponents.Dialogs;
 using System;
@@ -17,6 +18,8 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
         public LegalBlazorApp App { get; set; }
         [Parameter]
         public EventCallback<LegalBlazorApp> AppChanged { get; set; }
+        [Inject]
+        public TooltipService TooltipService { get; set; }
 
         private string FormatAsPLN(object value) => $"{((double)value).ToString(CultureInfo.CreateSpecificCulture("pl"))} zł";
 
@@ -43,5 +46,6 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
         }
 
         public string RelatedUsersFilterValue = "";
+
     }
 }

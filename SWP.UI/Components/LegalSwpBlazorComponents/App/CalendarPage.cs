@@ -22,8 +22,9 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         private UpdateReminder UpdateReminder => serviceProvider.GetService<UpdateReminder>();
         private DeleteReminder DeleteReminder => serviceProvider.GetService<DeleteReminder>();
         private GetCase GetCase => serviceProvider.GetService<GetCase>();
-
         public LegalBlazorApp App { get; private set; }
+        public RadzenScheduler<ReminderViewModel> RemindersScheduler { get; set; }
+        public List<ReminderViewModel> Reminders { get; set; }
 
         public CalendarPage(IServiceProvider serviceProvider) : base(serviceProvider) { }
 
@@ -46,9 +47,6 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         }
 
         #region Reminders Calendar
-
-        public RadzenScheduler<ReminderViewModel> RemindersScheduler { get; set; }
-        public List<ReminderViewModel> Reminders { get; set; }
 
         public List<ReminderViewModel> UpcomingReminders =>
             Reminders

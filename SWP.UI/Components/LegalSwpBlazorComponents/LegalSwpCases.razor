@@ -161,11 +161,12 @@
                                         <Template Context="data">
                                             <SchedulerAppointmentName DisplayText="@data.Name"></SchedulerAppointmentName>
                                         </Template>
+
                                         <ChildContent>
-                                            <RadzenDayView Text="Dzień" StartTime="@(new TimeSpan(0, 0, 0))" EndTime="@(new TimeSpan(24, 0, 0))" />
+        <RadzenDayView Text="Dzień" StartTime="@(new TimeSpan(0, 0, 0))" EndTime="@(new TimeSpan(24, 0, 0))" />
                                             <RadzenWeekView Text="Tydzień" StartTime="@(new TimeSpan(0, 0, 0))" EndTime="@(new TimeSpan(24, 0, 0))" />
                                             <RadzenMonthView Text="Miesiąc" />
-                                        </ChildContent>
+                                            </ChildContent>
                                     </RadzenScheduler>
                                 </RadzenTabsItem>
                             </div>

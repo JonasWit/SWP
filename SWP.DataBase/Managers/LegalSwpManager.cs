@@ -57,8 +57,6 @@ namespace SWP.DataBase.Managers
 
         public List<Client> GetClientsWithoutCases(string profile, bool active = true) =>
             context.Clients
-                .Include(x => x.Jobs)
-                .Include(x => x.ContactPeople)
                 .Where(x => x.ProfileClaim == profile && active ? x.Active : !x.Active)
                 .ToList();
 

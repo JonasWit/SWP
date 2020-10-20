@@ -132,15 +132,16 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         public void OnAppointmentRender(SchedulerAppointmentRenderEventArgs<ReminderViewModel> args)
         {
             // Never call StateHasChanged in AppointmentRender - would lead to infinite loop
+            var commonStyle = $"height: 30px; border-radius: 3px; display: flex; justify-content: left;";
 
             if (args.Data.IsDeadline)
             {
-                args.Attributes["style"] = $"background: {GeneralViewModel.DeadlineColor};";
+                args.Attributes["style"] = $"background: {GeneralViewModel.DeadlineColor}; {commonStyle}";
             }
             else
             {
                 var scheme = GeneralViewModel.PrioritiesColors.FirstOrDefault(x => x.Number == args.Data.Priority);
-                args.Attributes["style"] = $"background: {scheme?.BackgroundColor}; color: {scheme?.TextColor};";
+                args.Attributes["style"] = $"background: {scheme?.BackgroundColor}; color: {scheme?.TextColor}; {commonStyle}";
             }
         }
 

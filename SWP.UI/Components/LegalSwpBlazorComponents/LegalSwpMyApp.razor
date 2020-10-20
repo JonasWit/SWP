@@ -15,14 +15,7 @@
     @if (App.MyAppPage.SelectedUser != null && App.User.RootClient && App.ActiveUserId == App.MyAppPage.SelectedUser.Id)
     {
         <h1>Uwaga!</h1>
-
-        <RadzenButton Text=@($"Usuń wszystkie dane powiązane z profilem") Click="@(args => App.DialogService.Open<GenericDialogPopup>("Order TEST",
-                        new Dictionary<string, object>() 
-                        { 
-                            { "Title", "TEST Title Passed" }, 
-                            { "TaskToExecuteAsync", new Func<Task>(App.ErrorPage.ThrowTestException) },
-                            { "Description", "This is sample Description" }, 
-                        }, new DialogOptions(){ Width = "700px", Height = "530px", Left = "calc(50% - 350px)", Top = "calc(50% - 265px)" }))" />
+        <RadzenButton Text=@($"Usuń wszystkie dane powiązane z profilem") Click="App.MyAppPage.ConfirmRemoveRelation" />
     }
 
     @if (App.MyAppPage.ClientsCases.Count != 0)

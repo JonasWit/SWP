@@ -6,6 +6,7 @@ using SWP.Application.LegalSwp.CashMovements;
 using SWP.Application.LegalSwp.Clients;
 using SWP.Application.LegalSwp.TimeRecords;
 using SWP.UI.BlazorApp;
+using SWP.UI.Components.LegalSwpBlazorComponents.Dialogs;
 using SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data;
 using SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data.Statistics;
 using System;
@@ -19,6 +20,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
     public class MyAppPage : BlazorPageBase, IDisposable
     {
         private GetClients GetClients => serviceProvider.GetService<GetClients>();
+        private GeneralViewModel GeneralViewModel => serviceProvider.GetService<GeneralViewModel>();
         private GetCashMovements GetCashMovements => serviceProvider.GetService<GetCashMovements>();
         private GetTimeRecords GetTimeRecords => serviceProvider.GetService<GetTimeRecords>();
         private UserManager<IdentityUser> UserManager => serviceProvider.GetService<UserManager<IdentityUser>>();
@@ -194,6 +196,18 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             {
                 await App.ErrorPage.DisplayMessage(ex);
             }
+        }
+
+        public void ConfirmRemoveRelation()
+        {
+            App.DialogService.Open<GenericDialogPopup>("Order TEST",
+                            new Dictionary<string, object>()
+                            {
+                                { "Title", "TEST Title Passed" },
+                                { "TaskToExecuteAsync", new Func<Task>(App.ErrorPage.ThrowTestException) },
+                                { "Description", "This is sample Description" },
+                            },
+                            GeneralViewModel.DefaultDialogOptions);
         }
 
         #endregion

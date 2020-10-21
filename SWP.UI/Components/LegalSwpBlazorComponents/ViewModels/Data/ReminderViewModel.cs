@@ -13,8 +13,6 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data
         public int Priority { get; set; }
         public int CaseId { get; set; }
         public bool IsDeadline { get; set; }
-        public string UpdatedDescription => $"Updated on {Updated} by {UpdatedBy}";
-        public string CreatedDescription => $"Created on {Created}";
         public string Duration => (End - Start).ToString(@"hh\:mm") == @"00:00" ? "" : (End - Start).ToString(@"hh\:mm");
         public string  DisplayText => $@"{(ParentClientName.Length > 12 ? $@"{ParentClientName.Substring(0, 12)}..." : ParentClientName)} - {(Name.Length > 12 ? $@"{Name.Substring(0, 12)}..." : Name)}";
         public string DisplayTextShort => $@"{(Name.Length > 12 ? $@"{Name.Substring(0, 12)}..." : Name)}";

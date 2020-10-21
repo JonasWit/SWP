@@ -9,14 +9,11 @@
                          Data="@App.CalendarPage.Reminders"
                          StartProperty="Start"
                          EndProperty="End"
-                         TextProperty="Name"
+                         TextProperty="DisplayText"
                          SelectedIndex="2"
                          AppointmentSelect="@App.CalendarPage.OnAppointmentSelect"
                          TodayText="Dzisiaj"
                          AppointmentRender="@App.CalendarPage.OnAppointmentRender">
-            @*<Template Context="data">
-                <SchedulerAppointmentName DisplayText="@data.DisplayText"></SchedulerAppointmentName>
-            </Template>*@
             <ChildContent>
                 <RadzenDayView Text="Dzień" StartTime="@(new TimeSpan(0, 0, 0))" EndTime="@(new TimeSpan(24, 0, 0))" />
                 <RadzenWeekView Text="Tydzień" StartTime="@(new TimeSpan(0, 0, 0))" EndTime="@(new TimeSpan(24, 0, 0))" />

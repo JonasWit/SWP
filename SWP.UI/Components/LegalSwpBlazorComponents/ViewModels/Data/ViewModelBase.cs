@@ -14,5 +14,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data
         public DateTime Updated { get; set; }
         public string UpdatedBy { get; set; }
         public string CreatedBy { get; set; }
+        public string UpdatedDescription => $"Ostatnia zamina {Updated} przez {UpdatedBy}";
+        public string CreatedDescription => $"Stworono {Created}";
     }
 }

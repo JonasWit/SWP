@@ -157,10 +157,17 @@
                         <Tabs>
                             <div>
                                 <RadzenTabsItem Text="Kalendarz Sprawy">
-                                    <RadzenScheduler @ref="App.CasesPage.CasesScheduler" style="height: 768px;" TItem="ReminderViewModel" Data="@App.ActiveClientWithData.SelectedCase.Reminders" StartProperty="Start" EndProperty="End" TextProperty="Name" SelectedIndex="2" SlotSelect="@App.CasesPage.OnSlotSelect" AppointmentSelect="@App.CasesPage.OnAppointmentSelect" AppointmentRender="@App.CasesPage.OnAppointmentRender" TodayText="Dzisiaj">
-                                        <Template Context="data">
-                                            <SchedulerAppointmentName DisplayText="@data.DisplayText"></SchedulerAppointmentName>
-                                        </Template>
+                                    <RadzenScheduler @ref="App.CasesPage.CasesScheduler" style="height: 768px;" 
+                                                     TItem="ReminderViewModel"
+                                                     Data="@App.ActiveClientWithData.SelectedCase.Reminders" 
+                                                     StartProperty="Start" 
+                                                     EndProperty="End" 
+                                                     TextProperty="DisplayTextShort" 
+                                                     SelectedIndex="2" 
+                                                     SlotSelect="@App.CasesPage.OnSlotSelect" 
+                                                     AppointmentSelect="@App.CasesPage.OnAppointmentSelect" 
+                                                     AppointmentRender="@App.CasesPage.OnAppointmentRender" 
+                                                     TodayText="Dzisiaj">
                                         <ChildContent>
                                             <RadzenDayView Text="Dzień" StartTime="@(new TimeSpan(0, 0, 0))" EndTime="@(new TimeSpan(24, 0, 0))" />
                                             <RadzenWeekView Text="Tydzień" StartTime="@(new TimeSpan(0, 0, 0))" EndTime="@(new TimeSpan(24, 0, 0))" />

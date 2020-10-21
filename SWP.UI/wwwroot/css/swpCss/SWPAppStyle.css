@@ -3,7 +3,7 @@
 
 html, body {
     color: rgb(0, 0, 0);
-    font-size: 12px;
+    /*font-size: 12px;*/
     margin: 0;
 }
 
@@ -97,8 +97,8 @@ ul, li {
 .form {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
-    flex-grow: 1;
+    justify-content: space-evenly;
+    /*flex-grow: 1;*/
 }
 
 .form-btn {
@@ -108,15 +108,15 @@ ul, li {
 }
 
 .label {
-    width: 70px;
-    padding: 8px;
-    font-size: 14px;
+
+    width: 75px;
+    padding: 10px;
     font-weight: bold;
 }
 
 .text {
     width: 450px !important;
-    padding: 8px;
+   /* padding: 10px;*/
 }
 
 

@@ -15,11 +15,6 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
     [UITransientService]
     public class ClientPage : BlazorPageBase
     {
-        private GeneralViewModel GeneralViewModel => serviceProvider.GetService<GeneralViewModel>();
-        private DeleteClient DeleteClient => serviceProvider.GetService<DeleteClient>();
-        private UpdateClient UpdateClient => serviceProvider.GetService<UpdateClient>();
-        private CreateClient CreateClient => serviceProvider.GetService<CreateClient>();
-        private ArchiveClient ArchiveClient => serviceProvider.GetService<ArchiveClient>();
         public ClientViewModel SelectedClient { get; set; }
         public LegalBlazorApp App { get; private set; }
 
@@ -57,7 +52,10 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         {
             try
             {
-                var result = await UpdateClient.Update(new UpdateClient.Request
+                using var scope = serviceProvider.CreateScope();
+                var updateClient = scope.ServiceProvider.GetRequiredService<UpdateClient>();
+
+                var result = await updateClient.Update(new UpdateClient.Request
                 {
                     Id = client.Id,
                     Active = client.Active,
@@ -101,7 +99,10 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         {
             try
             {
-                await DeleteClient.Delete(client.Id);
+                using var scope = serviceProvider.CreateScope();
+                var deleteClient = scope.ServiceProvider.GetRequiredService<DeleteClient>();
+
+                await deleteClient.Delete(client.Id);
                 App.Clients.RemoveAll(x => x.Id == client.Id);
 
                 await ClientsGrid.Reload();
@@ -117,7 +118,10 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         {
             try
             {
-                var result = await ArchiveClient.ArchivizeClient(client.Id, App.User.UserName);
+                using var scope = serviceProvider.CreateScope();
+                var archiveClient = scope.ServiceProvider.GetRequiredService<ArchiveClient>();
+
+                var result = await archiveClient.ArchivizeClient(client.Id, App.User.UserName);
                 SelectedClient = null;
 
                 if (App.ActiveClient != null && App.ActiveClient.Id == client.Id)
@@ -148,11 +152,18 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
             try
             {
-                var result = await CreateClient.Do(request);
+                using var scope = serviceProvider.CreateScope();
+                var createClient = scope.ServiceProvider.GetRequiredService<CreateClient>();
+
+                var result = await createClient.Do(request);
                 NewClient = new CreateClient.Request();
 
                 App.Clients.Add(result);
-                await ClientsGrid.Reload();
+
+                if (ClientsGrid != null)
+                {
+                    await ClientsGrid.Reload();
+                }
                 App.ShowNotification(NotificationSeverity.Success, "Sukces!", $"Klient: {result.Name} został dodany.", GeneralViewModel.NotificationDuration);
             }
             catch (Exception ex)

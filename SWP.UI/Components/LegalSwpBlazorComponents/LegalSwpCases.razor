@@ -157,16 +157,16 @@
                         <Tabs>
                             <div>
                                 <RadzenTabsItem Text="Kalendarz Sprawy">
-                                    <RadzenScheduler @ref="App.CasesPage.CasesScheduler" style="height: 768px;" 
+                                    <RadzenScheduler @ref="App.CasesPage.CasesScheduler" style="height: 768px;"
                                                      TItem="ReminderViewModel"
-                                                     Data="@App.ActiveClientWithData.SelectedCase.Reminders" 
-                                                     StartProperty="Start" 
-                                                     EndProperty="End" 
-                                                     TextProperty="DisplayTextShort" 
-                                                     SelectedIndex="2" 
-                                                     SlotSelect="@App.CasesPage.OnSlotSelect" 
-                                                     AppointmentSelect="@App.CasesPage.OnAppointmentSelect" 
-                                                     AppointmentRender="@App.CasesPage.OnAppointmentRender" 
+                                                     Data="@App.ActiveClientWithData.SelectedCase.Reminders"
+                                                     StartProperty="Start"
+                                                     EndProperty="End"
+                                                     TextProperty="DisplayTextShort"
+                                                     SelectedIndex="2"
+                                                     SlotSelect="@App.CasesPage.OnSlotSelect"
+                                                     AppointmentSelect="@App.CasesPage.OnAppointmentSelect"
+                                                     AppointmentRender="@App.CasesPage.OnAppointmentRender"
                                                      TodayText="Dzisiaj">
                                         <ChildContent>
                                             <RadzenDayView Text="Dzień" StartTime="@(new TimeSpan(0, 0, 0))" EndTime="@(new TimeSpan(24, 0, 0))" />
@@ -276,56 +276,53 @@
                                     <RadzenTemplateForm Data="@App.CasesPage.NewContact" Submit="@(async (CreateContactPerson.Request args) => { await App.CasesPage.SubmitNewContact(args); })">
                                         <RadzenFieldset Text="Osoba Kontaktowa">
                                             <div class="form">
-
-                                                <div class="label">
-                                                    <RadzenLabel Text="Imię" Style="font-size: 14px; font-weight:bold" />
-                                                </div>
                                                 <div class="text">
-                                                    <RadzenTextArea Placeholder="Imię..." @bind-Value="App.CasesPage.NewContact.Name" style="width: 100%;" Name="Name" />
+                                                    <div class="label">
+                                                        <RadzenLabel Text="Imię" />
+                                                    </div>
+                                                    <RadzenTextArea Placeholder="Imię..." @bind-Value="App.CasesPage.NewContact.Name" Name="Name" />
                                                     <RadzenRequiredValidator Component="Name" Text="Name cannot be empty!" style="width: 100%;" />
                                                     <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Name" Style="position: absolute" />
                                                 </div>
 
-                                                <div class="label">
-                                                    <RadzenLabel Text="Nazwisko" Style="font-size: 14px; font-weight:bold" />
-                                                </div>
                                                 <div class="text">
-                                                    <RadzenTextArea Placeholder="Nazwisko..." @bind-Value="App.CasesPage.NewContact.Surname" style="width: 100%;" Name="Surname" />
+                                                    <div class="label">
+                                                        <RadzenLabel Text="Nazwisko" />
+                                                    </div>
+                                                    <RadzenTextArea Placeholder="Nazwisko..." @bind-Value="App.CasesPage.NewContact.Surname" Name="Surname" />
                                                     <RadzenRequiredValidator Component="Surname" Text="Name cannot be empty!" style="width: 100%;" />
                                                     <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Surname" Style="position: absolute" />
                                                 </div>
-
-                                                <div class="label">
-                                                    <RadzenLabel Text="Adres" Style="font-size: 14px; font-weight:bold" />
-                                                </div>
                                                 <div class="text">
-                                                    <RadzenTextArea Placeholder="Adres..." @bind-Value="App.CasesPage.NewContact.Address" style="width: 100%;" Name="Address" />
+                                                    <div class="label">
+                                                        <RadzenLabel Text="Adres" />
+                                                    </div>
+                                                    <RadzenTextArea Placeholder="Adres..." @bind-Value="App.CasesPage.NewContact.Address" Name="Address" />
                                                     <RadzenLengthValidator Max="500" Text="Maksymalnie 500 znaków!" Component="Address" Style="position: absolute" />
                                                 </div>
 
                                             </div>
                                             <div class="form">
-                                                <div class="label">
-                                                    <RadzenLabel Text="Telefon" Style="font-size: 14px; font-weight:bold" />
-                                                </div>
+
                                                 <div class="text">
-                                                    <RadzenTextBox Placeholder="Telefon..." @bind-Value="App.CasesPage.NewContact.PhoneNumber" style="width: 100%;" Name="PhoneNumber1" />
+                                                    <div class="label">
+                                                        <RadzenLabel Text="Telefon" />
+                                                    </div>
+                                                    <RadzenTextBox Placeholder="Telefon..." @bind-Value="App.CasesPage.NewContact.PhoneNumber" Name="PhoneNumber1" />
                                                     <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="PhoneNumber1" Style="position: absolute" />
                                                 </div>
-
-                                                <div class="label">
-                                                    <RadzenLabel Text="Telefon2" Style="font-size: 14px; font-weight:bold" />
-                                                </div>
                                                 <div class="text">
-                                                    <RadzenTextBox Placeholder="Telefon..." @bind-Value="App.CasesPage.NewContact.AlternativePhoneNumber" style="width: 100%;" Name="PhoneNumber2" />
+                                                    <div class="label">
+                                                        <RadzenLabel Text="Telefon2" />
+                                                    </div>
+                                                    <RadzenTextBox Placeholder="Telefon..." @bind-Value="App.CasesPage.NewContact.AlternativePhoneNumber" Name="PhoneNumber2" />
                                                     <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="PhoneNumber2" Style="position: absolute" />
                                                 </div>
-
-                                                <div class="label">
-                                                    <RadzenLabel Text="Email" Style="font-size: 14px; font-weight:bold" />
-                                                </div>
                                                 <div class="text">
-                                                    <RadzenTextBox Placeholder="Adres Email..." @bind-Value="App.CasesPage.NewContact.Email" style="width: 100%;" Name="Email" />
+                                                    <div class="label">
+                                                        <RadzenLabel Text="Email" />
+                                                    </div>
+                                                    <RadzenTextBox Placeholder="Adres Email..." @bind-Value="App.CasesPage.NewContact.Email" Name="Email" />
                                                     <RadzenRequiredValidator Component="Email" Text="Email address cannot be empty!" Style="position: absolute" />
                                                     <RadzenEmailValidator Component="Email" Text="Nieprawidłowy adres Email!" />
                                                     <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Email" Style="position: absolute" />

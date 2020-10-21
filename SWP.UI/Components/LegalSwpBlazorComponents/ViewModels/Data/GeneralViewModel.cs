@@ -29,6 +29,8 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data
 
         public DialogOptions DefaultDialogOptions => new DialogOptions() { Width = "500px", Height = "530px", Left = "calc(50% - 500px)", Top = "calc(50% - 265px)" };
 
+        public string ReminderDispalyDate(DateTime dateTime) => (dateTime.Hour == 0 && dateTime.Minute == 0) ? dateTime.ToString("dd/MM/yyyy") : dateTime.ToString("dd/MM/yyyy HH:mm");
+
         public class Priority
         {
             public int Number { get; set; }

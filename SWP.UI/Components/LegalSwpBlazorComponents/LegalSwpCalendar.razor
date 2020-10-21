@@ -1,5 +1,6 @@
 ﻿
 <h2>Kalendarz</h2>
+<RadzenButton Text="Odśwież Dane" ButtonStyle="ButtonStyle.Success" Click="App.CalendarPage.RefreshCalendarData"></RadzenButton>
 
 <div class="row">
     <div class="col-md-12">
@@ -13,16 +14,15 @@
                          AppointmentSelect="@App.CalendarPage.OnAppointmentSelect"
                          TodayText="Dzisiaj"
                          AppointmentRender="@App.CalendarPage.OnAppointmentRender">
-            <Template Context="data">
-                <SchedulerAppointmentName DisplayText="@data.Name"></SchedulerAppointmentName>
-            </Template>
+            @*<Template Context="data">
+                <SchedulerAppointmentName DisplayText="@data.DisplayText"></SchedulerAppointmentName>
+            </Template>*@
             <ChildContent>
                 <RadzenDayView Text="Dzień" StartTime="@(new TimeSpan(0, 0, 0))" EndTime="@(new TimeSpan(24, 0, 0))" />
                 <RadzenWeekView Text="Tydzień" StartTime="@(new TimeSpan(0, 0, 0))" EndTime="@(new TimeSpan(24, 0, 0))" />
                 <RadzenMonthView Text="Miesiąc" />
             </ChildContent>
         </RadzenScheduler>
-
     </div>
 
     <RadzenCard>
@@ -34,7 +34,6 @@
                 <RadzenSelectBarItem Text="Wszystko" Value="3" />
             </Items>
         </RadzenSelectBar>
-        <RadzenButton Text="Odśwież Listę" ButtonStyle="ButtonStyle.Success" Click="App.CalendarPage.RefreshCalendarData"></RadzenButton>
 
         <RadzenGrid @ref="App.CalendarPage.RemindersGrid" AllowFiltering="true" AllowPaging="true" PageSize="15" AllowSorting="true" RowSelect="@(args => App.CalendarPage.ActiveReminderChange(args))"
                     Data="@(App.CalendarPage.ChosenReminderType == 3 ? App.CalendarPage.Reminders : App.CalendarPage.ChosenReminderType == 2 ? App.CalendarPage.Reminders.Where(x => x.IsDeadline) : App.CalendarPage.Reminders.Where(x => !x.IsDeadline))" TItem="ReminderViewModel">
@@ -57,12 +56,12 @@
                 </RadzenGridColumn>
                 <RadzenGridColumn TItem="ReminderViewModel" Property="Start" Title="Początek">
                     <Template Context="record">
-                        @(record.Start.ToString("dd/MM/yyyy HH:mm"))
+                        @(App.CalendarPage.GeneralViewModel.ReminderDispalyDate(record.Start))
                     </Template>
                 </RadzenGridColumn>
                 <RadzenGridColumn TItem="ReminderViewModel" Property="End" Title="Koniec">
                     <Template Context="record">
-                        @(record.End.ToString("dd/MM/yyyy HH:mm"))
+                        @(App.CalendarPage.GeneralViewModel.ReminderDispalyDate(record.End))
                     </Template>
                 </RadzenGridColumn>
                 <RadzenGridColumn TItem="ReminderViewModel" Property="Duration" Title="Czas">

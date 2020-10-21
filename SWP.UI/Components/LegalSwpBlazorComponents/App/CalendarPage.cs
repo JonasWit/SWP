@@ -18,7 +18,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
     public class CalendarPage : BlazorPageBase, IDisposable
     {
         private DialogService DialogService => serviceProvider.GetService<DialogService>();
-        private GeneralViewModel GeneralViewModel => serviceProvider.GetService<GeneralViewModel>();
+        public GeneralViewModel GeneralViewModel => serviceProvider.GetService<GeneralViewModel>();
         private GetReminders GetReminders => serviceProvider.GetService<GetReminders>();
         private UpdateReminder UpdateReminder => serviceProvider.GetService<UpdateReminder>();
         private DeleteReminder DeleteReminder => serviceProvider.GetService<DeleteReminder>();
@@ -73,6 +73,11 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
                 Reminders = GetReminders.Get(App.User.Profile).Select(x => (ReminderViewModel)x).ToList();
             }
 
+            UpdateRemindersData();
+        }
+
+        private void UpdateRemindersData()
+        {
             foreach (var reminder in Reminders)
             {
                 reminder.ParentCaseName = GetCase.GetCaseName(reminder.CaseId);
@@ -140,7 +145,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         public void OnAppointmentRender(SchedulerAppointmentRenderEventArgs<ReminderViewModel> args)
         {
             // Never call StateHasChanged in AppointmentRender - would lead to infinite loop
-            var commonStyle = $"height: 30px; border-radius: 3px; display: flex; justify-content: left;";
+            var commonStyle = $"";
 
             if (args.Data.IsDeadline)
             {

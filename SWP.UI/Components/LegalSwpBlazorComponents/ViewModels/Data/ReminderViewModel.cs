@@ -6,8 +6,8 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data
     public class ReminderViewModel : ViewModelBase
     {
         public string Name { get; set; }
-        public string ParentCaseName { get; set; }
-        public string ParentClientName { get; set; }
+        public string ParentCaseName { get; set; } = "";
+        public string ParentClientName { get; set; } = "";
         public string Message { get; set; }
         public bool Active { get; set; }
         public int Priority { get; set; }
@@ -15,7 +15,9 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data
         public bool IsDeadline { get; set; }
         public string UpdatedDescription => $"Updated on {Updated} by {UpdatedBy}";
         public string CreatedDescription => $"Created on {Created}";
-        public string Duration => (End - Start).ToString(@"hh\:mm");
+        public string Duration => (End - Start).ToString(@"hh\:mm") == @"00:00" ? "" : (End - Start).ToString(@"hh\:mm");
+        public string  DisplayText => $@"{(ParentClientName.Length > 12 ? $@"{ParentClientName.Substring(0, 12)}..." : ParentClientName)} - {(Name.Length > 12 ? $@"{Name.Substring(0, 12)}..." : Name)}";
+        public string DisplayTextShort => $@"{(Name.Length > 12 ? $@"{Name.Substring(0, 12)}..." : Name)}";
         public DateTime Start { get; set; }
         public DateTime End { get; set; }
 

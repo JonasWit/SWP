@@ -107,9 +107,29 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
         private void FireUpdatesAfterActiveClientChange()
         {
-            ActiveClientWithData = GetClient.Get(activeClient.Id);
-            FinancePage.GetDataForMonthFilter();
-            ProductivityPage.GetDataForMonthFilter();
+            if (!Loading)
+            {
+                Loading = !Loading;
+            }
+            else
+            {
+                return;
+            }
+
+            try
+            {
+                ActiveClientWithData = GetClient.Get(activeClient.Id);
+                FinancePage.GetDataForMonthFilter();
+                ProductivityPage.GetDataForMonthFilter();
+            }
+            catch (Exception ex)
+            {
+                ErrorPage.DisplayMessage(ex);
+            }
+            finally
+            {
+                Loading = !Loading;
+            }
         }
 
         public async Task RefreshRelatedUsers() => User.RelatedUsers = await UserManager.GetUsersForClaimAsync(User.ProfileClaim);

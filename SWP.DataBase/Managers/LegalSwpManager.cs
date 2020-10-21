@@ -86,6 +86,8 @@ namespace SWP.DataBase.Managers
 
         public int CountClients() => context.Clients.AsNoTracking().Count(x => x.Active);
 
+        public string GetClientName(int id) => context.Clients.Where(x => x.Id == id).Select(y => y.Name).FirstOrDefault();
+
         #endregion
 
         #region Case
@@ -132,6 +134,8 @@ namespace SWP.DataBase.Managers
         public string GetCaseParentName(int id) => context.Clients.Where(x => x.Cases.Any(y => y.Id == id)).Select(x => x.Name).FirstOrDefault();
 
         public string GetCaseName(int id) => context.Cases.Where(x => x.Id == id).Select(y => y.Name).FirstOrDefault();
+
+        public string GetClientNameForCase(int id) => context.Clients.Where(x => x.Id == context.Cases.Where(x => x.Id == id).Select(y => y.ClientId).FirstOrDefault()).Select(y => y.Name).FirstOrDefault();
 
         #endregion
 

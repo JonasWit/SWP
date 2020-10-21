@@ -2,6 +2,7 @@
 using Radzen;
 using Radzen.Blazor;
 using SWP.Application.LegalSwp.Cases;
+using SWP.Application.LegalSwp.Clients;
 using SWP.Application.LegalSwp.Reminders;
 using SWP.UI.BlazorApp;
 using SWP.UI.Components.LegalSwpBlazorComponents.SchedulerInnerComponents;
@@ -21,9 +22,12 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         private GetReminders GetReminders => serviceProvider.GetService<GetReminders>();
         private UpdateReminder UpdateReminder => serviceProvider.GetService<UpdateReminder>();
         private DeleteReminder DeleteReminder => serviceProvider.GetService<DeleteReminder>();
+        public RadzenGrid<ReminderViewModel> RemindersGrid { get; set; }
         private GetCase GetCase => serviceProvider.GetService<GetCase>();
         public LegalBlazorApp App { get; private set; }
         public RadzenScheduler<ReminderViewModel> RemindersScheduler { get; set; }
+        public int ChosenReminderType { get; set; } = 3;
+        public ReminderViewModel SelectedReminder { get; set; }
         public List<ReminderViewModel> Reminders { get; set; }
 
         public CalendarPage(IServiceProvider serviceProvider) : base(serviceProvider) { }
@@ -68,6 +72,12 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             {
                 Reminders = GetReminders.Get(App.User.Profile).Select(x => (ReminderViewModel)x).ToList();
             }
+
+            foreach (var reminder in Reminders)
+            {
+                reminder.ParentCaseName = GetCase.GetCaseName(reminder.CaseId);
+                reminder.ParentClientName = GetCase.GetCaseParentName(reminder.CaseId);
+            }
         }
 
         public async Task OnAppointmentSelect(SchedulerAppointmentSelectEventArgs<ReminderViewModel> args)
@@ -96,7 +106,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
                 }
                 else
                 {
-                    var updatedEntity = await UpdateReminder.Update(new UpdateReminder.Request
+                    var updatedReminder = await UpdateReminder.Update(new UpdateReminder.Request
                     {
                         Id = result.Id,
                         IsDeadline = result.IsDeadline,
@@ -104,13 +114,12 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
                         Name = result.Name,
                         Priority = result.Priority,
                         Start = result.Start,
-                        End = result.End,
+                        End = result.End < result.Start ? result.Start : result.End,
                         Updated = DateTime.Now,
                         UpdatedBy = App.User.UserName
                     });
 
-                    Reminders.RemoveAll(x => x.Id == updatedEntity.Id);
-                    Reminders.Add(updatedEntity);
+                    Reminders[App.CalendarPage.Reminders.FindIndex(x => x.Id == result.Id)] = updatedReminder;
 
                     if (App.ActiveClientWithData != null)
                     {
@@ -118,8 +127,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
                         if (c != null)
                         {
-                            c.Reminders.RemoveAll(x => x.Id == result.Id);
-                            c.Reminders.Add(updatedEntity);
+                            App.ActiveClientWithData.SelectedCase.Reminders[App.ActiveClientWithData.SelectedCase.Reminders.FindIndex(x => x.Id == result.Id)] = updatedReminder;
                         }
                     }
 
@@ -150,6 +158,19 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         public void Dispose()
         {
             UnsubscribeEvents();
+        }
+
+        public void ActiveReminderChange(object value)
+        {
+            var input = (ReminderViewModel)value;
+            if (input != null)
+            {
+                SelectedReminder = Reminders.FirstOrDefault(x => x.Id == input.Id);
+            }
+            else
+            {
+                SelectedReminder = null;
+            }
         }
 
         #endregion

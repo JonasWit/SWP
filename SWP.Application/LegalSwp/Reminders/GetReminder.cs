@@ -10,6 +10,5 @@ namespace SWP.Application.LegalSwp.Reminders
         public GetReminder(ILegalSwpManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
 
         public Reminder Get(int id) => legalSwpManager.GetReminder(id);
-
     }
 }

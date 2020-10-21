@@ -19,6 +19,7 @@ namespace SWP.Domain.Infrastructure
         Task<Client> UpdateClient(Client client);
         Task<int> DeleteClient(int clientId);
         Task<int> DeleteProfileClients(string profile);
+        string GetClientName(int id);
 
         #endregion
 
@@ -38,6 +39,7 @@ namespace SWP.Domain.Infrastructure
         Case GetCaseWithoutData(int id);
         string GetCaseParentName(int id);
         string GetCaseName(int id);
+        string GetClientNameForCase(int id);
 
         Task<Case> CreateCase(int clientId, string profile, Case c);
         Task<Case> UpdateCase(Case c);

@@ -258,7 +258,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
                     Name = result.Name,
                     Priority = result.Priority == 0 ? 5 : result.Priority,
                     Start = result.Start,
-                    End = result.End,
+                    End = result.End < result.Start ? result.Start : result.End,
                     UpdatedBy = result.UpdatedBy
                 });
 
@@ -271,11 +271,9 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
         public async Task OnAppointmentSelect(SchedulerAppointmentSelectEventArgs<ReminderViewModel> args)
         {
-            ReminderViewModel result = await DialogService.OpenAsync<EditReminderPage>($"Edytuj Przypomnienie dla Sprawy: {args.Data.ParentCaseName}", 
+            ReminderViewModel result = await DialogService.OpenAsync<EditReminderPage>($"Edytuj Przypomnienie dla Sprawy: {args.Data.ParentCaseName}",
                 new Dictionary<string, object> { { "Reminder", args.Data } },
-                new DialogOptions() { Width = "500px", Height = "630px", Left = "calc(50% - 500px)", Top = "calc(50% - 265px)" }
-
-                );
+                new DialogOptions() { Width = "500px", Height = "630px", Left = "calc(50% - 500px)", Top = "calc(50% - 265px)" });
 
             if (result != null)
             {
@@ -298,13 +296,13 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
                         Name = result.Name,
                         Priority = result.Priority,
                         Start = result.Start,
-                        End = result.End,
+                        End = result.End < result.Start ? result.Start : result.End,
                         Updated = DateTime.Now,
                         UpdatedBy = App.User.UserName
                     });
 
-                    App.ActiveClientWithData.SelectedCase.Reminders[App.ActiveClientWithData.SelectedCase.Reminders.FindIndex(x => x.Id == result.Id)] = result;
-                    App.CalendarPage.Reminders[App.CalendarPage.Reminders.FindIndex(x => x.Id == result.Id)] = result;
+                    App.ActiveClientWithData.SelectedCase.Reminders[App.ActiveClientWithData.SelectedCase.Reminders.FindIndex(x => x.Id == result.Id)] = updatedReminder;
+                    App.CalendarPage.Reminders[App.CalendarPage.Reminders.FindIndex(x => x.Id == result.Id)] = updatedReminder;
 
                     await CasesScheduler.Reload();
                     App.ShowNotification(NotificationSeverity.Success, "Sukces!", $"Przypomnienie: {result.Name} zostało zmienione.", GeneralViewModel.NotificationDuration);

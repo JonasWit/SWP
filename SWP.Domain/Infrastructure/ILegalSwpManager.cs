@@ -11,7 +11,6 @@ namespace SWP.Domain.Infrastructure
         #region Clients
 
         Client GetClient(int clientId);
-        TResult GetClientWithSpecificData<TResult>(int clientId, Func<Client, TResult> selector);
         Client GetClientWithoutCases(int clientId);
         List<Client> GetClientsWithoutCases(string profile, bool active = true);
 

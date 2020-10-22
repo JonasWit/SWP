@@ -125,8 +125,7 @@
                 }
                 else
                 {
-                    <h1>Loading...</h1>
-                    <h1>@App.LoadingMessage</h1>
+                    <LoaderComponent @bind-Message="App.LoadingMessage"></LoaderComponent>
                 }
             </div>
 
@@ -143,5 +142,5 @@
 }
 else
 {
-    <LoaderComponent />
+    <LoaderComponent Message="@("Odpalanie Aplikacji...")"></LoaderComponent>
 }

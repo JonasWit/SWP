@@ -19,6 +19,7 @@ namespace SWP.DataBase.Managers
 
         public Client GetClient(int clientId) =>
             context.Clients
+                .Where(x => x.Id == clientId)
                 .Include(x => x.Cases)
                     .ThenInclude(y => y.Reminders)
                 .Include(x => x.Cases)
@@ -29,23 +30,6 @@ namespace SWP.DataBase.Managers
                 .Include(x => x.ContactPeople)
                 .Include(x => x.CashMovements)
                 .Include(x => x.TimeRecords)
-                .Where(x => x.Id == clientId)
-                .FirstOrDefault();
-
-        public TResult GetClientWithSpecificData<TResult>(int clientId, Func<Client, TResult> selector) =>
-            context.Clients
-                .Include(x => x.Cases)
-                    .ThenInclude(y => y.Reminders)
-                .Include(x => x.Cases)
-                    .ThenInclude(y => y.Notes)
-                .Include(x => x.Cases)
-                    .ThenInclude(y => y.ContactPeople)
-                .Include(x => x.Jobs)
-                .Include(x => x.ContactPeople)
-                .Include(x => x.CashMovements)
-                .Include(x => x.TimeRecords)
-                .Where(x => x.Id == clientId)
-                .Select(selector)
                 .FirstOrDefault();
 
         public Client GetClientWithoutCases(int clientId) =>

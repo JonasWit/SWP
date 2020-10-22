@@ -18,12 +18,6 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
     [UITransientService]
     public class ProductivityPage : BlazorPageBase
     {
-        private CreateCashMovement CreateCashMovement => serviceProvider.GetService<CreateCashMovement>();
-        private CreateTimeRecord CreateTimeRecord => serviceProvider.GetService<CreateTimeRecord>();
-        private DeleteTimeRecord DeleteTimeRecord => serviceProvider.GetService<DeleteTimeRecord>();
-        private UpdateTimeRecord UpdateTimeRecord => serviceProvider.GetService<UpdateTimeRecord>();
-        private LegalTimeSheetReport LegalTimeSheetReport => serviceProvider.GetService<LegalTimeSheetReport>();
-
         public LegalBlazorApp App { get; private set; }
         public CreateTimeRecord.Request NewTimeRecord { get; set; } = new CreateTimeRecord.Request();
         public LegalTimeSheetReport.ReportData NewTimesheetReport { get; set; } = new LegalTimeSheetReport.ReportData();
@@ -62,6 +56,9 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
             try
             {
+                using var scope = _serviceProvider.CreateScope();
+                var createCashMovement = scope.ServiceProvider.GetRequiredService<CreateCashMovement>();
+
                 var request = new CreateCashMovement.Request
                 {
                     Amount = time.Total,
@@ -72,7 +69,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
                     UpdatedBy = App.User.UserName
                 };
 
-                var result = await CreateCashMovement.Create(App.ActiveClient.Id, App.User.Profile, request);
+                var result = await createCashMovement.Create(App.ActiveClient.Id, App.User.Profile, request);
 
                 App.ActiveClientWithData.CashMovements.Add(result);
 
@@ -88,7 +85,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             }
             catch (Exception ex)
             {
-                await App.ErrorPage.DisplayMessage(ex);
+                await App.ErrorPage.DisplayMessageAsync(ex);
             }
         }
 
@@ -96,7 +93,10 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         {
             try
             {
-                var result = await UpdateTimeRecord.Update(new UpdateTimeRecord.Request
+                using var scope = _serviceProvider.CreateScope();
+                var updateTimeRecord = scope.ServiceProvider.GetRequiredService<UpdateTimeRecord>();
+
+                var result = await updateTimeRecord.Update(new UpdateTimeRecord.Request
                 {
                     Id = time.Id,
                     Rate = time.Rate,
@@ -121,7 +121,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             }
             catch (Exception ex)
             {
-                await App.ErrorPage.DisplayMessage(ex);
+                await App.ErrorPage.DisplayMessageAsync(ex);
             }
         }
 
@@ -137,7 +137,10 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         {
             try
             {
-                await DeleteTimeRecord.Delete(time.Id);
+                using var scope = _serviceProvider.CreateScope();
+                var deleteTimeRecord = scope.ServiceProvider.GetRequiredService<DeleteTimeRecord>();
+
+                await deleteTimeRecord.Delete(time.Id);
                 App.ActiveClientWithData.TimeRecords.RemoveAll(x => x.Id == time.Id);
                 App.ActiveClientWithData.SelectedTimeRecord = null;
 
@@ -147,7 +150,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             }
             catch (Exception ex)
             {
-                await App.ErrorPage.DisplayMessage(ex);
+                await App.ErrorPage.DisplayMessageAsync(ex);
             }
         }
 
@@ -157,9 +160,12 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
             try
             {
+                using var scope = _serviceProvider.CreateScope();
+                var createTimeRecord = scope.ServiceProvider.GetRequiredService<CreateTimeRecord>();
+
                 request.UpdatedBy = App.User.UserName;
 
-                var result = await CreateTimeRecord.Create(App.ActiveClient.Id, App.User.Profile, request);
+                var result = await createTimeRecord.Create(App.ActiveClient.Id, App.User.Profile, request);
                 NewTimeRecord = new CreateTimeRecord.Request();
 
                 App.ActiveClientWithData.TimeRecords.Add(result);
@@ -169,7 +175,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             }
             catch (Exception ex)
             {
-                await App.ErrorPage.DisplayMessage(ex);
+                await App.ErrorPage.DisplayMessageAsync(ex);
             }
         }
 
@@ -253,6 +259,9 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         {
             try
             {
+                using var scope = _serviceProvider.CreateScope();
+                var legalTimeSheetReport = scope.ServiceProvider.GetRequiredService<LegalTimeSheetReport>();
+
                 var productivityRecords = new List<TimeRecordViewModel>();
 
                 if (SelectedFont != null)
@@ -298,11 +307,11 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
                 reportData.ClientName = App.ActiveClient.Name;
                 reportData.Records = productivityRecords;
                 reportData.ReportName = $"{reportData.ClientName}_{DateTime.Now:yyyy-MM-dd-hh-mm-ss}";
-                LegalTimeSheetReport.GeneratePDF(reportData);
+                legalTimeSheetReport.GeneratePDF(reportData);
             }
             catch (Exception ex)
             {
-                await App.ErrorPage.DisplayMessage(ex);
+                await App.ErrorPage.DisplayMessageAsync(ex);
             }
         }
     }

@@ -15,15 +15,16 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
     public class ClientJobsPage : BlazorPageBase
     {
         public LegalBlazorApp App { get; private set; }
-        public GeneralViewModel GeneralViewModel => serviceProvider.GetService<GeneralViewModel>();
-        private CreateClientJob CreateClientJob => serviceProvider.GetService<CreateClientJob>();
-        private DeleteClientJob DeleteClientJob => serviceProvider.GetService<DeleteClientJob>();
-        private UpdateClientJob UpdateClientJob => serviceProvider.GetService<UpdateClientJob>();
-        private ArchiveJob ArchiveJob => serviceProvider.GetService<ArchiveJob>();
+
+        public GeneralViewModel _generalViewModel;
         public CreateClientJob.Request NewClientJob { get; set; } = new CreateClientJob.Request();
         public RadzenGrid<ClientJobViewModel> ClientsJobsGrid { get; set; }
         public ClientJobViewModel SelectedArchivizedClientJob { get; set; }
-        public ClientJobsPage(IServiceProvider serviceProvider) : base(serviceProvider) { }
+
+        public ClientJobsPage(IServiceProvider serviceProvider, GeneralViewModel generalViewModel) : base(serviceProvider) 
+        {
+            _generalViewModel = generalViewModel;
+        }
 
         public override Task Initialize(BlazorAppBase app)
         {
@@ -35,10 +36,13 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         {
             try
             {
+                using var scope = _serviceProvider.CreateScope();
+                var createClientJob = scope.ServiceProvider.GetRequiredService<CreateClientJob>();
+
                 request.ClientId = App.ActiveClient.Id;
                 request.UpdatedBy = App.User.UserName;
 
-                var result = await CreateClientJob.Create(request);
+                var result = await createClientJob.Create(request);
                 NewClientJob = new CreateClientJob.Request();
 
                 if (App.ActiveClientWithData != null)
@@ -51,7 +55,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             }
             catch (Exception ex)
             {
-                await App.ErrorPage.DisplayMessage(ex);
+                await App.ErrorPage.DisplayMessageAsync(ex);
             }
         }
 
@@ -61,7 +65,10 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         {
             try
             {
-                var result = await UpdateClientJob.Update(new UpdateClientJob.Request
+                using var scope = _serviceProvider.CreateScope();
+                var updateClientJob = scope.ServiceProvider.GetRequiredService<UpdateClientJob>();
+
+                var result = await updateClientJob.Update(new UpdateClientJob.Request
                 {
                     Id = clientJob.Id,
                     Active = clientJob.Active,
@@ -78,7 +85,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             }
             catch (Exception ex)
             {
-                await App.ErrorPage.DisplayMessage(ex);
+                await App.ErrorPage.DisplayMessageAsync(ex);
             }
         }
 
@@ -94,7 +101,10 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         {
             try
             {
-                await DeleteClientJob.Delete(clientJob.Id);
+                using var scope = _serviceProvider.CreateScope();
+                var deleteClientJob = scope.ServiceProvider.GetRequiredService<DeleteClientJob>();
+
+                await deleteClientJob.Delete(clientJob.Id);
 
                 if (App.ActiveClientWithData != null)
                 {
@@ -106,7 +116,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             }
             catch (Exception ex)
             {
-                await App.ErrorPage.DisplayMessage(ex);
+                await App.ErrorPage.DisplayMessageAsync(ex);
             }
         }
 
@@ -127,7 +137,10 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         {
             try
             {
-                var result = await ArchiveJob.ArchivizeClientJob(clientJob.Id, App.User.UserName);
+                using var scope = _serviceProvider.CreateScope();
+                var archiveJob = scope.ServiceProvider.GetRequiredService<ArchiveJob>();
+
+                var result = await archiveJob.ArchivizeClientJob(clientJob.Id, App.User.UserName);
 
                 App.ActiveClientWithData.Jobs.RemoveAll(x => x.Id == clientJob.Id);
                 App.ActiveClientWithData.ArchivedJobs.Add(result);
@@ -137,7 +150,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             }
             catch (Exception ex)
             {
-                await App.ErrorPage.DisplayMessage(ex);
+                await App.ErrorPage.DisplayMessageAsync(ex);
             }
         }
 
@@ -149,7 +162,10 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             {
                 if (SelectedArchivizedClientJob != null)
                 {
-                    var result = await ArchiveJob.RecoverClientJob(SelectedArchivizedClientJob.Id, App.User.UserName);
+                    using var scope = _serviceProvider.CreateScope();
+                    var archiveJob = scope.ServiceProvider.GetRequiredService<ArchiveJob>();
+
+                    var result = await archiveJob.RecoverClientJob(SelectedArchivizedClientJob.Id, App.User.UserName);
 
                     App.ActiveClientWithData.ArchivedJobs.RemoveAll(x => x.Id == SelectedArchivizedClientJob.Id);
                     App.ActiveClientWithData.Jobs.Add(result);
@@ -165,7 +181,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             }
             catch (Exception ex)
             {
-                await App.ErrorPage.DisplayMessage(ex);
+                await App.ErrorPage.DisplayMessageAsync(ex);
             }
         }
     }

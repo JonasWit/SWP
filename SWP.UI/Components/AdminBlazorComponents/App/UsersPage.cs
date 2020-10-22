@@ -26,7 +26,7 @@ namespace SWP.UI.Components.AdminBlazorComponents.App
         public List<string> StatusClaims => Enum.GetNames(typeof(UserStatus)).ToList();
         public List<string> Claims => Enum.GetNames(typeof(ApplicationType)).ToList();
         public List<string> Roles => Enum.GetNames(typeof(RoleType)).ToList();
-        private UserManager<IdentityUser> UserManager => serviceProvider.GetService<UserManager<IdentityUser>>();
+        private UserManager<IdentityUser> UserManager => _serviceProvider.GetService<UserManager<IdentityUser>>();
         public bool Loading { get; set; }
         public UserModel SelectedUser { get; set; }
         public List<UserModel> Users { get; set; } = new List<UserModel>();

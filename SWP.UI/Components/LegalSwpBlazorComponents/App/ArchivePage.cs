@@ -13,10 +13,6 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
     [UITransientService]
     public class ArchivePage : BlazorPageBase
     {
-        private GetClients GetClientsService => serviceProvider.GetService<GetClients>();
-        private DeleteClient DeleteClientService => serviceProvider.GetService<DeleteClient>();
-        private ArchiveClient ArchiveClientService => serviceProvider.GetService<ArchiveClient>();
-
         public LegalBlazorApp App { get; private set; }
         public List<ClientViewModel> ArchivizedClients { get; set; }
         public ClientViewModel SelectedArchivizedClient { get; set; }
@@ -29,7 +25,13 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             return Task.CompletedTask;
         }
 
-        public void RefreshData() => ArchivizedClients = GetClientsService.GetClientsWithoutData(App.User.Profile, false)?.Select(x => (ClientViewModel)x).ToList();
+        public void RefreshData()
+        {
+            using var scope = _serviceProvider.CreateScope();
+            var getClients = scope.ServiceProvider.GetRequiredService<GetClients>();
+
+            ArchivizedClients = getClients.GetClientsWithoutData(App.User.Profile, false)?.Select(x => (ClientViewModel)x).ToList();
+        }
 
         public void RefreshApp() => App.ForceRefresh();
 
@@ -39,9 +41,12 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         {
             try
             {
+                using var scope = _serviceProvider.CreateScope();
+                var deleteClientService = scope.ServiceProvider.GetRequiredService<DeleteClient>();
+
                 if (SelectedArchivizedClient != null)
                 {
-                    await DeleteClientService.Delete(SelectedArchivizedClient.Id);
+                    await deleteClientService.Delete(SelectedArchivizedClient.Id);
                     App.ShowNotification(NotificationSeverity.Warning, "Sukces!", $"Klient: {SelectedArchivizedClient.Name} został usunięty.", GeneralViewModel.NotificationDuration);
                     SelectedArchivizedClient = null;
                     RefreshData();
@@ -54,7 +59,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             }
             catch (Exception ex)
             {
-                await App.ErrorPage.DisplayMessage(ex);
+                await App.ErrorPage.DisplayMessageAsync(ex);
             }
         }
 
@@ -64,7 +69,10 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             {
                 if (SelectedArchivizedClient != null)
                 {
-                    await ArchiveClientService.RecoverClient(SelectedArchivizedClient.Id, App.User.UserName);
+                    using var scope = _serviceProvider.CreateScope();
+                    var archiveClient = scope.ServiceProvider.GetRequiredService<ArchiveClient>();
+
+                    await archiveClient.RecoverClient(SelectedArchivizedClient.Id, App.User.UserName);
 
                     App.ShowNotification(NotificationSeverity.Success, "Sukces!", $"Klient: {SelectedArchivizedClient.Name} został odzyskany.", GeneralViewModel.NotificationDuration);
                     SelectedArchivizedClient = null;
@@ -79,7 +87,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             }
             catch (Exception ex)
             {
-                await App.ErrorPage.DisplayMessage(ex);
+                await App.ErrorPage.DisplayMessageAsync(ex);
             }
         }
     }

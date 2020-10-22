@@ -17,20 +17,20 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
     [UITransientService]
     public class CalendarPage : BlazorPageBase, IDisposable
     {
-        private DialogService DialogService => serviceProvider.GetService<DialogService>();
-        public GeneralViewModel GeneralViewModel => serviceProvider.GetService<GeneralViewModel>();
-        private GetReminders GetReminders => serviceProvider.GetService<GetReminders>();
-        private UpdateReminder UpdateReminder => serviceProvider.GetService<UpdateReminder>();
-        private DeleteReminder DeleteReminder => serviceProvider.GetService<DeleteReminder>();
+        private readonly DialogService _dialogService;
+        public GeneralViewModel _generalViewModel;
         public RadzenGrid<ReminderViewModel> RemindersGrid { get; set; }
-        private GetCase GetCase => serviceProvider.GetService<GetCase>();
         public LegalBlazorApp App { get; private set; }
         public RadzenScheduler<ReminderViewModel> RemindersScheduler { get; set; }
         public int ChosenReminderType { get; set; } = 3;
         public ReminderViewModel SelectedReminder { get; set; }
         public List<ReminderViewModel> Reminders { get; set; }
 
-        public CalendarPage(IServiceProvider serviceProvider) : base(serviceProvider) { }
+        public CalendarPage(IServiceProvider serviceProvider, DialogService dialogService, GeneralViewModel generalViewModel) : base(serviceProvider) 
+        {
+            _dialogService = dialogService;
+            _generalViewModel = generalViewModel;
+        }
 
         public override Task Initialize(BlazorAppBase app)
         {
@@ -64,36 +64,55 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
         public void RefreshCalendarData()
         {
-            if (App.ActiveClient != null)
+            try
             {
-                Reminders = GetReminders.Get(App.ActiveClient.Id).Select(x => (ReminderViewModel)x).ToList();
-            }
-            else
-            {
-                Reminders = GetReminders.Get(App.User.Profile).Select(x => (ReminderViewModel)x).ToList();
-            }
+                using var scope = _serviceProvider.CreateScope();
+                var getReminders = scope.ServiceProvider.GetRequiredService<GetReminders>();
 
-            UpdateRemindersData();
+                if (App.ActiveClient != null)
+                {
+                    Reminders = getReminders.Get(App.ActiveClient.Id).Select(x => (ReminderViewModel)x).ToList();
+                }
+                else
+                {
+                    Reminders = getReminders.Get(App.User.Profile).Select(x => (ReminderViewModel)x).ToList();
+                }
+
+                UpdateRemindersData();
+            }
+            catch (Exception ex)
+            {
+                App.ErrorPage.DisplayMessage(ex);
+            }
         }
 
         private void UpdateRemindersData()
         {
+            using var scope = _serviceProvider.CreateScope();
+            var getCase = scope.ServiceProvider.GetRequiredService<GetCase>();
+
             foreach (var reminder in Reminders)
             {
-                reminder.ParentCaseName = GetCase.GetCaseName(reminder.CaseId);
-                reminder.ParentClientName = GetCase.GetCaseParentName(reminder.CaseId);
+                reminder.ParentCaseName = getCase.GetCaseName(reminder.CaseId);
+                reminder.ParentClientName = getCase.GetCaseParentName(reminder.CaseId);
             }
         }
 
         public async Task OnAppointmentSelect(SchedulerAppointmentSelectEventArgs<ReminderViewModel> args)
         {
-            ReminderViewModel result = await DialogService.OpenAsync<EditReminderPage>($"Client: {GetCase.GetCaseParentName(args.Data.CaseId)} Case: {GetCase.GetCaseName(args.Data.CaseId)}", new Dictionary<string, object> { { "Reminder", args.Data } });
+            using var scope = _serviceProvider.CreateScope();
+            var getCase = scope.ServiceProvider.GetRequiredService<GetCase>();
+
+
+            ReminderViewModel result = await _dialogService.OpenAsync<EditReminderPage>($"Client: {getCase.GetCaseParentName(args.Data.CaseId)} Case: {getCase.GetCaseName(args.Data.CaseId)}", new Dictionary<string, object> { { "Reminder", args.Data } });
 
             if (result != null)
             {
                 if (!result.Active)
                 {
-                    await DeleteReminder.Delete(result.Id);
+                    var deleteReminder = scope.ServiceProvider.GetRequiredService<DeleteReminder>();
+
+                    await deleteReminder.Delete(result.Id);
                     Reminders.RemoveAll(x => x.Id == result.Id);
 
                     if (App.ActiveClientWithData != null)
@@ -111,7 +130,9 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
                 }
                 else
                 {
-                    var updatedReminder = await UpdateReminder.Update(new UpdateReminder.Request
+                    var updateReminder = scope.ServiceProvider.GetRequiredService<UpdateReminder>();
+
+                    var updatedReminder = await updateReminder.Update(new UpdateReminder.Request
                     {
                         Id = result.Id,
                         IsDeadline = result.IsDeadline,
@@ -149,11 +170,11 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
             if (args.Data.IsDeadline)
             {
-                args.Attributes["style"] = $"background: {GeneralViewModel.DeadlineColor}; {commonStyle}";
+                args.Attributes["style"] = $"background: {_generalViewModel.DeadlineColor}; {commonStyle}";
             }
             else
             {
-                var scheme = GeneralViewModel.PrioritiesColors.FirstOrDefault(x => x.Number == args.Data.Priority);
+                var scheme = _generalViewModel.PrioritiesColors.FirstOrDefault(x => x.Number == args.Data.Priority);
                 args.Attributes["style"] = $"background: {scheme?.BackgroundColor}; color: {scheme?.TextColor}; {commonStyle}";
             }
         }

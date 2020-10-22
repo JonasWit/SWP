@@ -10,14 +10,14 @@ namespace SWP.UI.BlazorApp
 {
     public abstract class BlazorPageCore
     {
-        protected readonly IServiceProvider serviceProvider;
+        protected readonly IServiceProvider _serviceProvider;
 
-        private CreateLogRecord CreateLogEntry => serviceProvider.GetService<CreateLogRecord>();
-        private DeleteLogRecord DeleteLogRecord => serviceProvider.GetService<DeleteLogRecord>();
-        private GetLogRecord GetLogRecord => serviceProvider.GetService<GetLogRecord>();
-        private GetLogRecords GetLogRecords => serviceProvider.GetService<GetLogRecords>();
+        private CreateLogRecord CreateLogEntry => _serviceProvider.GetService<CreateLogRecord>();
+        private DeleteLogRecord DeleteLogRecord => _serviceProvider.GetService<DeleteLogRecord>();
+        private GetLogRecord GetLogRecord => _serviceProvider.GetService<GetLogRecord>();
+        private GetLogRecords GetLogRecords => _serviceProvider.GetService<GetLogRecords>();
 
-        public BlazorPageCore(IServiceProvider serviceProvider) => this.serviceProvider = serviceProvider;
+        public BlazorPageCore(IServiceProvider serviceProvider) => this._serviceProvider = serviceProvider;
 
         protected Task<LogRecord> CreateLog(string userId, string message, string stack) => 
             CreateLogEntry.Create(new CreateLogRecord.Request

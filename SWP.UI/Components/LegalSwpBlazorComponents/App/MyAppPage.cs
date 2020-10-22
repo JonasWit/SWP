@@ -19,19 +19,21 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
     [UITransientService]
     public class MyAppPage : BlazorPageBase, IDisposable
     {
-        private GetClients GetClients => serviceProvider.GetService<GetClients>();
-        private GeneralViewModel GeneralViewModel => serviceProvider.GetService<GeneralViewModel>();
-        private GetCashMovements GetCashMovements => serviceProvider.GetService<GetCashMovements>();
-        private GetTimeRecords GetTimeRecords => serviceProvider.GetService<GetTimeRecords>();
-        private UserManager<IdentityUser> UserManager => serviceProvider.GetService<UserManager<IdentityUser>>();
-        private DeleteClient DeleteClient => serviceProvider.GetService<DeleteClient>();
+        private readonly DialogService _dialogService;
+        private readonly GeneralViewModel _generalViewModel;
+
         public LegalBlazorApp App { get; private set; }
         public List<CategoryDataItem> ClientsCases { get; set; } = new List<CategoryDataItem>();
         public List<ClientData> ProductivityData { get; set; } = new List<ClientData>();
         public double TotalBalance => ProductivityData.Count != 0 ? ProductivityData.Sum(x => x.DataByDate.Sum(y => y.Number)) : 0;
         public IdentityUser SelectedUser { get; set; }
         public ColorScheme ColorScheme { get; set; } = ColorScheme.Monochrome;
-        public MyAppPage(IServiceProvider serviceProvider) : base(serviceProvider) { }
+
+        public MyAppPage(IServiceProvider serviceProvider, DialogService dialogService, GeneralViewModel generalViewModel) : base(serviceProvider) 
+        {
+            _dialogService = dialogService;
+            _generalViewModel = generalViewModel;
+        }
 
         public override Task Initialize(BlazorAppBase app)
         {
@@ -74,12 +76,15 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         {
             ClientsCases.Clear();
 
+            using var scope = _serviceProvider.CreateScope();
+            var getClients = scope.ServiceProvider.GetRequiredService<GetClients>();
+
             foreach (var client in App.Clients)
             {
                 ClientsCases.Add(new CategoryDataItem
                 {
                     Category = client.Name,
-                    Number = GetClients.CountCasesPerClient(client.Id)
+                    Number = getClients.CountCasesPerClient(client.Id)
                 });
             }
         }
@@ -88,13 +93,17 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         {
             ProductivityData.Clear();
 
+            using var scope = _serviceProvider.CreateScope();
+            var getTimeRecords = scope.ServiceProvider.GetRequiredService<GetTimeRecords>();
+            var getCashMovements = scope.ServiceProvider.GetRequiredService<GetCashMovements>();
+
             var dataSet = new ClientData
             {
                 Name = App.ActiveClient.Name
             };
 
-            var timeRecords = GetTimeRecords.Get(App.ActiveClient.Id);
-            var cashMovements = GetCashMovements.Get(App.ActiveClient.Id);
+            var timeRecords = getTimeRecords.Get(App.ActiveClient.Id);
+            var cashMovements = getCashMovements.Get(App.ActiveClient.Id);
 
             for (int i = 0; i < 13; i++)
             {
@@ -117,6 +126,10 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         {
             ProductivityData.Clear();
 
+            using var scope = _serviceProvider.CreateScope();
+            var getTimeRecords = scope.ServiceProvider.GetRequiredService<GetTimeRecords>();
+            var getCashMovements = scope.ServiceProvider.GetRequiredService<GetCashMovements>();
+
             foreach (var client in App.Clients)
             {
                 var dataSet = new ClientData
@@ -124,8 +137,8 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
                     Name = client.Name
                 };
 
-                var timeRecords = GetTimeRecords.Get(client.Id);
-                var cashMovements = GetCashMovements.Get(client.Id);
+                var timeRecords = getTimeRecords.Get(client.Id);
+                var cashMovements = getCashMovements.Get(client.Id);
 
                 for (int i = 0; i < 13; i++)
                 {
@@ -169,16 +182,19 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         {
             try
             {
+                using var scope = _serviceProvider.CreateScope();
+                var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+
                 var profileClaim = App.User.ProfileClaim;
                 var selectedUser = App.User.RelatedUsers.FirstOrDefault(x => x.Id == SelectedUser.Id);
-                var result = await UserManager.RemoveClaimAsync(selectedUser, profileClaim);
+                var result = await userManager.RemoveClaimAsync(selectedUser, profileClaim);
 
                 SelectedUser = App.User.User;
                 await App.RefreshRelatedUsers();
             }
             catch (Exception ex)
             {
-                await App.ErrorPage.DisplayMessage(ex);
+                await App.ErrorPage.DisplayMessageAsync(ex);
             }
         }
 
@@ -186,7 +202,10 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         {
             try
             {
-                await DeleteClient.Delete(App.User.Profile);
+                using var scope = _serviceProvider.CreateScope();
+                var deleteClient = scope.ServiceProvider.GetRequiredService<DeleteClient>();
+
+                await deleteClient.Delete(App.User.Profile);
 
                 App.RefreshClients();
                 App.ForceRefresh();
@@ -194,20 +213,20 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             }
             catch (Exception ex)
             {
-                await App.ErrorPage.DisplayMessage(ex);
+                await App.ErrorPage.DisplayMessageAsync(ex);
             }
         }
 
         public void ConfirmRemoveRelation()
         {
-            App.DialogService.Open<GenericDialogPopup>("Order TEST",
-                            new Dictionary<string, object>()
-                            {
-                                { "Title", "TEST Title Passed" },
-                                { "TaskToExecuteAsync", new Func<Task>(App.ErrorPage.ThrowTestException) },
-                                { "Description", "This is sample Description" },
-                            },
-                            GeneralViewModel.DefaultDialogOptions);
+            _dialogService.Open<GenericDialogPopup>("Order TEST",
+                new Dictionary<string, object>()
+                {
+                    { "Title", "TEST Title Passed" },
+                    { "TaskToExecuteAsync", new Func<Task>(App.ErrorPage.ThrowTestException) },
+                    { "Description", "This is sample Description" },
+                },
+                _generalViewModel.DefaultDialogOptions);
         }
 
         #endregion

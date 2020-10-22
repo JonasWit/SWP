@@ -21,12 +21,20 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             return Task.CompletedTask;
         }
 
-        public Task DisplayMessage(Exception ex)
+        public Task DisplayMessageAsync(Exception ex)
         {
             Exception = ex;
             App.SetActivePanel(LegalBlazorApp.Panels.ErrorPage);
             RefreshApp();
             return CreateLog(App.User.UserName, ex.Message, ex.StackTrace);
+        }
+
+        public void DisplayMessage(Exception ex)
+        {
+            Exception = ex;
+            App.SetActivePanel(LegalBlazorApp.Panels.ErrorPage);
+            RefreshApp();
+            CreateLog(App.User.UserName, ex.Message, ex.StackTrace);
         }
 
         public void DismissMessage()
@@ -43,7 +51,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             }
             catch (Exception ex)
             {
-                return DisplayMessage(ex);
+                return DisplayMessageAsync(ex);
             }
         }
 

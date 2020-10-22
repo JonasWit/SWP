@@ -69,7 +69,6 @@
                     </div>
                     <div class="text">
                         <RadzenTextBox Placeholder="Adres Email..." @bind-Value="App.ClientDetailsPage.NewContact.Email" style="width: 100%;" Name="Email" />
-                        <RadzenRequiredValidator Component="Email" Text="Email address cannot be empty!" />
                         <RadzenEmailValidator Component="Email" Text="Nieprawidłowy adres Email!" />
                         <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Email" Style="position: absolute" />
                     </div>

@@ -15,9 +15,6 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
     public class ClientDetailsPage : BlazorPageBase
     {
         public LegalBlazorApp App { get; private set; }
-        private UpdateContactPerson UpdateContactPerson => serviceProvider.GetService<UpdateContactPerson>();
-        private CreateContactPerson CreateContactPerson => serviceProvider.GetService<CreateContactPerson>();
-        private DeleteContactPerson DeleteContactPerson => serviceProvider.GetService<DeleteContactPerson>();
         public ContactPersonViewModel SelectedContact { get; set; }
         public CreateContactPerson.Request NewContact { get; set; } = new CreateContactPerson.Request();
         public RadzenGrid<ContactPersonViewModel> ContactsGrid { get; set; }
@@ -53,7 +50,10 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         {
             try
             {
-                var result = await UpdateContactPerson.UpdateForClient(new UpdateContactPerson.Request
+                using var scope = _serviceProvider.CreateScope();
+                var updateContactPerson = scope.ServiceProvider.GetRequiredService<UpdateContactPerson>();
+
+                var result = await updateContactPerson.UpdateForClient(new UpdateContactPerson.Request
                 {
                     Id = contact.Id,
                     Address = contact.Address,
@@ -73,7 +73,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             }
             catch (Exception ex)
             {
-                await App.ErrorPage.DisplayMessage(ex);
+                await App.ErrorPage.DisplayMessageAsync(ex);
             }
         }
 
@@ -90,7 +90,10 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         {
             try
             {
-                await DeleteContactPerson.DeleteForClient(contact.Id);
+                using var scope = _serviceProvider.CreateScope();
+                var deleteContactPerson = scope.ServiceProvider.GetRequiredService<DeleteContactPerson>();
+
+                await deleteContactPerson.DeleteForClient(contact.Id);
                 App.ActiveClientWithData.ContactPeople.RemoveAll(x => x.Id == contact.Id);
 
                 await ContactsGrid.Reload();
@@ -98,7 +101,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             }
             catch (Exception ex)
             {
-                await App.ErrorPage.DisplayMessage(ex);
+                await App.ErrorPage.DisplayMessageAsync(ex);
             }
         }
 
@@ -108,7 +111,10 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
             try
             {
-                var result = await CreateContactPerson.CreateContactPersonForClient(App.ActiveClient.Id, request);
+                using var scope = _serviceProvider.CreateScope();
+                var createContactPerson = scope.ServiceProvider.GetRequiredService<CreateContactPerson>();
+
+                var result = await createContactPerson.CreateContactPersonForClient(App.ActiveClient.Id, request);
                 NewContact = new CreateContactPerson.Request();
 
                 App.ActiveClientWithData.ContactPeople.Add(result);
@@ -117,7 +123,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             }
             catch (Exception ex)
             {
-                await App.ErrorPage.DisplayMessage(ex);
+                await App.ErrorPage.DisplayMessageAsync(ex);
             }
         }
 

@@ -52,7 +52,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         {
             try
             {
-                using var scope = serviceProvider.CreateScope();
+                using var scope = _serviceProvider.CreateScope();
                 var updateClient = scope.ServiceProvider.GetRequiredService<UpdateClient>();
 
                 var result = await updateClient.Update(new UpdateClient.Request
@@ -82,7 +82,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             }
             catch (Exception ex)
             {
-                await App.ErrorPage.DisplayMessage(ex);
+                await App.ErrorPage.DisplayMessageAsync(ex);
             }
         }
 
@@ -99,7 +99,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         {
             try
             {
-                using var scope = serviceProvider.CreateScope();
+                using var scope = _serviceProvider.CreateScope();
                 var deleteClient = scope.ServiceProvider.GetRequiredService<DeleteClient>();
 
                 await deleteClient.Delete(client.Id);
@@ -110,7 +110,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             }
             catch (Exception ex)
             {
-                await App.ErrorPage.DisplayMessage(ex);
+                await App.ErrorPage.DisplayMessageAsync(ex);
             }
         }
 
@@ -118,7 +118,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         {
             try
             {
-                using var scope = serviceProvider.CreateScope();
+                using var scope = _serviceProvider.CreateScope();
                 var archiveClient = scope.ServiceProvider.GetRequiredService<ArchiveClient>();
 
                 var result = await archiveClient.ArchivizeClient(client.Id, App.User.UserName);
@@ -139,7 +139,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             }
             catch (Exception ex)
             {
-                await App.ErrorPage.DisplayMessage(ex);
+                await App.ErrorPage.DisplayMessageAsync(ex);
             }
         }
 
@@ -152,7 +152,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
             try
             {
-                using var scope = serviceProvider.CreateScope();
+                using var scope = _serviceProvider.CreateScope();
                 var createClient = scope.ServiceProvider.GetRequiredService<CreateClient>();
 
                 var result = await createClient.Do(request);
@@ -168,7 +168,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             }
             catch (Exception ex)
             {
-                await App.ErrorPage.DisplayMessage(ex);
+                await App.ErrorPage.DisplayMessageAsync(ex);
             }
         }
 

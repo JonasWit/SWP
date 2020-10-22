@@ -16,15 +16,12 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
     [UITransientService]
     public class LegalBlazorApp : BlazorAppBase, IDisposable
     {
-        private readonly IServiceProvider serviceProvider;
-        public event EventHandler ActiveClientChanged;
-        private ClientViewModel activeClient;
+        private readonly IServiceProvider _serviceProvider;
+        private ClientViewModel _activeClient;
+        private readonly NotificationService _notificationService;
 
-        private GetClient GetClient => serviceProvider.GetService<GetClient>();
-        private GetClients GetClients => serviceProvider.GetService<GetClients>();
-        public DialogService DialogService => serviceProvider.GetService<DialogService>();
-        private UserManager<IdentityUser> UserManager => serviceProvider.GetService<UserManager<IdentityUser>>();
-        private NotificationService NotificationService => serviceProvider.GetService<NotificationService>();
+        public event EventHandler ActiveClientChanged;
+
         public CalendarPage CalendarPage { get; }
         public CasesPage CasesPage { get; }
         public ClientPage ClientsPage { get; }
@@ -40,11 +37,11 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
         public ClientViewModel ActiveClient
         {
-            get => activeClient;
+            get => _activeClient;
             set
             {
-                activeClient = value;
-                if (activeClient != null) FireUpdatesAfterActiveClientChange();
+                _activeClient = value;
+                if (_activeClient != null) FireUpdatesAfterActiveClientChange();
             }
         }
 
@@ -60,10 +57,11 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             ClientJobsPage clientJobsPage,
             ArchivePage archivePage,
             ClientDetailsPage clientDetailsPage,
-            IServiceProvider serviceProvider)
+            IServiceProvider serviceProvider,
+            NotificationService notificationService)
         {
-            this.serviceProvider = serviceProvider;
-
+            _serviceProvider = serviceProvider;
+            _notificationService = notificationService;
             FinancePage = financePage;
             ProductivityPage = productivityPage;
             ClientJobsPage = clientJobsPage;
@@ -85,16 +83,20 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             }
             else
             {
+                using var scope = _serviceProvider.CreateScope();
+                var getClients = scope.ServiceProvider.GetRequiredService<GetClients>();
+                var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+
                 WireUpEvents();
 
                 ActiveUserId = activeUserId;
 
-                User.User = await UserManager.FindByIdAsync(ActiveUserId);
-                User.Claims = await UserManager.GetClaimsAsync(User.User) as List<Claim>;
-                User.Roles = await UserManager.GetRolesAsync(User.User) as List<string>;
-                User.RelatedUsers = await UserManager.GetUsersForClaimAsync(User.ProfileClaim);
+                User.User = await userManager.FindByIdAsync(ActiveUserId);
+                User.Claims = await userManager.GetClaimsAsync(User.User) as List<Claim>;
+                User.Roles = await userManager.GetRolesAsync(User.User) as List<string>;
+                User.RelatedUsers = await userManager.GetUsersForClaimAsync(User.ProfileClaim);
 
-                Clients = GetClients.GetClientsWithoutData(User.Profile)?.Select(x => (ClientViewModel)x).ToList();
+                Clients = getClients.GetClientsWithoutData(User.Profile)?.Select(x => (ClientViewModel)x).ToList();
 
                 await InitializePages();
             }
@@ -118,7 +120,10 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
             try
             {
-                ActiveClientWithData = GetClient.Get(activeClient.Id);
+                using var scope = _serviceProvider.CreateScope();
+                var getClient = scope.ServiceProvider.GetRequiredService<GetClient>();
+
+                ActiveClientWithData = getClient.Get(_activeClient.Id);
                 FinancePage.GetDataForMonthFilter();
                 ProductivityPage.GetDataForMonthFilter();
             }
@@ -132,7 +137,20 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             }
         }
 
-        public async Task RefreshRelatedUsers() => User.RelatedUsers = await UserManager.GetUsersForClaimAsync(User.ProfileClaim);
+        public async Task RefreshRelatedUsers()
+        {
+            try
+            {
+                using var scope = _serviceProvider.CreateScope();
+                var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+
+                User.RelatedUsers = await userManager.GetUsersForClaimAsync(User.ProfileClaim);
+            }
+            catch (Exception ex)
+            {
+                await ErrorPage.DisplayMessageAsync(ex);
+            }
+        }
 
         private async Task InitializePages()
         {
@@ -184,7 +202,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         public void SetActivePanel(Panels panel) => ActivePanel = panel;
 
         public void ShowNotification(NotificationSeverity severity, string summary, string detail, int duration) =>
-            NotificationService.Notify(new NotificationMessage() { Severity = severity, Summary = summary, Detail = detail, Duration = duration });
+            _notificationService.Notify(new NotificationMessage() { Severity = severity, Summary = summary, Detail = detail, Duration = duration });
 
         public void ThrowTestException()
         {
@@ -200,16 +218,26 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
         public void RefreshClientWithData()
         {
-            if (ActiveClient != null)
+            try
             {
-                ClientViewModel newModel = GetClient.Get(ActiveClient.Id);
-
-                if (ActiveClientWithData.SelectedCase != null)
+                if (ActiveClient != null)
                 {
-                    newModel.SelectedCase = newModel.Cases.FirstOrDefault(x => x.Id == ActiveClientWithData.SelectedCase.Id);
-                }
+                    using var scope = _serviceProvider.CreateScope();
+                    var getClient = scope.ServiceProvider.GetRequiredService<GetClient>();
 
-                ActiveClientWithData = newModel;
+                    ClientViewModel newModel = getClient.Get(ActiveClient.Id);
+
+                    if (ActiveClientWithData.SelectedCase != null)
+                    {
+                        newModel.SelectedCase = newModel.Cases.FirstOrDefault(x => x.Id == ActiveClientWithData.SelectedCase.Id);
+                    }
+
+                    ActiveClientWithData = newModel;
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorPage.DisplayMessage(ex);
             }
         }
 
@@ -217,7 +245,10 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         {
             try
             {
-                Clients = GetClients.GetClientsWithoutData(User.Profile, true).Select(x => (ClientViewModel)x).ToList();
+                using var scope = _serviceProvider.CreateScope();
+                var getClients = scope.ServiceProvider.GetRequiredService<GetClients>();
+
+                Clients = getClients.GetClientsWithoutData(User.Profile, true).Select(x => (ClientViewModel)x).ToList();
 
                 ActiveClient = null;
                 ActiveClientWithData = null;

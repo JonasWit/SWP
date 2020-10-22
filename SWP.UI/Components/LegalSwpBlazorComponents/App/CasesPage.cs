@@ -47,7 +47,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
         public void ReloadCase(int id)
         {
-            using var scope = serviceProvider.CreateScope();
+            using var scope = _serviceProvider.CreateScope();
             var getCase = scope.ServiceProvider.GetRequiredService<GetCase>();
 
             var caseEntity = getCase.Get(id);
@@ -62,7 +62,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         {
             try
             {
-                using var scope = serviceProvider.CreateScope();
+                using var scope = _serviceProvider.CreateScope();
                 var createCase = scope.ServiceProvider.GetRequiredService<CreateCase>();
 
                 request.UpdatedBy = App.User.UserName;
@@ -75,7 +75,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             }
             catch (Exception ex)
             {
-                await App.ErrorPage.DisplayMessage(ex);
+                await App.ErrorPage.DisplayMessageAsync(ex);
             }
         }
 
@@ -85,7 +85,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         {
             try
             {
-                using var scope = serviceProvider.CreateScope();
+                using var scope = _serviceProvider.CreateScope();
                 var updateCase = scope.ServiceProvider.GetRequiredService<UpdateCase>();
 
                 var result = await updateCase.Update(new UpdateCase.Request
@@ -110,7 +110,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             }
             catch (Exception ex)
             {
-                await App.ErrorPage.DisplayMessage(ex);
+                await App.ErrorPage.DisplayMessageAsync(ex);
             }
         }
 
@@ -126,7 +126,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         {
             try
             {
-                using var scope = serviceProvider.CreateScope();
+                using var scope = _serviceProvider.CreateScope();
                 var deleteCase = scope.ServiceProvider.GetRequiredService<DeleteCase>();
 
                 await deleteCase.Delete(c.Id);
@@ -138,7 +138,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             }
             catch (Exception ex)
             {
-                await App.ErrorPage.DisplayMessage(ex);
+                await App.ErrorPage.DisplayMessageAsync(ex);
             }
         }
 
@@ -176,7 +176,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         {
             try
             {
-                using var scope = serviceProvider.CreateScope();
+                using var scope = _serviceProvider.CreateScope();
                 var createNote = scope.ServiceProvider.GetRequiredService<CreateNote>();
 
                 request.UpdatedBy = App.User.UserName;
@@ -189,7 +189,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             }
             catch (Exception ex)
             {
-                await App.ErrorPage.DisplayMessage(ex);
+                await App.ErrorPage.DisplayMessageAsync(ex);
             }
         }
 
@@ -199,7 +199,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         {
             try
             {
-                using var scope = serviceProvider.CreateScope();
+                using var scope = _serviceProvider.CreateScope();
                 var updateNote = scope.ServiceProvider.GetRequiredService<UpdateNote>();
 
                 var result = await updateNote.Update(new UpdateNote.Request
@@ -217,7 +217,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             }
             catch (Exception ex)
             {
-                await App.ErrorPage.DisplayMessage(ex);
+                await App.ErrorPage.DisplayMessageAsync(ex);
             }
         }
 
@@ -233,7 +233,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         {
             try
             {
-                using var scope = serviceProvider.CreateScope();
+                using var scope = _serviceProvider.CreateScope();
                 var deleteNote = scope.ServiceProvider.GetRequiredService<DeleteNote>();
 
                 await deleteNote.Delete(note.Id);
@@ -243,7 +243,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             }
             catch (Exception ex)
             {
-                await App.ErrorPage.DisplayMessage(ex);
+                await App.ErrorPage.DisplayMessageAsync(ex);
             }
         }
 
@@ -255,7 +255,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         {
             try
             {
-                using var scope = serviceProvider.CreateScope();
+                using var scope = _serviceProvider.CreateScope();
                 var createReminder = scope.ServiceProvider.GetRequiredService<CreateReminder>();
 
                 ReminderViewModel result = await _dialogService.OpenAsync<AddReminderPage>("Dodaj Przypomnienie",
@@ -285,7 +285,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             }
             catch (Exception ex)
             {
-                await App.ErrorPage.DisplayMessage(ex);
+                await App.ErrorPage.DisplayMessageAsync(ex);
             }
         }
 
@@ -293,7 +293,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         {
             try
             {
-                using var scope = serviceProvider.CreateScope();
+                using var scope = _serviceProvider.CreateScope();
                 var deleteReminder = scope.ServiceProvider.GetRequiredService<DeleteReminder>();
                 var updateReminder = scope.ServiceProvider.GetRequiredService<UpdateReminder>();
 
@@ -337,7 +337,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             }
             catch (Exception ex)
             {
-                await App.ErrorPage.DisplayMessage(ex);
+                await App.ErrorPage.DisplayMessageAsync(ex);
             }
         }
 
@@ -366,7 +366,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         {
             try
             {
-                using var scope = serviceProvider.CreateScope();
+                using var scope = _serviceProvider.CreateScope();
                 var updateContactPerson = scope.ServiceProvider.GetRequiredService<UpdateContactPerson>();
 
                 var result = await updateContactPerson.UpdateForCase(new UpdateContactPerson.Request
@@ -389,7 +389,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             }
             catch (Exception ex)
             {
-                await App.ErrorPage.DisplayMessage(ex);
+                await App.ErrorPage.DisplayMessageAsync(ex);
             }
         }
 
@@ -405,7 +405,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         {
             try
             {
-                using var scope = serviceProvider.CreateScope();
+                using var scope = _serviceProvider.CreateScope();
                 var deleteContactPerson = scope.ServiceProvider.GetRequiredService<DeleteContactPerson>();
 
                 await deleteContactPerson.DeleteForCase(contact.Id);
@@ -416,7 +416,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             }
             catch (Exception ex)
             {
-                await App.ErrorPage.DisplayMessage(ex);
+                await App.ErrorPage.DisplayMessageAsync(ex);
             }
         }
 
@@ -426,7 +426,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
             try
             {
-                using var scope = serviceProvider.CreateScope();
+                using var scope = _serviceProvider.CreateScope();
                 var createContactPerson = scope.ServiceProvider.GetRequiredService<CreateContactPerson>();
 
                 var result = await createContactPerson.CreateContactPersonForCase(App.ActiveClientWithData.SelectedCase.Id, request);
@@ -438,7 +438,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             }
             catch (Exception ex)
             {
-                await App.ErrorPage.DisplayMessage(ex);
+                await App.ErrorPage.DisplayMessageAsync(ex);
             }
         }
 

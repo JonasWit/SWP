@@ -14,13 +14,11 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
     [UITransientService]
     public class FinancePage : BlazorPageBase
     {
-        private CreateCashMovement CreateCashMovement => serviceProvider.GetService<CreateCashMovement>();
-        private DeleteCashMovement DeleteCashMovement => serviceProvider.GetService<DeleteCashMovement>();
-        private UpdateCashMovement UpdateCashMovement => serviceProvider.GetService<UpdateCashMovement>();
-
         public LegalBlazorApp App { get; private set; }
         public CreateCashMovement.Request NewCashMovement { get; set; } = new CreateCashMovement.Request();
         public int CashMovementDirection { get; set; }
+        public RadzenGrid<CashMovementViewModel> CashMovementGrid { get; set; }
+
         public FinancePage(IServiceProvider serviceProvider) : base(serviceProvider) { }
 
         public override Task Initialize(BlazorAppBase app)
@@ -29,8 +27,6 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             GetDataForMonthFilter();
             return Task.CompletedTask;
         }
-
-        public RadzenGrid<CashMovementViewModel> CashMovementGrid { get; set; }
 
         public void GetDataForMonthFilter()
         {
@@ -63,7 +59,10 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         {
             try
             {
-                var result = await UpdateCashMovement.Update(new UpdateCashMovement.Request
+                using var scope = _serviceProvider.CreateScope();
+                var updateCashMovement = scope.ServiceProvider.GetRequiredService<UpdateCashMovement>();
+
+                var result = await updateCashMovement.Update(new UpdateCashMovement.Request
                 {
                     Id = cash.Id,
                     Amount = cash.Amount,
@@ -85,7 +84,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             }
             catch (Exception ex)
             {
-                await App.ErrorPage.DisplayMessage(ex);
+                await App.ErrorPage.DisplayMessageAsync(ex);
             }
         }
 
@@ -101,7 +100,10 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         {
             try
             {
-                await DeleteCashMovement.Delete(cash.Id);
+                using var scope = _serviceProvider.CreateScope();
+                var deleteCashMovement = scope.ServiceProvider.GetRequiredService<DeleteCashMovement>();
+
+                await deleteCashMovement.Delete(cash.Id);
                 App.ActiveClientWithData.CashMovements.RemoveAll(x => x.Id == cash.Id);
 
                 await CashMovementGrid.Reload();
@@ -110,7 +112,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             }
             catch (Exception ex)
             {
-                await App.ErrorPage.DisplayMessage(ex);
+                await App.ErrorPage.DisplayMessageAsync(ex);
             }
         }
 
@@ -118,9 +120,12 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         {
             try
             {
+                using var scope = _serviceProvider.CreateScope();
+                var createCashMovement = scope.ServiceProvider.GetRequiredService<CreateCashMovement>();
+
                 request.UpdatedBy = App.User.UserName;
 
-                var result = await CreateCashMovement.Create(App.ActiveClient.Id, App.User.Profile, request);
+                var result = await createCashMovement.Create(App.ActiveClient.Id, App.User.Profile, request);
                 NewCashMovement = new CreateCashMovement.Request();
 
                 App.ActiveClientWithData.CashMovements.Add(result);
@@ -130,7 +135,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             }
             catch (Exception ex)
             {
-                await App.ErrorPage.DisplayMessage(ex);
+                await App.ErrorPage.DisplayMessageAsync(ex);
             }
         }
 

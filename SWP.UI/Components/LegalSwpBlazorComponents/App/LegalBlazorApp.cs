@@ -34,6 +34,9 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         public ArchivePage ArchivePage { get; }
         public ClientDetailsPage ClientDetailsPage { get; }
         public string SelectedClientString { get; set; }
+        public ClientViewModel ActiveClientWithData { get; private set; }
+        public Panels ActivePanel { get; private set; } = Panels.MyApp;
+        public List<ClientViewModel> Clients { get; set; } = new List<ClientViewModel>();
 
         public ClientViewModel ActiveClient
         {
@@ -87,8 +90,6 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
                 var getClients = scope.ServiceProvider.GetRequiredService<GetClients>();
                 var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
 
-                WireUpEvents();
-
                 ActiveUserId = activeUserId;
 
                 User.User = await userManager.FindByIdAsync(ActiveUserId);
@@ -100,11 +101,6 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
                 await InitializePages();
             }
-        }
-
-        private void WireUpEvents()
-        {
-
         }
 
         private void FireUpdatesAfterActiveClientChange()
@@ -182,10 +178,6 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             Archive = 8,
             ClientDetails = 9,
         }
-
-        public ClientViewModel ActiveClientWithData { get; private set; }
-        public Panels ActivePanel { get; private set; } = Panels.MyApp;
-        public List<ClientViewModel> Clients { get; set; } = new List<ClientViewModel>();
 
         public void RedirectToCase(int id)
         {

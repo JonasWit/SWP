@@ -17,7 +17,7 @@ namespace SWP.UI.BlazorApp
         private GetLogRecord GetLogRecord => _serviceProvider.GetService<GetLogRecord>();
         private GetLogRecords GetLogRecords => _serviceProvider.GetService<GetLogRecords>();
 
-        public BlazorPageCore(IServiceProvider serviceProvider) => this._serviceProvider = serviceProvider;
+        public BlazorPageCore(IServiceProvider serviceProvider) => _serviceProvider = serviceProvider;
 
         protected Task<LogRecord> CreateLog(string userId, string message, string stack) => 
             CreateLogEntry.Create(new CreateLogRecord.Request

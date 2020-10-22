@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Radzen;
 using SWP.Application.LegalSwp.Clients;
+using SWP.Application.Log;
 using SWP.UI.BlazorApp;
 using SWP.UI.Components.LegalSwpBlazorComponents.Dialogs;
 using SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data;
@@ -86,50 +87,90 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             }
             else
             {
-                using var scope = _serviceProvider.CreateScope();
-                var getClients = scope.ServiceProvider.GetRequiredService<GetClients>();
-                var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+                EnableLoadingState();
 
-                ActiveUserId = activeUserId;
+                try
+                {
+                    using var scope = _serviceProvider.CreateScope();
+                    var getClients = scope.ServiceProvider.GetRequiredService<GetClients>();
+                    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
 
-                User.User = await userManager.FindByIdAsync(ActiveUserId);
-                User.Claims = await userManager.GetClaimsAsync(User.User) as List<Claim>;
-                User.Roles = await userManager.GetRolesAsync(User.User) as List<string>;
-                User.RelatedUsers = await userManager.GetUsersForClaimAsync(User.ProfileClaim);
+                    ActiveUserId = activeUserId;
 
-                Clients = getClients.GetClientsWithoutData(User.Profile)?.Select(x => (ClientViewModel)x).ToList();
+                    User.User = await userManager.FindByIdAsync(ActiveUserId);
+                    User.Claims = await userManager.GetClaimsAsync(User.User) as List<Claim>;
+                    User.Roles = await userManager.GetRolesAsync(User.User) as List<string>;
+                    User.RelatedUsers = await userManager.GetUsersForClaimAsync(User.ProfileClaim);
 
-                await InitializePages();
+                    Clients = getClients.GetClientsWithoutData(User.Profile)?.Select(x => (ClientViewModel)x).ToList();
+
+                    await InitializePages();
+                }
+                catch (Exception ex)
+                {
+                    using var scope = _serviceProvider.CreateScope();
+                    var createLogRecord = scope.ServiceProvider.GetRequiredService<CreateLogRecord>();
+
+                    await createLogRecord.Create(new CreateLogRecord.Request
+                    {
+                        Message = ex.Message,
+                        UserId = ActiveUserId,
+                        StackTrace = ex.StackTrace
+                    });
+                }
+                finally
+                {
+                    DisableLoadingState();
+                }
             }
+        }
+
+        public bool EnableLoadingState()
+        {
+            if (Loading)
+            {
+                return false;
+            }
+
+            Loading = true;
+            ForceRefresh();
+
+            return true;
+        }
+
+        public void DisableLoadingState()
+        {
+            Loading = false;
+            LoadingMessage = "";
+            ForceRefresh();
+        }
+
+        public void SetLoadingMessage(string message)
+        {
+            LoadingMessage = message;
+            ForceRefresh();
         }
 
         private void FireUpdatesAfterActiveClientChange()
         {
-            if (!Loading)
-            {
-                Loading = !Loading;
-            }
-            else
-            {
-                return;
-            }
-
             try
             {
+                SetLoadingMessage("Wczytywanie danych Klienta...");
+
                 using var scope = _serviceProvider.CreateScope();
                 var getClient = scope.ServiceProvider.GetRequiredService<GetClient>();
 
                 ActiveClientWithData = getClient.Get(_activeClient.Id);
+
+                SetLoadingMessage("Ustawianie filtrów...");
+
                 FinancePage.GetDataForMonthFilter();
                 ProductivityPage.GetDataForMonthFilter();
             }
             catch (Exception ex)
             {
+                Loading = false;
                 ErrorPage.DisplayMessage(ex);
-            }
-            finally
-            {
-                Loading = !Loading;
             }
         }
 
@@ -258,6 +299,12 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
         public void ActiveClientChange(object value)
         {
+            if (!EnableLoadingState())
+            {
+                return;
+            }
+
+            SetLoadingMessage("Wybieranie Klienta...");
             if (value != null)
             {
                 ActiveClient = Clients.FirstOrDefault(x => x.Id == int.Parse(value.ToString()));
@@ -274,6 +321,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             }
 
             ActiveClientChanged?.Invoke(this, null);
+            DisableLoadingState();
         }
 
         public void Dispose()

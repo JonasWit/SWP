@@ -14,7 +14,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
         [Inject]
         public LegalBlazorApp App { get; set; }
 
-        public bool initializing = false;
+        private bool initializing = false;
 
         protected override async Task OnInitializedAsync()
         {

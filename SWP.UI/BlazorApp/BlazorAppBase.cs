@@ -11,6 +11,7 @@ namespace SWP.UI.BlazorApp
     {
         public string ActiveUserId { get; set; }
         public bool Loading { get; set; } = false;
+        public string LoadingMessage { get; set; }
         public bool Initialized { get; set; }
 
         public UserModel User { get; set; } = new UserModel();

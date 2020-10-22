@@ -25,7 +25,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         {
             Exception = ex;
             App.SetActivePanel(LegalBlazorApp.Panels.ErrorPage);
-            RefreshApp();
+            App.DisableLoadingState();
             return CreateLog(App.User.UserName, ex.Message, ex.StackTrace);
         }
 
@@ -33,14 +33,14 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         {
             Exception = ex;
             App.SetActivePanel(LegalBlazorApp.Panels.ErrorPage);
-            RefreshApp();
+            App.DisableLoadingState();
             CreateLog(App.User.UserName, ex.Message, ex.StackTrace);
         }
 
         public void DismissMessage()
         {
             App.SetActivePanel(LegalBlazorApp.Panels.MyApp);
-            RefreshApp();
+            App.ForceRefresh();
         }
 
         public Task ThrowTestException()
@@ -54,7 +54,5 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
                 return DisplayMessageAsync(ex);
             }
         }
-
-        public void RefreshApp() => App.ForceRefresh();
     }
 }

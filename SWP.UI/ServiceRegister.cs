@@ -3,6 +3,7 @@ using Radzen;
 using SWP.Application;
 using SWP.DataBase.Managers;
 using SWP.Domain.Infrastructure;
+using SWP.UI.Components.LegalSwpBlazorComponents.App;
 using System.Linq;
 using System.Reflection;
 
@@ -69,6 +70,7 @@ namespace SWP.UI
             @this.AddScoped<DialogService>();
             @this.AddScoped<TooltipService>();
             @this.AddScoped<NotificationService>();
+            @this.AddScoped<LegalBlazorApp>();
 
 
             //@this.AddScoped<ISessionManager, SessionManager>();

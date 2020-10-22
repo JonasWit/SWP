@@ -14,10 +14,10 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
 {
     public partial class LegalSwpMyApp
     {
-        [Parameter]
+        [Inject]
         public LegalBlazorApp App { get; set; }
-        [Parameter]
-        public EventCallback<LegalBlazorApp> AppChanged { get; set; }
+        //[Parameter]
+        //public EventCallback<LegalBlazorApp> AppChanged { get; set; }
         [Inject]
         public TooltipService TooltipService { get; set; }
 

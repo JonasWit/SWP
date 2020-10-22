@@ -10,10 +10,10 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
 {
     public partial class LegalSwpClientJobs
     {
-        [Parameter]
+        [Inject]
         public LegalBlazorApp App { get; set; }
-        [Parameter]
-        public EventCallback<LegalBlazorApp> AppChanged { get; set; }
+        //[Parameter]
+        //public EventCallback<LegalBlazorApp> AppChanged { get; set; }
 
         public string ArchvizedJobsFilterValue;
 

@@ -9,10 +9,10 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
 {
     public partial class LegalSwpClients
     {
-        [Parameter]
+        [Inject]
         public LegalBlazorApp App { get; set; }
-        [Parameter]
-        public EventCallback<LegalBlazorApp> AppChanged { get; set; }
+        //[Parameter]
+        //public EventCallback<LegalBlazorApp> AppChanged { get; set; }
 
         public bool addClientformVisible = false;
         public void ShowHideClientFormI() => addClientformVisible = !addClientformVisible;

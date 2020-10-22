@@ -9,10 +9,10 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
 {
     public partial class LegalSwpCases
     {
-        [Parameter]
+        [Inject]
         public LegalBlazorApp App { get; set; }
-        [Parameter]
-        public EventCallback<LegalBlazorApp> AppChanged { get; set; }
+        //[Parameter]
+        //public EventCallback<LegalBlazorApp> AppChanged { get; set; }
 
 
         public bool showFirstSection = false;

@@ -9,10 +9,10 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
 {
     public partial class LegalSwpClientDetails
     {
-        [Parameter]
+        [Inject]
         public LegalBlazorApp App { get; set; }
-        [Parameter]
-        public EventCallback<LegalBlazorApp> AppChanged { get; set; }
+        //[Parameter]
+        //public EventCallback<LegalBlazorApp> AppChanged { get; set; }
 
         public bool contactsListInfoVisible = false;
         public void ShowHideContactsI() => contactsListInfoVisible = !contactsListInfoVisible;

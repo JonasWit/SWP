@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 {
-    [UITransientService]
+    //[UITransientService]
     public class LegalBlazorApp : BlazorAppBase, IDisposable
     {
         private readonly IServiceProvider _serviceProvider;

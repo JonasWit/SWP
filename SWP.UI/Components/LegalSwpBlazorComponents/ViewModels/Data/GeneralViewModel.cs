@@ -24,6 +24,9 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data
         public const string Week = "Tydzień";
         public const string Month = "Miesiąc";
 
+        public const string Marzenka = "moja klasa1";
+
+
         public const string DateFormant = "dd/MM/yy HH:mm";
         public const int NotificationDuration = 4000;
 

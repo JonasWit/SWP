@@ -27,5 +27,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
         public bool infoBoxVisibleII = false;
         public void ShowHideInfoBoxII() => infoBoxVisibleII = !infoBoxVisibleII;
 
+        public bool infoBoxVisibleIII = false;
+        public void ShowHideInfoBoxIII() => infoBoxVisibleIII = !infoBoxVisibleIII;
     }
 }

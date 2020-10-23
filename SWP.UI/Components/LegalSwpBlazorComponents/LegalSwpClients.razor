@@ -7,7 +7,7 @@
         <div class="row-section">
             <RadzenTemplateForm Data="@App.ClientsPage.NewClient" Submit="@(async (CreateClient.Request args) => { await App.ClientsPage.SubmitNewClient(args); })">
                 <RadzenFieldset Text="Nowy Klient">
-                    <div class="form">
+                    <div class="help-box">
                         <i class="user-icon"><img src="/Images/icons8-reception-36.png" /></i>
                         @if (addClientformVisible)
                         {
@@ -19,36 +19,35 @@
                         <button class="info" @onclick="ShowHideClientFormI"></button>
                     </div>
                     <div class="form ">
-                        <div class="label">
-                            <RadzenLabel Text="Nazwa" Style="font-size: 14px; font-weight:bold" />
-                        </div>
                         <div class="text">
+                            <div class="label">
+                                <RadzenLabel Text="Nazwa" Style="font-size: 14px; font-weight:bold" />
+                            </div>
                             <RadzenTextArea Placeholder="Nazwa..." @bind-Value="App.ClientsPage.NewClient.Name" style="width: 100%;" Name="Nazwa" />
-                            <RadzenRequiredValidator Component="Nazwa" Text="Nazwa nie może być pusto!" tyle="width: 100%;" />
+                            <RadzenRequiredValidator Component="Nazwa" Text="Nazwa nie może być pusto!" style="width: 100%;" />
                             <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Nazwa" Style="position: absolute" />
                         </div>
-                        <div class="label">
-                            <RadzenLabel Text="Adres" Style="font-size: 14px; font-weight:bold" />
-                        </div>
                         <div class="text">
+                            <div class="label">
+                                <RadzenLabel Text="Adres" Style="font-size: 14px; font-weight:bold" />
+                            </div>
                             <RadzenTextArea Placeholder="Adres..." @bind-Value="App.ClientsPage.NewClient.Address" style="width: 100%;" Name="Address" />
                             <RadzenLengthValidator Max="200" Text="Maksymalnie 200 znaków!" Component="Address" Style="position: absolute" />
                         </div>
-
                     </div>
                     <div class="form ">
-                        <div class="label">
-                            <RadzenLabel Text="Telefon" Style="font-size: 14px; font-weight:bold" />
-                        </div>
+
                         <div class="text">
+                            <div class="label">
+                                <RadzenLabel Text="Telefon" Style="font-size: 14px; font-weight:bold" />
+                            </div>
                             <RadzenTextBox Placeholder="Telefon..." @bind-Value="App.ClientsPage.NewClient.PhoneNumber" style="width: 100%;" Name="PhoneNumber" />
                             <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="PhoneNumber" Style="position: absolute" />
                         </div>
-
-                        <div class="label">
-                            <RadzenLabel Text="Email" Style="font-size: 14px; font-weight:bold" />
-                        </div>
                         <div class="text">
+                            <div class="label">
+                                <RadzenLabel Text="Email" Style="font-size: 14px; font-weight:bold" />
+                            </div>
                             <RadzenTextBox Placeholder="Adres Email..." @bind-Value="App.ClientsPage.NewClient.Email" style="width: 100%;" Name="Email" />
                             <RadzenRequiredValidator Component="Email" Text="Adres email nie może być pusty!" />
                             <RadzenEmailValidator Component="Email" Text="Nieprawidłowy adres Email!" />
@@ -71,7 +70,7 @@
     @if (showClientListVisible)
     {
         <div class="row-section second">
-            <div class="form">
+            <div class="help-box">
                 <i class="user-icon"><img src="/Images/icons8-reception-36.png" /></i>
 
                 @if (clientListInfoVisible)
@@ -150,18 +149,14 @@
 
         @if (App.ClientsPage.SelectedClient != null)
         {
-            <div class="contact-details">
-                <div>
-                    <div class="text"><strong>Nazwa:</strong> @App.ClientsPage.SelectedClient.Name</div>
-                    <div class="text"><strong>Adres:</strong> @App.ClientsPage.SelectedClient.Address</div>
-                    <div class="text"><strong>Telefon:</strong> @App.ClientsPage.SelectedClient.PhoneNumber</div>
-                    <div class="text"><strong>Email:</strong> @App.ClientsPage.SelectedClient.Email</div>
-                </div>
-                <div>
-                    <div class="text"><strong>Zmienione przez:</strong> @App.ClientsPage.SelectedClient.UpdatedBy</div>
-                    <div class="text"><strong>Data zmiany:</strong> @App.ClientsPage.SelectedClient.Updated</div>
-                    <div class="text"><strong>Data utworzenia:</strong> @App.ClientsPage.SelectedClient.Created</div>
-                </div>
+            <div class="details">
+                <p><strong>Nazwa:</strong> @App.ClientsPage.SelectedClient.Name</p>
+                <p><strong>Adres:</strong> @App.ClientsPage.SelectedClient.Address</p>
+                <p><strong>Telefon:</strong> @App.ClientsPage.SelectedClient.PhoneNumber</p>
+                <p><strong>Email:</strong> @App.ClientsPage.SelectedClient.Email</p>
+                <p><strong>Zmienione przez:</strong> @App.ClientsPage.SelectedClient.UpdatedBy</p>
+                <p><strong>Data zmiany:</strong> @App.ClientsPage.SelectedClient.Updated</p>
+                <p><strong>Data utworzenia:</strong> @App.ClientsPage.SelectedClient.Created</p>
             </div>
         }
     }

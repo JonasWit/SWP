@@ -1,429 +1,440 @@
-﻿<div class="flex-container-main">
+﻿
+<div class="flex-container-main">
     <div class="show-hide tab-section"><button class="show-hide-btn show-hide-btn-1 @(showFirstSection ? "button-active" : "")" @onclick="ShowHideFirstSection"><span>Dodaj Sprawę</span></button></div>
     @if (showFirstSection)
     {
         <div class="row-section">
-            <div class="form">
-                <i class="user-icon"><img src="/Images/icons8-reception-36.png" /></i>
 
-                @if (infoBoxVisibleI)
-                {
-                    <div class="info-text">
-                        <p>Zarządzaj listą swoich klientów. Użyj guzika "Dodaj Nowego Klienta",aby uzupełnić listę kontaktów.</p>
-                        <p>Edytuj oraz usuwaj Klientów z głównej listy. Tekst do zupełnienia.</p>
-                    </div>
-                }
-                <button class="info" @onclick="ShowHideInfoBoxI"></button>
-            </div>
             <RadzenTemplateForm Data="@App.CasesPage.NewCase" Submit="@(async (CreateCase.Request args) => { await App.CasesPage.CreateNewCase(args); })">
-                <div>
-                    <RadzenFieldset Text="Nowa Sprawa">
-                        <div class="form">
+
+                <RadzenFieldset Text="Nowa Sprawa">
+                    <div class="help-box">
+                        <i class="user-icon"><img src="/Images/icons8-reception-36.png" /></i>
+
+                        @if (infoBoxVisibleI)
+                        {
+                            <div class="info-text">
+                                <p>Zarządzaj listą swoich klientów. Użyj guzika "Dodaj Nowego Klienta",aby uzupełnić listę kontaktów.</p>
+                                <p>Edytuj oraz usuwaj Klientów z głównej listy. Tekst do zupełnienia.</p>
+                            </div>
+                        }
+                        <button class="info" @onclick="ShowHideInfoBoxI"></button>
+                    </div>
+                    <div class="form">
+
+                        <div class="text">
                             <div class="label">
                                 <RadzenLabel Text="Nazwa" />
                             </div>
-                            <div class="text">
-                                <RadzenTextBox Placeholder="Nazwa Srawy..." @bind-Value="App.CasesPage.NewCase.Name" Name="Name" style="width: 100%;" />
-                                <RadzenRequiredValidator Component="Name" Text="Name cannot be empty!" Popup="true" />
-                                <RadzenLengthValidator Max="50" Text="Max 50 characters!" Component="Name" />
-                            </div>
+                            <RadzenTextBox Placeholder="Nazwa Srawy..." @bind-Value="App.CasesPage.NewCase.Name" Name="Name" style="width: 100%;" />
+                            <RadzenRequiredValidator Component="Name" Text="Name cannot be empty!" />
+                            <RadzenLengthValidator Max="50" Text="Max 50 characters!" Component="Name" />
+                        </div>
 
+                        <div class="text">
                             <div class="label">
                                 <RadzenLabel Text="Sygnatura" />
                             </div>
-                            <div class="text">
-                                <RadzenTextBox Placeholder="Sygnatura..." @bind-Value="App.CasesPage.NewCase.Signature" Name="Signature" style="width: 100%;" />
-                            </div>
+                            <RadzenTextBox Placeholder="Sygnatura..." @bind-Value="App.CasesPage.NewCase.Signature" Name="Signature" style="width: 100%;" />
                         </div>
-                        <div class="form">
+                    </div>
+                    <div class="form">
+
+                        <div class="text">
                             <div class="label">
                                 <RadzenLabel Text="Opis" />
                             </div>
-                            <div class="text">
-                                <RadzenTextArea Placeholder="Opis..." @bind-Value="App.CasesPage.NewCase.Description" Name="Description" style="width: 100%;" />
-                                <RadzenLengthValidator Max="500" Text="Max 500 characters!" Component="Description" />
-                            </div>
-
+                            <RadzenTextArea Placeholder="Opis..." @bind-Value="App.CasesPage.NewCase.Description" Name="Description" style="width: 100%;" />
+                            <RadzenLengthValidator Max="500" Text="Max 500 characters!" Component="Description" />
+                        </div>
+                        <div class="text">
                             <div class="label">
                                 <RadzenLabel Text="Typ Sprawy" />
                             </div>
-                            <div class="text">
-                                <RadzenTextArea Placeholder="Typ Sprawy..." @bind-Value="App.CasesPage.NewCase.CaseType" Name="CaseType" style="width: 100%;" />
+                            <RadzenTextArea Placeholder="Typ Sprawy..." @bind-Value="App.CasesPage.NewCase.CaseType" Name="CaseType" style="width: 100%;" />
+                        </div>
+                    </div>
+                    <div class="form-btn">
+                        <div class="btn-add">
+                            <div>
+                                <RadzenButton ButtonType="ButtonType.Submit" Icon="save" Text="Zapisz" ButtonStyle="ButtonStyle.Secondary" />
                             </div>
                         </div>
-                        <div class="form-btn">
-                            <div class="btn-add">
-                                <div>
-                                    <RadzenButton ButtonType="ButtonType.Submit" Icon="save" Text="Zapisz" ButtonStyle="ButtonStyle.Secondary" />
-                                </div>
-                            </div>
-                        </div>
-                    </RadzenFieldset>
-                </div>
+                    </div>
+                </RadzenFieldset>
+
             </RadzenTemplateForm>
         </div>
     }
     <div class="show-hide tab-section"><button class="show-hide-btn show-hide-btn-1 @(showSecondSection ? "button-active" : "")" @onclick="ShowHideSecondSection"><span>Lista Spraw</span></button></div>
     @if (showSecondSection)
     {
+        <div class="row-section second">
+            <div class="help-box">
+                <i class="user-icon"><img src="/Images/icons8-reception-36.png" /></i>
+
+                @if (infoBoxVisibleII)
+                {
+                    <div class="info-text">
+                        <p>Zarządzaj listą swoich klientów. Użyj guzika "Dodaj Nowego Klienta",aby uzupełnić listę kontaktów.</p>
+                        <p>Edytuj oraz usuwaj Klientów z głównej listy. Tekst do zupełnienia.</p>
+                    </div>
+                }
+                <button class="info" @onclick="ShowHideInfoBoxII"></button>
+            </div>
+            <div class="row-section">
+                <RadzenGrid @ref="App.CasesPage.CasesGrid" AllowFiltering="true" AllowPaging="true" PageSize="5" AllowSorting="true"
+                            Data="@App.ActiveClientWithData.Cases" TItem="CaseViewModel" RowUpdate="@App.CasesPage.OnUpdateCaseRow" RowSelect="@(args => App.CasesPage.ActiveCaseChange(args))">
+                    <Columns>
+                        <RadzenGridColumn TItem="CaseViewModel" Property="Name" Title="Nazwa Sprawy">
+                            <EditTemplate Context="cs">
+                                <RadzenTextBox @bind-Value="cs.Name" Style="width:100%; display: block" Name="CaseName" />
+                                <RadzenRequiredValidator Text="Nazwa nie może być pusta!" Component="CaseName" Popup="true" />
+                                <RadzenLengthValidator Max="50" Text="Max 50 characters!" Component="CaseName" Popup="true" />
+                            </EditTemplate>
+                        </RadzenGridColumn>
+                        <RadzenGridColumn TItem="CaseViewModel" Property="Signature" Title="Sygnatura">
+                            <EditTemplate Context="cs">
+                                <RadzenTextBox @bind-Value="cs.Signature" Style="width:100%; display: block" Name="Sygnatura" />
+                            </EditTemplate>
+                        </RadzenGridColumn>
+                        <RadzenGridColumn TItem="CaseViewModel" Property="CaseType" Title="Typ Sprawy">
+                            <EditTemplate Context="cs">
+                                <RadzenTextBox @bind-Value="cs.CaseType" Style="width:100%; display: block" Name="Typ sprawy" />
+                            </EditTemplate>
+                        </RadzenGridColumn>
+                        <RadzenGridColumn TItem="CaseViewModel" Property="Description" Title="Opis">
+                            <EditTemplate Context="cs">
+                                <Radzen.Blazor.RadzenTextArea @bind-Value="cs.Description" Style="width:100%; display: block" Name="Description" />
+                                <RadzenLengthValidator Max="500" Text="Maksymalnie 500 znaków!" Component="Description" Popup="true" />
+                            </EditTemplate>
+                        </RadzenGridColumn>
+
+                        <RadzenGridColumn TItem="CaseViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="100px">
+                            <Template Context="cs">
+                                <RadzenButton Icon="edit" Size="ButtonSize.Medium" Click="@((args) => App.CasesPage.EditCaseRow(cs))">
+                                </RadzenButton>
+                            </Template>
+                            <EditTemplate Context="cs">
+                                <RadzenButton Icon="save" Size="ButtonSize.Medium" Click="@((args) => App.CasesPage.SaveCaseRow(cs))">
+                                </RadzenButton>
+                                <RadzenButton Icon="cancel" Size="ButtonSize.Medium" ButtonStyle="ButtonStyle.Success" Click="@((args) => App.CasesPage.CancelEditCaseRow(cs))">
+                                </RadzenButton>
+                            </EditTemplate>
+                        </RadzenGridColumn>
+                        <RadzenGridColumn TItem="CaseViewModel" Context="order" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="50px">
+                            <Template Context="cs">
+                                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Medium" Click="@(async (args) => await App.CasesPage.DeleteCaseRow(cs))">
+                                </RadzenButton>
+                            </Template>
+                            <EditTemplate Context="cs">
+                            </EditTemplate>
+                        </RadzenGridColumn>
+
+                    </Columns>
+                </RadzenGrid>
+            </div>
+        </div>
+
+        @if (App.ActiveClientWithData.SelectedCase != null)
         {
-            <div class="row-section second">
-                <div class="form">
-                    <i class="user-icon"><img src="/Images/icons8-reception-36.png" /></i>
-
-                    @if (infoBoxVisibleII)
-                    {
-                        <div class="info-text">
-                            <p>Zarządzaj listą swoich klientów. Użyj guzika "Dodaj Nowego Klienta",aby uzupełnić listę kontaktów.</p>
-                            <p>Edytuj oraz usuwaj Klientów z głównej listy. Tekst do zupełnienia.</p>
-                        </div>
-                    }
-                    <button class="info" @onclick="ShowHideInfoBoxII"></button>
-                </div>
-                <div class="row-section">
-                    <RadzenGrid @ref="App.CasesPage.CasesGrid" AllowFiltering="true" AllowPaging="true" PageSize="5" AllowSorting="true"
-                                Data="@App.ActiveClientWithData.Cases" TItem="CaseViewModel" RowUpdate="@App.CasesPage.OnUpdateCaseRow" RowSelect="@(args => App.CasesPage.ActiveCaseChange(args))">
-                        <Columns>
-                            <RadzenGridColumn TItem="CaseViewModel" Property="Name" Title="Nazwa Sprawy">
-                                <EditTemplate Context="cs">
-                                    <RadzenTextBox @bind-Value="cs.Name" Style="width:100%; display: block" Name="CaseName" />
-                                    <RadzenRequiredValidator Text="Nazwa nie może być pusta!" Component="CaseName" Popup="true" />
-                                    <RadzenLengthValidator Max="50" Text="Max 50 characters!" Component="CaseName" Popup="true" />
-                                </EditTemplate>
-                            </RadzenGridColumn>
-                            <RadzenGridColumn TItem="CaseViewModel" Property="Signature" Title="Sygnatura">
-                                <EditTemplate Context="cs">
-                                    <RadzenTextBox @bind-Value="cs.Signature" Style="width:100%; display: block" Name="Sygnatura" />
-                                </EditTemplate>
-                            </RadzenGridColumn>
-                            <RadzenGridColumn TItem="CaseViewModel" Property="CaseType" Title="Typ Sprawy">
-                                <EditTemplate Context="cs">
-                                    <RadzenTextBox @bind-Value="cs.CaseType" Style="width:100%; display: block" Name="Typ sprawy" />
-                                </EditTemplate>
-                            </RadzenGridColumn>
-                            <RadzenGridColumn TItem="CaseViewModel" Property="Description" Title="Opis">
-                                <EditTemplate Context="cs">
-                                    <Radzen.Blazor.RadzenTextArea @bind-Value="cs.Description" Style="width:100%; display: block" Name="Description" />
-                                    <RadzenLengthValidator Max="500" Text="Maksymalnie 500 znaków!" Component="Description" Popup="true" />
-                                </EditTemplate>
-                            </RadzenGridColumn>
-
-                            <RadzenGridColumn TItem="CaseViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="100px">
-                                <Template Context="cs">
-                                    <RadzenButton Icon="edit" Size="ButtonSize.Medium" Click="@((args) => App.CasesPage.EditCaseRow(cs))">
-                                    </RadzenButton>
-                                </Template>
-                                <EditTemplate Context="cs">
-                                    <RadzenButton Icon="save" Size="ButtonSize.Medium" Click="@((args) => App.CasesPage.SaveCaseRow(cs))">
-                                    </RadzenButton>
-                                    <RadzenButton Icon="cancel" Size="ButtonSize.Medium" ButtonStyle="ButtonStyle.Success" Click="@((args) => App.CasesPage.CancelEditCaseRow(cs))">
-                                    </RadzenButton>
-                                </EditTemplate>
-                            </RadzenGridColumn>
-                            <RadzenGridColumn TItem="CaseViewModel" Context="order" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="50px">
-                                <Template Context="cs">
-                                    <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Medium" Click="@(async (args) => await App.CasesPage.DeleteCaseRow(cs))">
-                                    </RadzenButton>
-                                </Template>
-                                <EditTemplate Context="cs">
-                                </EditTemplate>
-                            </RadzenGridColumn>
-
-                        </Columns>
-                    </RadzenGrid>
-                </div>
+            <div class="details">
+                <p><strong>Nazwa:</strong> @App.ActiveClientWithData.SelectedCase.Name</p>
+                <p><strong>Sygnatura:</strong> @App.ActiveClientWithData.SelectedCase.Signature</p>
+                <p><strong>Data utworzenia:</strong> @App.ActiveClientWithData.SelectedCase.Created</p>
+                <p><strong>Typ Sprawy:</strong> @App.ActiveClientWithData.SelectedCase.CaseType</p>
+                <p><strong>Opis:</strong> @App.ActiveClientWithData.SelectedCase.Description</p>
+                <p><strong>Data zmiany:</strong> @App.ActiveClientWithData.SelectedCase.Updated</p>
             </div>
 
-            @if (App.ActiveClientWithData.SelectedCase != null)
-            {
-                <div class="contact-details">
-                    <div>
-                        <div class="text"><strong>Nazwa:</strong> @App.ActiveClientWithData.SelectedCase.Name</div>
-                        <div class="text"><strong>Sygnatura:</strong> @App.ActiveClientWithData.SelectedCase.Signature</div>
-                        <div class="text"><strong>Data utworzenia:</strong> @App.ActiveClientWithData.SelectedCase.Created</div>
-                    </div>
-                    <div>
-                        <div class="text"><strong>Typ Sprawy:</strong> @App.ActiveClientWithData.SelectedCase.CaseType</div>
-                        <div class="text"><strong>Opis:</strong> @App.ActiveClientWithData.SelectedCase.Description</div>
-                        <div class="text"><strong>Data zmiany:</strong> @App.ActiveClientWithData.SelectedCase.Updated</div>
+            @*<h3>Aktywna sprawa - @App.ActiveClientWithData.SelectedCase.Name</h3>*@
 
-                    </div>
-                </div>
+            <div class="row-section">
+                <RadzenTabs>
+                    <Tabs>
+                        <div class="calendar">
+                            <RadzenTabsItem Text="Kalendarz Sprawy">
+                                <RadzenScheduler @ref="App.CasesPage.CasesScheduler" style="height: 768px;"
+                                                 TItem="ReminderViewModel"
+                                                 Data="@App.ActiveClientWithData.SelectedCase.Reminders"
+                                                 StartProperty="Start"
+                                                 EndProperty="End"
+                                                 TextProperty="DisplayTextShort"
+                                                 SelectedIndex="2"
+                                                 SlotSelect="@App.CasesPage.OnSlotSelect"
+                                                 AppointmentSelect="@App.CasesPage.OnAppointmentSelect"
+                                                 AppointmentRender="@App.CasesPage.OnAppointmentRender"
+                                                 TodayText="Dzisiaj">
+                                    <ChildContent>
+                                        <RadzenDayView Text="Dzień" StartTime="@(new TimeSpan(0, 0, 0))" EndTime="@(new TimeSpan(24, 0, 0))" />
+                                        <RadzenWeekView Text="Tydzień" StartTime="@(new TimeSpan(0, 0, 0))" EndTime="@(new TimeSpan(24, 0, 0))" />
+                                        <RadzenMonthView Text="Miesiąc" />
+                                    </ChildContent>
+                                </RadzenScheduler>
+                            </RadzenTabsItem>
+                        </div>
+                        <div>
+                            <RadzenTabsItem Text="Notatki">
+                                <div>
+                                    <RadzenTemplateForm Data="@App.CasesPage.NewNote" Submit="@(async (CreateNote.Request args) => { await App.CasesPage.CreateNewNote(args); })">
 
-                @*<h3>Aktywna sprawa - @App.ActiveClientWithData.SelectedCase.Name</h3>*@
-
-                <div class="row-section">
-                    <RadzenTabs>
-                        <Tabs>
-                            <div>
-                                <RadzenTabsItem Text="Kalendarz Sprawy">
-                                    <RadzenScheduler @ref="App.CasesPage.CasesScheduler" style="height: 768px;"
-                                                     TItem="ReminderViewModel"
-                                                     Data="@App.ActiveClientWithData.SelectedCase.Reminders"
-                                                     StartProperty="Start"
-                                                     EndProperty="End"
-                                                     TextProperty="DisplayTextShort"
-                                                     SelectedIndex="2"
-                                                     SlotSelect="@App.CasesPage.OnSlotSelect"
-                                                     AppointmentSelect="@App.CasesPage.OnAppointmentSelect"
-                                                     AppointmentRender="@App.CasesPage.OnAppointmentRender"
-                                                     TodayText="Dzisiaj">
-                                        <ChildContent>
-                                            <RadzenDayView Text="Dzień" StartTime="@(new TimeSpan(0, 0, 0))" EndTime="@(new TimeSpan(24, 0, 0))" />
-                                            <RadzenWeekView Text="Tydzień" StartTime="@(new TimeSpan(0, 0, 0))" EndTime="@(new TimeSpan(24, 0, 0))" />
-                                            <RadzenMonthView Text="Miesiąc" />
-                                        </ChildContent>
-                                    </RadzenScheduler>
-                                </RadzenTabsItem>
-                            </div>
-                            <div>
-                                <RadzenTabsItem Text="Notatki">
-                                    <div>
-                                        <RadzenTemplateForm Data="@App.CasesPage.NewNote" Submit="@(async (CreateNote.Request args) => { await App.CasesPage.CreateNewNote(args); })">
-
-                                            <RadzenFieldset Text="Dodaj notatkę">
-                                                <div class="form">
+                                        <RadzenFieldset Text="Dodaj notatkę">
+                                            <div class="form">
+                                                <div class="text">
                                                     <div class="label">
                                                         <RadzenLabel Text="Tytuł" />
                                                     </div>
-                                                    <div class="text">
-                                                        <RadzenTextBox Placeholder="Tytuł..." Style="margin-bottom: 30px; width: 100%;" @bind-Value="App.CasesPage.NewNote.Name" Name="Name" />
-                                                        <RadzenRequiredValidator Component="Name" Text="Name cannot be empty!" Popup="true" />
-                                                        <RadzenLengthValidator Max="50" Text="Max 50 characters!" Component="Name" Popup="true" />
-                                                    </div>
+                                                    <RadzenTextBox Placeholder="Tytuł..." Style="margin-bottom: 30px; width: 100%;" @bind-Value="App.CasesPage.NewNote.Name" Name="Name" />
+                                                    <RadzenRequiredValidator Component="Name" Text="Name cannot be empty!" Popup="true" />
+                                                    <RadzenLengthValidator Max="50" Text="Max 50 characters!" Component="Name" />
+                                                </div>
+                                                <div class="text">
                                                     <div class="label">
                                                         <RadzenLabel Text="Notatka" />
                                                     </div>
-
-                                                    <div class="text">
-                                                        <RadzenTextArea Placeholder="Message..." Style="margin-bottom: 30px; width: 100%;" @bind-Value="App.CasesPage.NewNote.Message" Name="Message" />
-                                                        <RadzenLengthValidator Max="500" Text="Max 500 characters!" Component="Message" Popup="true" />
-                                                    </div>
-
+                                                    <RadzenTextArea Placeholder="Message..." Style="margin-bottom: 30px; width: 100%;" @bind-Value="App.CasesPage.NewNote.Message" Name="Message" />
+                                                    <RadzenLengthValidator Max="500" Text="Max 500 characters!" Component="Message" Popup="true" />
                                                 </div>
-                                                <div class="form-btn">
-                                                    <div class="btn-add">
-                                                        <div>
-                                                            <RadzenButton ButtonType="ButtonType.Submit" Icon="save" Text="Zapisz" ButtonStyle="ButtonStyle.Secondary" />
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </RadzenFieldset>
-                                        </RadzenTemplateForm>
-                                    </div>
-                                    <div>
-                                        <div>
-                                            <RadzenGrid @ref="App.CasesPage.NotesGrid" AllowFiltering="true" AllowPaging="true" PageSize="10" AllowSorting="true" RowSelect="@(args => App.CasesPage.ActiveNoteChange(args))"
-                                                        Data="@App.ActiveClientWithData.SelectedCase.Notes" TItem="NoteViewModel" RowUpdate="@App.CasesPage.OnUpdateNoteRow">
-                                                <Columns>
-                                                    <RadzenGridColumn TItem="NoteViewModel" Property="Name" Title="Nazwa">
-                                                        <EditTemplate Context="note">
-                                                            <RadzenTextBox @bind-Value="note.Name" Style="width:100%; display: block" Name="Name" />
-                                                            <RadzenRequiredValidator Component="Name" Text="Name cannot be empty!" Popup="true" />
-                                                            <RadzenLengthValidator Max="50" Text="Max 50 characters!" Component="Name" Popup="true" />
-                                                        </EditTemplate>
-                                                    </RadzenGridColumn>
-                                                    <RadzenGridColumn TItem="NoteViewModel" Property="Message" Title="Opis">
-                                                        <EditTemplate Context="note">
-                                                            <RadzenTextArea @bind-Value="note.Message" Style="width:100%; display: block" Name="Message" />
-                                                            <RadzenLengthValidator Max="500" Text="Max 500 characters!" Component="Message" Popup="true" />
-                                                        </EditTemplate>
-                                                    </RadzenGridColumn>
 
-                                                    <RadzenGridColumn TItem="NoteViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="100px">
-                                                        <Template Context="note">
-                                                            <RadzenButton Icon="edit" Size="ButtonSize.Medium" Click="@((args) => App.CasesPage.EditNoteRow(note))">
-                                                            </RadzenButton>
-                                                        </Template>
-                                                        <EditTemplate Context="note">
-                                                            <RadzenButton Icon="save" Size="ButtonSize.Medium" Click="@((args) => App.CasesPage.SaveNoteRow(note))">
-                                                            </RadzenButton>
-                                                            <RadzenButton Icon="cancel" Size="ButtonSize.Medium" ButtonStyle="ButtonStyle.Success" Click="@((args) => App.CasesPage.CancelEditNoteRow(note))">
-                                                            </RadzenButton>
-                                                        </EditTemplate>
-                                                    </RadzenGridColumn>
-                                                    <RadzenGridColumn TItem="NoteViewModel" Context="order" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="50px">
-                                                        <Template Context="note">
-                                                            <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Medium" Click="@(async (args) => await App.CasesPage.DeleteNoteRow (note))">
-                                                            </RadzenButton>
-                                                        </Template>
-                                                        <EditTemplate Context="note">
-                                                        </EditTemplate>
-                                                    </RadzenGridColumn>
-                                                </Columns>
-                                            </RadzenGrid>
-                                        </div>
-
-                                        @if (App.ActiveClientWithData.SelectedCase != null && App.ActiveClientWithData.SelectedCase.SelectedNote != null)
-                                        {
-                                            <div class="contact-details">
-                                                <div>
-                                                    <div class="text"><strong>Tytuł: </strong>@App.ActiveClientWithData.SelectedCase.SelectedNote.Name</div>
-                                                </div>
-                                                <div>
-                                                    <div class="text"><strong>Treść: </strong>@App.ActiveClientWithData.SelectedCase.SelectedNote.Message</div>
-                                                </div>
                                             </div>
-                                        }
-
-                                    </div>
-                                </RadzenTabsItem>
-                            </div>
-                            <div>
-                                <RadzenTabsItem Text="Osoby Kontaktowe">
-                                    <RadzenTemplateForm Data="@App.CasesPage.NewContact" Submit="@(async (CreateContactPerson.Request args) => { await App.CasesPage.SubmitNewContact(args); })">
-                                        <RadzenFieldset Text="Osoba Kontaktowa">
-                                            <div class="input-container">
-                                                <label>
-                                                    <RadzenLabel Text="Imię" />
-                                                </label>
-                                                <div>
-                                                    <RadzenTextArea Placeholder="Imię..." @bind-Value="App.CasesPage.NewContact.Name" Name="Name" />
-                                                    <RadzenRequiredValidator Component="Name" Text="Name cannot be empty!" />
-                                                    <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Name" />
-                                                </div>
-
-                                                <label>
-                                                    <RadzenLabel Text="Nazwisko" />
-                                                </label>
-                                                <div>
-                                                    <RadzenTextArea Placeholder="Nazwisko..." @bind-Value="App.CasesPage.NewContact.Surname" Name="Surname" />
-                                                    <RadzenRequiredValidator Component="Surname" Text="Name cannot be empty!" />
-                                                    <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Surname" />
-                                                </div>
-
-                                                <label>
-                                                    <RadzenLabel Text="Adres" />
-                                                </label>
-                                                <div>
-                                                    <RadzenTextArea Placeholder="Adres..." @bind-Value="App.CasesPage.NewContact.Address" Name="Address" />
-                                                    <RadzenLengthValidator Max="500" Text="Maksymalnie 500 znaków!" Component="Address" />
-                                                </div>
-                                                <label>
-                                                    <RadzenLabel Text="Telefon" />
-                                                </label>
-                                                <div>
-                                                    <RadzenTextBox Placeholder="Telefon..." @bind-Value="App.CasesPage.NewContact.PhoneNumber" Name="PhoneNumber1" />
-                                                    <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="PhoneNumber1" />
-                                                </div>
-                                                <label>
-                                                    <RadzenLabel Text="Telefon2" />
-                                                </label>
-                                                <div>
-                                                    <RadzenTextBox Placeholder="Telefon..." @bind-Value="App.CasesPage.NewContact.AlternativePhoneNumber" Name="PhoneNumber2" />
-                                                    <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="PhoneNumber2" />
-                                                </div>
-                                                <label>
-                                                    <RadzenLabel Text="Email" />
-                                                </label><div>
-                                                    <RadzenTextBox Placeholder="Adres Email..." @bind-Value="App.CasesPage.NewContact.Email" Name="Email" />
-                                                    <RadzenEmailValidator Component="Email" Text="Nieprawidłowy adres Email!" />
-                                                    <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Email" />
-                                                </div>
-                                                <div class="form-btn">
-                                                    <div class="btn-add">
-                                                        <div>
-                                                            <RadzenButton ButtonType="ButtonType.Submit" Icon="save" Text="Dodaj Kontakt" ButtonStyle="ButtonStyle.Secondary" />
-                                                        </div>
+                                            <div class="form-btn">
+                                                <div class="btn-add">
+                                                    <div>
+                                                        <RadzenButton ButtonType="ButtonType.Submit" Icon="save" Text="Zapisz" ButtonStyle="ButtonStyle.Secondary" />
                                                     </div>
                                                 </div>
                                             </div>
                                         </RadzenFieldset>
                                     </RadzenTemplateForm>
+                                </div>
+                                <div>
+                                    <div>
+                                        <RadzenGrid @ref="App.CasesPage.NotesGrid" AllowFiltering="true" AllowPaging="true" PageSize="10" AllowSorting="true" RowSelect="@(args => App.CasesPage.ActiveNoteChange(args))"
+                                                    Data="@App.ActiveClientWithData.SelectedCase.Notes" TItem="NoteViewModel" RowUpdate="@App.CasesPage.OnUpdateNoteRow">
+                                            <Columns>
+                                                <RadzenGridColumn TItem="NoteViewModel" Property="Name" Title="Nazwa">
+                                                    <EditTemplate Context="note">
+                                                        <RadzenTextBox @bind-Value="note.Name" Style="width:100%; display: block" Name="Name" />
+                                                        <RadzenRequiredValidator Component="Name" Text="Name cannot be empty!" />
+                                                        <RadzenLengthValidator Max="50" Text="Max 50 characters!" Component="Name" />
+                                                    </EditTemplate>
+                                                </RadzenGridColumn>
+                                                <RadzenGridColumn TItem="NoteViewModel" Property="Message" Title="Opis">
+                                                    <EditTemplate Context="note">
+                                                        <RadzenTextArea @bind-Value="note.Message" Style="width:100%; display: block" Name="Message" />
+                                                        <RadzenLengthValidator Max="500" Text="Max 500 characters!" Component="Message" />
+                                                    </EditTemplate>
+                                                </RadzenGridColumn>
 
+                                                <RadzenGridColumn TItem="NoteViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="100px">
+                                                    <Template Context="note">
+                                                        <RadzenButton Icon="edit" Size="ButtonSize.Medium" Click="@((args) => App.CasesPage.EditNoteRow(note))">
+                                                        </RadzenButton>
+                                                    </Template>
+                                                    <EditTemplate Context="note">
+                                                        <RadzenButton Icon="save" Size="ButtonSize.Medium" Click="@((args) => App.CasesPage.SaveNoteRow(note))">
+                                                        </RadzenButton>
+                                                        <RadzenButton Icon="cancel" Size="ButtonSize.Medium" ButtonStyle="ButtonStyle.Success" Click="@((args) => App.CasesPage.CancelEditNoteRow(note))">
+                                                        </RadzenButton>
+                                                    </EditTemplate>
+                                                </RadzenGridColumn>
+                                                <RadzenGridColumn TItem="NoteViewModel" Context="order" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="50px">
+                                                    <Template Context="note">
+                                                        <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Medium" Click="@(async (args) => await App.CasesPage.DeleteNoteRow (note))">
+                                                        </RadzenButton>
+                                                    </Template>
+                                                    <EditTemplate Context="note">
+                                                    </EditTemplate>
+                                                </RadzenGridColumn>
+                                            </Columns>
+                                        </RadzenGrid>
+                                    </div>
 
-                                    <RadzenGrid @ref="App.CasesPage.ContactsGrid" AllowFiltering="true" AllowPaging="true" PageSize="10" AllowSorting="true"
-                                                Data="@App.ActiveClientWithData.SelectedCase.ContactPeople" TItem="ContactPersonViewModel" RowUpdate="@App.CasesPage.OnUpdateContactRow" RowSelect="@(args => App.CasesPage.ContactSelected(args))">
-                                        <Columns>
-                                            <RadzenGridColumn TItem="ContactPersonViewModel" Property="Name" Title="Nazwa">
-                                                <EditTemplate Context="contact">
-                                                    <RadzenTextBox @bind-Value="contact.Name" Name="Name" />
-                                                    <RadzenRequiredValidator Text="Inię nie może być puste!" Component="Name" Popup="true" />
-                                                    <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Name" Popup="true" />
-                                                </EditTemplate>
-                                            </RadzenGridColumn>
-
-                                            <RadzenGridColumn TItem="ContactPersonViewModel" Property="Surname" Title="Nazwisko">
-                                                <EditTemplate Context="contact">
-                                                    <RadzenTextBox @bind-Value="contact.Surname" Name="Surname" />
-                                                    <RadzenRequiredValidator Text="Nazwosko nie może być puste!" Component="Surname" Popup="true" />
-                                                    <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Surname" Popup="true" />
-                                                </EditTemplate>
-                                            </RadzenGridColumn>
-                                            <RadzenGridColumn TItem="ContactPersonViewModel" Property="Email" Title="Email" Width="100px">
-                                                <EditTemplate Context="contact">
-                                                    <RadzenTextBox @bind-Value="contact.Email" Name="Nazwa" />
-                                                </EditTemplate>
-                                            </RadzenGridColumn>
-                                            <RadzenGridColumn TItem="ContactPersonViewModel" Property="PhoneNumber" Title="Telefon">
-                                                <EditTemplate Context="contact">
-                                                    <RadzenTextBox @bind-Value="contact.PhoneNumber" Name="PhoneNumber" />
-                                                </EditTemplate>
-                                            </RadzenGridColumn>
-                                            <RadzenGridColumn TItem="ContactPersonViewModel" Property="AlternativePhoneNumber" Title="Drugi Telefon">
-                                                <EditTemplate Context="contact">
-                                                    <RadzenTextBox @bind-Value="contact.AlternativePhoneNumber" Name="AlternativePhoneNumber" />
-                                                </EditTemplate>
-                                            </RadzenGridColumn>
-                                            <RadzenGridColumn TItem="ContactPersonViewModel" Property="Address" Title="Addres">
-                                                <EditTemplate Context="contact">
-                                                    <RadzenTextBox @bind-Value="contact.Address" Name="Address" />
-                                                </EditTemplate>
-                                            </RadzenGridColumn>
-
-                                            <RadzenGridColumn TItem="ContactPersonViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="100px">
-                                                <Template Context="c">
-                                                    <RadzenButton Icon="edit" Size="ButtonSize.Medium" Click="@(args => App.CasesPage.EditContactRow(c))">
-                                                    </RadzenButton>
-                                                </Template>
-                                                <EditTemplate Context="c">
-                                                    <RadzenButton Icon="save" Size="ButtonSize.Medium" Click="@((args) => App.CasesPage.SaveContactRow(c))">
-                                                    </RadzenButton>
-                                                    <RadzenButton Icon="cancel" Size="ButtonSize.Medium" ButtonStyle="ButtonStyle.Success" Click="@((args) => App.CasesPage.CancelContactEdit(c))">
-                                                    </RadzenButton>
-                                                </EditTemplate>
-                                            </RadzenGridColumn>
-                                            <RadzenGridColumn TItem="ContactPersonViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="50px">
-                                                <Template Context="c">
-                                                    <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Medium" Click="@(async (args) => await App.CasesPage.DeleteContactRow(c))">
-                                                    </RadzenButton>
-                                                </Template>
-                                                <EditTemplate Context="client">
-                                                </EditTemplate>
-                                            </RadzenGridColumn>
-                                        </Columns>
-                                    </RadzenGrid>
-
-
-                                    @if (App.CasesPage.SelectedContact != null)
+                                    @if (App.ActiveClientWithData.SelectedCase != null && App.ActiveClientWithData.SelectedCase.SelectedNote != null)
                                     {
-                                        <div class="contact-details">
-                                            <div>
-                                                <div class="text"><strong>Imię:</strong> @App.CasesPage.SelectedContact.Name</div>
-                                                <div class="text"><strong>Nazwisko:</strong> @App.CasesPage.SelectedContact.Surname</div>
-                                                <div class="text"><strong>Adres:</strong> @App.CasesPage.SelectedContact.Address</div>
-                                                <div class="text"><strong>Telefon 1:</strong> @App.CasesPage.SelectedContact.PhoneNumber</div>
-                                                <div class="text"><strong>Telefon 2:</strong> @App.CasesPage.SelectedContact.AlternativePhoneNumber</div>
-                                                <div class="text"><strong>Email:</strong> @App.CasesPage.SelectedContact.Email</div>
-                                            </div>
-                                            <div>
+                                        <div class="details">
+                                            <p><strong>Tytuł: </strong>@App.ActiveClientWithData.SelectedCase.SelectedNote.Name</p>
+                                            <p><strong>Treść: </strong>@App.ActiveClientWithData.SelectedCase.SelectedNote.Message</p>
 
-
-
-                                                <div class="text"><strong>Zmienione przez:</strong> @App.CasesPage.SelectedContact.UpdatedBy</div>
-                                                <div class="text"><strong>Data zmiany:</strong> @App.CasesPage.SelectedContact.Updated</div>
-                                                <div class="text"><strong>Data utworzenia:</strong> @App.CasesPage.SelectedContact.Created</div>
-                                            </div>
                                         </div>
                                     }
 
+                                </div>
+                            </RadzenTabsItem>
+                        </div>
 
-                                </RadzenTabsItem>
-                            </div>
-                        </Tabs>
-                    </RadzenTabs>
-                </div>
-            }
+                        <RadzenTabsItem Text="Osoby Kontaktowe">
+                            <RadzenTemplateForm Data="@App.CasesPage.NewContact" Submit="@(async (CreateContactPerson.Request args) => { await App.CasesPage.SubmitNewContact(args); })">
+                                <RadzenFieldset Text="Osoba Kontaktowa">
+                                    <div class="help-box">
+                                        <i class="user-icon"><img src="/Images/icons8-reception-36.png" /></i>
+
+                                        @if (infoBoxVisibleIII)
+                                        {
+                                            <div class="info-text">
+                                                <p>Zarządzaj listą swoich klientów. Użyj guzika "Dodaj Nowego Klienta",aby uzupełnić listę kontaktów.</p>
+                                                <p>Edytuj oraz usuwaj Klientów z głównej listy. Tekst do zupełnienia.</p>
+                                            </div>
+                                        }
+                                        <button class="info" @onclick="ShowHideInfoBoxIII"></button>
+                                    </div>
+
+                                    <div class="form">
+                                        <div class="text">
+                                            <div class="label">
+                                                <RadzenLabel Text="Imię" />
+                                            </div>
+                                            <RadzenTextArea Placeholder="Imię..." @bind-Value="App.CasesPage.NewContact.Name" Style="width:100%; font-size: 12px;" Name="Name" />
+                                            <RadzenRequiredValidator Component="Name" Text="Name cannot be empty!" />
+                                            <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Name" />
+                                        </div>
+                                        <div class="text">
+                                            <div class="label">
+                                                <RadzenLabel Text="Nazwisko" />
+                                            </div>
+                                            <RadzenTextArea Placeholder="Nazwisko..." @bind-Value="App.CasesPage.NewContact.Surname" Style="        width: 100%;
+        font-size: 12px;
+" Name="Surname" />
+                                            <RadzenRequiredValidator Component="Surname" Text="Name cannot be empty!" />
+                                            <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Surname" />
+                                        </div>
+                                        <div class="text">
+                                            <div class="label">
+                                                <RadzenLabel Text="Adres" />
+                                            </div>
+                                            <RadzenTextArea Placeholder="Adres..." @bind-Value="App.CasesPage.NewContact.Address" Style="        width: 100%;
+        font-size: 12px;
+" Name="Address" />
+                                            <RadzenLengthValidator Max="500" Text="Maksymalnie 500 znaków!" Component="Address" />
+                                        </div>
+                                    </div>
+                                    <div class="form">
+                                        <div class="text">
+                                            <div class="label">
+                                                <RadzenLabel Text="Telefon" />
+                                            </div>
+                                            <RadzenTextBox Placeholder="Telefon..." @bind-Value="App.CasesPage.NewContact.PhoneNumber" Style="        width: 100%;
+        font-size: 12px;
+" Name="PhoneNumber1" />
+                                            <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="PhoneNumber1" />
+                                        </div>
+                                        <div class="text">
+                                            <div class="label">
+                                                <RadzenLabel Text="Telefon2" />
+                                            </div>
+                                            <RadzenTextBox Placeholder="Telefon..." @bind-Value="App.CasesPage.NewContact.AlternativePhoneNumber" Style="        width: 100%;
+        font-size: 12px;
+" Name="PhoneNumber2" />
+                                            <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="PhoneNumber2" />
+                                        </div>
+                                        <div class="text">
+                                            <div class="label">
+                                                <RadzenLabel Text="Email" />
+                                            </div>
+                                            <RadzenTextBox Placeholder="Adres Email..." @bind-Value="App.CasesPage.NewContact.Email" Style="        width: 100%;
+        font-size: 12px;
+" Name="Email" />
+                                            <RadzenEmailValidator Component="Email" Text="Nieprawidłowy adres Email!" />
+                                            <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Email" />
+                                        </div>
+                                    </div>
+                                    <div class="form-btn">
+                                        <div class="btn-add">
+                                            <div>
+                                                <RadzenButton ButtonType="ButtonType.Submit" Icon="save" Text="Dodaj Kontakt" ButtonStyle="ButtonStyle.Secondary" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </RadzenFieldset>
+                            </RadzenTemplateForm>
+
+
+                            <RadzenGrid @ref="App.CasesPage.ContactsGrid" AllowFiltering="true" AllowPaging="true" PageSize="10" AllowSorting="true"
+                                        Data="@App.ActiveClientWithData.SelectedCase.ContactPeople" TItem="ContactPersonViewModel" RowUpdate="@App.CasesPage.OnUpdateContactRow" RowSelect="@(args => App.CasesPage.ContactSelected(args))">
+                                <Columns>
+                                    <RadzenGridColumn TItem="ContactPersonViewModel" Property="Name" Title="Nazwa">
+                                        <EditTemplate Context="contact">
+                                            <RadzenTextBox @bind-Value="contact.Name" Name="Name" />
+                                            <RadzenRequiredValidator Text="Inię nie może być puste!" Component="Name" Popup="true" />
+                                            <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Name" Popup="true" />
+                                        </EditTemplate>
+                                    </RadzenGridColumn>
+
+                                    <RadzenGridColumn TItem="ContactPersonViewModel" Property="Surname" Title="Nazwisko">
+                                        <EditTemplate Context="contact">
+                                            <RadzenTextBox @bind-Value="contact.Surname" Name="Surname" />
+                                            <RadzenRequiredValidator Text="Nazwosko nie może być puste!" Component="Surname" Popup="true" />
+                                            <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Surname" Popup="true" />
+                                        </EditTemplate>
+                                    </RadzenGridColumn>
+                                    <RadzenGridColumn TItem="ContactPersonViewModel" Property="Email" Title="Email" Width="100px">
+                                        <EditTemplate Context="contact">
+                                            <RadzenTextBox @bind-Value="contact.Email" Name="Nazwa" />
+                                        </EditTemplate>
+                                    </RadzenGridColumn>
+                                    <RadzenGridColumn TItem="ContactPersonViewModel" Property="PhoneNumber" Title="Telefon">
+                                        <EditTemplate Context="contact">
+                                            <RadzenTextBox @bind-Value="contact.PhoneNumber" Name="PhoneNumber" />
+                                        </EditTemplate>
+                                    </RadzenGridColumn>
+                                    <RadzenGridColumn TItem="ContactPersonViewModel" Property="AlternativePhoneNumber" Title="Drugi Telefon">
+                                        <EditTemplate Context="contact">
+                                            <RadzenTextBox @bind-Value="contact.AlternativePhoneNumber" Name="AlternativePhoneNumber" />
+                                        </EditTemplate>
+                                    </RadzenGridColumn>
+                                    <RadzenGridColumn TItem="ContactPersonViewModel" Property="Address" Title="Addres">
+                                        <EditTemplate Context="contact">
+                                            <RadzenTextBox @bind-Value="contact.Address" Name="Address" />
+                                        </EditTemplate>
+                                    </RadzenGridColumn>
+
+                                    <RadzenGridColumn TItem="ContactPersonViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="100px">
+                                        <Template Context="c">
+                                            <RadzenButton Icon="edit" Size="ButtonSize.Medium" Click="@(args => App.CasesPage.EditContactRow(c))">
+                                            </RadzenButton>
+                                        </Template>
+                                        <EditTemplate Context="c">
+                                            <RadzenButton Icon="save" Size="ButtonSize.Medium" Click="@((args) => App.CasesPage.SaveContactRow(c))">
+                                            </RadzenButton>
+                                            <RadzenButton Icon="cancel" Size="ButtonSize.Medium" ButtonStyle="ButtonStyle.Success" Click="@((args) => App.CasesPage.CancelContactEdit(c))">
+                                            </RadzenButton>
+                                        </EditTemplate>
+                                    </RadzenGridColumn>
+                                    <RadzenGridColumn TItem="ContactPersonViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="50px">
+                                        <Template Context="c">
+                                            <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Medium" Click="@(async (args) => await App.CasesPage.DeleteContactRow(c))">
+                                            </RadzenButton>
+                                        </Template>
+                                        <EditTemplate Context="client">
+                                        </EditTemplate>
+                                    </RadzenGridColumn>
+                                </Columns>
+                            </RadzenGrid>
+
+                            @if (App.CasesPage.SelectedContact != null)
+                            {
+                                <div class="details">
+                                    <p class="text"><strong>Imię:</strong> @App.CasesPage.SelectedContact.Name</p>
+                                    <p class="text"><strong>Nazwisko:</strong> @App.CasesPage.SelectedContact.Surname</p>
+                                    <p class="text"><strong>Adres:</strong> @App.CasesPage.SelectedContact.Address</p>
+                                    <p class="text"><strong>Telefon 1:</strong> @App.CasesPage.SelectedContact.PhoneNumber</p>
+                                    <p class="text"><strong>Telefon 2:</strong> @App.CasesPage.SelectedContact.AlternativePhoneNumber</p>
+                                    <p class="text"><strong>Email:</strong> @App.CasesPage.SelectedContact.Email</p>
+                                    <p class="text"><strong>Zmienione przez:</strong> @App.CasesPage.SelectedContact.UpdatedBy</p>
+                                    <p class="text"><strong>Data zmiany:</strong> @App.CasesPage.SelectedContact.Updated</p>
+                                    <p class="text"><strong>Data utworzenia:</strong> @App.CasesPage.SelectedContact.Created</p>
+                                </div>
+                            }
+
+
+                        </RadzenTabsItem>
+
+                    </Tabs>
+                </RadzenTabs>
+
+
+            </div>
         }
     }
 </div>

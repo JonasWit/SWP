@@ -12,14 +12,6 @@ namespace SWP.UI.Components.AdminBlazorComponents.DatabaseInnerComponents
         [Inject]
         public GetStatistics GetStatistics { get; set; }
 
-        protected override async Task OnInitializedAsync()
-        {
-
-
-
-
-
-        }
 
 
 

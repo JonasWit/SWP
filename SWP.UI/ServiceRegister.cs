@@ -64,7 +64,7 @@ namespace SWP.UI
             foreach (var service in uiScopedServices)
             {
                 @this.AddScoped(service);
-            } 
+            }
 
             #endregion
 

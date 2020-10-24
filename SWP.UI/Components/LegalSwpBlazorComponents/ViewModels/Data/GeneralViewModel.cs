@@ -1,4 +1,5 @@
-﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
+﻿using iTextSharp.text;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Radzen;
 using System;
 using System.Collections.Generic;
@@ -10,25 +11,18 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data
     public class GeneralViewModel
     {
         public string DeadlineColor => "#DC143C";
-
-        public const string Client = "Klient";
-        public const string Case = "Sprawa";
-        public const string Reminder = "Przypomnienie";
-        public const string Deadline = "Termin";
-        public const string Created = "Stworzone";
-        public const string CreatedBy = "Użytkownik";
-        public const string Updated = "Ostania Zmiana";
-        public const string UpdatedBy = "Użytkownik";
-
-        public const string Day = "Dzień";
-        public const string Week = "Tydzień";
-        public const string Month = "Miesiąc";
-
-        public const string Marzenka = "moja klasa1";
-
-
-        public const string DateFormant = "dd/MM/yy HH:mm";
         public const int NotificationDuration = 4000;
+
+        public string FormInputBoxWidth => @"width: 100%; font-size: 12px;";
+
+        public string TableFontSize => @"font-size: 12px;";
+
+        public string ToolTipStyle => @"font-size: 12px; background-color: #000;";
+
+        public string GeneralButton => @"font-size: 12px;";
+
+
+
 
         public DialogOptions DefaultDialogOptions => new DialogOptions() { Width = "500px", Height = "530px", Left = "calc(50% - 500px)", Top = "calc(50% - 265px)" };
 

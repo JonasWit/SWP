@@ -1,8 +1,12 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Quartz;
+using Quartz.Impl;
+using Quartz.Spi;
 using Radzen;
 using SWP.Application;
 using SWP.DataBase.Managers;
 using SWP.Domain.Infrastructure;
+using SWP.UI.Automation;
 using SWP.UI.Components.LegalSwpBlazorComponents.App;
 using System.Linq;
 using System.Reflection;
@@ -72,26 +76,18 @@ namespace SWP.UI
             @this.AddScoped<NotificationService>();
             @this.AddScoped<LegalBlazorApp>();
 
-
             //@this.AddScoped<ISessionManager, SessionManager>();
 
-            //@this.AddSingleton<AppSettingsService>();
-
             //// Add Quartz services
-            //@this.AddSingleton<IJobFactory, SingletonJobFactory>();
-            //@this.AddSingleton<ISchedulerFactory, StdSchedulerFactory>();
+            @this.AddSingleton<IJobFactory, SingletonJobFactory>();
+            @this.AddSingleton<ISchedulerFactory, StdSchedulerFactory>();
 
-            //@this.AddSingleton<JobWakeUpCall>();
-            //@this.AddSingleton(new JobSchedule(
-            //    jobType: typeof(JobWakeUpCall),
-            //    cronExpression: "0 0/10 * * * ?"));
+            @this.AddSingleton<JobWakeUpCall>();
+            @this.AddSingleton(new JobSchedule(
+                jobType: typeof(JobWakeUpCall),
+                cronExpression: "0 0/1 * * * ?"));
 
-            //@this.AddSingleton<JobRunCrawlers>();
-            //@this.AddSingleton(new JobSchedule(
-            //    jobType: typeof(JobRunCrawlers),
-            //    cronExpression: "0 15 4 ? * *"));
-
-            //@this.AddHostedService<QuartzHostedService>();
+            @this.AddHostedService<QuartzHostedService>();
 
             return @this;
         }

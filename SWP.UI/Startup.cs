@@ -25,6 +25,7 @@ namespace SWP.UI
 
         public void ConfigureDevelopmentServices(IServiceCollection services)
         {
+            services.AddHttpClient();
             services.AddHttpContextAccessor();
 
             services.AddDbContext<ApplicationDbContext>(options =>
@@ -76,6 +77,7 @@ namespace SWP.UI
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddHttpClient();
             services.AddHttpContextAccessor();
 
             services.AddDbContext<ApplicationDbContext>(options =>

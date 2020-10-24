@@ -23,12 +23,27 @@ namespace SWP.Application.Log
                 Created = DateTime.Now,
             });
 
+        public Task<LogRecord> CreateAutomationRecord(AutomationRequest request) =>
+            logManager.CreateLogRecord(new LogRecord
+            {
+                UserId = "Automation",
+                Message = request.Action,
+                StackTrace = "Called by Scheduler",
+                Created = DateTime.Now,
+            });
+
         public class Request
         {
             [Required]
             public string UserId { get; set; }
             public string Message { get; set; }
             public string StackTrace { get; set; }
+        }
+
+        public class AutomationRequest
+        {
+            public string Action { get; set; }
+            public DateTime TimeStamp { get; set; }
         }
     }
 }

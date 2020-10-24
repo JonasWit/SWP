@@ -153,7 +153,8 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
                         if (c != null)
                         {
-                            App.ActiveClientWithData.SelectedCase.Reminders[App.ActiveClientWithData.SelectedCase.Reminders.FindIndex(x => x.Id == result.Id)] = updatedReminder;
+                            App.ActiveClientWithData.Cases.FirstOrDefault(x => x.Id == c.Id).Reminders.RemoveAll(x => x.Id == updatedReminder.Id);
+                            App.ActiveClientWithData.Cases.FirstOrDefault(x => x.Id == c.Id).Reminders.Add(updatedReminder);
                         }
                     }
 

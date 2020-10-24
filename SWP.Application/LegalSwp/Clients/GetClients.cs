@@ -1,10 +1,6 @@
-﻿using SWP.Domain.Infrastructure;
+﻿using SWP.Domain.Infrastructure.LegalApp;
 using SWP.Domain.Models.SWPLegal;
-using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SWP.Application.LegalSwp.Clients
 {

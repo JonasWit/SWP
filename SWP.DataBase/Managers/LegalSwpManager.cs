@@ -1,11 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SWP.Domain.Infrastructure;
+using SWP.Domain.Infrastructure.LegalApp;
 using SWP.Domain.Models.SWPLegal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 
 namespace SWP.DataBase.Managers

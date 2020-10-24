@@ -14,6 +14,8 @@ namespace SWP.Application.Log
 
         public List<LogRecord> GetRecords() => logManager.GetGetLogRecords();
 
+        public List<LogRecord> GetRecords(Func<LogRecord, bool> predicate) => logManager.GetGetLogRecords(predicate);
+
         public List<LogRecord> GetRecordsWitohutStacks() => 
             logManager.GetLogRecordsWithSpecificData(x => new LogRecord 
             { 

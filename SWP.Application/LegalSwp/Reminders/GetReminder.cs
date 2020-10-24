@@ -1,4 +1,4 @@
-﻿using SWP.Domain.Infrastructure;
+﻿using SWP.Domain.Infrastructure.LegalApp;
 using SWP.Domain.Models.SWPLegal;
 
 namespace SWP.Application.LegalSwp.Reminders

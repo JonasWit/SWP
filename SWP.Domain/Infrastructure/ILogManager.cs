@@ -9,13 +9,10 @@ namespace SWP.Domain.Infrastructure
     public interface ILogManager
     {
         Task<LogRecord> CreateLogRecord(LogRecord record);
-
         Task<int> DeleteLogRecord(int id);
-
         LogRecord GetLogRecord(int id);
-
         List<TResult> GetLogRecordsWithSpecificData<TResult>(Func<LogRecord, TResult> selector);
-
         List<LogRecord> GetGetLogRecords();
+        List<LogRecord> GetGetLogRecords(Func<LogRecord, bool> predicate);
     }
 }

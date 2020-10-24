@@ -1,8 +1,5 @@
-﻿using SWP.Domain.Infrastructure;
-using System;
+﻿using SWP.Domain.Infrastructure.LegalApp;
 using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SWP.Application.Statistics
 {

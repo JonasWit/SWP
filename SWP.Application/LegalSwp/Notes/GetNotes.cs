@@ -1,7 +1,4 @@
-﻿using SWP.Domain.Infrastructure;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using SWP.Domain.Infrastructure.LegalApp;
 
 namespace SWP.Application.LegalSwp.Notes
 {

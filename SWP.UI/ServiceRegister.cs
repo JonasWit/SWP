@@ -6,6 +6,7 @@ using Radzen;
 using SWP.Application;
 using SWP.DataBase.Managers;
 using SWP.Domain.Infrastructure;
+using SWP.Domain.Infrastructure.LegalApp;
 using SWP.UI.Automation;
 using SWP.UI.Components.LegalSwpBlazorComponents.App;
 using System.Linq;

@@ -11,26 +11,28 @@ namespace SWP.DataBase.Managers
 {
     public class LogManager : ILogManager
     {
-        private readonly ApplicationDbContext context;
-        public LogManager(ApplicationDbContext context) => this.context = context;
+        private readonly ApplicationDbContext _context;
+        public LogManager(ApplicationDbContext context) => _context = context;
 
         public async Task<LogRecord> CreateLogRecord(LogRecord record)
         {
-            context.LogRecords.Add(record);
-            await context.SaveChangesAsync();
+            _context.LogRecords.Add(record);
+            await _context.SaveChangesAsync();
             return record;
         }
 
         public Task<int> DeleteLogRecord(int id)
         {
-            context.LogRecords.Remove(context.LogRecords.FirstOrDefault(x => x.Id == id));
-            return context.SaveChangesAsync();
+            _context.LogRecords.Remove(_context.LogRecords.FirstOrDefault(x => x.Id == id));
+            return _context.SaveChangesAsync();
         }
 
-        public List<LogRecord> GetGetLogRecords() => context.LogRecords.ToList();
+        public List<LogRecord> GetGetLogRecords() => _context.LogRecords.ToList();
 
-        public LogRecord GetLogRecord(int id) => context.LogRecords.FirstOrDefault(x => x.Id == id);
+        public List<LogRecord> GetGetLogRecords(Func<LogRecord, bool> predicate) => _context.LogRecords.Where(predicate).ToList();
 
-        public List<TResult> GetLogRecordsWithSpecificData<TResult>(Func<LogRecord, TResult> selector) => context.LogRecords.Select(selector).ToList();
+        public LogRecord GetLogRecord(int id) => _context.LogRecords.FirstOrDefault(x => x.Id == id);
+
+        public List<TResult> GetLogRecordsWithSpecificData<TResult>(Func<LogRecord, TResult> selector) => _context.LogRecords.Select(selector).ToList();
     }
 }

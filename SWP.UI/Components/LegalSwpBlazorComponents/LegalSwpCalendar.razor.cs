@@ -11,7 +11,5 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
     {
         [Inject]
         public LegalBlazorApp App { get; set; }
-        //[Parameter]
-        //public EventCallback<LegalBlazorApp> AppChanged { get; set; }
     }
 }

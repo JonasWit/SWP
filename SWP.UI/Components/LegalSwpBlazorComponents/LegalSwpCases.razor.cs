@@ -17,9 +17,6 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
         public GeneralViewModel Gvm { get; set; }
         [Inject]
         public TooltipService TooltipService { get; set; }
-        //[Parameter]
-        //public EventCallback<LegalBlazorApp> AppChanged { get; set; }
-
 
         public bool showFirstSection = false;
         public void ShowHideFirstSection() => showFirstSection = !showFirstSection;

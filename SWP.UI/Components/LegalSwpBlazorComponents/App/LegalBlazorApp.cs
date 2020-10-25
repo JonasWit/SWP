@@ -321,6 +321,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             }
 
             ActiveClientChanged?.Invoke(this, null);
+            ClientDetailsPage.SelectedContact = null;
             DisableLoadingState();
         }
 

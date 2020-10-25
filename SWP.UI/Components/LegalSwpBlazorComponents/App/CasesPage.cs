@@ -153,6 +153,8 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             {
                 App.ActiveClientWithData.SelectedCase = null;
             }
+
+            SelectedContact = null;
         }
 
         #endregion

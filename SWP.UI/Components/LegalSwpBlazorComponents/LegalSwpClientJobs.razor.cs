@@ -12,6 +12,8 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
     {
         [Inject]
         public LegalBlazorApp App { get; set; }
+        [Inject]
+        public GeneralViewModel Gvm { get; set; }
 
         public string ArchvizedJobsFilterValue;
 

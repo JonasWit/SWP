@@ -10,9 +10,7 @@
             @if (Model.PageNumber > 1)
             {
                 <li class="page-item">
-                    <a class="page-link" aria-label="Previous"
-                       asp-controller="News"
-                       asp-action="NewsOverview"
+                    <a class="page-link" aria-label="Previous" asp-page="/News/Overview"
                        asp-route-pageNumber="@(Model.PageNumber - 1)"
                        asp-route-category="@Model.Category">
                         <span aria-hidden="true">&laquo;</span>
@@ -31,9 +29,7 @@
                 else
                 {
                     <li class="page-item @(p == Model.PageNumber ? "active" : "")">
-                        <a class="page-link"
-                           asp-controller="News"
-                           asp-action="NewsOverview"
+                        <a class="page-link" asp-page="/News/Overview"
                            asp-route-category="@Model.Category"
                            asp-route-pageNumber="@p">@p</a>
                     </li>
@@ -43,9 +39,7 @@
             {
                 <li class="page-item">
 
-                    <a class="page-link" aria-label="Next"
-                       asp-controller="News"
-                       asp-action="NewsOverview"
+                    <a class="page-link" aria-label="Next" asp-page="/News/Overview"
                        asp-route-pageNumber="@(Model.PageNumber + 1)"
                        asp-route-category="@Model.Category">
                         <span aria-hidden="true">&raquo;</span>

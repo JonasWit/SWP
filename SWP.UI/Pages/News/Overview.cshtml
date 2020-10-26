@@ -30,7 +30,7 @@
         </ul>
     </div>
     <div class="container">
-        @*<div> <partial name="_NewsPagination" model="Model" /></div>*@
+        <div> <partial name="_NewsPagination" model="Model.DataModel" /></div>
         <div class="row">
             @foreach (var singleNews in Model.DataModel.News)
             {
@@ -58,6 +58,6 @@
                 </div>
             }
         </div>
-        @*<div><partial name="_NewsPagination" model="Model" /></div>*@
+        <div><partial name="_NewsPagination" model="Model.DataModel" /></div>
     </div>
 </div>

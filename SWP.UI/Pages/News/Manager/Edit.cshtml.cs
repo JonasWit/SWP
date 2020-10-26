@@ -13,7 +13,7 @@ using SWP.UI.Pages.News.ViewModels;
 
 namespace SWP.UI.Pages.News.Manager
 {
-    [Authorize(Roles = "Users, Administrators")]
+    [Authorize(Roles = "Administrators")]
     public class EditModel : PageModel
     {
         [BindProperty]

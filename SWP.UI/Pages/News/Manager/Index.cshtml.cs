@@ -10,7 +10,7 @@ using SWP.UI.Pages.News.ViewModels;
 
 namespace SWP.UI.Pages.News.Manager
 {
-    [Authorize(Roles = "Users, Administrators")]
+    [Authorize(Roles = "Administrators")]
     public class IndexModel : PageModel
     {
         public List<NewsViewModel> DataModels { get; set; } = new List<NewsViewModel>();

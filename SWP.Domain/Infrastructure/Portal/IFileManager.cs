@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace SWP.Domain.Infrastructure.Portal
 {
-    public interface IFileManager //todo:add implementation
+    public interface IFileManager
     {
         Task<string> SaveImageAsync(IFormFile image);
         FileStream ImageStreamShopCard(string image);

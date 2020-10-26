@@ -31,8 +31,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\DownloadableFiles\" />
-    <Folder Include="wwwroot\NewsImages\" />
+    <Folder Include="wwwroot\downloadable-files\" />
+    <Folder Include="wwwroot\portal-content\" />
+    <Folder Include="wwwroot\portal-content\news-images\" />
   </ItemGroup>
 
 </Project>

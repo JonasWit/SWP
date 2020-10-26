@@ -13,7 +13,7 @@ namespace SWP.UI.Pages
         {
         }
 
-        public IActionResult OnGetDownloadPasswordManager() => File("/DownloadableFiles/PasswordManager.exe", "application/octet-stream",
+        public IActionResult OnGetDownloadPasswordManager() => File("/downloadable-files/PasswordManager.exe", "application/octet-stream",
                 "PasswordManager.exe");
     }
 }

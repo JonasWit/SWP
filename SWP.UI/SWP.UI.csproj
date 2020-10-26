@@ -32,6 +32,7 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\DownloadableFiles\" />
+    <Folder Include="wwwroot\NewsImages\" />
   </ItemGroup>
 
 </Project>

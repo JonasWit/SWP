@@ -24,7 +24,7 @@
                                 <RadzenLabel Text="Nazwa" Style="font-size: 14px; font-weight:bold" />
                             </div>
                             <RadzenTextArea Placeholder="Nazwa..." @bind-Value="App.ClientsPage.NewClient.Name" style="width: 100%;" Name="Nazwa" />
-                            <RadzenRequiredValidator Component="Nazwa" Text="Nazwa nie może być pusto!" style="width: 100%;" />
+                            <RadzenRequiredValidator Component="Nazwa" Text="Nazwa nie może być pusta!" style="width: 100%;" />
                             <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Nazwa" Style="position: absolute" />
                         </div>
                         <div class="text">
@@ -49,7 +49,6 @@
                                 <RadzenLabel Text="Email" Style="font-size: 14px; font-weight:bold" />
                             </div>
                             <RadzenTextBox Placeholder="Adres Email..." @bind-Value="App.ClientsPage.NewClient.Email" style="width: 100%;" Name="Email" />
-                            <RadzenRequiredValidator Component="Email" Text="Adres email nie może być pusty!" />
                             <RadzenEmailValidator Component="Email" Text="Nieprawidłowy adres Email!" />
                             <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Email" />
                         </div>

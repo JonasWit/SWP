@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Radzen;
 using SWP.UI.Components.LegalSwpBlazorComponents.App;
 using SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data;
 using System;
@@ -14,6 +15,8 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
         public LegalBlazorApp App { get; set; }
         [Inject]
         public GeneralViewModel Gvm { get; set; }
+        [Inject]
+        public TooltipService TooltipService { get; set; }
 
         public bool addClientformVisible = false;
         public void ShowHideClientFormI() => addClientformVisible = !addClientformVisible;

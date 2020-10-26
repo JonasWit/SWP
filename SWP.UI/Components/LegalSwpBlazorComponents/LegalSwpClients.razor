@@ -1,7 +1,7 @@
 ﻿
 <div class="flex-container-main">
 
-    <div class="show-hide tab-section"><button class="show-hide-btn show-hide-btn-1 @(showFormVisible ? "button-active" : "")" @onclick="ShowHideForm"><span>Dodaj Nowego Klienta</span></button></div>
+    <div class="show-hide tab-section"><button class="show-hide-btn show-hide-btn-1 @(showFormVisible ? "button-active" : "")" @onclick="ShowHideForm"><span>Dodaj Klienta</span></button></div>
     @if (showFormVisible)
     {
         <div class="row-section">
@@ -21,17 +21,17 @@
                     <div class="form ">
                         <div class="text">
                             <div class="label">
-                                <RadzenLabel Text="Nazwa" Style="font-size: 14px; font-weight:bold" />
+                                <RadzenLabel Text="Nazwa" />
                             </div>
-                            <RadzenTextArea Placeholder="Nazwa..." @bind-Value="App.ClientsPage.NewClient.Name" style="width: 100%;" Name="Nazwa" />
-                            <RadzenRequiredValidator Component="Nazwa" Text="Nazwa nie może być pusta!" style="width: 100%;" />
+                            <RadzenTextArea Placeholder="Nazwa..." @bind-Value="App.ClientsPage.NewClient.Name" style="@Gvm.FormInputBoxWidth" Name="Nazwa" />
+                            <RadzenRequiredValidator Component="Nazwa" Text="Nazwa nie może być pusta!" style="@Gvm.FormInputBoxWidth" />
                             <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Nazwa" Style="position: absolute" />
                         </div>
                         <div class="text">
                             <div class="label">
-                                <RadzenLabel Text="Adres" Style="font-size: 14px; font-weight:bold" />
+                                <RadzenLabel Text="Adres" />
                             </div>
-                            <RadzenTextArea Placeholder="Adres..." @bind-Value="App.ClientsPage.NewClient.Address" style="width: 100%;" Name="Address" />
+                            <RadzenTextArea Placeholder="Adres..." @bind-Value="App.ClientsPage.NewClient.Address" style="@Gvm.FormInputBoxWidth" Name="Address" />
                             <RadzenLengthValidator Max="200" Text="Maksymalnie 200 znaków!" Component="Address" Style="position: absolute" />
                         </div>
                     </div>
@@ -39,25 +39,23 @@
 
                         <div class="text">
                             <div class="label">
-                                <RadzenLabel Text="Telefon" Style="font-size: 14px; font-weight:bold" />
+                                <RadzenLabel Text="Telefon" />
                             </div>
-                            <RadzenTextBox Placeholder="Telefon..." @bind-Value="App.ClientsPage.NewClient.PhoneNumber" style="width: 100%;" Name="PhoneNumber" />
+                            <RadzenTextBox Placeholder="Telefon..." @bind-Value="App.ClientsPage.NewClient.PhoneNumber" style="@Gvm.FormInputBoxWidth" Name="PhoneNumber" />
                             <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="PhoneNumber" Style="position: absolute" />
                         </div>
                         <div class="text">
                             <div class="label">
-                                <RadzenLabel Text="Email" Style="font-size: 14px; font-weight:bold" />
+                                <RadzenLabel Text="Email" />
                             </div>
-                            <RadzenTextBox Placeholder="Adres Email..." @bind-Value="App.ClientsPage.NewClient.Email" style="width: 100%;" Name="Email" />
+                            <RadzenTextBox Placeholder="Adres Email..." @bind-Value="App.ClientsPage.NewClient.Email" style="@Gvm.FormInputBoxWidth" Name="Email" />
                             <RadzenEmailValidator Component="Email" Text="Nieprawidłowy adres Email!" />
                             <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Email" />
                         </div>
                     </div>
                     <div class="form-btn">
                         <div class="btn-add">
-                            <div>
-                                <RadzenButton ButtonType="ButtonType.Submit" Icon="save" Text="Dodaj Klienta" ButtonStyle="ButtonStyle.Secondary" />
-                            </div>
+                            <RadzenButton ButtonType="ButtonType.Submit" Icon="save" Text="Dodaj Klienta" ButtonStyle="ButtonStyle.Secondary" Style="@(Gvm.GeneralButton)" />
                         </div>
                     </div>
                 </RadzenFieldset>
@@ -87,55 +85,65 @@
                             Data="@App.Clients" TItem="ClientViewModel" RowUpdate="@App.ClientsPage.OnUpdateClientRow" RowSelect="@(args => App.ClientsPage.ClientSelected(args))">
                     <Columns>
                         <RadzenGridColumn TItem="ClientViewModel" Property="Name" Title="Nazwa">
+                            <Template Context="client">
+                                <span Style="@(Gvm.TableFontSize)">@(client.Name)</span>
+                            </Template>
                             <EditTemplate Context="client">
-                                <RadzenTextBox @bind-Value="client.Name" Name="Nazwa" />
+                                <RadzenTextBox @bind-Value="client.Name" Name="Nazwa" Style="@Gvm.FormInputBoxWidth" />
                                 <RadzenRequiredValidator Text="Nazwa nie może być pusta!" Component="Nazwa" Popup="true" />
                                 <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Nazwa" Popup="true" />
                             </EditTemplate>
                         </RadzenGridColumn>
                         <RadzenGridColumn TItem="ClientViewModel" Property="Address" Title="Adres">
+                            <Template Context="client">
+                                <span Style="@(Gvm.TableFontSize)">@(client.Address)</span>
+                            </Template>
                             <EditTemplate Context="client">
-                                <RadzenTextBox @bind-Value="client.Address" Name="Adres" />
+                                <RadzenTextBox @bind-Value="client.Address" Name="Adres" Style="@Gvm.FormInputBoxWidth" />
                                 <RadzenLengthValidator Max="200" Text="Maksymalnie 200 znaków!" Component="Adres" Popup="true" Style="position: absolute" />
                             </EditTemplate>
                         </RadzenGridColumn>
                         <RadzenGridColumn TItem="ClientViewModel" Property="Email" Title="Email">
+                            <Template Context="client">
+                                <span Style="@(Gvm.TableFontSize)">@(client.Email)</span>
+                            </Template>
                             <EditTemplate Context="client">
-                                <RadzenTextBox @bind-Value="client.Email" Name="Email" />
+                                <RadzenTextBox @bind-Value="client.Email" Name="Email" Style="@Gvm.FormInputBoxWidth" />
                                 <RadzenEmailValidator Component="Email" Text="Nieprawidłowy adres Email!" Popup="true" />
                                 <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Email" Popup="true" Style="position: absolute" />
                             </EditTemplate>
                         </RadzenGridColumn>
                         <RadzenGridColumn TItem="ClientViewModel" Property="PhoneNumber" Title="Telefon">
                             <EditTemplate Context="client">
-                                <RadzenTextBox @bind-Value="client.PhoneNumber" Name="Telefon" />
+                                <RadzenTextBox @bind-Value="client.PhoneNumber" Name="Telefon" Style="@Gvm.FormInputBoxWidth" />
                                 <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Telefon" Popup="true" Style="position: absolute" />
                             </EditTemplate>
                         </RadzenGridColumn>
 
-                        <RadzenGridColumn TItem="ClientViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="100px">
+                        <RadzenGridColumn TItem="ClientViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="80px">
                             <Template Context="client">
-                                <RadzenButton Icon="edit" Size="ButtonSize.Medium" Click="@(args => App.ClientsPage.EditClientRow(client))">
+                                <RadzenButton Icon="edit" Size="ButtonSize.Small" Click="@(args => App.ClientsPage.EditClientRow(client))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Edytuj", Style=Gvm.ToolTipStyle }))">
+                                    >
                                 </RadzenButton>
                             </Template>
                             <EditTemplate Context="client">
-                                <RadzenButton Icon="save" Size="ButtonSize.Medium" Click="@((args) => App.ClientsPage.SaveClientRow(client))">
+                                <RadzenButton Icon="save" Size="ButtonSize.Small" Click="@((args) => App.ClientsPage.SaveClientRow(client))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Zapisz", Style=Gvm.ToolTipStyle }))">
                                 </RadzenButton>
-                                <RadzenButton Icon="cancel" Size="ButtonSize.Medium" ButtonStyle="ButtonStyle.Success" Click="@((args) => App.ClientsPage.CancelClientEdit(client))">
+                                <RadzenButton Icon="cancel" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Success" Click="@((args) => App.ClientsPage.CancelClientEdit(client))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Anuluj", Style=Gvm.ToolTipStyle }))">
                                 </RadzenButton>
                             </EditTemplate>
                         </RadzenGridColumn>
-                        <RadzenGridColumn TItem="ClientViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="50px">
+                        <RadzenGridColumn TItem="ClientViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="45px">
                             <Template Context="client">
-                                <RadzenButton ButtonStyle="ButtonStyle.Warning" Icon="archive" Size="ButtonSize.Medium" Click="@(async (args) => await App.ClientsPage.ArchivizeClient(client))">
+                                <RadzenButton ButtonStyle="ButtonStyle.Warning" Icon="archive" Size="ButtonSize.Small" Click="@(async (args) => await App.ClientsPage.ArchivizeClient(client))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Archiwizuj", Style=Gvm.ToolTipStyle }))">
                                 </RadzenButton>
                             </Template>
                             <EditTemplate Context="client">
                             </EditTemplate>
                         </RadzenGridColumn>
-                        <RadzenGridColumn TItem="ClientViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="50px">
+                        <RadzenGridColumn TItem="ClientViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="45px">
                             <Template Context="client">
-                                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Medium" Click="@(async (args) => await App.ClientsPage.DeleteClientRow(client))">
+                                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@(async (args) => await App.ClientsPage.DeleteClientRow(client))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Usuń", Style=Gvm.ToolTipStyle }))">
                                 </RadzenButton>
                             </Template>
                             <EditTemplate Context="client">
@@ -166,3 +174,8 @@
     }
 
 </div>
+@code {
+
+    private void ShowTooltip(ElementReference elementReference, TooltipOptions options = null) => TooltipService.Open(elementReference, options.Text, options);
+
+}

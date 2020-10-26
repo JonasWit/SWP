@@ -7,7 +7,6 @@ namespace SWP.Domain.Infrastructure.Portal
     public interface IFileManager
     {
         Task<string> SaveImageAsync(IFormFile image);
-        FileStream ImageStreamShopCard(string image);
         FileStream ImageStream(string image);
         FileStream ImageStream(string image, string imageUsage, int width, int height);
         string[] GetAllPicturesFromContent(string contentSubfolder);

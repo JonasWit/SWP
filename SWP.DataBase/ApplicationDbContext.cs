@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using SWP.Domain.Models.Log;
+using SWP.Domain.Models.News;
 using SWP.Domain.Models.SWPLegal;
 
 namespace SWP.DataBase
@@ -19,6 +20,12 @@ namespace SWP.DataBase
         public DbSet<LogRecord> LogRecords { get; set; }
         public DbSet<ClientContactPerson> ClientContactPeople { get; set; }
         public DbSet<CaseContactPerson> CaseContactPeople { get; set; }
+
+        #endregion
+
+        #region Portal
+
+        public DbSet<NewsRecord> News { get; set; }
 
         #endregion
 

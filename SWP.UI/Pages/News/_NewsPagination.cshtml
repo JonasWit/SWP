@@ -1,0 +1,58 @@
+﻿@using SWP.UI.Pages.News.ViewModels 
+@model NewsPageViewModel
+
+<div class="container ">
+    <nav aria-label="Page navigation example">
+        <ul class="pagination pg-dark justify-content-center mb-4">
+            @{
+                List<int> pages = Model.PageNumbers(Model.PageNumber, Model.PageCount).ToList();
+            }
+            @if (Model.PageNumber > 1)
+            {
+                <li class="page-item">
+                    <a class="page-link" aria-label="Previous"
+                       asp-controller="News"
+                       asp-action="NewsOverview"
+                       asp-route-pageNumber="@(Model.PageNumber - 1)"
+                       asp-route-category="@Model.Category">
+                        <span aria-hidden="true">&laquo;</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>
+            }
+            @foreach (var p in pages)
+            {
+                if (p == -1)
+                {
+                    <li class="page-item @(p == Model.PageNumber ? "active" : "")">
+                        <span>...</span>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item @(p == Model.PageNumber ? "active" : "")">
+                        <a class="page-link"
+                           asp-controller="News"
+                           asp-action="NewsOverview"
+                           asp-route-category="@Model.Category"
+                           asp-route-pageNumber="@p">@p</a>
+                    </li>
+                }
+            }
+            @if (Model.NextPage)
+            {
+                <li class="page-item">
+
+                    <a class="page-link" aria-label="Next"
+                       asp-controller="News"
+                       asp-action="NewsOverview"
+                       asp-route-pageNumber="@(Model.PageNumber + 1)"
+                       asp-route-category="@Model.Category">
+                        <span aria-hidden="true">&raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            }
+        </ul>
+    </nav>
+</div>

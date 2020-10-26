@@ -3,3 +3,34 @@
 @{
 }
 <h1>News Details</h1>
+
+<div class="container-fluid product">
+
+    <div class="container">
+
+        <div class="jumbotron-news">
+            <div class="container">
+                <div class="row">
+                    <div class="col-10">
+                        <h2 class="news-category">@Model.DataModel.Title</h2>
+                        <h3>@Model.DataModel.Category</h3>
+                        <p class="text-black-50">@Model.DataModel.Created</p>
+                    </div>
+                    <div class="col-2">
+                        <div>
+                            @if (!string.IsNullOrEmpty(Model.DataModel.ImagePath))
+                            {
+                                var imagePath = $"/Image/{Model.DataModel.ImagePath}";
+                                <img class="img-thumbnail" src="@imagePath" />
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <p class="text-uppercase">@Model.DataModel.Description</p>
+                <p class="text-body">@Html.Raw(Model.DataModel.Body) </p>
+            </div>
+        </div>
+    </div>
+</div>

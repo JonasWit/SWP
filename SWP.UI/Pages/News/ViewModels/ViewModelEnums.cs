@@ -1,4 +1,4 @@
-﻿namespace SWP.UI.Pages.News.Manager.ViewModels
+﻿namespace SWP.UI.Pages.News.ViewModels
 {
     public enum NewsCategory
     {

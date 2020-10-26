@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace SWP.UI.Pages.News.Manager.ViewModels
+namespace SWP.UI.Pages.News.ViewModels
 {
     public class NewsPageViewModel
     {

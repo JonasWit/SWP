@@ -10,20 +10,14 @@ namespace SWP.DataBase.Managers
 {
     public class FileManager : IFileManager
     {
-        private readonly string _shopCardsPath;
         private readonly string _newsImagesPath;
-        private readonly string _carouselImagesPath;
 
         public FileManager(IConfiguration configuration)
         { 
-            _shopCardsPath = configuration["Path:ShopsCards"];
             _newsImagesPath = configuration["Path:News"];
-            _carouselImagesPath = configuration["Path:Carousel"];
         } 
 
         public FileStream ImageStream(string image) => new FileStream(Path.Combine(_newsImagesPath, image), FileMode.Open, FileAccess.Read);
-
-        public FileStream ImageStreamShopCard(string image) => new FileStream(Path.Combine(_shopCardsPath, image), FileMode.Open, FileAccess.Read);
 
         public async Task<string> SaveImageAsync(IFormFile image)
         {
@@ -77,7 +71,6 @@ namespace SWP.DataBase.Managers
             return contentSubfolder switch
             {
                 "News" => Directory.GetFiles(Path.Combine(_newsImagesPath)),
-                "Carousel" => Directory.GetFiles(Path.Combine(_carouselImagesPath)),
                 _ => null,
             };
         }

@@ -19,37 +19,25 @@ namespace SWP.Application.LegalSwp.News
             _newsManager = newsManager;
         }
 
-        public async Task<Response> CreateAsync(Request request)
+        public async Task<NewsRecord> CreateAsync(Request request)
         {
             var singleNews = new NewsRecord
             {
                 Title = request.Title,
                 Body = request.Body,
-                Created = request.Created,
-
                 Description = request.Description,
                 Tags = request.Tags,
                 Category = request.Category,
+                Created = request.Created,
+                CreatedBy = request.CreatedBy,
+                Updated = request.Created,
+                UpdatedBy = request.CreatedBy,
 
                 Image = await _fileManager.SaveImageAsync(request.Image)
             };
 
-            if (await _newsManager.CreateOneNews(singleNews) <= 0)
-            {
-                throw new Exception("Failed to add post!");
-            }
-
-            return new Response
-            {
-                Id = singleNews.Id,
-                Title = singleNews.Title,
-                Body = singleNews.Body,
-                Image = singleNews.Image,
-                Created = singleNews.Created,
-                Description = singleNews.Description,
-                Tags = singleNews.Tags,
-                Category = singleNews.Category,
-            };
+            var result = await _newsManager.CreateOneNews(singleNews);
+            return result;
         }
 
         public class Request
@@ -63,20 +51,7 @@ namespace SWP.Application.LegalSwp.News
 
             public IFormFile Image { get; set; } = null;
             public DateTime Created { get; set; }
-        }
-
-        public class Response
-        {
-            public int Id { get; set; }
-            public string Title { get; set; }
-            public string Body { get; set; }
-
-            public string Description { get; set; }
-            public string Tags { get; set; }
-            public string Category { get; set; }
-
-            public string Image { get; set; } = null;
-            public DateTime Created { get; set; }
+            public string CreatedBy { get; set; }
         }
     }
 }

@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
+using SWP.Domain.Models.News;
 using System;
 using System.Collections.Generic;
 
-namespace SWP.UI.Pages.News.Manager.ViewModels
+namespace SWP.UI.Pages.News.ViewModels
 {
     public class NewsViewModel
     {
@@ -16,7 +17,11 @@ namespace SWP.UI.Pages.News.Manager.ViewModels
         public string Category { get; set; }
 
         public IFormFile Image { get; set; } = null;
+
         public DateTime Created { get; set; }
+        public DateTime Updated { get; set; }
+        public string UpdatedBy { get; set; }
+        public string CreatedBy { get; set; }
 
         public List<string> Categories { get; set; }
 
@@ -29,5 +34,11 @@ namespace SWP.UI.Pages.News.Manager.ViewModels
                 Categories.Add(category.ToString());
             }
         }
+
+        public static implicit operator NewsViewModel(NewsRecord input) =>
+            new NewsViewModel
+            {
+
+            };
     }
 }

@@ -3,4 +3,27 @@
 @{
 }
 
-<h1>manager index</h1>
+<h1>Newsy</h1>
+
+<a class="nav-link" asp-page="/News/Manager/Edit">Add News</a>
+
+<div>
+    <ul>
+        @foreach (var post in Model.DataModels)
+        {
+            <li>
+                <a asp-page="/News/NewsDetails" asp-route-id="@post.Id">
+                    @post.Title
+                </a>
+                -
+                <a asp-page="/News/Manager/Edit" asp-route-id="@post.Id">
+                    Edit
+                </a>
+                -
+                <a asp-page="/News/Manager/Edit" asp-page-handler="Remove" asp-route-id="@post.Id">
+                    Delete
+                </a>
+            </li>
+        }
+    </ul>
+</div>

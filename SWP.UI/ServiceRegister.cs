@@ -7,6 +7,7 @@ using SWP.Application;
 using SWP.DataBase.Managers;
 using SWP.Domain.Infrastructure;
 using SWP.Domain.Infrastructure.LegalApp;
+using SWP.Domain.Infrastructure.Portal;
 using SWP.UI.Automation;
 using SWP.UI.Components.LegalSwpBlazorComponents.App;
 using System.Linq;
@@ -71,6 +72,8 @@ namespace SWP.UI
             @this.AddTransient<ILegalSwpManager, LegalSwpManager>();
             @this.AddTransient<IStatisticsManager, StatisticsManager>();
             @this.AddTransient<ILogManager, LogManager>();
+            @this.AddTransient<IFileManager, FileManager>();
+            @this.AddTransient<INewsManager, NewsManager>();
 
             @this.AddScoped<DialogService>();
             @this.AddScoped<TooltipService>();

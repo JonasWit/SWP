@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using SWP.Domain.Infrastructure.Portal;
+using SWP.Domain.Models.News;
 using System;
 using System.Threading.Tasks;
 
@@ -17,7 +18,7 @@ namespace SWP.Application.LegalSwp.News
             _newsManager = newsManager;
         }
 
-        public async Task<Response> UpdateAsync(Request request)
+        public async Task<NewsRecord> UpdateAsync(Request request)
         {
             var oneNews = _newsManager.GetOneNews(request.Id, x => x);
 
@@ -28,25 +29,17 @@ namespace SWP.Application.LegalSwp.News
             oneNews.Tags = request.Tags ?? oneNews.Tags;
             oneNews.Category = request.Category ?? oneNews.Category;
 
+            oneNews.UpdatedBy = oneNews.UpdatedBy;
+            oneNews.Updated = oneNews.Updated;
+
             if (request.Image != null)
             {
                 _fileManager.DeleteImage(oneNews.Image);
                 oneNews.Image = await _fileManager.SaveImageAsync(request.Image);
             }
 
-            await _newsManager.UpdateOneNews(oneNews);
-
-            return new Response
-            {
-                Id = oneNews.Id,
-                Title = oneNews.Title,
-                Body = oneNews.Body,
-                Image = oneNews.Image,
-                Created = oneNews.Created,
-                Description = oneNews.Description,
-                Tags = oneNews.Tags,
-                Category = oneNews.Category,
-            };
+            var result = await _newsManager.UpdateOneNews(oneNews);
+            return result;
         }
 
         public class Request
@@ -60,21 +53,8 @@ namespace SWP.Application.LegalSwp.News
             public string Category { get; set; }
 
             public IFormFile Image { get; set; } = null;
-            public DateTime Created { get; set; }
-        }
-
-        public class Response
-        {
-            public int Id { get; set; }
-            public string Title { get; set; }
-            public string Body { get; set; }
-
-            public string Description { get; set; }
-            public string Tags { get; set; }
-            public string Category { get; set; }
-
-            public string Image { get; set; } = null;
-            public DateTime Created { get; set; }
+            public DateTime Updated { get; set; }
+            public string UpdatedBy { get; set; }
         }
     }
 }

@@ -24,7 +24,22 @@ namespace SWP.Application.LegalSwp.News
                 Category = singleNews.Category
             });
 
+        public IEnumerable<Response> Do(string category) =>
+            _newsManager.GetNews(category, singleNews => new Response
+            {
+                Id = singleNews.Id,
+                Title = singleNews.Title,
+                Body = singleNews.Body,
+                Image = singleNews.Image,
+                Created = singleNews.Created,
+                Description = singleNews.Description,
+                Tags = singleNews.Tags,
+                Category = singleNews.Category
+            }, post => post.Category.ToUpper() == category.ToUpper());
+
         public int Count() => _newsManager.CountNews();
+
+        public int Count(string category) => _newsManager.CountNews(category);
 
         public IEnumerable<Response> Do(int pageSize, int pageNumber) =>
             _newsManager.GetNews(pageSize, pageNumber, singleNews => new Response
@@ -38,6 +53,19 @@ namespace SWP.Application.LegalSwp.News
                 Tags = singleNews.Tags,
                 Category = singleNews.Category
             });
+
+        public IEnumerable<Response> Do(int pageSize, int pageNumber, string category) =>
+            _newsManager.GetNews(pageSize, pageNumber, category, singleNews => new Response
+            {
+                Id = singleNews.Id,
+                Title = singleNews.Title,
+                Body = singleNews.Body,
+                Image = singleNews.Image,
+                Created = singleNews.Created,
+                Description = singleNews.Description,
+                Tags = singleNews.Tags,
+                Category = singleNews.Category
+            }, singleNews => singleNews.Category.ToUpper() == category.ToUpper());
 
         public class Response
         {

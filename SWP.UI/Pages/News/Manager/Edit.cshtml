@@ -3,4 +3,53 @@
 @{
 }
 
-<h1>manager edit</h1>
+<link href="~/lib/Trumbowyg-master/dist/ui/trumbowyg.min.css" rel="stylesheet" />
+
+<div>
+    <form method="post" enctype="multipart/form-data">
+        <input asp-for="DataModel.Id" type="hidden" />
+        <div>
+            <label>Title</label>
+            <input asp-for="DataModel.Title" />
+        </div>
+        <div>
+            <label>Description</label>
+            <input asp-for="DataModel.Description" />
+        </div>
+        <div>
+            <label>Tags</label>
+            <input asp-for="DataModel.Tags" />
+        </div>
+        <div>
+            <label>Category</label>
+            <select asp-for="DataModel.Category">
+                @foreach (var category in Model.DataModel.Categories)
+                {
+                    <option value="@(category)">@category</option>
+                }
+            </select>
+        </div>
+        <div>
+            <label>Body</label>
+            <textarea id="editor" asp-for="DataModel.Body"></textarea>
+        </div>
+        <div>
+            <label>Image</label>
+            <input asp-for="DataModel.ImagePath" type="hidden" />
+            <input asp-for="DataModel.Image" />
+            @if (!string.IsNullOrEmpty(Model.DataModel.ImagePath))
+            {
+                <label>Current Image: @Model.DataModel.ImagePath</label>
+            }
+        </div>
+        <input type="submit" value="Submit" />
+    </form>
+</div>
+
+@section scripts{
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="~/lib/Trumbowyg-master/dist/trumbowyg.min.js"></script>
+    <script>
+        $('#editor').trumbowyg();
+    </script>
+}

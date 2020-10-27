@@ -27,9 +27,9 @@ html, body {
     font-size: 12px;
     grid-column: 1;
     grid-row: 1 / span 10;
-    background-image: url(../../Images/19366.jpg);
+    /* background-image: url(../../Images/19366.jpg);
     background-repeat: no-repeat;
-    background-position: left center;
+    background-position: left center;*/
 }
 
 ul, li {
@@ -83,6 +83,8 @@ ul, li {
     grid-column: 2;
     grid-row: 2 / span 8;
     font-size: 12px;
+    height: 00vh;
+    padding: 25px;
 }
 
 #footer {

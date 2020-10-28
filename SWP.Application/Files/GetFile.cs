@@ -1,7 +1,7 @@
 ﻿using SWP.Domain.Infrastructure.Portal;
 using System.IO;
 
-namespace SWP.Application.LegalSwp.News
+namespace SWP.Application.LegalSwp.Files
 {
     [TransientService]
     public class GetFile

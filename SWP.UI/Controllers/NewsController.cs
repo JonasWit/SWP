@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SWP.Application.LegalSwp.News;
+using SWP.Application.LegalSwp.Files;
 using System;
 
 namespace WEB.Shop.UI.Controllers

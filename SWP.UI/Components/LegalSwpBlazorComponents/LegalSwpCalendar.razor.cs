@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using SWP.UI.Components.LegalSwpBlazorComponents.App;
+using SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,5 +12,8 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
     {
         [Inject]
         public LegalBlazorApp App { get; set; }
+
+        [Inject]
+        public GeneralViewModel Gvm { get; set; }
     }
 }

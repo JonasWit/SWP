@@ -3,28 +3,9 @@
 <h2>Kalendarz</h2>
 <RadzenButton ButtonStyle="ButtonStyle.Success" Style="border-radius: 50%;" Icon="refresh" Click="App.CalendarPage.RefreshCalendarData"></RadzenButton>
 
-<div class="row">
-    <div class="col-md-12">
+<div class="calendar-main">
+    <div>
         @if (App.ActiveClient == null)
-        {
-            <RadzenScheduler @ref="App.CalendarPage.RemindersScheduler" style="height: 768px;"
-                             TItem="ReminderViewModel"
-                             Data="@App.CalendarPage.Reminders"
-                             StartProperty="Start"
-                             EndProperty="End"
-                             TextProperty="DisplayText"
-                             SelectedIndex="2"
-                             AppointmentSelect="@App.CalendarPage.OnAppointmentSelect"
-                             TodayText="Dzisiaj"
-                             AppointmentRender="@App.CalendarPage.OnAppointmentRender">
-                <ChildContent>
-                    <RadzenDayView Text="Dzień" StartTime="@(new TimeSpan(0, 0, 0))" EndTime="@(new TimeSpan(24, 0, 0))" />
-                    <RadzenWeekView Text="Tydzień" StartTime="@(new TimeSpan(0, 0, 0))" EndTime="@(new TimeSpan(24, 0, 0))" />
-                    <RadzenMonthView Text="Miesiąc" />
-                </ChildContent>
-            </RadzenScheduler>
-        }
-        else
         {
             <RadzenScheduler @ref="App.CalendarPage.RemindersScheduler" style="height: 768px;"
                              TItem="ReminderViewModel"
@@ -43,14 +24,33 @@
                 </ChildContent>
             </RadzenScheduler>
         }
+        else
+        {
+            <RadzenScheduler @ref="App.CalendarPage.RemindersScheduler" style="height: 768px;"
+                             TItem="ReminderViewModel"
+                             Data="@App.CalendarPage.Reminders"
+                             StartProperty="Start"
+                             EndProperty="End"
+                             TextProperty="DisplayText"
+                             SelectedIndex="2"
+                             AppointmentSelect="@App.CalendarPage.OnAppointmentSelect"
+                             TodayText="Dzisiaj"
+                             AppointmentRender="@App.CalendarPage.OnAppointmentRender">
+                <ChildContent>
+                    <RadzenDayView Text="Dzień" StartTime="@(new TimeSpan(0, 0, 0))" EndTime="@(new TimeSpan(24, 0, 0))" />
+                    <RadzenWeekView Text="Tydzień" StartTime="@(new TimeSpan(0, 0, 0))" EndTime="@(new TimeSpan(24, 0, 0))" />
+                    <RadzenMonthView Text="Miesiąc" />
+                </ChildContent>
+            </RadzenScheduler>
+        }
 
     </div>
 
     <RadzenCard>
-        <h3>Wybierz Rodzaj Przypomnień</h3>
+        <h5>Wybierz Rodzaj Przypomnień</h5>
         <RadzenSelectBar @bind-Value="App.CalendarPage.ChosenReminderType" TValue="int" Style="margin-bottom: 20px;">
             <Items>
-                <RadzenSelectBarItem Text="Przypomnienie" Value="1" />
+                <RadzenSelectBarItem Text="Przypomnienie" Value="1"  Style="@(Gvm.FormInputBoxWidth)"/>
                 <RadzenSelectBarItem Text="Termin" Value="2" />
                 <RadzenSelectBarItem Text="Wszystko" Value="3" />
             </Items>
@@ -59,7 +59,7 @@
         <RadzenGrid @ref="App.CalendarPage.RemindersGrid" AllowFiltering="true" AllowPaging="true" PageSize="15" AllowSorting="true" RowSelect="@(args => App.CalendarPage.ActiveReminderChange(args))"
                     Data="@(App.CalendarPage.ChosenReminderType == 3 ? App.CalendarPage.Reminders : App.CalendarPage.ChosenReminderType == 2 ? App.CalendarPage.Reminders.Where(x => x.IsDeadline) : App.CalendarPage.Reminders.Where(x => !x.IsDeadline))" TItem="ReminderViewModel">
             <Columns>
-                <RadzenGridColumn TItem="ReminderViewModel" Property="IsDeadline" Title="Tremin" Width="50px" Filterable="false">
+                <RadzenGridColumn TItem="ReminderViewModel" Property="IsDeadline" Title="Tremin" Width="60px" Filterable="false">
                     <Template Context="record">
                         @if (record.IsDeadline)
                         {
@@ -89,5 +89,28 @@
                 </RadzenGridColumn>
             </Columns>
         </RadzenGrid>
+
+
+        @if (App.CalendarPage.SelectedReminder != null)
+        {
+            <div class="details">
+                <p><strong>Klient:</strong> @App.CalendarPage.SelectedReminder.ParentClientName</p>
+                <p><strong>Sprawa:</strong> @App.CalendarPage.SelectedReminder.ParentCaseName</p>
+                <p><strong>Nazwa:</strong> @App.CalendarPage.SelectedReminder.Name</p>
+                <p><strong>Opis:</strong> @App.CalendarPage.SelectedReminder.Message</p>
+                <p><strong>Daty:</strong> @App.CalendarPage.SelectedReminder.Start<span>-</span>@App.CalendarPage.SelectedReminder.End </p>
+            </div>
+        }
+
+
+
+
+
+
+
+
+
+
+
     </RadzenCard>
 </div>

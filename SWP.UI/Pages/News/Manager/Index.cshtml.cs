@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using SWP.Application.LegalSwp.News;
+using SWP.Application.News;
 using SWP.UI.Pages.News.ViewModels;
 
 namespace SWP.UI.Pages.News.Manager

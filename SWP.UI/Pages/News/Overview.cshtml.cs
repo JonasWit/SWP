@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using SWP.Application.LegalSwp.News;
+using SWP.Application.News;
 using SWP.UI.Pages.News.ViewModels;
 using System;
 using System.Collections.Generic;

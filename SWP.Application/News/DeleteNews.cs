@@ -1,6 +1,6 @@
 ﻿using SWP.Domain.Infrastructure.Portal;
 
-namespace SWP.Application.LegalSwp.News
+namespace SWP.Application.News
 {
     [TransientService]
     public class DeleteNews

@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SWP.Application.LegalSwp.News
+namespace SWP.Application.News
 {
     [TransientService]
     public class GetNews

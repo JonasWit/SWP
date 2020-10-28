@@ -1,7 +1,7 @@
 ﻿using SWP.Domain.Infrastructure.Portal;
 using System;
 
-namespace SWP.Application.LegalSwp.News
+namespace SWP.Application.News
 {
     [TransientService]
     public class GetOneNews

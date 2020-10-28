@@ -1,11 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
-using SWP.Application;
 using SWP.Domain.Infrastructure.Portal;
 using SWP.Domain.Models.News;
 using System;
 using System.Threading.Tasks;
 
-namespace SWP.Application.LegalSwp.News
+namespace SWP.Application.News
 {
     [TransientService]
     public class CreateNews

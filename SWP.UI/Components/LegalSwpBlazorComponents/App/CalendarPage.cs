@@ -26,7 +26,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         public ReminderViewModel SelectedReminder { get; set; }
         public List<ReminderViewModel> Reminders { get; set; }
 
-        public CalendarPage(IServiceProvider serviceProvider, DialogService dialogService, GeneralViewModel generalViewModel) : base(serviceProvider) 
+        public CalendarPage(IServiceProvider serviceProvider, DialogService dialogService, GeneralViewModel generalViewModel) : base(serviceProvider)
         {
             _dialogService = dialogService;
             _generalViewModel = generalViewModel;
@@ -86,15 +86,22 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             }
         }
 
-        private void UpdateRemindersData()
+        public void UpdateRemindersData()
         {
             using var scope = _serviceProvider.CreateScope();
             var getCase = scope.ServiceProvider.GetRequiredService<GetCase>();
 
             foreach (var reminder in Reminders)
             {
-                reminder.ParentCaseName = getCase.GetCaseName(reminder.CaseId);
-                reminder.ParentClientName = getCase.GetCaseParentName(reminder.CaseId);
+                if (string.IsNullOrEmpty(reminder.ParentCaseName))
+                {
+                    reminder.ParentCaseName = getCase.GetCaseName(reminder.CaseId);
+                }
+
+                if (string.IsNullOrEmpty(reminder.ParentClientName))
+                {
+                    reminder.ParentClientName = getCase.GetCaseParentName(reminder.CaseId);
+                }
             }
         }
 

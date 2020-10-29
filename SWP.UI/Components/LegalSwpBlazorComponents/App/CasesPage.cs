@@ -281,6 +281,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
                     App.ActiveClientWithData.SelectedCase.Reminders.Add(newReminder);
                     App.CalendarPage.Reminders.Add(newReminder);
+                    App.CalendarPage.UpdateRemindersData();
                     await CasesScheduler.Reload();
                     App.ShowNotification(NotificationSeverity.Success, "Sukces!", $"Przypomnienie: {newReminder.Name} zostało dodane.", GeneralViewModel.NotificationDuration);
                 }

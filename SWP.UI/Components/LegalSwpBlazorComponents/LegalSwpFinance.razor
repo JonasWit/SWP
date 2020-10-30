@@ -30,140 +30,151 @@
                             <RadzenRequiredValidator Text="Nazwa nie może być pusta!" Component="Name" />
                             <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Name" />
                         </div>
-                    </div>
-                    <div class="form">
                         <div class="text">
                             <div class="label">
                                 <RadzenLabel Text="Rodzaj" />
                             </div>
                             <RadzenSelectBar @bind-Value="App.FinancePage.NewCashMovement.CashFlowDirection" TValue="int" Style="@(Gvm.FormInputBoxWidth)">
                                 <Items>
-                                    <RadzenSelectBarItem Text="Wpływ" Value="1" />
-                                    <RadzenSelectBarItem Text="Wydatek" Value="0" />
+                                    <RadzenSelectBarItem Text="Wpływ" Value="1" Style="font-size: 12px; width: 120px" />
+                                    <RadzenSelectBarItem Text="Wydatek" Value="0" Style="font-size: 12px;width: 120px" />
                                 </Items>
                             </RadzenSelectBar>
+                        </div>
+                        <div class="text">
+                            <div class="label">
+                                <RadzenLabel Text="Koszt Dodatkowy" Component="ExpenseBox" />
+                            </div>
+                            <RadzenCheckBox @bind-Value="@App.FinancePage.NewCashMovement.Expense" TValue="bool" />
                         </div>
                     </div>
                     <div class="form">
                         <div class="text">
-                            <RadzenCheckBox @bind-Value="@App.FinancePage.NewCashMovement.Expense" Style="margin-bottom: 20px" TValue="bool" />
-                            <RadzenLabel Text="Koszt Dodatkowy" Component="ExpenseBox" Style="margin-left: 5px;margin-bottom: 20px" />
+                            <div class="label">Kwota</div>
+                            <RadzenNumeric TValue="double" Placeholder="0.0" Step="0.01" @bind-Value="@App.FinancePage.NewCashMovement.Amount" Style="margin-bottom: 20px" />
+                        </div>
+                        <div class="text">
+                            <div class="label">Data</div>
+                            <RadzenDatePicker @bind-Value="App.FinancePage.NewCashMovement.EventDate" DateFormat="d" Name="EventDate" />
+                            <RadzenRequiredValidator Component="EventDate" Text="Data nie może być pusta!" Popup="true" />
                         </div>
                     </div>
 
-                    <div class="row">
-
-                        <h3>Kwota</h3>
-                        <RadzenNumeric TValue="double" Placeholder="0.0" Step="0.01" @bind-Value="@App.FinancePage.NewCashMovement.Amount" Style="margin-bottom: 20px" />
-
+                    <div class="form-btn">
+                        <div class="btn-add">
+                            <div>
+                                <RadzenButton ButtonType="ButtonType.Submit" Icon="save" Text="Zapisz" ButtonStyle="ButtonStyle.Secondary" Style="@(Gvm.GeneralButton)" />
+                            </div>
+                        </div>
                     </div>
-                    <div class="row">
 
-                        <h3>Data</h3>
-                        <RadzenDatePicker @bind-Value="App.FinancePage.NewCashMovement.EventDate" DateFormat="d" Name="EventDate" />
-                        <RadzenRequiredValidator Component="EventDate" Text="Data nie może być pusta!" Popup="true" />
-                    </div>
                 </RadzenFieldset>
-                <div>
-                    <div>
-                        <RadzenButton ButtonType="ButtonType.Submit" Icon="save" Text="Zapisz" />
-                    </div>
-                </div>
+
             </RadzenTemplateForm>
 
         </div>
     }
 
-    <div>
-        <RadzenGrid @ref="App.FinancePage.CashMovementGrid" AllowFiltering="true" AllowPaging="true" PageSize="10" AllowSorting="true" RowSelect="@(args => App.FinancePage.ActiveCashMovementChange(args))"
-                    Data="@(App.FinancePage.SelectedMonth == null ? App.ActiveClientWithData.CashMovements : App.ActiveClientWithData.CashMovements.Where(x => x.EventDate.Month == App.FinancePage.SelectedMonth.Month &&  x.EventDate.Year == App.FinancePage.SelectedMonth.Year))" TItem="CashMovementViewModel" RowUpdate="@App.FinancePage.OnUpdateCashMovementRow">
-            <Columns>
-                <RadzenGridColumn TItem="CashMovementViewModel" Property="Name" Title="Nazwa">
-                    <EditTemplate Context="c">
-                        <RadzenTextBox @bind-Value="c.Name" Style="width:100%; display: block" Name="Name" />
-                        <RadzenRequiredValidator Component="Name" Text="Nazwa nie może być pusta!" Popup="true" />
-                        <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Name" Popup="true" />
-                    </EditTemplate>
-                </RadzenGridColumn>
-                <RadzenGridColumn TItem="CashMovementViewModel" Property="Amount" Title="Kwota">
-                    <EditTemplate Context="c">
-                        <RadzenNumeric TValue="double" Step="0.01" @bind-Value="@c.Amount" Name="Amount" />
-                        <RadzenRequiredValidator Component="Amount" Text="Kwota nie może być pusta!" Popup="true" />
-                    </EditTemplate>
-                </RadzenGridColumn>
-                <RadzenGridColumn TItem="CashMovementViewModel" Property="Expense" Title="Koszt" Width="50px">
-                    <Template Context="c">
-                        @if (c.Expense)
-                        {
-                            <RadzenIcon Icon="money_off" Style="color : crimson" />
+    <div class="show-hide tab-section"><button class="show-hide-btn show-hide-btn-1 @(showSecondSection ? "button-active" : "")" @onclick="ShowHideSecondSection"><span>Transakcje</span></button></div>
+    @if (showSecondSection)
+    {
+        <div class="row-section">
+            <RadzenGrid @ref="App.FinancePage.CashMovementGrid" AllowFiltering="true" AllowPaging="true" PageSize="10" AllowSorting="true" RowSelect="@(args => App.FinancePage.ActiveCashMovementChange(args))"
+                        Data="@(App.FinancePage.SelectedMonth == null ? App.ActiveClientWithData.CashMovements : App.ActiveClientWithData.CashMovements.Where(x => x.EventDate.Month == App.FinancePage.SelectedMonth.Month && x.EventDate.Year == App.FinancePage.SelectedMonth.Year))" TItem="CashMovementViewModel" RowUpdate="@App.FinancePage.OnUpdateCashMovementRow">
+                <Columns>
+                    <RadzenGridColumn TItem="CashMovementViewModel" Property="Name" Title="Nazwa">
+                        <Template Context="c">
+                            <span Style="@(Gvm.TableFontSize)">@(c.Name)</span>
+                        </Template>
+                        <EditTemplate Context="c">
+                            <RadzenTextBox @bind-Value="c.Name" Style="@Gvm.FormInputBoxWidth" Name="Name" />
+                            <RadzenRequiredValidator Component="Name" Text="Nazwa nie może być pusta!" Popup="true" />
+                            <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Name" Popup="true" />
+                        </EditTemplate>
+                    </RadzenGridColumn>
+                    <RadzenGridColumn TItem="CashMovementViewModel" Property="Amount" Title="Kwota">
+                        <Template Context="c">
+                            <span Style="@(Gvm.TableFontSize)">@(c.Amount)</span>
+                        </Template>
+                        <EditTemplate Context="c">
+                            <RadzenNumeric TValue="double" Step="0.01" @bind-Value="@c.Amount" Name="Amount" Style="@Gvm.FormInputBoxWidth"/>
+                            <RadzenRequiredValidator Component="Amount" Text="Kwota nie może być pusta!" Popup="true" />
+                        </EditTemplate>
+                    </RadzenGridColumn>
+                    <RadzenGridColumn TItem="CashMovementViewModel" Property="Expense" Title="Koszt" Width="50px">
+                        <Template Context="c">
+                            @if (c.Expense)
+                            {
+                                <RadzenIcon Icon="money_off" Style="color : crimson" />
 
-                        }
-                    </Template>
-                    <EditTemplate Context="c">
-                        <RadzenCheckBox @bind-Value="@c.Expense" TValue="bool" />
-                    </EditTemplate>
-                </RadzenGridColumn>
+                            }
+                        </Template>
+                        <EditTemplate Context="c">
+                            <RadzenCheckBox @bind-Value="@c.Expense" TValue="bool" Style="@Gvm.FormInputBoxWidth"/>
+                        </EditTemplate>
+                    </RadzenGridColumn>
 
-                <RadzenGridColumn TItem="CashMovementViewModel" Property="EventDate" Title="Data">
-                    <Template Context="c">
-                        @String.Format("{0:d}", c.EventDate)
-                    </Template>
-                    <EditTemplate Context="c">
-                        <RadzenDatePicker @bind-Value="c.EventDate" DateFormat="d" Name="EventDate" />
-                        <RadzenRequiredValidator Component="EventDate" Text="Data nie może być pusta!" Popup="true" />
-                    </EditTemplate>
-                    <FilterTemplate>
-                        <RadzenDropDown AllowClear="true" TValue="int"
-                                        FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" FilterOperator="StringFilterOperator.StartsWith" AllowFiltering="true"
-                                        Data="@App.FinancePage.MonthsFilterData" TextProperty="DisplayText" ValueProperty="Id" Change="@(args => App.FinancePage.SelectedMonthChange(args))" />
-                    </FilterTemplate>
-                </RadzenGridColumn>
+                    <RadzenGridColumn TItem="CashMovementViewModel" Property="EventDate" Title="Data">
+                        <Template Context="c" Style="@(Gvm.TableFontSize)">
+                            @String.Format("{0:d}", c.EventDate)
+                        </Template>
+                        <EditTemplate Context="c">
+                            <RadzenDatePicker @bind-Value="c.EventDate" DateFormat="d" Name="EventDate" Style="@Gvm.FormInputBoxWidth" />
+                            <RadzenRequiredValidator Component="EventDate" Text="Data nie może być pusta!" Popup="true" />
+                        </EditTemplate>
+                        <FilterTemplate>
+                            <RadzenDropDown AllowClear="true" TValue="int"
+                                            FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" FilterOperator="StringFilterOperator.StartsWith" AllowFiltering="true"
+                                            Data="@App.FinancePage.MonthsFilterData" TextProperty="DisplayText" ValueProperty="Id" Change="@(args => App.FinancePage.SelectedMonthChange(args))" />
+                        </FilterTemplate>
+                    </RadzenGridColumn>
 
-                <RadzenGridColumn TItem="CashMovementViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="100px">
-                    <Template Context="c">
-                        <RadzenButton Icon="edit" Size="ButtonSize.Medium" Click="@(args => App.FinancePage.EditCashMovementRow(c))">
-                        </RadzenButton>
-                    </Template>
-                    <EditTemplate Context="c">
-                        <RadzenButton Icon="save" Size="ButtonSize.Medium" Click="@((args) => App.FinancePage.SaveCashMovementRow(c))">
-                        </RadzenButton>
-                        <RadzenButton Icon="cancel" Size="ButtonSize.Medium" ButtonStyle="ButtonStyle.Success" Click="@((args) => App.FinancePage.CancelCashMovementEdit(c))">
-                        </RadzenButton>
-                    </EditTemplate>
-                </RadzenGridColumn>
-                <RadzenGridColumn TItem="CashMovementViewModel" Context="order" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="50px">
-                    <Template Context="c">
-                        <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Medium" Click="@(async (args) => await App.FinancePage.DeleteCashMovementRow(c))">
-                        </RadzenButton>
-                    </Template>
-                    <EditTemplate Context="c">
-                    </EditTemplate>
-                </RadzenGridColumn>
-            </Columns>
-        </RadzenGrid>
-    </div>
+                    <RadzenGridColumn TItem="CashMovementViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="100px">
+                        <Template Context="c">
+                            <RadzenButton Icon="edit" Size="ButtonSize.Small" Click="@(args => App.FinancePage.EditCashMovementRow(c))">
+                            </RadzenButton>
+                        </Template>
+                        <EditTemplate Context="c">
+                            <RadzenButton Icon="save" Size="ButtonSize.Small" Click="@((args) => App.FinancePage.SaveCashMovementRow(c))">
+                            </RadzenButton>
+                            <RadzenButton Icon="cancel" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Success" Click="@((args) => App.FinancePage.CancelCashMovementEdit(c))">
+                            </RadzenButton>
+                        </EditTemplate>
+                    </RadzenGridColumn>
+                    <RadzenGridColumn TItem="CashMovementViewModel" Context="order" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="50px">
+                        <Template Context="c">
+                            <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Medium" Click="@(async (args) => await App.FinancePage.DeleteCashMovementRow(c))">
+                            </RadzenButton>
+                        </Template>
+                        <EditTemplate Context="c">
+                        </EditTemplate>
+                    </RadzenGridColumn>
+                </Columns>
+            </RadzenGrid>
+        </div>
 
-    <div class="col-md-6">
+        <div class="col-md-6">
 
-        <RadzenCard>
-            <div class="row">
-                @if (App.ActiveClientWithData.SelectedCashMovement != null)
-                {
-                    <div class="col-md-6">
-                        <div>Nazwa:</div>
-                        <b>@App.ActiveClientWithData.SelectedCashMovement.Name</b>
-                        <div>Kwota:</div>
-                        <b>@App.ActiveClientWithData.SelectedCashMovement.Amount</b>
-                    </div>
-                }
-                else
-                {
-                    <p>Wybierz kwotę!</p>
-                }
-            </div>
-        </RadzenCard>
+            <RadzenCard>
+                <div class="row">
+                    @if (App.ActiveClientWithData.SelectedCashMovement != null)
+                    {
+                        <div class="col-md-6">
+                            <div>Nazwa:</div>
+                            <b>@App.ActiveClientWithData.SelectedCashMovement.Name</b>
+                            <div>Kwota:</div>
+                            <b>@App.ActiveClientWithData.SelectedCashMovement.Amount</b>
+                        </div>
+                    }
+                    else
+                    {
+                        <p>Wybierz kwotę!</p>
+                    }
+                </div>
+            </RadzenCard>
 
 
+        </div>
 
-    </div>
+    }
 </div>

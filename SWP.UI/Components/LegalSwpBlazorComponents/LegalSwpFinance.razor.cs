@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Radzen;
 using SWP.UI.Components.LegalSwpBlazorComponents.App;
 using SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data;
 using System;
@@ -15,6 +16,9 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
 
         [Inject]
         public GeneralViewModel Gvm { get; set; }
+
+        [Inject]
+        public TooltipService TooltipService { get; set; }
 
         public bool showFirstSection = false;
         public void ShowHideFirstSection() => showFirstSection = !showFirstSection;

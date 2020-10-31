@@ -103,6 +103,12 @@ ul, li {
     /*flex-grow: 1;*/
 }
 
+.form-row2 {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin-bottom: 20px;
+}
 .form-btn {
     display: flex;
     flex-direction: row;

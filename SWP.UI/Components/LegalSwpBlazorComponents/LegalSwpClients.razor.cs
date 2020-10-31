@@ -2,10 +2,6 @@
 using Radzen;
 using SWP.UI.Components.LegalSwpBlazorComponents.App;
 using SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace SWP.UI.Components.LegalSwpBlazorComponents
 {

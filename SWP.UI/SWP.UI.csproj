@@ -19,8 +19,8 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.1.9" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.4" />
     <PackageReference Include="NETCore.MailKit" Version="2.0.3" />
-    <PackageReference Include="Quartz" Version="3.2.2" />
-    <PackageReference Include="Radzen.Blazor" Version="2.15.19" />
+    <PackageReference Include="Quartz" Version="3.2.3" />
+    <PackageReference Include="Radzen.Blazor" Version="2.15.20" />
     <PackageReference Include="SendGrid" Version="9.21.0" />
   </ItemGroup>
 

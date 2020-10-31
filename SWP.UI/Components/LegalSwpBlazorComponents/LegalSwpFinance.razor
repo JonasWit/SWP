@@ -115,7 +115,7 @@
                     </RadzenGridColumn>
 
                     <RadzenGridColumn TItem="CashMovementViewModel" Property="EventDate" Title="Data">
-                        <Template Context="c" Style="@(Gvm.TableFontSize)">
+                        <Template Context="c">
                             @String.Format("{0:d}", c.EventDate)
                         </Template>
                         <EditTemplate Context="c">

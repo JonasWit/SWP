@@ -225,7 +225,7 @@
     @if (showThirdSection)
     {
         <div class="row-section">
-            <RadzenTemplateForm Data="@App.ProductivityPage.NewTimesheetReport" Submit="@(async (LegalTimeSheetReport.ReportData args) => { await App.ProductivityPage.GenerateTimesheetReport(args); })">
+            <RadzenTemplateForm Data="@App.ProductivityPage.NewTimesheetReport" Submit="@(async (LegalTimeSheetReport.ReportData args) => { await GenerateTimesheetReport(args); })">
                 <RadzenFieldset Text="Eksportuj dane do pdf">
                     <div class="help-box">
                         <i class="user-icon"><img src="/Images/icons8-reception-36.png" /></i>

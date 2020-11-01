@@ -7,6 +7,7 @@ using SWP.UI.Utilities;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace SWP.UI.Components.LegalSwpBlazorComponents.App.Reporting
 {
@@ -45,10 +46,10 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App.Reporting
             _jSRuntime = jSRuntime;
         }
             
-        public void GeneratePDF(ReportData reportData)
+        public async Task GeneratePDF(ReportData reportData)
         {
             _reportData = reportData;
-            _jSRuntime.InvokeAsync<List<TimeRecordViewModel>>(
+            await _jSRuntime.InvokeAsync<List<TimeRecordViewModel>>(
                     "saveAsFile",
                     $"{_reportData.ReportName}.pdf",
                     Convert.ToBase64String(Report())

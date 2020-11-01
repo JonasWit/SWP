@@ -226,55 +226,80 @@
     {
         <div class="row-section">
             <RadzenTemplateForm Data="@App.ProductivityPage.NewTimesheetReport" Submit="@(async (LegalTimeSheetReport.ReportData args) => { await App.ProductivityPage.GenerateTimesheetReport(args); })">
-                <RadzenFieldset Text="Wprowadź nową czynność i czas">
+                <RadzenFieldset Text="Eksportuj dane do pdf">
+                    <div class="help-box">
+                        <i class="user-icon"><img src="/Images/icons8-reception-36.png" /></i>
+
+                        @if (infoBoxVisibleII)
+                        {
+                            <div class="info-text">
+                                <p>Zarządzaj listą swoich klientów. Użyj guzika "Dodaj Nowego Klienta",aby uzupełnić listę kontaktów.</p>
+                                <p>Edytuj oraz usuwaj Klientów z głównej listy. Tekst do zupełnienia.</p>
+                            </div>
+                        }
+                        <button class="info" @onclick="ShowHideInfoBoxII"></button>
+                    </div>
                     <div class="form">
                         <div class="text">
                             <div class="label">
                                 <RadzenLabel Text="NIP" Component="NIP" />
                             </div>
-                            <RadzenMask Mask="***-**-**-***" Pattern="[^0-9]" Placeholder="000-00-00-000" Name="NIP" @bind-Value="@App.ProductivityPage.NewTimesheetReport.NIP" Style="margin-bottom: 20px" />
+                            <RadzenMask Mask="***-**-**-***" Pattern="[^0-9]" Placeholder="000-00-00-000" Name="NIP" @bind-Value="@App.ProductivityPage.NewTimesheetReport.NIP" />
                         </div>
                         <div class="text">
                             <div class="label">
                                 <RadzenLabel Text="Numer Faktury" Component="InvoiceNo" />
                             </div>
                             <RadzenTextBox Placeholder="Numer Faktury..." Style="@(Gvm.FormInputBoxWidth)" @bind-Value="App.ProductivityPage.NewTimesheetReport.InvoiceNumber" Name="InvoiceNo" />
-                        
-                        <div class="label">
-                            <RadzenLabel Text="Uzyj tego przefiltrowanego miesiaca" Component="UseSelected" />
-                            <RadzenCheckBox @bind-Value="@App.ProductivityPage.NewTimesheetReport.UseSelectedMonth" TValue="bool" Name="UseSelected" />
+                        </div>
+                        <div class="text">
+                            <div class="label">
+                                <RadzenLabel Text="Data Faktury" Component="InvoiceDate" />
+                            </div>
+                            <RadzenDatePicker @bind-Value="App.ProductivityPage.NewTimesheetReport.InvoiceDate" DateFormat="d" Name="InvoiceDate" />
+                            <RadzenRequiredValidator Component="InvoiceDate" Text="Data Faktury nie moze byc pusta!" />
+                            <div class="label">
+                                <RadzenCheckBox @bind-Value="@App.ProductivityPage.NewTimesheetReport.UseSelectedMonth" TValue="bool" Name="UseSelected" />
+                                <RadzenLabel Text="Uzyj tego przefiltrowanego miesiaca" Component="UseSelected" />
+                            </div>
+
                         </div>
                     </div>
+                    <div class="form">
+                        <div class="text">
+                            <div class="label">
+                                <RadzenLabel Text="Data Początkowa" Component="StartDate" />
+                            </div>
+                            <RadzenDatePicker @bind-Value="App.ProductivityPage.NewTimesheetReport.StartDate" DateFormat="d" Name="StartDate" />
+                        </div>
+                        <div class="text">
+                            <div class="label">
+                                <RadzenLabel Text="Data Końcowa" Component="EndDate" />
+                            </div>
+                            <RadzenDatePicker @bind-Value="App.ProductivityPage.NewTimesheetReport.EndDate" DateFormat="d" Name="EndDate" />
+                        </div>
+                        <div class="text">
+                            <div class="label">
+                                <RadzenLabel Text="Czcionka" Component="FontBox" />
+                            </div>
+                            <RadzenDropDown AllowClear="true" TValue="int"
+                                            FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" FilterOperator="StringFilterOperator.StartsWith" AllowFiltering="true" Name="FontBox"
+                                            Data="@App.ProductivityPage.FontsFilterData" TextProperty="DisplayText" ValueProperty="Id" Change="@(args => App.ProductivityPage.SelectedFontChange(args))" />
+                        </div>
+                    </div>
+                    <div class="form-btn">
+                        <div class="btn-add">
+                            <RadzenButton ButtonStyle="ButtonStyle.Secondary" ButtonType="ButtonType.Submit" Icon="save" Text="Zapisz" Style="@(Gvm.GeneralButton)" />
+                        </div>
+                    </div>
+                </RadzenFieldset>
+            </RadzenTemplateForm>
         </div>
-
-
-        <RadzenLabel Text="Data Faktury" Component="InvoiceDate" Style="margin-left: 5px;margin-bottom: 20px" />
-        <RadzenDatePicker @bind-Value="App.ProductivityPage.NewTimesheetReport.InvoiceDate" DateFormat="d" Name="InvoiceDate" />
-        <RadzenRequiredValidator Component="InvoiceDate" Text="Data Faktury nie moze byc pusta!" Popup="true" />
-
-        <RadzenLabel Text="Data Początkowa" Component="StartDate" Style="margin-left: 5px;margin-bottom: 20px" />
-        <RadzenDatePicker @bind-Value="App.ProductivityPage.NewTimesheetReport.StartDate" DateFormat="d" Name="StartDate" />
-
-        <RadzenLabel Text="Data Końcowa" Component="EndDate" Style="margin-left: 5px;margin-bottom: 20px" />
-        <RadzenDatePicker @bind-Value="App.ProductivityPage.NewTimesheetReport.EndDate" DateFormat="d" Name="EndDate" />
-
-        <RadzenLabel Text="Czcionka" Component="FontBox" Style="margin-left: 5px;margin-bottom: 20px" />
-        <RadzenDropDown AllowClear="true" TValue="int"
-                        FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" FilterOperator="StringFilterOperator.StartsWith" AllowFiltering="true" Name="FontBox"
-                        Data="@App.ProductivityPage.FontsFilterData" TextProperty="DisplayText" ValueProperty="Id" Change="@(args => App.ProductivityPage.SelectedFontChange(args))" />
-        <div class="form-btn">
-            <div class="btn-add">
-                <RadzenButton ButtonStyle="ButtonStyle.Secondary" ButtonType="ButtonType.Submit" Icon="save" Text="Zapisz" Style="@(Gvm.GeneralButton)" />
-            </div>
-        </div>
-        </RadzenFieldset>
-        </RadzenTemplateForm>
-    </div>
-}
-    </div>
-
-    @code {
-
-        private void ShowTooltip(ElementReference elementReference, TooltipOptions options = null) => TooltipService.Open(elementReference, options.Text, options);
-
     }
+</div>
+
+@code {
+
+    private void ShowTooltip(ElementReference elementReference, TooltipOptions options = null) => TooltipService.Open(elementReference, options.Text, options);
+
+}

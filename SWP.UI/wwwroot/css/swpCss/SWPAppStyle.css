@@ -38,13 +38,24 @@ ul, li {
     cursor: pointer;
 }
 
+.nav-item {
+    padding: 2px;
+    transition: padding 0.2s;
+    
+}
+
 .nav-item:active {
     font-weight: bold;
 }
 
-.nav-item:hover {
-    opacity: 0.7;
-}
+    .nav-item:hover {
+        opacity: 0.7;
+        font-weight: bold;
+        background: #53a7ea;
+        color: #fff;
+        padding: 8px 15px;
+        
+    }
 
 .input-group {
     margin-top: 20px;
@@ -100,6 +111,7 @@ ul, li {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    /*flex-wrap: wrap;*/
     /*flex-grow: 1;*/
 }
 

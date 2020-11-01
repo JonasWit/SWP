@@ -1,6 +1,90 @@
 ﻿
 <div class="flex-container-main">
-    <div class="show-hide tab-section"><button class="show-hide-btn show-hide-btn-1 @(showFirstSection ? "button-active" : "")" @onclick="ShowHideFirstSection"><span>Placeholder</span></button></div>
+
+    <div class="show-hide tab-section"><button class="show-hide-btn show-hide-btn-1 @(showSecondSection ? "button-active" : "")" @onclick="ShowHideSecondSection"><span>Dodaj nowy czas</span></button></div>
+    @if (showSecondSection)
+    {
+        <div class="row-section">
+            <RadzenTemplateForm Data="@App.ProductivityPage.NewTimeRecord" Submit="@(async (CreateTimeRecord.Request args) => { await App.ProductivityPage.SubmitNewTimeRecord(args); })">
+                <RadzenFieldset Text="Wprowadź nową czynność i czas">
+                    <div class="help-box">
+                        <i class="user-icon"><img src="/Images/icons8-reception-36.png" /></i>
+
+                        @if (infoBoxVisibleI)
+                        {
+                            <div class="info-text">
+                                <p>Zarządzaj listą swoich klientów. Użyj guzika "Dodaj Nowego Klienta",aby uzupełnić listę kontaktów.</p>
+                                <p>Edytuj oraz usuwaj Klientów z głównej listy. Tekst do zupełnienia.</p>
+                            </div>
+                        }
+                        <button class="info" @onclick="ShowHideInfoBoxI"></button>
+                    </div>
+
+                    <div class="form">
+                        <div class="text">
+                            <div class="label">
+                                <RadzenLabel Text="Prawnik" />
+                            </div>
+                            <RadzenTextBox Placeholder="Prawnik..." Style="@(Gvm.FormInputBoxWidth)" @bind-Value="App.ProductivityPage.NewTimeRecord.Lawyer" Name="Lawyer" />
+                            <RadzenLengthValidator Max="200" Text="Maksymalnie 200 znaków" Component="Lawyer" />
+                        </div>
+
+                        <div class="text">
+                            <div class="label">
+                                <RadzenLabel Text="Nazwa" />
+                            </div>
+                            <RadzenTextBox Placeholder="Nazwa Sprawy..." Style="@(Gvm.FormInputBoxWidth)" @bind-Value="App.ProductivityPage.NewTimeRecord.Name" Name="Name" />
+                            <RadzenRequiredValidator Text="Nazwa nie może być pusta!" Component="Name" />
+                            <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Name" />
+                        </div>
+
+                        <div class="text">
+                            <div class="label">
+                                <RadzenLabel Text="Opis" />
+                            </div>
+                            <RadzenTextArea Placeholder="Opis..." Style="@(Gvm.FormInputBoxWidth)" @bind-Value="App.ProductivityPage.NewTimeRecord.Description" Name="Description" />
+                            <RadzenLengthValidator Max="500" Text="Maksymalnie 500 znaków" Component="Description" />
+                        </div>
+
+                    </div>
+                    <div class="form">
+                        <div class="text">
+                            <div class="label"><RadzenLabel Text="Godziny" /></div>
+                            <RadzenNumeric TValue="int" Style="margin-bottom: 20px" @bind-Value="App.ProductivityPage.NewTimeRecord.RecordedHours" Name="Hours" Placeholder="0" />
+                            <RadzenRequiredValidator Text="Czas musi być wprowadzony!" Component="Hours" Popup="true" />
+                            <RadzenNumericRangeValidator Component="Hours" Min="0" Text="Wartość dla godzin nie może być mniejsza od zera!" Style="position: absolute" />
+                        </div>
+
+                        <div class="text">
+                            <div class="label">
+                                <RadzenLabel Text="Minuty" />
+                            </div>
+                            <RadzenNumeric TValue="int" Style="margin-bottom: 20px" @bind-Value="App.ProductivityPage.NewTimeRecord.RecordedMinutes" Name="Minutes" Placeholder="1" />
+                            <RadzenRequiredValidator Text="Czas musi być wprowadzony!" Component="Minutes" Popup="true" />
+                            <RadzenNumericRangeValidator Component="Minutes" Min="0" Text="Wartość dla minut nie może być mniejsza od zera!" Style="position: absolute" />
+                            <RadzenNumericRangeValidator Component="Minutes" Max="59" Text="Wartość dla minut nie może być większa od 59!" Style="position: absolute" />
+                        </div>
+                        <div class="text">
+                            <div class="label"><RadzenLabel Text="Stawka" /></div>
+                            <RadzenNumeric TValue="double" Placeholder="0.0" Step="0.01" @bind-Value="@App.ProductivityPage.NewTimeRecord.Rate" Style="margin-bottom: 20px" />
+                        </div>
+                        <div class="text">
+                            <div class="label"><RadzenLabel Text="Data" /> </div>
+                            <RadzenDatePicker @bind-Value="App.ProductivityPage.NewTimeRecord.EventDate" DateFormat="d" Name="EventDate" />
+                            <RadzenRequiredValidator Component="EventDate" Text="Data nie może być pusta!" Popup="true" />
+                        </div>
+                    </div>
+                    <div class="form-btn">
+                        <div class="btn-add">
+                            <RadzenButton ButtonStyle="ButtonStyle.Secondary" ButtonType="ButtonType.Submit" Icon="save" Text="Zapisz" Style="@(Gvm.GeneralButton)" />
+                        </div>
+                    </div>
+                </RadzenFieldset>
+            </RadzenTemplateForm>
+        </div>
+    }
+
+    <div class="show-hide tab-section"><button class="show-hide-btn show-hide-btn-1 @(showFirstSection ? "button-active" : "")" @onclick="ShowHideFirstSection"><span>Lista czasów?</span></button></div>
     @if (showFirstSection)
     {
         <div class="row-section">
@@ -102,7 +186,7 @@
                     </RadzenGridColumn>
                     <RadzenGridColumn TItem="TimeRecordViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="50px">
                         <Template Context="r">
-                            <RadzenButton ButtonStyle="ButtonStyle.Success" Icon="monetization_on" Size="ButtonSize.Small" Click="@(async (args) => await App.ProductivityPage.AddRecordRowToCashMovements(r))">
+                            <RadzenButton ButtonStyle="ButtonStyle.Success" Icon="monetization_on" Size="ButtonSize.Small" Click="@(async (args) => await App.ProductivityPage.AddRecordRowToCashMovements(r))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Dodaj do rozliczenia", Style=Gvm.ToolTipStyle }))">
                             </RadzenButton>
                         </Template>
                     </RadzenGridColumn>
@@ -116,7 +200,6 @@
                     </RadzenGridColumn>
                 </Columns>
             </RadzenGrid>
-
         </div>
         <div class="details">
             <p><strong>Klient: </strong>@App.ActiveClient.Name</p>
@@ -125,6 +208,10 @@
             {
                 <p><strong>Nazwa: </strong>@App.ActiveClientWithData.SelectedTimeRecord.Name</p>
                 <p><strong>Opis: </strong>@App.ActiveClientWithData.SelectedTimeRecord.Description</p>
+                <p><strong>Data utworzenia:</strong>@App.ActiveClientWithData.SelectedTimeRecord.Created</p>
+                <p><strong>Stworzono przez:</strong>@App.ActiveClientWithData.SelectedTimeRecord.CreatedBy</p>
+                <p><strong>Data zmiany:</strong>@App.ActiveClientWithData.SelectedTimeRecord.Updated</p>
+                <p><strong>Zmianiono przez:</strong>@App.ActiveClientWithData.SelectedTimeRecord.UpdatedBy</p>
 
             }
             else
@@ -132,114 +219,62 @@
                 <p>Wybierz kwotę!</p>
             }
         </div>
-
-
-
-
     }
 
-
-    <RadzenCard>
-        <RadzenTemplateForm Data="@App.ProductivityPage.NewTimeRecord" Submit="@(async (CreateTimeRecord.Request args) => { await App.ProductivityPage.SubmitNewTimeRecord(args); })">
-            <div class="row">
+    <div class="show-hide tab-section"><button class="show-hide-btn show-hide-btn-1 @(showThirdSection ? "button-active" : "")" @onclick="ShowHideThirdSection"><span>Eksportuj dane</span></button></div>
+    @if (showThirdSection)
+    {
+        <div class="row-section">
+            <RadzenTemplateForm Data="@App.ProductivityPage.NewTimesheetReport" Submit="@(async (LegalTimeSheetReport.ReportData args) => { await App.ProductivityPage.GenerateTimesheetReport(args); })">
                 <RadzenFieldset Text="Wprowadź nową czynność i czas">
-                    <div class="row">
-                        <div class="col-md-8 m-5">
-                            <RadzenTextBox Placeholder="Nazwa Srawy..." Style="margin-bottom: 30px" @bind-Value="App.ProductivityPage.NewTimeRecord.Name" Name="Name" />
-                            <RadzenRequiredValidator Text="Nazwa nie może być pusta!" Component="Name" Popup="true" />
-                            <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Name" Popup="true" />
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-8 m-5">
-                            <RadzenTextArea Placeholder="Opis..." Style="margin-bottom: 30px" @bind-Value="App.ProductivityPage.NewTimeRecord.Description" Name="Description" />
-                            <RadzenLengthValidator Max="500" Text="Maksymalnie 500 znaków" Component="Description" Popup="true" />
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-8 m-5">
-                            <RadzenTextArea Placeholder="Prawnik..." Style="margin-bottom: 30px" @bind-Value="App.ProductivityPage.NewTimeRecord.Lawyer" Name="Lawyer" />
-                            <RadzenLengthValidator Max="200" Text="Maksymalnie 200 znaków" Component="Lawyer" Popup="true" />
-                        </div>
-                    </div>
-                    <div class="row">
-
-                        <RadzenLabel Text="Godziny"></RadzenLabel>
-                        <RadzenNumeric TValue="int" Style="margin-bottom: 20px" @bind-Value="App.ProductivityPage.NewTimeRecord.RecordedHours" Name="Hours" Placeholder="0" />
-                        <RadzenRequiredValidator Text="Czas musi być wprowadzony!" Component="Hours" Popup="true" />
-                        <RadzenNumericRangeValidator Component="Hours" Min="0" Text="Wartość dla godzin nie może być mniejsza od zera!" Style="position: absolute" />
-
-                        <RadzenLabel Text="Stawka"></RadzenLabel>
-                        <RadzenNumeric TValue="double" Placeholder="0.0" Step="0.01" @bind-Value="@App.ProductivityPage.NewTimeRecord.Rate" Style="margin-bottom: 20px" />
-
-                        <RadzenLabel Text="Minuty"></RadzenLabel>
-                        <RadzenNumeric TValue="int" Style="margin-bottom: 20px" @bind-Value="App.ProductivityPage.NewTimeRecord.RecordedMinutes" Name="Minutes" Placeholder="1" />
-                        <RadzenRequiredValidator Text="Czas musi być wprowadzony!" Component="Minutes" Popup="true" />
-                        <RadzenNumericRangeValidator Component="Minutes" Min="0" Text="Wartość dla minut nie może być mniejsza od zera!" Style="position: absolute" />
-                        <RadzenNumericRangeValidator Component="Minutes" Max="59" Text="Wartość dla minut nie może być większa od 59!" Style="position: absolute" />
-                    </div>
-                    <div class="row">
-
-                        <h3>Data</h3>
-                        <RadzenDatePicker @bind-Value="App.ProductivityPage.NewTimeRecord.EventDate" DateFormat="d" Name="EventDate" />
-                        <RadzenRequiredValidator Component="EventDate" Text="Data nie może być pusta!" Popup="true" />
-                    </div>
-                </RadzenFieldset>
-            </div>
-            <div class="row justify-content-center">
-                <div class="col-md-12 d-flex align-items-end justify-content-center" style="margin-top: 16px;">
-                    <RadzenButton ButtonStyle="ButtonStyle.Secondary" ButtonType="ButtonType.Submit" Icon="save" Text="Zapisz" />
-                </div>
-            </div>
-        </RadzenTemplateForm>
-    </RadzenCard>
-
-    <RadzenCard>
-        <RadzenTemplateForm Data="@App.ProductivityPage.NewTimesheetReport" Submit="@(async (LegalTimeSheetReport.ReportData args) => { await App.ProductivityPage.GenerateTimesheetReport(args); })">
-            <div class="row">
-                <RadzenFieldset Text="Wprowadź nową czynność i czas">
-                    <div class="row">
-                        <div class="col-md-8 m-5">
-                            <RadzenLabel Text="NIP" Component="NIP" Style="margin-left: 5px;margin-bottom: 20px" />
+                    <div class="form">
+                        <div class="text">
+                            <div class="label">
+                                <RadzenLabel Text="NIP" Component="NIP" />
+                            </div>
                             <RadzenMask Mask="***-**-**-***" Pattern="[^0-9]" Placeholder="000-00-00-000" Name="NIP" @bind-Value="@App.ProductivityPage.NewTimesheetReport.NIP" Style="margin-bottom: 20px" />
                         </div>
+                        <div class="text">
+                            <div class="label">
+                                <RadzenLabel Text="Numer Faktury" Component="InvoiceNo" />
+                            </div>
+                            <RadzenTextBox Placeholder="Numer Faktury..." Style="@(Gvm.FormInputBoxWidth)" @bind-Value="App.ProductivityPage.NewTimesheetReport.InvoiceNumber" Name="InvoiceNo" />
+                        
+                        <div class="label">
+                            <RadzenLabel Text="Uzyj tego przefiltrowanego miesiaca" Component="UseSelected" />
+                            <RadzenCheckBox @bind-Value="@App.ProductivityPage.NewTimesheetReport.UseSelectedMonth" TValue="bool" Name="UseSelected" />
+                        </div>
                     </div>
+        </div>
 
-                    <RadzenLabel Text="Numer Faktury" Component="InvoiceNo" Style="margin-left: 5px;margin-bottom: 20px" />
-                    <RadzenTextArea Placeholder="Numer Faktury..." Style="margin-bottom: 30px" @bind-Value="App.ProductivityPage.NewTimesheetReport.InvoiceNumber" Name="InvoiceNo" />
 
-                    <RadzenLabel Text="Uzyj tego przefiltrowanego miesiaca" Component="UseSelected" Style="margin-left: 5px;margin-bottom: 20px" />
-                    <RadzenCheckBox @bind-Value="@App.ProductivityPage.NewTimesheetReport.UseSelectedMonth" Style="margin-bottom: 20px" TValue="bool" Name="UseSelected" />
+        <RadzenLabel Text="Data Faktury" Component="InvoiceDate" Style="margin-left: 5px;margin-bottom: 20px" />
+        <RadzenDatePicker @bind-Value="App.ProductivityPage.NewTimesheetReport.InvoiceDate" DateFormat="d" Name="InvoiceDate" />
+        <RadzenRequiredValidator Component="InvoiceDate" Text="Data Faktury nie moze byc pusta!" Popup="true" />
 
-                    <RadzenLabel Text="Data Faktury" Component="InvoiceDate" Style="margin-left: 5px;margin-bottom: 20px" />
-                    <RadzenDatePicker @bind-Value="App.ProductivityPage.NewTimesheetReport.InvoiceDate" DateFormat="d" Name="InvoiceDate" />
-                    <RadzenRequiredValidator Component="InvoiceDate" Text="Data Faktury nie moze byc pusta!" Popup="true" />
+        <RadzenLabel Text="Data Początkowa" Component="StartDate" Style="margin-left: 5px;margin-bottom: 20px" />
+        <RadzenDatePicker @bind-Value="App.ProductivityPage.NewTimesheetReport.StartDate" DateFormat="d" Name="StartDate" />
 
-                    <RadzenLabel Text="Data Początkowa" Component="StartDate" Style="margin-left: 5px;margin-bottom: 20px" />
-                    <RadzenDatePicker @bind-Value="App.ProductivityPage.NewTimesheetReport.StartDate" DateFormat="d" Name="StartDate" />
+        <RadzenLabel Text="Data Końcowa" Component="EndDate" Style="margin-left: 5px;margin-bottom: 20px" />
+        <RadzenDatePicker @bind-Value="App.ProductivityPage.NewTimesheetReport.EndDate" DateFormat="d" Name="EndDate" />
 
-                    <RadzenLabel Text="Data Końcowa" Component="EndDate" Style="margin-left: 5px;margin-bottom: 20px" />
-                    <RadzenDatePicker @bind-Value="App.ProductivityPage.NewTimesheetReport.EndDate" DateFormat="d" Name="EndDate" />
-
-                    <RadzenLabel Text="Czcionka" Component="FontBox" Style="margin-left: 5px;margin-bottom: 20px" />
-                    <RadzenDropDown AllowClear="true" TValue="int"
-                                    FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" FilterOperator="StringFilterOperator.StartsWith" AllowFiltering="true" Name="FontBox"
-                                    Data="@App.ProductivityPage.FontsFilterData" TextProperty="DisplayText" ValueProperty="Id" Change="@(args => App.ProductivityPage.SelectedFontChange(args))" />
-
-                </RadzenFieldset>
+        <RadzenLabel Text="Czcionka" Component="FontBox" Style="margin-left: 5px;margin-bottom: 20px" />
+        <RadzenDropDown AllowClear="true" TValue="int"
+                        FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" FilterOperator="StringFilterOperator.StartsWith" AllowFiltering="true" Name="FontBox"
+                        Data="@App.ProductivityPage.FontsFilterData" TextProperty="DisplayText" ValueProperty="Id" Change="@(args => App.ProductivityPage.SelectedFontChange(args))" />
+        <div class="form-btn">
+            <div class="btn-add">
+                <RadzenButton ButtonStyle="ButtonStyle.Secondary" ButtonType="ButtonType.Submit" Icon="save" Text="Zapisz" Style="@(Gvm.GeneralButton)" />
             </div>
-            <div class="row justify-content-center">
-                <div class="col-md-12 d-flex align-items-end justify-content-center" style="margin-top: 16px;">
-                    <RadzenButton ButtonStyle="ButtonStyle.Secondary" ButtonType="ButtonType.Submit" Icon="save" Text="Zapisz" />
-                </div>
-            </div>
+        </div>
+        </RadzenFieldset>
         </RadzenTemplateForm>
-
-    </RadzenCard>
-</div>
-
-@code {
-
-    private void ShowTooltip(ElementReference elementReference, TooltipOptions options = null) => TooltipService.Open(elementReference, options.Text, options);
-
+    </div>
 }
+    </div>
+
+    @code {
+
+        private void ShowTooltip(ElementReference elementReference, TooltipOptions options = null) => TooltipService.Open(elementReference, options.Text, options);
+
+    }

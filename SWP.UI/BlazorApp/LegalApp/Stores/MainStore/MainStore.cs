@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using SWP.Application.LegalSwp.Clients;
 using SWP.Application.Log;
 using SWP.UI.BlazorApp.LegalApp.Stores.Enums;
+using SWP.UI.BlazorApp.LegalApp.Stores.MainStore.Actions;
 using SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data;
 using SWP.UI.Models;
 using System;
@@ -53,6 +54,12 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.MainStore
                     SetActivePanelAction setActivePanelAction = (SetActivePanelAction)action;
                     SetActivePanel(setActivePanelAction.ActivePanel);
                     break;
+                case ActivateLoadingAction.ActivateLoading:
+                    ActivateLoading();
+                    break;
+                case DeactivateLoadingAction.DeactivateLoading:
+                    DeactivateLoading();
+                    break;
                 default:
                     break;
             }
@@ -100,8 +107,8 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.MainStore
 
         public void SetActivePanel(Panels panel) => _state.ActivePanel = panel;
 
-
-
+        public void ActivateLoading() => _state.Loading = true;
+        public void DeactivateLoading() => _state.Loading = false;
 
 
         #region Observer pattern

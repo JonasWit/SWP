@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SWP.UI.BlazorApp.LegalApp.Stores.MainStore
+namespace SWP.UI.BlazorApp.LegalApp.Stores.MainStore.Actions
 {
     public class InitializeAction : IAction
     {

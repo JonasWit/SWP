@@ -27,7 +27,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         public List<ClientData> ProductivityData { get; set; } = new List<ClientData>();
         public double TotalBalance => ProductivityData.Count != 0 ? ProductivityData.Sum(x => x.DataByDate.Sum(y => y.Number)) : 0;
         public IdentityUser SelectedUser { get; set; }
-        public ColorScheme ColorScheme { get; set; } = ColorScheme.Monochrome;
+        public ColorScheme ColorScheme { get; set; } = ColorScheme.Pastel;
 
         public MyAppPage(IServiceProvider serviceProvider, DialogService dialogService, GeneralViewModel generalViewModel) : base(serviceProvider) 
         {

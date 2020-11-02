@@ -15,10 +15,13 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.MainStore
 {
     public class MainState
     {
+        public bool Loading { get; set; } = false;
+        public string LoadingMessage { get; set; }
         public string ActiveUserId { get; set; }
         public UserModel User { get; set; } = new UserModel();
         public List<ClientViewModel> Clients { get; set; } = new List<ClientViewModel>();
         public ClientViewModel ActiveClientWithData { get; set; }
+        public ClientViewModel ActiveClient { get; set; }
         public Panels ActivePanel { get; set; } = Panels.MyApp;
     }
 
@@ -95,13 +98,11 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.MainStore
             }
         }
 
-        public void SetActivePanel(Panels panel)
-        {
-            var currentState = _state;
-            currentState.ActivePanel = panel;
-            _state = currentState;
+        public void SetActivePanel(Panels panel) => _state.ActivePanel = panel;
 
-        }
+
+
+
 
         #region Observer pattern
 

@@ -9,5 +9,6 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.MainStore.Actions
     {
         public const string ActivateLoading = " ActivateLoading";
         public string Name => ActivateLoading;
+        public string LoadingMessage { get; set; }
     }
 }

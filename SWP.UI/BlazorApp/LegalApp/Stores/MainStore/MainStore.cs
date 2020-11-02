@@ -55,7 +55,8 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.MainStore
                     SetActivePanel(setActivePanelAction.ActivePanel);
                     break;
                 case ActivateLoadingAction.ActivateLoading:
-                    ActivateLoading();
+                    ActivateLoadingAction activateLoadingAction = (ActivateLoadingAction)action;
+                    ActivateLoading(activateLoadingAction.LoadingMessage);
                     break;
                 case DeactivateLoadingAction.DeactivateLoading:
                     DeactivateLoading();
@@ -107,9 +108,17 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.MainStore
 
         public void SetActivePanel(Panels panel) => _state.ActivePanel = panel;
 
-        public void ActivateLoading() => _state.Loading = true;
-        public void DeactivateLoading() => _state.Loading = false;
+        public void ActivateLoading(string message)
+        {
+            _state.LoadingMessage = message;
+            _state.Loading = true;
+        }
 
+        public void DeactivateLoading()
+        {
+            _state.LoadingMessage = "";
+            _state.Loading = false;
+        }
 
         #region Observer pattern
 

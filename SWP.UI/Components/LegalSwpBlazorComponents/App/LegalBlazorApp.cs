@@ -34,6 +34,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
         public ClientJobsPage ClientJobsPage { get; }
         public ArchivePage ArchivePage { get; }
         public ClientDetailsPage ClientDetailsPage { get; }
+
         public string SelectedClientString { get; set; }
         public ClientViewModel ActiveClientWithData { get; private set; }
         public Panels ActivePanel { get; private set; } = Panels.MyApp;

@@ -20,7 +20,7 @@
 
     <div class="flex-my-app">
         @if (App.MyAppPage.ProductivityData.Count != 0)
-        {<div class="app-balance app-balance-1">
+        {<div class="app-balance app-balance-1 grid">
                 @if (App.ActiveClient == null)
                 {
                     <h3>Całkowity Bilans Kancelarii</h3>
@@ -35,7 +35,7 @@
             </div>
         }
         @if (App.MyAppPage.ProductivityData.Count != 0)
-        {<div class="app-balance app-balance-2">
+        {<div class="app-balance app-balance-2 grid">
                 @if (App.ActiveClient == null)
                 {
                     <h3>Całkowity Bilans Kancelarii</h3>
@@ -51,7 +51,7 @@
         }
 
         @if (App.MyAppPage.ClientsCases.Count != 0)
-        {<div class="app-pie-chart">
+        {<div class="app-pie-chart grid">
                 <h3>Liczba spraw poszczególnych klientów</h3>
                 <RadzenChart ColorScheme="@App.MyAppPage.ColorScheme" Style="width: 500px;">
                     <RadzenPieSeries Data="@App.MyAppPage.ClientsCases" Title="Sprawy" CategoryProperty="Category" ValueProperty="Number" />
@@ -59,68 +59,68 @@
             </div>
         }
 
-           @if (App.MyAppPage.ProductivityData.Count != 0)
-        {<div class="app-line-chart app-line-chart-1">
-                
-                    <RadzenChart ColorScheme="@App.MyAppPage.ColorScheme">
-                        @foreach (var data in App.MyAppPage.ProductivityData)
-                        {
-                            <RadzenLineSeries Smooth="true" Data="@data.DataByDate" CategoryProperty="Date" Title="@data.Name" LineType="LineType.Solid" ValueProperty="Number">
-                                <RadzenMarkers MarkerType="MarkerType.Circle" />
-                            </RadzenLineSeries>
-                        }
-                        <RadzenCategoryAxis>
-                            <RadzenAxisTitle Text="Czas" />
-                        </RadzenCategoryAxis>
-                        <RadzenValueAxis Formatter="@FormatAsPLN">
-                            <RadzenGridLines Visible="true" />
-                            <RadzenAxisTitle Text="Bilans w PLN" />
-                        </RadzenValueAxis>
-                    </RadzenChart>
-              
+        @if (App.MyAppPage.ProductivityData.Count != 0)
+        {<div class="app-line-chart app-line-chart-1 grid">
+
+                <RadzenChart ColorScheme="@App.MyAppPage.ColorScheme">
+                    @foreach (var data in App.MyAppPage.ProductivityData)
+                    {
+                        <RadzenLineSeries Smooth="true" Data="@data.DataByDate" CategoryProperty="Date" Title="@data.Name" LineType="LineType.Solid" ValueProperty="Number">
+                            <RadzenMarkers MarkerType="MarkerType.Circle" />
+                        </RadzenLineSeries>
+                    }
+                    <RadzenCategoryAxis>
+                        <RadzenAxisTitle Text="Czas" />
+                    </RadzenCategoryAxis>
+                    <RadzenValueAxis Formatter="@FormatAsPLN">
+                        <RadzenGridLines Visible="true" />
+                        <RadzenAxisTitle Text="Bilans w PLN" />
+                    </RadzenValueAxis>
+                </RadzenChart>
+
             </div>
 
-            <div class="app-line-chart app-line-chart-2">
-         
-                    <RadzenChart ColorScheme="@App.MyAppPage.ColorScheme">
-                        @foreach (var data in App.MyAppPage.ProductivityData)
-                        {
-                            <RadzenLineSeries Smooth="true" Data="@data.DataByDate" CategoryProperty="Date" Title="@data.Name" LineType="LineType.Solid" ValueProperty="Expenses">
-                                <RadzenMarkers MarkerType="MarkerType.Circle" />
-                            </RadzenLineSeries>
-                        }
-                        <RadzenCategoryAxis>
-                            <RadzenAxisTitle Text="Czas" />
-                        </RadzenCategoryAxis>
-                        <RadzenValueAxis Formatter="@FormatAsPLN">
-                            <RadzenGridLines Visible="true" />
-                            <RadzenAxisTitle Text="Koszty w PLN" />
-                        </RadzenValueAxis>
-                    </RadzenChart>
-             
+            <div class="app-line-chart app-line-chart-2 grid">
+
+                <RadzenChart ColorScheme="@App.MyAppPage.ColorScheme">
+                    @foreach (var data in App.MyAppPage.ProductivityData)
+                    {
+                        <RadzenLineSeries Smooth="true" Data="@data.DataByDate" CategoryProperty="Date" Title="@data.Name" LineType="LineType.Solid" ValueProperty="Expenses">
+                            <RadzenMarkers MarkerType="MarkerType.Circle" />
+                        </RadzenLineSeries>
+                    }
+                    <RadzenCategoryAxis>
+                        <RadzenAxisTitle Text="Czas" />
+                    </RadzenCategoryAxis>
+                    <RadzenValueAxis Formatter="@FormatAsPLN">
+                        <RadzenGridLines Visible="true" />
+                        <RadzenAxisTitle Text="Koszty w PLN" />
+                    </RadzenValueAxis>
+                </RadzenChart>
+
             </div>
 
-            <div class="app-line-chart app-line-chart-3">
-               
-                    <RadzenChart ColorScheme="@App.MyAppPage.ColorScheme">
-                        @foreach (var data in App.MyAppPage.ProductivityData)
-                        {
-                            <RadzenLineSeries Smooth="true" Data="@data.DataByDate" CategoryProperty="Date" Title="@data.Name" LineType="LineType.Solid" ValueProperty="TimeNumber">
-                                <RadzenMarkers MarkerType="MarkerType.Circle" />
-                            </RadzenLineSeries>
-                        }
-                        <RadzenCategoryAxis>
-                            <RadzenAxisTitle Text="Czas" />
-                        </RadzenCategoryAxis>
-                        <RadzenValueAxis Formatter="@FormatAsTime">
-                            <RadzenGridLines Visible="true" />
-                            <RadzenAxisTitle Text="Czas poświęcony klientom" />
-                        </RadzenValueAxis>
-                    </RadzenChart>
-             
+            <div class="app-line-chart app-line-chart-3 grid">
+
+                <RadzenChart ColorScheme="@App.MyAppPage.ColorScheme">
+                    @foreach (var data in App.MyAppPage.ProductivityData)
+                    {
+                        <RadzenLineSeries Smooth="true" Data="@data.DataByDate" CategoryProperty="Date" Title="@data.Name" LineType="LineType.Solid" ValueProperty="TimeNumber">
+                            <RadzenMarkers MarkerType="MarkerType.Circle" />
+                        </RadzenLineSeries>
+                    }
+                    <RadzenCategoryAxis>
+                        <RadzenAxisTitle Text="Czas" />
+                    </RadzenCategoryAxis>
+                    <RadzenValueAxis Formatter="@FormatAsTime">
+                        <RadzenGridLines Visible="true" />
+                        <RadzenAxisTitle Text="Czas poświęcony klientom" />
+                    </RadzenValueAxis>
+                </RadzenChart>
+
             </div>
 
-            <div class="app-line-chart app-line-chart-4">
+            <div class="app-line-chart app-line-chart-4 grid">
                 <RadzenChart ColorScheme="@App.MyAppPage.ColorScheme">
                     @foreach (var data in App.MyAppPage.ProductivityData)
                     {

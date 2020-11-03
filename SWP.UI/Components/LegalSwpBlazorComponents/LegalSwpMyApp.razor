@@ -4,7 +4,13 @@
 
     <RadzenButton Click="App.ErrorPage.ThrowTestException">Zrób Błąd żeby zobaczyć Error Page!</RadzenButton>
 
-    <RadzenListBox AllowFiltering="true" @bind-Value="RelatedUsersFilterValue" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" Data="@App.User.RelatedUsers" TextProperty="UserName" ValueProperty="Id" Style="margin-bottom: 20px; height:200px;" Change="@(args => App.MyAppPage.SelectedUserChange(args))" />
+    @*<RadzenListBox AllowFiltering="true" @bind-Value="RelatedUsersFilterValue" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" Data="@App.User.RelatedUsers" TextProperty="UserName" ValueProperty="Id" Style="margin-bottom: 20px; height:200px;" Change="@(args => App.MyAppPage.SelectedUserChange(args))" />*@
+
+
+    <RadzenDropDown AllowClear="true"
+                    FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" FilterOperator="StringFilterOperator.StartsWith" AllowFiltering="true" @bind-Value="RelatedUsersFilterValue"
+                    Data="@App.User.RelatedUsers" TextProperty="UserName" ValueProperty="Id" Style="margin-bottom: 20px" Change="@(args => App.MyAppPage.SelectedUserChange(args))" />
+
 
     @if (App.MyAppPage.SelectedUser != null && App.User.RootClient && App.ActiveUserId != App.MyAppPage.SelectedUser.Id)
     {

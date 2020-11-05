@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SWP.UI.Controllers
 {
-    [Route("automation-api/[controller]")]
+    [Route("AutomationAPI/[controller]")]
     [ApiController]
     [ApiKeyAuth]
     public class AutomationController : ControllerBase

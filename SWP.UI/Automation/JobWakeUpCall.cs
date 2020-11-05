@@ -38,7 +38,7 @@ namespace SWP.UI.Automation
             HttpRequestMessage httpRequestMessage = new HttpRequestMessage
             {
                 Method = new HttpMethod("GET"),
-                RequestUri = new Uri($"{uri}/automation-api/Automation/WakeUpCall")
+                RequestUri = new Uri($"{uri}/AutomationAPI/Automation/WakeUpCall")
             };
 
             httpRequestMessage.Headers.Add("ApiKey", _configuration["ApiKey"]);

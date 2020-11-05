@@ -1,25 +1,18 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using System;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace SWP.UI.Controllers
+namespace SWP.UI.BlazorApp.LegalApp.Services
 {
-    [Route("LegalAppSpecificAPI/[controller]")]
-    [Authorize(Roles = "Users, Administrators")]
-    public class LegalApiController
+    [UITransientService]
+    public class GovAPIService
     {
         private readonly IHttpClientFactory _httpFactory;
 
-        public LegalApiController(IHttpClientFactory httpFactory)
-        {
-            _httpFactory = httpFactory;
-        }
+        public GovAPIService(IHttpClientFactory httpFactory) => _httpFactory = httpFactory;
 
-        [HttpGet("CourtsList")]
         public Task GetCoutrsList()
         {
             using var client = _httpFactory.CreateClient();
@@ -36,6 +29,8 @@ namespace SWP.UI.Controllers
 
             return Task.CompletedTask;
         }
+
+
 
 
 

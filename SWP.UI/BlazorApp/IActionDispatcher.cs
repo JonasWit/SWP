@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SWP.UI.BlazorApp.LegalApp
+namespace SWP.UI.BlazorApp
 {
     public interface IActionDispatcher
     {

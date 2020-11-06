@@ -68,7 +68,7 @@
     </div>
 
     @if (App.MyAppPage.ProductivityData.Count != 0)
-    {  <div class="flex-my-app">
+    {<div class="flex-my-app">
             <div class="app-line-chart app-line-chart-1 grid">
 
                 <RadzenChart ColorScheme="@App.MyAppPage.ColorScheme">
@@ -109,53 +109,53 @@
 
             </div>
         </div>
-    <div class="app-line-chart app-line-chart-3 grid">
+        <div class="app-line-chart app-line-chart-3 grid">
 
-        <RadzenChart ColorScheme="@App.MyAppPage.ColorScheme">
-            @foreach (var data in App.MyAppPage.ProductivityData)
-            {
-                <RadzenLineSeries Smooth="true" Data="@data.DataByDate" CategoryProperty="Date" Title="@data.Name" LineType="LineType.Solid" ValueProperty="TimeNumber">
-                    <RadzenMarkers MarkerType="MarkerType.Circle" />
-                </RadzenLineSeries>
-            }
-            <RadzenCategoryAxis>
-                <RadzenAxisTitle Text="Czas" />
-            </RadzenCategoryAxis>
-            <RadzenValueAxis Formatter="@FormatAsTime">
-                <RadzenGridLines Visible="true" />
-                <RadzenAxisTitle Text="Czas poświęcony klientom" />
-            </RadzenValueAxis>
-        </RadzenChart>
+            <RadzenChart ColorScheme="@App.MyAppPage.ColorScheme">
+                @foreach (var data in App.MyAppPage.ProductivityData)
+                {
+                    <RadzenLineSeries Smooth="true" Data="@data.DataByDate" CategoryProperty="Date" Title="@data.Name" LineType="LineType.Solid" ValueProperty="TimeNumber">
+                        <RadzenMarkers MarkerType="MarkerType.Circle" />
+                    </RadzenLineSeries>
+                }
+                <RadzenCategoryAxis>
+                    <RadzenAxisTitle Text="Czas" />
+                </RadzenCategoryAxis>
+                <RadzenValueAxis Formatter="@FormatAsTime">
+                    <RadzenGridLines Visible="true" />
+                    <RadzenAxisTitle Text="Czas poświęcony klientom" />
+                </RadzenValueAxis>
+            </RadzenChart>
 
-    </div>
+        </div>
 
-    <div class="app-line-chart app-line-chart-4 grid">
-        <RadzenChart ColorScheme="@App.MyAppPage.ColorScheme">
-            @foreach (var data in App.MyAppPage.ProductivityData)
-            {
-                <RadzenLineSeries Smooth="true" Data="@data.DataByDate" CategoryProperty="Date" Title="@data.Name" LineType="LineType.Solid" ValueProperty="ProductivityRatio">
-                    <RadzenMarkers MarkerType="MarkerType.Circle" />
-                </RadzenLineSeries>
-            }
-            <RadzenCategoryAxis>
-                <RadzenAxisTitle Text="Czas" />
-            </RadzenCategoryAxis>
-            <RadzenValueAxis Formatter="@FormatAsPLN">
-                <RadzenGridLines Visible="true" />
-                <RadzenAxisTitle Text="PLN / godzinę" />
-            </RadzenValueAxis>
-        </RadzenChart>
-    </div>
+        <div class="app-line-chart app-line-chart-4 grid">
+            <RadzenChart ColorScheme="@App.MyAppPage.ColorScheme">
+                @foreach (var data in App.MyAppPage.ProductivityData)
+                {
+                    <RadzenLineSeries Smooth="true" Data="@data.DataByDate" CategoryProperty="Date" Title="@data.Name" LineType="LineType.Solid" ValueProperty="ProductivityRatio">
+                        <RadzenMarkers MarkerType="MarkerType.Circle" />
+                    </RadzenLineSeries>
+                }
+                <RadzenCategoryAxis>
+                    <RadzenAxisTitle Text="Czas" />
+                </RadzenCategoryAxis>
+                <RadzenValueAxis Formatter="@FormatAsPLN">
+                    <RadzenGridLines Visible="true" />
+                    <RadzenAxisTitle Text="PLN / godzinę" />
+                </RadzenValueAxis>
+            </RadzenChart>
+        </div>
+
+    }
+    else
+    {
+        <h2>Aby zobaczyć statystyki wprowadź dane do sekcji Finanse i Produktywność</h2>
+    }
+
 
 }
 else
 {
-    <h2>Aby zobaczyć statystyki wprowadź dane do sekcji Finanse i Produktywność</h2>
+    <h2>Nie masz jeszcze zadnych klientow!</h2>
 }
-
-
-        }
-        else
-        {
-<h2>Nie masz jeszcze zadnych klientow!</h2>
-        }

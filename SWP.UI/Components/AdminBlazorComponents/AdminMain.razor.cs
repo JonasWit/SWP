@@ -1,31 +1,33 @@
 ﻿using Microsoft.AspNetCore.Components;
-using SWP.UI.Components.AdminBlazorComponents.App;
+using SWP.UI.BlazorApp;
+using SWP.UI.BlazorApp.AdminApp.Stores.ApplicationStore;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace SWP.UI.Components.AdminBlazorComponents
 {
     public partial class AdminMain : IDisposable
     {
+        [Inject]
+        public ApplicationStore ApplicationStore { get; set; }
         [Parameter]
         public string ActiveUserId { get; set; }
-        [Inject]
-        public AdminBlazorApp App { get; set; }
+
+        public void Dispose()
+        {
+            ApplicationStore.RemoveStateChangeListener(UpdateView);
+        }
+
+        private void UpdateView() => StateHasChanged();
 
         protected override async Task OnInitializedAsync()
         {
-            await App.Initialize(ActiveUserId);
-            App.CallStateHasChanged += new EventHandler(CallStateHasChanged);
+            base.OnInitialized();
+            ApplicationStore.AddStateChangeListener(UpdateView); //attach listener to the store
+            await ApplicationStore.InitializeState(ActiveUserId);
         }
 
-        public void CallStateHasChanged(object sender, EventArgs e) => StateHasChanged();
-
-        public void Dispose() => App.CallStateHasChanged -= new EventHandler(CallStateHasChanged);
-
         private bool hamburgerNavActive;
-
         private void ActivateNavBurger() => hamburgerNavActive = !hamburgerNavActive;
     }
 }

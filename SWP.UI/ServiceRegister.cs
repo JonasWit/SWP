@@ -9,6 +9,7 @@ using SWP.Domain.Infrastructure;
 using SWP.Domain.Infrastructure.LegalApp;
 using SWP.Domain.Infrastructure.Portal;
 using SWP.UI.Automation;
+using SWP.UI.BlazorApp;
 using SWP.UI.Components.LegalSwpBlazorComponents.App;
 using System.Linq;
 using System.Reflection;
@@ -89,7 +90,7 @@ namespace SWP.UI
             @this.AddSingleton<JobWakeUpCall>();
             @this.AddSingleton(new JobSchedule(
                 jobType: typeof(JobWakeUpCall),
-                cronExpression: "0 0/1 * * * ?"));
+                cronExpression: "0 0/10 * * * ?"));
 
             @this.AddHostedService<QuartzHostedService>();
 

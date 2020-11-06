@@ -32,36 +32,10 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.MainStore
 
         public MainState GetState() => _state;
 
-        public MainStore(IActionDispatcher actionDispatcher, IServiceProvider serviceProvider) : base(actionDispatcher, serviceProvider)
+        public MainStore(IServiceProvider serviceProvider) : base(serviceProvider)
         {
 
         }
-
-        protected override void HandleActions(IAction action)
-        {
-            switch (action.Name)
-            {
-                case InitializeAction.Initialize:
-                    InitializeAction initializeAction = (InitializeAction)action;
-                    var actions = Task.Run(() => InitializeState(initializeAction.UserId));
-                    actions.Wait();
-                    break;
-                case SetActivePanelAction.SetActivePanel:
-                    SetActivePanelAction setActivePanelAction = (SetActivePanelAction)action;
-                    SetActivePanel(setActivePanelAction.ActivePanel);
-                    break;
-                case ActivateLoadingAction.ActivateLoading:
-                    ActivateLoadingAction activateLoadingAction = (ActivateLoadingAction)action;
-                    ActivateLoading(activateLoadingAction.LoadingMessage);
-                    break;
-                case DeactivateLoadingAction.DeactivateLoading:
-                    DeactivateLoading();
-                    break;
-                default:
-                    break;
-            }
-        }
-
         public async Task InitializeState(string userId)
         {
             try

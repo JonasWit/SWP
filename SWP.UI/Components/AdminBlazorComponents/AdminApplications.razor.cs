@@ -1,17 +1,36 @@
 ﻿using Microsoft.AspNetCore.Components;
-using SWP.UI.Components.AdminBlazorComponents.App;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using SWP.UI.BlazorApp;
+using SWP.UI.BlazorApp.AdminApp.Stores.ApplicationsOptionsStore;
+using SWP.UI.BlazorApp.AdminApp.Stores.ApplicationStore;
 
 namespace SWP.UI.Components.AdminBlazorComponents
 {
     public partial class AdminApplications
     {
-        [Parameter]
-        public AdminBlazorApp App { get; set; }
-        [Parameter]
-        public EventCallback<AdminBlazorApp> AppChanged { get; set; }
+        //[Parameter]
+        //public AdminBlazorApp App { get; set; }
+        //[Parameter]
+        //public EventCallback<AdminBlazorApp> AppChanged { get; set; }
+
+        [Inject]
+        public ApplicationStore ApplicationStore { get; set; }
+        [Inject]
+        public ApplicationsOptionsStore ApplicationsOptionsStore { get; set; }
+
+        public void Dispose()
+        {
+            ApplicationStore.RemoveStateChangeListener(UpdateView);
+            ApplicationsOptionsStore.RemoveStateChangeListener(UpdateView);
+        }
+
+        private void UpdateView() => StateHasChanged();
+
+        protected override void OnInitialized()
+        {
+            base.OnInitialized();
+            ApplicationStore.AddStateChangeListener(UpdateView); //attach listener to the store
+            ApplicationsOptionsStore.AddStateChangeListener(UpdateView);
+            ApplicationsOptionsStore.InitializeState();
+        }
     }
 }

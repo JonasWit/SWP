@@ -1,4 +1,6 @@
-﻿<nav class="navbar has-shadow is-fixed-top is-white">
+﻿@using SWP.UI.BlazorApp.AdminApp.Stores.Enums
+
+<nav class="navbar has-shadow is-fixed-top is-white">
     <div class="navbar-brand">
         <a @onclick="ActivateNavBurger" class="navbar-burger @(hamburgerNavActive ? "is-active" : "")">
             <span></span>
@@ -8,13 +10,13 @@
     </div>
     <div class="navbar-menu @(hamburgerNavActive ? "is-active" : "")">
         <div class="navbar-start">
-            <a class="navbar-item @(App.ActivePanel == AdminBlazorApp.Panels.Users ? "is-active" : "")" @onclick="@(() => App.SetActivePanel(AdminBlazorApp.Panels.Users))">
+            <a class="navbar-item @(ApplicationStore.GetState().ActivePanel == AdminAppPanels.Users ? "is-active" : "")" @onclick="@(() => ApplicationStore.SetActivePanel(AdminAppPanels.Users))">
                 Users
             </a>
-            <a class="navbar-item @(App.ActivePanel == AdminBlazorApp.Panels.Database ? "is-active" : "")" @onclick="@(() => App.SetActivePanel(AdminBlazorApp.Panels.Database))">
+            <a class="navbar-item @(ApplicationStore.GetState().ActivePanel == AdminAppPanels.Database ? "is-active" : "")" @onclick="@(() => ApplicationStore.SetActivePanel(AdminAppPanels.Database))">
                 Database
             </a>
-            <a class="navbar-item @(App.ActivePanel == AdminBlazorApp.Panels.Applications ? "is-active" : "")" @onclick="@(() => App.SetActivePanel(AdminBlazorApp.Panels.Applications))">
+            <a class="navbar-item @(ApplicationStore.GetState().ActivePanel == AdminAppPanels.Application ? "is-active" : "")" @onclick="@(() => ApplicationStore.SetActivePanel(AdminAppPanels.Application))">
                 Applications
             </a>
         </div>
@@ -29,19 +31,19 @@
 <div class="section">
     <div class="container">
         <RadzenNotification />
-        @switch (App.ActivePanel)
+        @switch (ApplicationStore.GetState().ActivePanel)
         {
-            case AdminBlazorApp.Panels.Users:
-                <AdminUsers @bind-App="App" />
+            case AdminAppPanels.Users:
+                <AdminUsers />
                 break;
-            case AdminBlazorApp.Panels.Database:
-                <AdminDatabase @bind-App="App" />
+            case AdminAppPanels.Database:
+                <AdminDatabase />
                 break;
-            case AdminBlazorApp.Panels.Applications:
-                <AdminApplications @bind-App="App" />
+            case AdminAppPanels.Application:
+                <AdminApplications />
                 break;
-            case AdminBlazorApp.Panels.Error:
-                <AdminError @bind-App="App" />
+            case AdminAppPanels.Error:
+                <AdminError />
                 break;
             default:
                 break;

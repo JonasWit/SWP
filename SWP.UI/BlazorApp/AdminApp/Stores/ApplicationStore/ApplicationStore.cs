@@ -1,12 +1,10 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
-using SWP.UI.BlazorApp.AdminApp.Stores.ApplicationStore.Actions;
+using Radzen;
 using SWP.UI.BlazorApp.AdminApp.Stores.Enums;
-using SWP.UI.BlazorApp.LegalApp.Stores.Enums;
 using SWP.UI.Models;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -14,6 +12,7 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.ApplicationStore
 {
     public class ApplicationState
     {
+        public NotificationService NotificationService { get; set; }
         public bool Loading { get; set; } = false;
         public string ActiveUserId { get; set; }
         public string LoadingMessage { get; set; }
@@ -21,56 +20,31 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.ApplicationStore
         public AdminAppPanels ActivePanel { get; set; } = AdminAppPanels.Application;
     }
 
+    [UIScopedService]
     public class ApplicationStore : StoreBase
     {
-        private ApplicationState _state;
+        private readonly ApplicationState _state;
 
         public ApplicationState GetState() => _state;
 
-        public ApplicationStore(IActionDispatcher actionDispatcher, IServiceProvider serviceProvider) : base(actionDispatcher, serviceProvider)
+        public ApplicationStore(IServiceProvider serviceProvider, NotificationService notificationService) : base(serviceProvider)
         {
-
-        }
-
-        protected override void HandleActions(IAction action)
-        {
-            switch (action.Name)
-            {
-                case InitializeAction.Initialize:
-                    InitializeAction initializeAction = (InitializeAction)action;
-                    var actions = Task.Run(() => InitializeState(initializeAction.UserId));
-                    actions.Wait();
-                    break;
-                case SetActivePanelAction.SetActivePanel:
-                    SetActivePanelAction setActivePanelAction = (SetActivePanelAction)action;
-                    SetActivePanel(setActivePanelAction.ActivePanel);
-                    break;
-                case ActivateLoadingAction.ActivateLoading:
-                    ActivateLoadingAction activateLoadingAction = (ActivateLoadingAction)action;
-                    ActivateLoading(activateLoadingAction.LoadingMessage);
-                    break;
-                case DeactivateLoadingAction.DeactivateLoading:
-                    DeactivateLoading();
-                    break;
-                default:
-                    break;
-            }
+            _state = new ApplicationState();
         }
 
         public void SetActivePanel(AdminAppPanels panel) => _state.ActivePanel = panel;
 
         public async Task InitializeState(string activeUserId)
         {
-            var newState = new ApplicationState();
-
             using var scope = _serviceProvider.CreateScope();
             var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
 
-            newState.ActiveUserId = activeUserId;
+            _state.NotificationService = scope.ServiceProvider.GetRequiredService<NotificationService>();
+            _state.ActiveUserId = activeUserId;
 
-            newState.User.User = await userManager.FindByIdAsync(newState.ActiveUserId);
-            newState.User.Claims = await userManager.GetClaimsAsync(newState.User.User) as List<Claim>;
-            newState.User.Roles = await userManager.GetRolesAsync(newState.User.User) as List<string>;
+            _state.User.User = await userManager.FindByIdAsync(_state.ActiveUserId);
+            _state.User.Claims = await userManager.GetClaimsAsync(_state.User.User) as List<Claim>;
+            _state.User.Roles = await userManager.GetRolesAsync(_state.User.User) as List<string>;
         }
 
         public void ActivateLoading(string message)
@@ -84,9 +58,5 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.ApplicationStore
             _state.LoadingMessage = "";
             _state.Loading = false;
         }
-
-
-
-
     }
 }

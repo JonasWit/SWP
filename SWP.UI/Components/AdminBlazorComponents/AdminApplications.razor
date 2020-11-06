@@ -1,10 +1,13 @@
-﻿<div class="section">
+﻿
+<h1>Application</h1>
+
+<div class="section">
     <RadzenCard>
         <div class="columns is-0 is-centered">
             <h2>Refresh Exceptions Data</h2>
         </div>
         <div class="columns is-0 is-centered">
-            <RadzenButton ButtonStyle="ButtonStyle.Secondary" Click="App.ApplicationsPage.RefreshLog">Refresh</RadzenButton>
+            <RadzenButton ButtonStyle="ButtonStyle.Secondary" Click="@ApplicationsOptionsStore.RefreshLogs">Refresh</RadzenButton>
         </div>
     </RadzenCard>
 </div>
@@ -15,15 +18,15 @@
             <h2>Recorded Exceptions</h2>
         </div>
         <div class="columns is-0 is-centered">
-            <RadzenGrid @ref="App.ApplicationsPage.LogGrid"
+            <RadzenGrid @ref="ApplicationsOptionsStore.GetState().LogGrid"
                         AllowFiltering="true"
                         AllowPaging="true"
                         PageSize="5"
                         AllowSorting="true"
-                        Data="@App.ApplicationsPage.LogRecords"
+                        Data="@ApplicationsOptionsStore.GetState().LogRecords"
                         TItem="@LogRecordViewModel"
-                        Value="@App.ApplicationsPage.SelectedLogRecord"
-                        RowSelect="@(args => App.ApplicationsPage.RowSelected(args))">
+                        Value="@ApplicationsOptionsStore.GetState().SelectedLogRecord"
+                        RowSelect="@(args => ApplicationsOptionsStore.RowSelected(args))">
                 <Columns>
                     <RadzenGridColumn TItem="LogRecordViewModel" Property="UserId" Title="User" />
                     <RadzenGridColumn TItem="LogRecordViewModel" Property="Message" Title="Message" />
@@ -31,7 +34,7 @@
                     <RadzenGridColumn TItem="LogRecordViewModel" Property="Created" Title="Created" />
                     <RadzenGridColumn TItem="LogRecordViewModel" Context="um" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="50px">
                         <Template Context="lr">
-                            <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@(async args => await App.ApplicationsPage.DeleteLogRecord(lr))">
+                            <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@(async () => await ApplicationsOptionsStore.DeleteLogRecord(lr))">
                             </RadzenButton>
                         </Template>
                     </RadzenGridColumn>
@@ -41,7 +44,7 @@
     </RadzenCard>
 </div>
 
-@if (App.ApplicationsPage.SelectedLogRecord != null)
+@if (ApplicationsOptionsStore.GetState().SelectedLogRecord != null)
 {
     <div class="section">
         <RadzenCard>
@@ -49,7 +52,7 @@
                 <h2>Exception Message</h2>
             </div>
             <div class="columns is-0 is-centered mb-4">
-                <p>@App.ApplicationsPage.SelectedLogRecord.Message</p>
+                <p>@ApplicationsOptionsStore.GetState().SelectedLogRecord.Message</p>
             </div>
         </RadzenCard>
     </div>
@@ -59,12 +62,12 @@
                 <h2>Exception Stack</h2>
             </div>
             <div class="columns is-0 is-centered mb-4">
-                <p>@App.ApplicationsPage.SelectedLogRecord.StackTrace</p>
+                <p>@ApplicationsOptionsStore.GetState().SelectedLogRecord.StackTrace</p>
             </div>
         </RadzenCard>
     </div>
 }
 
 
-<RadzenButton Click="App.ApplicationsPage.TestExceptionThrow">Test Exception</RadzenButton>
+@*<RadzenButton Click="App.ApplicationsPage.TestExceptionThrow">Test Exception</RadzenButton>*@
 

@@ -31,7 +31,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="BlazorApp\AdminApp\" />
     <Folder Include="wwwroot\downloadable-files\" />
     <Folder Include="wwwroot\portal-content\" />
     <Folder Include="wwwroot\portal-content\news-images\" />

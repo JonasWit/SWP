@@ -3,6 +3,7 @@ using Radzen;
 using Radzen.Blazor;
 using SWP.Application.Log;
 using SWP.UI.BlazorApp.AdminApp.Stores.Application;
+using SWP.UI.BlazorApp.AdminApp.Stores.Error;
 using SWP.UI.Components.AdminBlazorComponents.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -25,13 +26,21 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.ApplicationsOptions
     {
         private readonly ApplicationOptionsState _state;
         private readonly NotificationService _notificationService;
+        private readonly ApplicationStore _applicationStore;
+        private readonly ErrorStore _errorStore;
 
         public ApplicationOptionsState GetState() => _state;
 
-        public ApplicationsOptionsStore(IServiceProvider serviceProvider, NotificationService notificationService) : base(serviceProvider)
+        public ApplicationsOptionsStore(
+            IServiceProvider serviceProvider, 
+            NotificationService notificationService,
+            ApplicationStore applicationStore,
+            ErrorStore errorStore) : base(serviceProvider)
         {
             _state = new ApplicationOptionsState();
             _notificationService = notificationService;
+            _applicationStore = applicationStore;
+            _errorStore = errorStore;
         }
 
         public void InitializeState()
@@ -93,7 +102,8 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.ApplicationsOptions
             catch (Exception ex)
             {
                 using var scope = _serviceProvider.CreateScope();
-                var appStore = scope.ServiceProvider.GetRequiredService<ApplicationStore>();
+                
+
 
                 //await App.ErrorPage.DisplayMessage(ex);
             }

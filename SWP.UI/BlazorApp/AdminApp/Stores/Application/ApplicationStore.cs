@@ -27,20 +27,20 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Application
 
         public ApplicationState GetState() => _state;
 
-        public ApplicationStore(IServiceProvider serviceProvider, NotificationService notificationService) : base(serviceProvider)
+        public ApplicationStore(IServiceProvider serviceProvider) : base(serviceProvider)
         {
             _state = new ApplicationState();
         }
 
         public void SetActivePanel(AdminAppPanels panel) => _state.ActivePanel = panel;
 
-        public async Task InitializeState(string activeUserId)
+        public async Task InitializeState(string userId)
         {
             using var scope = _serviceProvider.CreateScope();
             var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
 
             _state.NotificationService = scope.ServiceProvider.GetRequiredService<NotificationService>();
-            _state.ActiveUserId = activeUserId;
+            _state.ActiveUserId = userId;
 
             _state.User.User = await userManager.FindByIdAsync(_state.ActiveUserId);
             _state.User.Claims = await userManager.GetClaimsAsync(_state.User.User) as List<Claim>;

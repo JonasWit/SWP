@@ -26,21 +26,15 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.ApplicationsOptions
     {
         private readonly ApplicationOptionsState _state;
         private readonly NotificationService _notificationService;
-        private readonly ApplicationStore _applicationStore;
-        private readonly ErrorStore _errorStore;
 
         public ApplicationOptionsState GetState() => _state;
 
         public ApplicationsOptionsStore(
             IServiceProvider serviceProvider, 
-            NotificationService notificationService,
-            ApplicationStore applicationStore,
-            ErrorStore errorStore) : base(serviceProvider)
+            NotificationService notificationService) : base(serviceProvider)
         {
             _state = new ApplicationOptionsState();
             _notificationService = notificationService;
-            _applicationStore = applicationStore;
-            _errorStore = errorStore;
         }
 
         public void InitializeState()

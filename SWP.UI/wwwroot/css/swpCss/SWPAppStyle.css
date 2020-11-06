@@ -1,13 +1,28 @@
-﻿
-
-
-html, body {
-    color: rgb(0, 0, 0);
-    margin: 0;
+﻿:root {
+    font-size: 12px;
+    font-family: 'Open Sans';
+    --transition-speed: 600ms;
 }
 
+body {
+    margin: 0;
+    padding: 0;
+}
+
+    body::-webkit-scrollbar {
+        width: 0.75rem;
+    }
+
+    body::-webkit-scrollbar-track {
+        background: rgb(255,255,255);
+    }
+
+    body::-webkit-scrollbar-thumb {
+        background: rgba(42,173,251,1);
+    }
+
+
 #grid-container-2 {
-    font-size: 12px;
     display: grid;
     grid-template-columns:
     /* 1 */ 250px
@@ -24,28 +39,41 @@ html, body {
     /* 11 */ minmax(200px, auto);
 }
 
-#sidebar {
-    font-size: 12px;
+.sidebar {
+    height: 100vh;
+    position: fixed;
+    /*font-size: 12px;
     grid-column: 1;
-    grid-row: 1 / span 9;
-    background: rgb(255,255,255);
+    grid-row: 1 / span 9;*/
+    /* background: rgb(255,255,255);*/
     background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(42,173,251,1) 100%, rgba(243,248,252,1) 100%);
-    height: 100%;
+    /*height: 100%;*/
     /* background-image: url(../../Images/19366.jpg);
     background-repeat: no-repeat;
     background-position: left center;*/
+    transition: width 200ms ease;
+    width: 10rem;
+    z-index:999;
+    
 }
+
+.navigation {
+    list-style: none;
+    padding-top: 2rem;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
 
 ul, li {
     list-style-type: none;
-    font-size: 12px;
     cursor: pointer;
 }
 
 .nav-item {
     transition: 0.4s;
     color: #000;
-    font-size: 12px;
     text-decoration: none;
     padding: 0 8px;
 }
@@ -60,15 +88,74 @@ ul, li {
         padding: 5px 8px;
     }
 
-.active {
-    background-color: #ffffff;
-    color: #EEA200 !important;
-   
+.nav-link {
+    display: flex;
+    filter: grayscale(100%) opacity(0.7);
+    --transition-speed: 600ms;
 }
 
-.input-group {
-    margin-top: 20px;
-    margin-left: 28px;
+    .nav-link:hover {
+        filter: grayscale(0%) opacity(1);
+        background-color: #ffffff;
+        color: #EEA200;
+    }
+
+.link-text {
+    display: none;
+    margin-left: 1rem;
+}
+
+.nav-link i {
+    min-width: 2rem;
+    margin: 0 1.5rem;
+}
+
+.sidebar:hover {
+    width: 20rem;
+}
+
+    .sidebar:hover .link-text {
+        display: block;
+    }
+
+.active {
+ 
+}
+
+.logo {
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    text-align: center;
+    color: #000;
+    letter-spacing: 0.3ch;
+    width: 100%;
+}
+
+    .logo img {
+        transform: rotate(0deg);
+        transition: var(--transition-speed);
+    }
+
+.logo-text {
+    display: inline;
+    position: absolute;
+    left: -999px;
+    transition: var(--transition-speed);
+}
+
+.sidebar:hover .logo img {
+    transform: rotate(-180deg);
+}
+
+
+.input {
+    margin-left: 5rem;
+    
+}
+
+.search {
+    padding: 10px;
 }
 
 .explain {
@@ -78,22 +165,29 @@ ul, li {
 }
 
 #top-menu {
-    grid-column: 2 / span 3;
+    grid-column: 1 / span 3;
     grid-row: 1;
     background: rgb(255,255,255);
     background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(42,173,251,1) 0%, rgba(243,248,252,1) 100%);
+    padding-top: 1rem;
     /*background-image: url(../../Images/19366.jpg);
     background-repeat: no-repeat;
     background-position: right center;*/
 }
 
+.top-items {
+    display: flex;
+    flex-direction: row;
+    justify-content:space-evenly;
+    justify-items: flex-end;
+}
 .nav-item {
     float: left;
     padding: 10px;
 }
 
 .user {
-    float: right;
+    
     padding: 10px;
     margin-right: 60px;
 }
@@ -107,6 +201,33 @@ ul, li {
     grid-row: 2 / span 8;
     padding: 25px;
 }
+
+/*/* Small screens */
+@media only screen and (max-width: 600px) {
+    .sidebar {
+        bottom: 0;
+        width: 100vw;
+        height: 5rem;
+    }
+
+    .logo {
+        display: none;
+    }
+
+    .navigation {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .nav-link {
+        justify-content: center;
+    }
+
+    .main-window {
+        margin: 0;
+    }
+}
+
 
 /*Clients Page*/
 

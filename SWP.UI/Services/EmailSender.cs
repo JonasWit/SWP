@@ -1,10 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity.UI.Services;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
 using NETCore.MailKit.Core;
-using SendGrid;
-using SendGrid.Helpers.Mail;
-using System;
 using System.Threading.Tasks;
 
 namespace SWP.UI.Services

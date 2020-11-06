@@ -26,22 +26,18 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.MainStore
         public Panels ActivePanel { get; set; } = Panels.MyApp;
     }
 
-    public class MainStore
+    public class MainStore : StoreBase
     {
-        private readonly IActionDispatcher _actionDispatcher;
-        private readonly IServiceProvider _serviceProvider;
         private MainState _state;
 
-        public MainStore(IActionDispatcher actionDispatcher, IServiceProvider serviceProvider)
+        public MainStore(IActionDispatcher actionDispatcher, IServiceProvider serviceProvider) : base(actionDispatcher, serviceProvider)
         {
-            _actionDispatcher = actionDispatcher;
-            _serviceProvider = serviceProvider;
-            _actionDispatcher.Subscribe(HandleActions);
+
         }
 
         public MainState GetState() => _state;
 
-        private void HandleActions(IAction action)
+        protected override void HandleActions(IAction action)
         {
             switch (action.Name)
             {
@@ -119,27 +115,5 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.MainStore
             _state.LoadingMessage = "";
             _state.Loading = false;
         }
-
-        #region Observer pattern
-
-        private Action _listeners;
-
-        public void AddStateChangeListener(Action listener)
-        {
-            _listeners += listener;
-        }
-
-        public void RemoveStateChangeListener(Action listener)
-        {
-            _listeners -= listener;
-        }
-
-        private void BroadcastStateChange()
-        {
-            _listeners.Invoke();
-        }
-
-        #endregion
-
     }
 }

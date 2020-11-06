@@ -11,7 +11,16 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.ApplicationStore
 
     }
 
-    public class ApplicationStore
+    public class ApplicationStore : StoreBase
     {
+        public ApplicationStore(IActionDispatcher actionDispatcher, IServiceProvider serviceProvider) : base(actionDispatcher, serviceProvider)
+        {
+
+        }
+
+        protected override void HandleActions(IAction action)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

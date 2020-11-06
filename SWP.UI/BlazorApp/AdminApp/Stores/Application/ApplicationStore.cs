@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace SWP.UI.BlazorApp.AdminApp.Stores.ApplicationStore
+namespace SWP.UI.BlazorApp.AdminApp.Stores.Application
 {
     public class ApplicationState
     {

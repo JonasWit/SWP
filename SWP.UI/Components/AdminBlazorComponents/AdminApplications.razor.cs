@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using SWP.UI.BlazorApp;
-using SWP.UI.BlazorApp.AdminApp.Stores.ApplicationsOptionsStore;
-using SWP.UI.BlazorApp.AdminApp.Stores.ApplicationStore;
+using SWP.UI.BlazorApp.AdminApp.Stores.Application;
+using SWP.UI.BlazorApp.AdminApp.Stores.ApplicationsOptions;
 
 namespace SWP.UI.Components.AdminBlazorComponents
 {

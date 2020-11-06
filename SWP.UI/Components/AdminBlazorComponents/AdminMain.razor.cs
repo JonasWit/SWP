@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using SWP.UI.BlazorApp;
-using SWP.UI.BlazorApp.AdminApp.Stores.ApplicationStore;
+using SWP.UI.BlazorApp.AdminApp.Stores.Application;
 using System;
 using System.Threading.Tasks;
 

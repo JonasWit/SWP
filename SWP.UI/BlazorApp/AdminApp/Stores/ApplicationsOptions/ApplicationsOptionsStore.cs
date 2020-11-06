@@ -2,13 +2,14 @@
 using Radzen;
 using Radzen.Blazor;
 using SWP.Application.Log;
+using SWP.UI.BlazorApp.AdminApp.Stores.Application;
 using SWP.UI.Components.AdminBlazorComponents.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SWP.UI.BlazorApp.AdminApp.Stores.ApplicationsOptionsStore
+namespace SWP.UI.BlazorApp.AdminApp.Stores.ApplicationsOptions
 {
     public class ApplicationOptionsState
     {
@@ -27,7 +28,7 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.ApplicationsOptionsStore
 
         public ApplicationOptionsState GetState() => _state;
 
-        public ApplicationsOptionsStore(IServiceProvider serviceProvider, NotificationService notificationService) : base(serviceProvider) 
+        public ApplicationsOptionsStore(IServiceProvider serviceProvider, NotificationService notificationService) : base(serviceProvider)
         {
             _state = new ApplicationOptionsState();
             _notificationService = notificationService;
@@ -91,6 +92,9 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.ApplicationsOptionsStore
             }
             catch (Exception ex)
             {
+                using var scope = _serviceProvider.CreateScope();
+                var appStore = scope.ServiceProvider.GetRequiredService<ApplicationStore>();
+
                 //await App.ErrorPage.DisplayMessage(ex);
             }
         }

@@ -23,19 +23,19 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.MainStore
         public List<ClientViewModel> Clients { get; set; } = new List<ClientViewModel>();
         public ClientViewModel ActiveClientWithData { get; set; }
         public ClientViewModel ActiveClient { get; set; }
-        public Panels ActivePanel { get; set; } = Panels.MyApp;
+        public LegalAppPanels ActivePanel { get; set; } = LegalAppPanels.MyApp;
     }
 
     public class MainStore : StoreBase
     {
         private MainState _state;
 
+        public MainState GetState() => _state;
+
         public MainStore(IActionDispatcher actionDispatcher, IServiceProvider serviceProvider) : base(actionDispatcher, serviceProvider)
         {
 
         }
-
-        public MainState GetState() => _state;
 
         protected override void HandleActions(IAction action)
         {
@@ -102,7 +102,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.MainStore
             }
         }
 
-        public void SetActivePanel(Panels panel) => _state.ActivePanel = panel;
+        public void SetActivePanel(LegalAppPanels panel) => _state.ActivePanel = panel;
 
         public void ActivateLoading(string message)
         {

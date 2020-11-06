@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace SWP.UI.BlazorApp.LegalApp.Stores.Enums
 {
-    public enum Panels
+    public enum LegalAppPanels
     {
         Clients = 0,
         Calendar = 1,

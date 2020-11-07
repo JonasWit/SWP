@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Radzen;
 using SWP.UI.BlazorApp.AdminApp.Stores.Enums;
+using SWP.UI.BlazorApp.AdminApp.Stores.Error;
 using SWP.UI.Models;
 using System;
 using System.Collections.Generic;
@@ -24,12 +25,14 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Application
     public class ApplicationStore : StoreBase
     {
         private readonly ApplicationState _state;
+        private readonly ErrorStore _errorStore;
 
         public ApplicationState GetState() => _state;
 
-        public ApplicationStore(IServiceProvider serviceProvider) : base(serviceProvider)
+        public ApplicationStore(IServiceProvider serviceProvider, ErrorStore errorStore) : base(serviceProvider)
         {
             _state = new ApplicationState();
+            _errorStore = errorStore;
         }
 
         public void SetActivePanel(AdminAppPanels panel) => _state.ActivePanel = panel;
@@ -57,6 +60,31 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Application
         {
             _state.LoadingMessage = "";
             _state.Loading = false;
+        }
+
+        public void ShowErrorPage(Exception ex)
+        {
+            _errorStore.SetException(ex);
+            _state.ActivePanel = AdminAppPanels.Error;
+            BroadcastStateChange();
+        }
+
+        public void DismissErrorPage()
+        {
+            _state.ActivePanel = AdminAppPanels.Application;
+            BroadcastStateChange();
+        }
+
+        public void TestExceptionThrow()
+        {
+            try
+            {
+                throw new Exception("Test Exception");
+            }
+            catch (Exception ex)
+            {
+                ShowErrorPage(ex);
+            }
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿<h3>Exception occured!</h3>
 
-@*<p>@App.ErrorPage.Exception</p>
+<p>@ErrorStore.GetState().Exception.Message</p>
 
-<RadzenButton Click="App.ErrorPage.DismissMessage">Refresh Application</RadzenButton>*@
+<RadzenButton Click="ApplicationStore.DismissErrorPage">Refresh Application</RadzenButton>

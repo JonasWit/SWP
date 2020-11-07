@@ -2,6 +2,7 @@
 using SWP.UI.BlazorApp;
 using SWP.UI.BlazorApp.AdminApp.Stores.Application;
 using SWP.UI.BlazorApp.AdminApp.Stores.ApplicationsOptions;
+using SWP.UI.BlazorApp.AdminApp.Stores.Error;
 
 namespace SWP.UI.Components.AdminBlazorComponents
 {

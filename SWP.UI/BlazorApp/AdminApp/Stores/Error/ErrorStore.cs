@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Microsoft.Extensions.DependencyInjection;
+using SWP.UI.BlazorApp.AdminApp.Stores.Application;
+using SWP.UI.BlazorApp.AdminApp.Stores.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -12,6 +15,7 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Error
         public Exception Exception { get; set; }
     }
 
+    [UIScopedService]
     public class ErrorStore : StoreBase
     {
         private readonly ErrorState _state;
@@ -23,8 +27,7 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Error
             _state = new ErrorState();
         }
 
-
-
+        public void SetException(Exception ex) => _state.Exception = ex;
 
     }
 }

@@ -10,23 +10,23 @@
                         <i><img src="/Images/icons8-double-right-40.png" /></i>
                     </li>
 
-                    <li class="nav-item @(App.ActivePanel == LegalBlazorApp.Panels.MyApp ? "active" : "")">
-                        <a class="nav-link " @onclick="@(() => App.SetActivePanel(LegalBlazorApp.Panels.MyApp))">
+                    <li class="nav-item ">
+                        <a class="nav-link @(App.ActivePanel == LegalBlazorApp.Panels.MyApp ? "active" : "") " @onclick="@(() => App.SetActivePanel(LegalBlazorApp.Panels.MyApp))">
                             <i><img src="/Images/icons8-web-design-36.png" /></i> <span class="link-text">Moja Aplikacja</span>
                         </a>
                     </li>
-                    <li class="nav-item @(App.ActivePanel == LegalBlazorApp.Panels.Clients ? "active" : "") ">
-                        <a class="nav-link " @onclick="@(() => App.SetActivePanel(LegalBlazorApp.Panels.Clients))">
+                    <li class="nav-item  ">
+                        <a class="nav-link @(App.ActivePanel == LegalBlazorApp.Panels.Clients ? "active" : "") " @onclick="@(() => App.SetActivePanel(LegalBlazorApp.Panels.Clients))">
                             <i><img src="/Images/icons8-reception-36.png" /></i> <span class="link-text">Klienci</span>
                         </a>
                     </li>
-                    <li class="nav-item @(App.ActivePanel == LegalBlazorApp.Panels.Calendar ? "active" : "") ">
-                        <a class="nav-link " @onclick="@(() => App.SetActivePanel(LegalBlazorApp.Panels.Calendar))">
+                    <li class="nav-item  ">
+                        <a class="nav-link @(App.ActivePanel == LegalBlazorApp.Panels.Calendar ? "active" : "")" @onclick="@(() => App.SetActivePanel(LegalBlazorApp.Panels.Calendar))">
                             <i><img src="/Images/icons8-calendar-12-36.png" /></i> <span class="link-text">Kalendarz</span>
                         </a>
                     </li>
-                    <li class="nav-item @(App.ActivePanel == LegalBlazorApp.Panels.ErrorPage ? "active" : "") ">
-                        <a class="nav-link " @onclick="@(() => App.SetActivePanel(LegalBlazorApp.Panels.ErrorPage))">
+                    <li class="nav-item ">
+                        <a class="nav-link @(App.ActivePanel == LegalBlazorApp.Panels.ErrorPage ? "active" : "") " @onclick="@(() => App.SetActivePanel(LegalBlazorApp.Panels.ErrorPage))">
                             <span class="link-text">
                                 Error Page For TESTS!
                             </span>
@@ -35,35 +35,35 @@
 
                     @if (App.ActiveClientWithData != null)
                     {
-                        <li class="nav-item @(App.ActivePanel == LegalBlazorApp.Panels.ClientDetails ? "active" : "")">
-                            <a class="nav-link " @onclick="@(() => App.SetActivePanel(LegalBlazorApp.Panels.ClientDetails))">
+                        <li class="nav-item ">
+                            <a class="nav-link @(App.ActivePanel == LegalBlazorApp.Panels.ClientDetails ? "active" : "")" @onclick="@(() => App.SetActivePanel(LegalBlazorApp.Panels.ClientDetails))">
                                 <i><img src="/Images/icons8-address-book-40.png" /></i><span class="link-text"> Lista Kontaktów</span>
                             </a>
                         </li>
-                        <li class="nav-item @(App.ActivePanel == LegalBlazorApp.Panels.ClientJobs ? "active" : "") ">
-                            <a class="nav-link " @onclick="@(() => App.SetActivePanel(LegalBlazorApp.Panels.ClientJobs))">
+                        <li class="nav-item ">
+                            <a class="nav-link @(App.ActivePanel == LegalBlazorApp.Panels.ClientJobs ? "active" : "") " @onclick="@(() => App.SetActivePanel(LegalBlazorApp.Panels.ClientJobs))">
                                 <i><img src="/Images/icons8-combo-chart-36.png" /></i> <span class="link-text">Lista Zadań</span>
                             </a>
                         </li>
-                        <li class="nav-item @(App.ActivePanel == LegalBlazorApp.Panels.Cases ? "active" : "") ">
-                            <a class="nav-link " @onclick="@(() => App.SetActivePanel(LegalBlazorApp.Panels.Cases))">
+                        <li class="nav-item  ">
+                            <a class="nav-link @(App.ActivePanel == LegalBlazorApp.Panels.Cases ? "active" : "")" @onclick="@(() => App.SetActivePanel(LegalBlazorApp.Panels.Cases))">
                                 <i><img src="/Images/icons8-business-report-36.png" /></i><span class="link-text"> Sprawy</span>
                             </a>
                         </li>
-                        <li class="nav-item @(App.ActivePanel == LegalBlazorApp.Panels.Finance ? "active" : "") ">
-                            <a class="nav-link " @onclick="@(() => App.SetActivePanel(LegalBlazorApp.Panels.Finance))">
+                        <li class="nav-item ">
+                            <a class="nav-link @(App.ActivePanel == LegalBlazorApp.Panels.Finance ? "active" : "") " @onclick="@(() => App.SetActivePanel(LegalBlazorApp.Panels.Finance))">
                                 <i><img src="/Images/icons8-money-box-36.png" /></i><span class="link-text"> Finanse</span>
                             </a>
                         </li>
-                        <li class="nav-item @(App.ActivePanel == LegalBlazorApp.Panels.Productivity ? "active" : "")">
-                            <a class="nav-link " @onclick="@(() => App.SetActivePanel(LegalBlazorApp.Panels.Productivity))">
+                        <li class="nav-item ">
+                            <a class="nav-link @(App.ActivePanel == LegalBlazorApp.Panels.Productivity ? "active" : "")" @onclick="@(() => App.SetActivePanel(LegalBlazorApp.Panels.Productivity))">
                                 <i><img src="/Images/icons8-combo-chart-36.png" /></i> <span class="link-text">Produktywność</span>
                             </a>
                         </li>
                     }
 
-                    <li class="nav-item @(App.ActivePanel == LegalBlazorApp.Panels.Archive ? "active" : "")">
-                        <a class="nav-link " @onclick="@(() => App.SetActivePanel(LegalBlazorApp.Panels.Archive))">
+                    <li class="nav-item ">
+                        <a class="nav-link @(App.ActivePanel == LegalBlazorApp.Panels.Archive ? "active" : "")" @onclick="@(() => App.SetActivePanel(LegalBlazorApp.Panels.Archive))">
                             <i><img src="/Images/icons8-calendar-12-36.png" /></i><span class="link-text"> Archiwum</span>
                         </a>
                     </li>
@@ -72,8 +72,7 @@
 
             <div id="top-menu">
                 <ul class="top-items">
-                    <li class="user input">
-                        <img class="search" src="/Images/icons8-search-35.png"/>
+                    <li class="user input"><strong>Wybierz Klienta:</strong>
                         <Radzen.Blazor.RadzenDropDown AllowClear="true" TValue="string" AllowFiltering="true" Data="@App.Clients" @bind-Value="App.SelectedClientString" TextProperty="Name" ValueProperty="IdString" Change="@(args => App.ActiveClientChange(args))" Style="width: 250px;"/>
 
                     </li>

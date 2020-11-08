@@ -62,9 +62,9 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Application
             _state.Loading = false;
         }
 
-        public void ShowErrorPage(Exception ex)
+        public async Task ShowErrorPage(Exception ex)
         {
-            _errorStore.SetException(ex);
+            await _errorStore.SetException(ex, _state.ActiveUserId);
             _state.ActivePanel = AdminAppPanels.Error;
             BroadcastStateChange();
         }

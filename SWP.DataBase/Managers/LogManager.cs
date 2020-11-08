@@ -16,6 +16,11 @@ namespace SWP.DataBase.Managers
 
         public async Task<LogRecord> CreateLogRecord(LogRecord record)
         {
+            if (_context.LogRecords.Where(x => x.UserId == "Automation").Count() > 10)
+            {
+                _context.LogRecords.RemoveRange(_context.LogRecords.Where(x => x.UserId == "Automation"));
+            }
+
             _context.LogRecords.Add(record);
             await _context.SaveChangesAsync();
             return record;

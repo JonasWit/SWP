@@ -73,7 +73,7 @@
             <div id="top-menu">
                 <ul class="top-items">
                     <li class="user input"><strong>Wybierz Klienta:</strong>
-                        <Radzen.Blazor.RadzenDropDown AllowClear="true" TValue="string" AllowFiltering="true" Data="@App.Clients" @bind-Value="App.SelectedClientString" TextProperty="Name" ValueProperty="IdString" Change="@(args => App.ActiveClientChange(args))" Style="width: 250px;"/>
+                        <Radzen.Blazor.RadzenDropDown AllowClear="true" TValue="string" AllowFiltering="true" Data="@App.Clients" @bind-Value="App.SelectedClientString" TextProperty="Name" ValueProperty="IdString" Change="@(args => App.ActiveClientChange(args))" Style="width: 200px;"/>
 
                     </li>
                     <li class="user"><p><strong>Aktywny Klient:</strong> @(App.ActiveClient != null ? App.ActiveClient.Name : "Brak Aktywnego Klienta" )</p></li>

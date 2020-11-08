@@ -79,9 +79,12 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
                 }
 
                 App.ShowNotification(NotificationSeverity.Success, "Sukces!", $"Kwota: {result.Amount} zł, została dodana do Panelu Finanse", GeneralViewModel.NotificationDuration);
-                App.SetActivePanel(LegalBlazorApp.Panels.Finance);
                 App.ForceRefresh();
-                App.FinancePage.CashMovementGrid.LastPage();
+
+                if (App.FinancePage.CashMovementGrid != null)
+                {
+                    App.FinancePage.CashMovementGrid.LastPage();
+                }
             }
             catch (Exception ex)
             {
@@ -156,7 +159,17 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
 
         public async Task SubmitNewTimeRecord(CreateTimeRecord.Request request)
         {
-            if (request.RecordedTime == new TimeSpan(0, 0, 0)) return;
+            if (request.RecordedTime == new TimeSpan(0, 0, 0))
+            {
+                App.ShowNotification(NotificationSeverity.Error, "Uwaga!", $"Nie moża dodać wpisu bez zarejestrowanego czasu!", GeneralViewModel.NotificationDuration);
+                return;
+            }
+
+            if (request.Rate == 0)
+            {
+                App.ShowNotification(NotificationSeverity.Error, "Uwaga!", $"Nie moża dodać wpisu bez określenia stawki!", GeneralViewModel.NotificationDuration);
+                return;
+            }
 
             try
             {
@@ -169,8 +182,13 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
                 NewTimeRecord = new CreateTimeRecord.Request();
 
                 App.ActiveClientWithData.TimeRecords.Add(result);
-                await TimeRecordsGrid.Reload();
-                GetDataForMonthFilter();
+
+                if (TimeRecordsGrid != null)
+                {
+                    await TimeRecordsGrid.Reload();
+                    GetDataForMonthFilter();
+                }
+
                 App.ShowNotification(NotificationSeverity.Success, "Sukces!", $"Wpis: {result.Name}, został dodany.", GeneralViewModel.NotificationDuration);
             }
             catch (Exception ex)

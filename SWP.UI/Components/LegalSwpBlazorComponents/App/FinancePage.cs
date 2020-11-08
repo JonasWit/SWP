@@ -129,8 +129,13 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
                 NewCashMovement = new CreateCashMovement.Request();
 
                 App.ActiveClientWithData.CashMovements.Add(result);
-                await CashMovementGrid.Reload();
-                GetDataForMonthFilter();
+
+                if (CashMovementGrid != null)
+                {
+                    await CashMovementGrid.Reload();
+                    GetDataForMonthFilter();
+                }
+
                 App.ShowNotification(NotificationSeverity.Success, "Sukces!", $"Kwota: {result.Amount} zł, została dodana.", GeneralViewModel.NotificationDuration);
             }
             catch (Exception ex)

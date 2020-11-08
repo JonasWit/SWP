@@ -90,17 +90,28 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.ApplicationsOptions
                     Severity = NotificationSeverity.Warning,
                     Summary = "Deleted!",
                     Detail = $"Record: {logRecord.Message} has been deleted.",
-                    Duration = 5000
+                    Duration = 3000
                 });
             }
             catch (Exception ex)
             {
-                using var scope = _serviceProvider.CreateScope();
-                
-
-
-                //await App.ErrorPage.DisplayMessage(ex);
+                var appStore = _serviceProvider.GetRequiredService<ApplicationStore>();
+                appStore.ShowErrorPage(ex);
             }
+        }
+
+        public void ShowErrorPage()
+        {
+            var apstore = _serviceProvider.GetRequiredService<ApplicationStore>();
+
+            try
+            {
+                throw new Exception("Test Exception");
+            }
+            catch (Exception ex)
+            {
+                apstore.ShowErrorPage(ex);
+            } 
         }
 
         public void RowSelected(object value)

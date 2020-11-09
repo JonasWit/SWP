@@ -6,7 +6,7 @@ using System.Text;
 
 namespace SWP.Domain.Models.News
 {
-    public class NewsRecord : BaseModel //todo: add to context
+    public class NewsRecord : BaseModel
     {
         [MaxLength(200)]
         public string Title { get; set; }

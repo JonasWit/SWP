@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace SWP.Domain.Infrastructure.Portal
 {
-    public interface INewsManager //todo:add implementation
+    public interface INewsManager
     {
         Task<NewsRecord> CreateOneNews(NewsRecord news);
         Task<NewsRecord> UpdateOneNews(NewsRecord news);

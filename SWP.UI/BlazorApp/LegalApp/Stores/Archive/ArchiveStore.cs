@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SWP.UI.BlazorApp.LegalApp.Stores.NoProfileWarningStore
+namespace SWP.UI.BlazorApp.LegalApp.Stores.Archive
 {
-    public class NoProfileWarningStore
+    public class ArchiveStore
     {
     }
 }

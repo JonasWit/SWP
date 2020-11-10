@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SWP.UI.BlazorApp.LegalApp.Stores.ErrorStore
+namespace SWP.UI.BlazorApp.LegalApp.Stores.ClientJobs
 {
-    public class ErrorStore
+    public class ClientJobsStore
     {
     }
 }

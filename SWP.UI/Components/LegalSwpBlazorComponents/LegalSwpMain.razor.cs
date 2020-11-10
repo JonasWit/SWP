@@ -1,14 +1,32 @@
 ﻿using Microsoft.AspNetCore.Components;
 using SWP.UI.Components.LegalSwpBlazorComponents.App;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace SWP.UI.Components.LegalSwpBlazorComponents
 {
-    public partial class LegalSwpMain
+    public partial class LegalSwpMain : IDisposable
     {
+        //[Inject]
+        //public MainStore MainStore { get; set; }
+        //[Parameter]
+        //public string ActiveUserId { get; set; }
+
+        //public void Dispose()
+        //{
+        //    MainStore.RemoveStateChangeListener(UpdateView);
+        //}
+
+        //private void UpdateView() => StateHasChanged();
+
+        //protected override async Task OnInitializedAsync()
+        //{
+        //    base.OnInitialized();
+        //    MainStore.AddStateChangeListener(UpdateView);
+        //    await MainStore.InitializeState(ActiveUserId);
+        //}
+
+
         [Parameter]
         public string ActiveUserId { get; set; }
         [Inject]

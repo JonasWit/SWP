@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SWP.UI.BlazorApp.LegalApp.Stores.FinanceStore
+namespace SWP.UI.BlazorApp.LegalApp.Stores.NoProfileWarning
 {
-    public class FinanceStore
+    public class NoProfileWarningStore
     {
     }
 }

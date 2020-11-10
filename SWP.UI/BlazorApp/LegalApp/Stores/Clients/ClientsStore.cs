@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SWP.UI.BlazorApp.LegalApp.Stores.ClientJobsStore
+namespace SWP.UI.BlazorApp.LegalApp.Stores.Clients
 {
-    public class ClientJobsStore
+    public class ClientsStore
     {
     }
 }

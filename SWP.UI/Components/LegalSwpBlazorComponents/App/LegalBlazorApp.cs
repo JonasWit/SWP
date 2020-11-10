@@ -221,34 +221,10 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App
             ClientDetails = 9,
         }
 
-        public void RedirectToCase(int id)
-        {
-            if (!ActiveClientWithData.Cases.Any(x => x.Id == id))
-            {
-                return;
-            }
-
-            SetActivePanel(LegalBlazorApp.Panels.Cases);
-            ActiveClientWithData.SelectedCase = ActiveClientWithData.Cases.FirstOrDefault(x => x.Id == id);
-            OnCallStateHasChanged(null);
-        }
-
         public void SetActivePanel(Panels panel) => ActivePanel = panel;
 
         public void ShowNotification(NotificationSeverity severity, string summary, string detail, int duration) =>
             _notificationService.Notify(new NotificationMessage() { Severity = severity, Summary = summary, Detail = detail, Duration = duration });
-
-        public void ThrowTestException()
-        {
-            try
-            {
-                throw new Exception("Test Exception - Ups!");
-            }
-            catch (Exception ex)
-            {
-                ErrorPage.DisplayMessage(ex);
-            }
-        }
 
         public void RefreshClientWithData()
         {

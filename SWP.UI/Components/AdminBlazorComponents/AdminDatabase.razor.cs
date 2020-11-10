@@ -7,11 +7,16 @@ using System.Threading.Tasks;
 
 namespace SWP.UI.Components.AdminBlazorComponents
 {
-    public partial class AdminDatabase
+    public partial class AdminDatabase : IDisposable
     {
         [Parameter]
         public AdminBlazorApp App { get; set; }
         [Parameter]
         public EventCallback<AdminBlazorApp> AppChanged { get; set; }
+
+        public void Dispose()
+        {
+    
+        }
     }
 }

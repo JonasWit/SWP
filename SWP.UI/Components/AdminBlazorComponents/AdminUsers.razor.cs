@@ -2,12 +2,13 @@
 using SWP.UI.BlazorApp.AdminApp.Stores.Application;
 using SWP.UI.BlazorApp.AdminApp.Stores.Users;
 using SWP.UI.Components.AdminBlazorComponents.App;
+using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace SWP.UI.Components.AdminBlazorComponents
 {
-    public partial class AdminUsers
+    public partial class AdminUsers : IDisposable
     {
         [Inject]
         public ApplicationStore ApplicationStore { get; set; }

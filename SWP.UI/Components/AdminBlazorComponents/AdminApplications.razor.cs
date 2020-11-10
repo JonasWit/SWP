@@ -3,10 +3,11 @@ using SWP.UI.BlazorApp;
 using SWP.UI.BlazorApp.AdminApp.Stores.Application;
 using SWP.UI.BlazorApp.AdminApp.Stores.ApplicationsOptions;
 using SWP.UI.BlazorApp.AdminApp.Stores.Error;
+using System;
 
 namespace SWP.UI.Components.AdminBlazorComponents
 {
-    public partial class AdminApplications
+    public partial class AdminApplications : IDisposable
     {
         //[Parameter]
         //public AdminBlazorApp App { get; set; }

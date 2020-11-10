@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace SWP.UI.Components.AdminBlazorComponents
 {
-    public partial class AdminError
+    public partial class AdminError : IDisposable
     {
         [Inject]
         public ApplicationStore ApplicationStore { get; set; }

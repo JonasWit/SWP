@@ -47,12 +47,12 @@
                 @if (App.ActiveClient == null)
                 {
                     <h3>Całkowite Koszty Kancelarii</h3>
-                    <h5>@App.MyAppPage.TotalBalance.FormatPLN()</h5>
+                    <h5>@App.MyAppPage.TotalExpenses.FormatPLN()</h5>
                 }
                 else
                 {
                     <h3>Koszty Klienta: @App.ActiveClient.Name</h3>
-                    <h5>@App.MyAppPage.TotalBalance.FormatPLN()</h5>
+                    <h5>@App.MyAppPage.TotalExpenses.FormatPLN()</h5>
                 }
 
             </div>
@@ -61,7 +61,7 @@
         @if (App.MyAppPage.ClientsCases.Count != 0)
         {<div class="app-chart app-pie-chart grid">
                 <h3>Liczba spraw poszczególnych klientów</h3>
-                <RadzenChart ColorScheme="@App.MyAppPage.ColorScheme" Style="width: 500px;">
+                <RadzenChart ColorScheme="@App.MyAppPage.ColorScheme" Style="width: 100%;">
                     <RadzenPieSeries Data="@App.MyAppPage.ClientsCases" Title="Sprawy" CategoryProperty="Category" ValueProperty="Number" />
                     <RadzenLegend Position="LegendPosition.Bottom" />
                 </RadzenChart>

@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using SWP.UI.BlazorApp.AdminApp.Stores.Application;
 using SWP.UI.BlazorApp.AdminApp.Stores.Users;
-using SWP.UI.Components.AdminBlazorComponents.App;
 using System;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace SWP.UI.Components.AdminBlazorComponents
@@ -30,11 +28,6 @@ namespace SWP.UI.Components.AdminBlazorComponents
             UsersStore.AddStateChangeListener(UpdateView);
             await UsersStore.InitializeState();
         }
-
-        //[Parameter]
-        //public AdminBlazorApp App { get; set; }
-        //[Parameter]
-        //public EventCallback<AdminBlazorApp> AppChanged { get; set; }
 
         public string ProfilesFilterValue = "";
     }

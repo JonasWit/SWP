@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Components;
-using SWP.UI.BlazorApp;
 using SWP.UI.BlazorApp.AdminApp.Stores.Application;
 using System;
 using System.Threading.Tasks;
@@ -23,7 +22,7 @@ namespace SWP.UI.Components.AdminBlazorComponents
         protected override async Task OnInitializedAsync()
         {
             base.OnInitialized();
-            ApplicationStore.AddStateChangeListener(UpdateView); //attach listener to the store
+            ApplicationStore.AddStateChangeListener(UpdateView);
             await ApplicationStore.InitializeState(ActiveUserId);
         }
 

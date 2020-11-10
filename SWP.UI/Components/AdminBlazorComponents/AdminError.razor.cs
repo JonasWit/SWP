@@ -1,11 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using SWP.UI.BlazorApp.AdminApp.Stores.Application;
 using SWP.UI.BlazorApp.AdminApp.Stores.Error;
-using SWP.UI.Components.AdminBlazorComponents.App;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace SWP.UI.Components.AdminBlazorComponents
 {

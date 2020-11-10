@@ -19,6 +19,9 @@
             <a class="navbar-item @(ApplicationStore.GetState().ActivePanel == AdminAppPanels.Application ? "is-active" : "")" @onclick="@(() => ApplicationStore.SetActivePanel(AdminAppPanels.Application))">
                 Applications
             </a>
+            <a class="navbar-item @(ApplicationStore.GetState().ActivePanel == AdminAppPanels.Portal ? "is-active" : "")" @onclick="@(() => ApplicationStore.SetActivePanel(AdminAppPanels.Portal))">
+                Portal
+            </a>
         </div>
         <div class="navbar-end">
             <a class="navbar-item" href="/Index">
@@ -44,6 +47,9 @@
                 break;
             case AdminAppPanels.Error:
                 <AdminError />
+                break;
+            case AdminAppPanels.Portal:
+                <AdminPortal />
                 break;
             default:
                 break;

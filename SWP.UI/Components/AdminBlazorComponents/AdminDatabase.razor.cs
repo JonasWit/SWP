@@ -1,22 +1,27 @@
 ﻿using Microsoft.AspNetCore.Components;
-using SWP.UI.Components.AdminBlazorComponents.App;
+using SWP.UI.BlazorApp.AdminApp.Stores.Database;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace SWP.UI.Components.AdminBlazorComponents
 {
     public partial class AdminDatabase : IDisposable
     {
-        [Parameter]
-        public AdminBlazorApp App { get; set; }
-        [Parameter]
-        public EventCallback<AdminBlazorApp> AppChanged { get; set; }
+        [Inject]
+        public DatabaseStore DatabaseStore { get; set; }
 
         public void Dispose()
         {
-    
+            DatabaseStore.RemoveStateChangeListener(UpdateView);
+        }
+
+        private void UpdateView() => StateHasChanged();
+
+        protected override async Task OnInitializedAsync()
+        {
+            base.OnInitialized();
+            DatabaseStore.AddStateChangeListener(UpdateView);
+            await DatabaseStore.InitializeState();
         }
     }
 }

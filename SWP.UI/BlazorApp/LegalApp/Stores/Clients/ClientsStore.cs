@@ -114,6 +114,12 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Clients
                 await deleteClient.Delete(client.Id);
                 MainStore.RemoveClient(client.Id);
 
+                if (_state.SelectedClient != null &&
+                    _state.SelectedClient.Id == client.Id)
+                {
+                    _state.SelectedClient = null;
+                }
+
                 await _state.ClientsGrid.Reload();
                 ShowNotification(NotificationSeverity.Warning, "Sukces!", $"Klient: {client.Name} został usunięty.", GeneralViewModel.NotificationDuration);
             }
@@ -135,7 +141,12 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Clients
                 var archiveClient = scope.ServiceProvider.GetRequiredService<ArchiveClient>();
 
                 var result = await archiveClient.ArchivizeClient(client.Id, MainStore.GetState().User.UserName);
-                _state.SelectedClient = null;
+
+                if (_state.SelectedClient != null &&
+                    _state.SelectedClient.Id == client.Id)
+                {
+                    _state.SelectedClient = null;
+                }
 
                 if (MainStore.GetState().ActiveClient != null && MainStore.GetState().ActiveClient.Id == client.Id)
                 {

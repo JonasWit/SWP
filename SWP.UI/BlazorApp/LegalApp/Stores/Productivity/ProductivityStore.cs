@@ -290,23 +290,5 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Productivity
                 _state.SelectedFont = null;
             }
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     }
-
 }

@@ -41,7 +41,8 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.MyApp
             IServiceProvider serviceProvider, 
             NotificationService notificationService, 
             DialogService dialogService,
-            GeneralViewModel generalViewModel) : base(serviceProvider, notificationService, dialogService)
+            GeneralViewModel generalViewModel) 
+            : base(serviceProvider, notificationService, dialogService)
         {
             _state = new MyAppState();
             _generalViewModel = generalViewModel;
@@ -214,9 +215,5 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.MyApp
                 },
                 _generalViewModel.DefaultDialogOptions);
         }
-
-
-
-
     }
 }

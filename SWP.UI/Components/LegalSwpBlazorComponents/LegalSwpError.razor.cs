@@ -1,15 +1,14 @@
 ﻿using Microsoft.AspNetCore.Components;
-using SWP.UI.Components.LegalSwpBlazorComponents.App;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using SWP.UI.BlazorApp.LegalApp.Stores.Error;
+using SWP.UI.BlazorApp.LegalApp.Stores.Main;
 
 namespace SWP.UI.Components.LegalSwpBlazorComponents
 {
     public partial class LegalSwpError
     {
         [Inject]
-        public LegalBlazorApp App { get; set; }
+        public MainStore MainStore { get; set; }
+        [Inject]
+        public ErrorStore ErrorStore { get; set; }
     }
 }

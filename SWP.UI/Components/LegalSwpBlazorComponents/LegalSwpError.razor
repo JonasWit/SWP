@@ -3,4 +3,6 @@
 
 <p>Odśwież aplikację klikając guzik poniżej</p>
 
-<RadzenButton Click="App.ErrorPage.DismissMessage">Odśwież</RadzenButton>
+<p>@ErrorStore.GetState().Exception.Message</p>
+
+<RadzenButton Click="MainStore.DismissErrorPage">Odśwież</RadzenButton>

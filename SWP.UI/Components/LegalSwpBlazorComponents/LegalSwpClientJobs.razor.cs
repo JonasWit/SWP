@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Radzen;
+using SWP.UI.BlazorApp.LegalApp.Stores.ClientJobs;
+using SWP.UI.BlazorApp.LegalApp.Stores.Main;
 using SWP.UI.Components.LegalSwpBlazorComponents.App;
 using SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data;
 using System;
@@ -12,12 +14,34 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
     public partial class LegalSwpClientJobs
     {
         [Inject]
-        public LegalBlazorApp App { get; set; }
-        [Inject]
         public GeneralViewModel Gvm { get; set; }
-
         [Inject]
         public TooltipService TooltipService { get; set; }
+        [Inject]
+        public MainStore MainStore { get; set; }
+        [Inject]
+        public ClientJobsStore ClientJobsStore { get; set; }
+
+        public string ArchvizedClientsFilterValue;
+
+        public void Dispose()
+        {
+            MainStore.RemoveStateChangeListener(UpdateView);
+            ClientJobsStore.RemoveStateChangeListener(UpdateView);
+        }
+
+        private void UpdateView()
+        {
+            StateHasChanged();
+        }
+
+        protected override void OnInitialized()
+        {
+            MainStore.AddStateChangeListener(UpdateView);
+            ClientJobsStore.AddStateChangeListener(UpdateView);
+            ClientJobsStore.Initialize();
+        }
+
 
         public string ArchvizedJobsFilterValue;
 
@@ -29,6 +53,8 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
 
         public bool showSecondSection = false;
         public void ShowHideSecondSection() => showSecondSection = !showSecondSection;
+
+
 
     }
 }

@@ -1,18 +1,42 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Radzen;
+using SWP.UI.BlazorApp.LegalApp.Stores.Clients;
+using SWP.UI.BlazorApp.LegalApp.Stores.Main;
 using SWP.UI.Components.LegalSwpBlazorComponents.App;
 using SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data;
+using System;
+using System.Threading.Tasks;
 
 namespace SWP.UI.Components.LegalSwpBlazorComponents
 {
-    public partial class LegalSwpClients
+    public partial class LegalSwpClients : IDisposable
     {
         [Inject]
-        public LegalBlazorApp App { get; set; }
+        public MainStore MainStore { get; set; }
         [Inject]
-        public GeneralViewModel Gvm { get; set; }
+        public ClientsStore ClientsStore { get; set; }
         [Inject]
         public TooltipService TooltipService { get; set; }
+        [Inject]
+        public GeneralViewModel Gvm { get; set; }
+
+        public void Dispose()
+        {
+            MainStore.RemoveStateChangeListener(UpdateView);
+            ClientsStore.RemoveStateChangeListener(UpdateView);
+        }
+
+        private void UpdateView()
+        {
+            StateHasChanged();
+        }
+
+        protected override async Task OnInitializedAsync()
+        {
+            MainStore.AddStateChangeListener(UpdateView);
+            ClientsStore.AddStateChangeListener(UpdateView);
+        }
 
         public bool addClientformVisible = false;
         public void ShowHideClientFormI() => addClientformVisible = !addClientformVisible;

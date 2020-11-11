@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Radzen;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,24 @@ namespace SWP.UI.BlazorApp
     {
         protected readonly IActionDispatcher _actionDispatcher;
         protected readonly IServiceProvider _serviceProvider;
+        protected readonly NotificationService _notificationService;
+        protected readonly DialogService _dialogService;
+
+        public void ShowNotification(NotificationSeverity severity, string summary, string detail, int duration) =>
+            _notificationService.Notify(new NotificationMessage() { Severity = severity, Summary = summary, Detail = detail, Duration = duration });
+
+        public StoreBase(IServiceProvider serviceProvider, NotificationService notificationService, DialogService dialogService)
+        {
+            _serviceProvider = serviceProvider;
+            _notificationService = notificationService;
+            _dialogService = dialogService;
+        }
+
+        public StoreBase(IServiceProvider serviceProvider, NotificationService notificationService)
+        {
+            _serviceProvider = serviceProvider;
+            _notificationService = notificationService;
+        }
 
         public StoreBase(IServiceProvider serviceProvider)
         {

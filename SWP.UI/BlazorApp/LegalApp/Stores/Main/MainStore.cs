@@ -24,20 +24,20 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
         public List<ClientViewModel> Clients { get; set; } = new List<ClientViewModel>();
         public ClientViewModel ActiveClient { get; set; }
         public LegalAppPanels ActivePanel { get; set; } = LegalAppPanels.MyApp;
+        public string SelectedClientString { get; set; }
     }
 
+    [UIScopedService]
     public class MainStore : StoreBase
     {
         private readonly MainState _state;
-        private readonly NotificationService _notificationService;
         private readonly ErrorStore _errorStore;
 
         public MainState GetState() => _state;
 
-        public MainStore(IServiceProvider serviceProvider, NotificationService notificationService, ErrorStore errorStore) : base(serviceProvider)
+        public MainStore(IServiceProvider serviceProvider, NotificationService notificationService, ErrorStore errorStore) : base(serviceProvider, notificationService)
         {
             _state = new MainState();
-            _notificationService = notificationService;
             _errorStore = errorStore;
         }
 
@@ -88,6 +88,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
         public void DeactivateLoading()
         {
             _state.Loading = false;
+            BroadcastStateChange();
         }
 
         public async Task ActiveClientChange(object value)
@@ -114,7 +115,6 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
                     //ProductivityPage.GetDataForMonthFilter();
 
                     DeactivateLoading();
-                    BroadcastStateChange();
                 }
                 catch (Exception ex)
                 {
@@ -123,7 +123,6 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
                 finally
                 {
                     DeactivateLoading();
-                    BroadcastStateChange();
                 }
             }
             else
@@ -136,7 +135,6 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
                 _state.ActiveClient = null;
 
                 DeactivateLoading();
-                BroadcastStateChange();
             }
         }
 
@@ -153,6 +151,102 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
             BroadcastStateChange();
         }
 
+        public async Task RefreshRelatedUsers()
+        {
+            try
+            {
+                using var scope = _serviceProvider.CreateScope();
+                var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
 
+                _state.User.RelatedUsers = await userManager.GetUsersForClaimAsync(_state.User.ProfileClaim);
+            }
+            catch (Exception ex)
+            {
+                await ShowErrorPage(ex);
+            }
+        }
+
+        public Task ThrowTestException()
+        {
+            try
+            {
+                throw new Exception("bablabla");
+            }
+            catch (Exception ex)
+            {
+                return ShowErrorPage(ex);
+            }
+        }
+
+        public void UpdateClientsList(ClientViewModel input) => _state.Clients[_state.Clients.FindIndex(x => x.Id == input.Id)] = input;
+
+        public void RefreshClients()
+        {
+            try
+            {
+                using var scope = _serviceProvider.CreateScope();
+                var getClients = scope.ServiceProvider.GetRequiredService<GetClients>();
+
+                _state.Clients = getClients.GetClientsWithoutData(_state.User.Profile, true).Select(x => (ClientViewModel)x).ToList();
+                _state.ActiveClient = null;
+                _state.SelectedClientString = null;
+            }
+            catch (Exception ex)
+            {
+                ShowErrorPage(ex).GetAwaiter();
+            }
+            finally
+            {
+                BroadcastStateChange();
+            }
+        }
+
+        public void AddClient(ClientViewModel input) => _state.Clients.Add(input);
+
+        public void RemoveClient(int id)
+        {
+            _state.Clients.RemoveAll(x => x.Id == id);
+
+            if (_state.ActiveClient?.Id == id)
+            {
+                _state.ActiveClient = null;
+                _state.SelectedClientString = null;
+            }
+
+            BroadcastStateChange();
+        }
+
+        public ClientViewModel GetActiveClient() => _state.ActiveClient;
+
+        public UserModel GetApplicationUser() => _state.User;
+
+        public void RefreshActiveClientData()
+        {
+            try
+            {
+                if (_state.ActiveClient != null)
+                {
+                    using var scope = _serviceProvider.CreateScope();
+                    var getClient = scope.ServiceProvider.GetRequiredService<GetClient>();
+
+                    ClientViewModel newModel = getClient.Get(_state.ActiveClient.Id);
+
+                    if (_state.ActiveClient.SelectedCase != null)
+                    {
+                        newModel.SelectedCase = newModel.Cases.FirstOrDefault(x => x.Id == _state.ActiveClient.SelectedCase.Id);
+                    }
+
+                    _state.ActiveClient = newModel;
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowErrorPage(ex).GetAwaiter();
+            }
+            finally
+            {
+                BroadcastStateChange();
+            }
+        }
     }
 }

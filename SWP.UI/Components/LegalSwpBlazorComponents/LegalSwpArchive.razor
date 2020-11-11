@@ -1,17 +1,17 @@
 ﻿<h3>Archive</h3>
 
-<RadzenListBox AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" @bind-Value="ArchvizedClientsFilterValue" Data="@App.ArchivePage.ArchivizedClients" TextProperty="Name" ValueProperty="IdString" Change="@(args => App.ArchivePage.SelectedArchivizedClientChange(args))"
+<RadzenListBox AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" @bind-Value="ArchvizedClientsFilterValue" Data="@ArchiveStore.GetState().ArchivizedClients" TextProperty="Name" ValueProperty="IdString" Change="@(args => ArchiveStore.SelectedArchivizedClientChange(args))"
                Style="margin-bottom: 20px; height:200px;" />
 
-@if (App.ArchivePage.SelectedArchivizedClient != null)
+@if (ArchiveStore.GetState().SelectedArchivizedClient != null)
 {
     <RadzenCard Style="width:600px; margin-bottom: 20px; height:500px;">
         <div class="row">
             <div class="col-md-6">
                 <div>Wybrany Klient:</div>
-                <b>@App.ArchivePage.SelectedArchivizedClient.Name</b>
-                <RadzenButton Click="(async () => await App.ArchivePage.RecoverSelectedClient())">Odzyskaj Klienta</RadzenButton>
-                <RadzenButton Click="(async () => await App.ArchivePage.DeleteSelectedClient())">Usuń</RadzenButton>
+                <b>@ArchiveStore.GetState().SelectedArchivizedClient.Name</b>
+                <RadzenButton Click="(async () => await ArchiveStore.RecoverSelectedClient())">Odzyskaj Klienta</RadzenButton>
+                <RadzenButton Click="(async () => await ArchiveStore.DeleteSelectedClient())">Usuń</RadzenButton>
             </div>
         </div>
     </RadzenCard>

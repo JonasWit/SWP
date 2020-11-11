@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Radzen;
 using Radzen.Blazor;
+using SWP.UI.BlazorApp.LegalApp.Stores.Main;
+using SWP.UI.BlazorApp.LegalApp.Stores.MyApp;
 using SWP.UI.Components.LegalSwpBlazorComponents.App;
 using SWP.UI.Components.LegalSwpBlazorComponents.Dialogs;
 using System;
@@ -12,12 +14,33 @@ using System.Threading.Tasks;
 
 namespace SWP.UI.Components.LegalSwpBlazorComponents
 {
-    public partial class LegalSwpMyApp
+    public partial class LegalSwpMyApp : IDisposable
     {
         [Inject]
-        public LegalBlazorApp App { get; set; }
+        public MainStore MainStore { get; set; }
+        [Inject]
+        public MyAppStore MyAppStore { get; set; }
         [Inject]
         public TooltipService TooltipService { get; set; }
+
+        public void Dispose()
+        {
+            MainStore.RemoveStateChangeListener(UpdateView);
+            MyAppStore.RemoveStateChangeListener(UpdateView);
+        }
+
+        private void UpdateView()
+        {
+            MyAppStore.RefreshData();
+            StateHasChanged();
+        }
+
+        protected override async Task OnInitializedAsync()
+        {
+            MainStore.AddStateChangeListener(UpdateView);
+            MyAppStore.AddStateChangeListener(UpdateView);
+            await MyAppStore.Initialize();
+        }
 
         private string FormatAsPLN(object value) => $"{((double)value).ToString(CultureInfo.CreateSpecificCulture("pl"))} zł";
 

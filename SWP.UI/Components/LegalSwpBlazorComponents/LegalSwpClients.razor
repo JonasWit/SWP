@@ -1,11 +1,12 @@
-﻿
+﻿@using SWP.UI.BlazorApp.LegalApp.Stores.Clients
+
 <div class="flex-container-main">
 
     <div class="show-hide tab-section"><button class="show-hide-btn show-hide-btn-1 @(showFormVisible ? "button-active" : "")" @onclick="ShowHideForm"><span>Dodaj Klienta</span></button></div>
     @if (showFormVisible)
     {
         <div class="row-section">
-            <RadzenTemplateForm Data="@App.ClientsPage.NewClient" Submit="@(async (CreateClient.Request args) => { await App.ClientsPage.SubmitNewClient(args); })">
+            <RadzenTemplateForm Data="@ClientsStore.GetState().NewClient" Submit="@(async (CreateClient.Request args) => { await ClientsStore.SubmitNewClient(args); })">
                 <RadzenFieldset Text="Nowy Klient">
                     <div class="help-box">
                         <i class="user-icon"><img src="/Images/icons8-reception-36.png" /></i>
@@ -23,7 +24,7 @@
                             <div class="label">
                                 <RadzenLabel Text="Nazwa" />
                             </div>
-                            <RadzenTextArea Placeholder="Nazwa..." @bind-Value="App.ClientsPage.NewClient.Name" style="@Gvm.FormInputBoxWidth" Name="Nazwa" />
+                            <RadzenTextArea Placeholder="Nazwa..." @bind-Value="ClientsStore.GetState().NewClient.Name" style="@Gvm.FormInputBoxWidth" Name="Nazwa" />
                             <RadzenRequiredValidator Component="Nazwa" Text="Nazwa nie może być pusta!" style="@Gvm.FormInputBoxWidth" />
                             <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Nazwa" Style="position: absolute" />
                         </div>
@@ -31,7 +32,7 @@
                             <div class="label">
                                 <RadzenLabel Text="Adres" />
                             </div>
-                            <RadzenTextArea Placeholder="Adres..." @bind-Value="App.ClientsPage.NewClient.Address" style="@Gvm.FormInputBoxWidth" Name="Address" />
+                            <RadzenTextArea Placeholder="Adres..." @bind-Value="ClientsStore.GetState().NewClient.Address" style="@Gvm.FormInputBoxWidth" Name="Address" />
                             <RadzenLengthValidator Max="200" Text="Maksymalnie 200 znaków!" Component="Address" Style="position: absolute" />
                         </div>
                     </div>
@@ -41,14 +42,14 @@
                             <div class="label">
                                 <RadzenLabel Text="Telefon" />
                             </div>
-                            <RadzenTextBox Placeholder="Telefon..." @bind-Value="App.ClientsPage.NewClient.PhoneNumber" style="@Gvm.FormInputBoxWidth" Name="PhoneNumber" />
+                            <RadzenTextBox Placeholder="Telefon..." @bind-Value="ClientsStore.GetState().NewClient.PhoneNumber" style="@Gvm.FormInputBoxWidth" Name="PhoneNumber" />
                             <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="PhoneNumber" Style="position: absolute" />
                         </div>
                         <div class="text">
                             <div class="label">
                                 <RadzenLabel Text="Email" />
                             </div>
-                            <RadzenTextBox Placeholder="Adres Email..." @bind-Value="App.ClientsPage.NewClient.Email" style="@Gvm.FormInputBoxWidth" Name="Email" />
+                            <RadzenTextBox Placeholder="Adres Email..." @bind-Value="ClientsStore.GetState().NewClient.Email" style="@Gvm.FormInputBoxWidth" Name="Email" />
                             <RadzenEmailValidator Component="Email" Text="Nieprawidłowy adres Email!" />
                             <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Email" />
                         </div>
@@ -81,8 +82,8 @@
             </div>
 
             <div class="list-table">
-                <RadzenGrid @ref="App.ClientsPage.ClientsGrid" AllowFiltering="true" AllowPaging="true" PageSize="10" AllowSorting="true"
-                            Data="@App.Clients" TItem="ClientViewModel" RowUpdate="@App.ClientsPage.OnUpdateClientRow" RowSelect="@(args => App.ClientsPage.ClientSelected(args))">
+                <RadzenGrid @ref="ClientsStore.GetState().ClientsGrid" AllowFiltering="true" AllowPaging="true" PageSize="10" AllowSorting="true"
+                            Data="@MainStore.GetState().Clients" TItem="ClientViewModel" RowUpdate="@ClientsStore.OnUpdateClientRow" RowSelect="@(args => ClientsStore.ClientSelected(args))">
                     <Columns>
                         <RadzenGridColumn TItem="ClientViewModel" Property="Name" Title="Nazwa">
                             <Template Context="client">
@@ -122,20 +123,20 @@
 
                         <RadzenGridColumn TItem="ClientViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="80px">
                             <Template Context="client">
-                                <RadzenButton Icon="edit" Size="ButtonSize.Small" Click="@(args => App.ClientsPage.EditClientRow(client))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Edytuj", Style=Gvm.ToolTipStyle }))">
+                                <RadzenButton Icon="edit" Size="ButtonSize.Small" Click="@(args => ClientsStore.EditClientRow(client))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Edytuj", Style=Gvm.ToolTipStyle }))">
                                     >
                                 </RadzenButton>
                             </Template>
                             <EditTemplate Context="client">
-                                <RadzenButton Icon="save" Size="ButtonSize.Small" Click="@((args) => App.ClientsPage.SaveClientRow(client))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Zapisz", Style=Gvm.ToolTipStyle }))">
+                                <RadzenButton Icon="save" Size="ButtonSize.Small" Click="@((args) => ClientsStore.SaveClientRow(client))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Zapisz", Style=Gvm.ToolTipStyle }))">
                                 </RadzenButton>
-                                <RadzenButton Icon="cancel" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Success" Click="@((args) => App.ClientsPage.CancelClientEdit(client))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Anuluj", Style=Gvm.ToolTipStyle }))">
+                                <RadzenButton Icon="cancel" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Success" Click="@((args) => ClientsStore.CancelClientEdit(client))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Anuluj", Style=Gvm.ToolTipStyle }))">
                                 </RadzenButton>
                             </EditTemplate>
                         </RadzenGridColumn>
                         <RadzenGridColumn TItem="ClientViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="45px">
                             <Template Context="client">
-                                <RadzenButton ButtonStyle="ButtonStyle.Warning" Icon="archive" Size="ButtonSize.Small" Click="@(async (args) => await App.ClientsPage.ArchivizeClient(client))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Archiwizuj", Style=Gvm.ToolTipStyle }))">
+                                <RadzenButton ButtonStyle="ButtonStyle.Warning" Icon="archive" Size="ButtonSize.Small" Click="@(async (args) => await ClientsStore.ArchivizeClient(client))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Archiwizuj", Style=Gvm.ToolTipStyle }))">
                                 </RadzenButton>
                             </Template>
                             <EditTemplate Context="client">
@@ -143,7 +144,7 @@
                         </RadzenGridColumn>
                         <RadzenGridColumn TItem="ClientViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="45px">
                             <Template Context="client">
-                                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@(async (args) => await App.ClientsPage.DeleteClientRow(client))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Usuń", Style=Gvm.ToolTipStyle }))">
+                                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@(async (args) => await ClientsStore.DeleteClientRow(client))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Usuń", Style=Gvm.ToolTipStyle }))">
                                 </RadzenButton>
                             </Template>
                             <EditTemplate Context="client">
@@ -154,28 +155,21 @@
             </div>
         </div>
 
-        @if (App.ClientsPage.SelectedClient != null)
+        @if (ClientsStore.GetState().SelectedClient != null)
         {
             <div class="details">
-                <p><strong>Nazwa:</strong> @App.ClientsPage.SelectedClient.Name</p>
-                <p><strong>Adres:</strong> @App.ClientsPage.SelectedClient.Address</p>
-                <p><strong>Telefon:</strong> @App.ClientsPage.SelectedClient.PhoneNumber</p>
-                <p><strong>Email:</strong> @App.ClientsPage.SelectedClient.Email</p>
-                <p><strong>Zmienione przez:</strong> @App.ClientsPage.SelectedClient.UpdatedBy</p>
-                <p><strong>Data zmiany:</strong> @App.ClientsPage.SelectedClient.Updated</p>
-                <p><strong>Data utworzenia:</strong> @App.ClientsPage.SelectedClient.Created</p>
+                <p><strong>Nazwa:</strong> @ClientsStore.GetState().SelectedClient.Name</p>
+                <p><strong>Adres:</strong> @ClientsStore.GetState().SelectedClient.Address</p>
+                <p><strong>Telefon:</strong> @ClientsStore.GetState().SelectedClient.PhoneNumber</p>
+                <p><strong>Email:</strong> @ClientsStore.GetState().SelectedClient.Email</p>
+                <p><strong>Zmienione przez:</strong> @ClientsStore.GetState().SelectedClient.UpdatedBy</p>
+                <p><strong>Data zmiany:</strong> @ClientsStore.GetState().SelectedClient.Updated</p>
+                <p><strong>Data utworzenia:</strong> @ClientsStore.GetState().SelectedClient.Created</p>
             </div>
         }
     }
-
-    @if (App.ActiveClientWithData != null)
-    {
-
-    }
-
 </div>
+
 @code {
-
     private void ShowTooltip(ElementReference elementReference, TooltipOptions options = null) => TooltipService.Open(elementReference, options.Text, options);
-
 }

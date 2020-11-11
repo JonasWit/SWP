@@ -9,8 +9,6 @@ using SWP.Domain.Infrastructure;
 using SWP.Domain.Infrastructure.LegalApp;
 using SWP.Domain.Infrastructure.Portal;
 using SWP.UI.Automation;
-using SWP.UI.BlazorApp;
-using SWP.UI.Components.LegalSwpBlazorComponents.App;
 using System.Linq;
 using System.Reflection;
 
@@ -79,7 +77,6 @@ namespace SWP.UI
             @this.AddScoped<DialogService>();
             @this.AddScoped<TooltipService>();
             @this.AddScoped<NotificationService>();
-            @this.AddScoped<LegalBlazorApp>();
 
             //@this.AddScoped<ISessionManager, SessionManager>();
 

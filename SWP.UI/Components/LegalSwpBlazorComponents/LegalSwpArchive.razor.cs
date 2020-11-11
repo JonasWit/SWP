@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using SWP.UI.BlazorApp.LegalApp.Stores.Archive;
 using SWP.UI.BlazorApp.LegalApp.Stores.Main;
-using SWP.UI.Components.LegalSwpBlazorComponents.App;
 using System;
 
 namespace SWP.UI.Components.LegalSwpBlazorComponents

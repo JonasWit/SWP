@@ -1,10 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using SWP.UI.BlazorApp.LegalApp.Stores.Calendar;
 using SWP.UI.BlazorApp.LegalApp.Stores.Main;
-using SWP.UI.Components.LegalSwpBlazorComponents.App;
-using SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data;
 using System;
-using System.Threading.Tasks;
 
 namespace SWP.UI.Components.LegalSwpBlazorComponents
 {

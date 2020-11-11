@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SWP.UI.Components.LegalSwpBlazorComponents.App.Reporting
+namespace SWP.UI.BlazorApp.LegalApp.Services.Reporting
 {
     public class PdfReportFooterStandard : PdfPageEventHelper
     {
@@ -20,7 +20,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App.Reporting
         {
             var numberTable = new PdfPTable(1);
             string text = $"Strona : {writer.PageNumber:00}",
-                text1 = $"Wygenerowano : {DateTime.Now:dd-MM-yyyy HH:mm:ss}" ;
+                text1 = $"Wygenerowano : {DateTime.Now:dd-MM-yyyy HH:mm:ss}";
 
             var pdfCell = new PdfPCell(new Phrase(text, pageNumberFont))
             {

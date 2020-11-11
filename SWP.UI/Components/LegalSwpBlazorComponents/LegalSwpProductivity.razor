@@ -5,7 +5,7 @@
     @if (showSecondSection)
     {
         <div class="row-section">
-            <RadzenTemplateForm Data="@App.ProductivityPage.NewTimeRecord" Submit="@(async (CreateTimeRecord.Request args) => { await App.ProductivityPage.SubmitNewTimeRecord(args); })">
+            <RadzenTemplateForm Data="@ProductivityStore.GetState().NewTimeRecord" Submit="@(async (CreateTimeRecord.Request args) => { await ProductivityStore.SubmitNewTimeRecord(args); })">
                 <RadzenFieldset Text="Wprowadź nową czynność i czas">
                     <div class="help-box">
                         <i class="user-icon"><img src="/Images/icons8-reception-36.png" /></i>
@@ -25,7 +25,7 @@
                             <div class="label">
                                 <RadzenLabel Text="Prawnik" />
                             </div>
-                            <RadzenTextBox Placeholder="Prawnik..." Style="@(Gvm.FormInputBoxWidth)" @bind-Value="App.ProductivityPage.NewTimeRecord.Lawyer" Name="Lawyer" />
+                            <RadzenTextBox Placeholder="Prawnik..." Style="@(Gvm.FormInputBoxWidth)" @bind-Value="ProductivityStore.GetState().NewTimeRecord.Lawyer" Name="Lawyer" />
                             <RadzenLengthValidator Max="200" Text="Maksymalnie 200 znaków" Component="Lawyer" />
                         </div>
 
@@ -33,7 +33,7 @@
                             <div class="label">
                                 <RadzenLabel Text="Nazwa" />
                             </div>
-                            <RadzenTextBox Placeholder="Nazwa Sprawy..." Style="@(Gvm.FormInputBoxWidth)" @bind-Value="App.ProductivityPage.NewTimeRecord.Name" Name="Name" />
+                            <RadzenTextBox Placeholder="Nazwa Sprawy..." Style="@(Gvm.FormInputBoxWidth)" @bind-Value="ProductivityStore.GetState().NewTimeRecord.Name" Name="Name" />
                             <RadzenRequiredValidator Text="Nazwa nie może być pusta!" Component="Name" />
                             <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Name" />
                         </div>
@@ -42,7 +42,7 @@
                             <div class="label">
                                 <RadzenLabel Text="Opis" />
                             </div>
-                            <RadzenTextArea Placeholder="Opis..." Style="@(Gvm.FormInputBoxWidth)" @bind-Value="App.ProductivityPage.NewTimeRecord.Description" Name="Description" />
+                            <RadzenTextArea Placeholder="Opis..." Style="@(Gvm.FormInputBoxWidth)" @bind-Value="ProductivityStore.GetState().NewTimeRecord.Description" Name="Description" />
                             <RadzenLengthValidator Max="500" Text="Maksymalnie 500 znaków" Component="Description" />
                         </div>
 
@@ -50,7 +50,7 @@
                     <div class="form">
                         <div class="text">
                             <div class="label"><RadzenLabel Text="Godziny" /></div>
-                            <RadzenNumeric TValue="int" Style="margin-bottom: 20px" @bind-Value="App.ProductivityPage.NewTimeRecord.RecordedHours" Name="Hours" Placeholder="0" />
+                            <RadzenNumeric TValue="int" Style="margin-bottom: 20px" @bind-Value="ProductivityStore.GetState().NewTimeRecord.RecordedHours" Name="Hours" Placeholder="0" />
                             <RadzenRequiredValidator Text="Czas musi być wprowadzony!" Component="Hours" Popup="true" />
                             <RadzenNumericRangeValidator Component="Hours" Min="0" Text="Wartość dla godzin nie może być mniejsza od zera!" Style="position: absolute" />
                         </div>
@@ -59,18 +59,18 @@
                             <div class="label">
                                 <RadzenLabel Text="Minuty" />
                             </div>
-                            <RadzenNumeric TValue="int" Style="margin-bottom: 20px" @bind-Value="App.ProductivityPage.NewTimeRecord.RecordedMinutes" Name="Minutes" Placeholder="1" />
+                            <RadzenNumeric TValue="int" Style="margin-bottom: 20px" @bind-Value="ProductivityStore.GetState().NewTimeRecord.RecordedMinutes" Name="Minutes" Placeholder="1" />
                             <RadzenRequiredValidator Text="Czas musi być wprowadzony!" Component="Minutes" Popup="true" />
                             <RadzenNumericRangeValidator Component="Minutes" Min="0" Text="Wartość dla minut nie może być mniejsza od zera!" Style="position: absolute" />
                             <RadzenNumericRangeValidator Component="Minutes" Max="59" Text="Wartość dla minut nie może być większa od 59!" Style="position: absolute" />
                         </div>
                         <div class="text">
                             <div class="label"><RadzenLabel Text="Stawka" /></div>
-                            <RadzenNumeric TValue="double" Placeholder="0.0" Step="0.01" @bind-Value="@App.ProductivityPage.NewTimeRecord.Rate" Style="margin-bottom: 20px" />
+                            <RadzenNumeric TValue="double" Placeholder="0.0" Step="0.01" @bind-Value="@ProductivityStore.GetState().NewTimeRecord.Rate" Style="margin-bottom: 20px" />
                         </div>
                         <div class="text">
                             <div class="label"><RadzenLabel Text="Data" /> </div>
-                            <RadzenDatePicker @bind-Value="App.ProductivityPage.NewTimeRecord.EventDate" DateFormat="d" Name="EventDate" />
+                            <RadzenDatePicker @bind-Value="ProductivityStore.GetState().NewTimeRecord.EventDate" DateFormat="d" Name="EventDate" />
                             <RadzenRequiredValidator Component="EventDate" Text="Data nie może być pusta!" Popup="true" />
                         </div>
                     </div>
@@ -88,8 +88,8 @@
     @if (showFirstSection)
     {
         <div class="row-section">
-            <RadzenGrid @ref="App.ProductivityPage.TimeRecordsGrid" AllowFiltering="true" AllowPaging="true" PageSize="10" AllowSorting="true"
-                        Data="@(App.ProductivityPage.SelectedMonth == null ? App.ActiveClientWithData.TimeRecords : App.ActiveClientWithData.TimeRecords.Where(x => x.EventDate.Month == App.ProductivityPage.SelectedMonth.Month &&  x.EventDate.Year == App.ProductivityPage.SelectedMonth.Year))" TItem="TimeRecordViewModel" RowUpdate="@App.ProductivityPage.OnUpdateTimeRecordRow" RowSelect="@(args => App.ProductivityPage.ActiveTimeRecordChange(args))">
+            <RadzenGrid @ref="ProductivityStore.GetState().TimeRecordsGrid" AllowFiltering="true" AllowPaging="true" PageSize="10" AllowSorting="true"
+                        Data="@(ProductivityStore.GetState().SelectedMonth == null ? MainStore.GetState().ActiveClient.TimeRecords : MainStore.GetState().ActiveClient.TimeRecords.Where(x => x.EventDate.Month == ProductivityStore.GetState().SelectedMonth.Month &&  x.EventDate.Year == ProductivityStore.GetState().SelectedMonth.Year))" TItem="TimeRecordViewModel" RowUpdate="@ProductivityStore.OnUpdateTimeRecordRow" RowSelect="@(args => ProductivityStore.ActiveTimeRecordChange(args))">
                 <Columns>
                     <RadzenGridColumn TItem="TimeRecordViewModel" Property="Name" Title="Nazwa">
                         <Template Context="r">
@@ -168,31 +168,31 @@
                         <FilterTemplate>
                             <RadzenDropDown AllowClear="true" TValue="int"
                                             FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" FilterOperator="StringFilterOperator.StartsWith" AllowFiltering="true"
-                                            Data="@App.ProductivityPage.MonthsFilterData" TextProperty="DisplayText" ValueProperty="Id" Change="@(args => App.ProductivityPage.SelectedMonthChange(args))" />
+                                            Data="@ProductivityStore.GetState().MonthsFilterData" TextProperty="DisplayText" ValueProperty="Id" Change="@(args => ProductivityStore.SelectedMonthChange(args))" />
                         </FilterTemplate>
                     </RadzenGridColumn>
 
                     <RadzenGridColumn TItem="TimeRecordViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="100px">
                         <Template Context="r">
-                            <RadzenButton Icon="edit" Size="ButtonSize.Small" Click="@(args => App.ProductivityPage.EditTimeRecordRow(r))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Edytuj", Style=Gvm.ToolTipStyle }))">
+                            <RadzenButton Icon="edit" Size="ButtonSize.Small" Click="@(args => ProductivityStore.EditTimeRecordRow(r))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Edytuj", Style=Gvm.ToolTipStyle }))">
                             </RadzenButton>
                         </Template>
                         <EditTemplate Context="r">
-                            <RadzenButton Icon="save" Size="ButtonSize.Small" Click="@((args) => App.ProductivityPage.SaveTimeRecordRow(r))">
+                            <RadzenButton Icon="save" Size="ButtonSize.Small" Click="@((args) => ProductivityStore.SaveTimeRecordRow(r))">
                             </RadzenButton>
-                            <RadzenButton Icon="cancel" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Success" Click="@((args) => App.ProductivityPage.CancelTimeRecordEdit(r))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Anuluj", Style=Gvm.ToolTipStyle }))">
+                            <RadzenButton Icon="cancel" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Success" Click="@((args) => ProductivityStore.CancelTimeRecordEdit(r))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Anuluj", Style=Gvm.ToolTipStyle }))">
                             </RadzenButton>
                         </EditTemplate>
                     </RadzenGridColumn>
                     <RadzenGridColumn TItem="TimeRecordViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="50px">
                         <Template Context="r">
-                            <RadzenButton ButtonStyle="ButtonStyle.Success" Icon="monetization_on" Size="ButtonSize.Small" Click="@(async (args) => await App.ProductivityPage.AddRecordRowToCashMovements(r))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Dodaj do rozliczenia", Style=Gvm.ToolTipStyle }))">
+                            <RadzenButton ButtonStyle="ButtonStyle.Success" Icon="monetization_on" Size="ButtonSize.Small" Click="@(async (args) => await ProductivityStore.AddRecordRowToCashMovements(r))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Dodaj do rozliczenia", Style=Gvm.ToolTipStyle }))">
                             </RadzenButton>
                         </Template>
                     </RadzenGridColumn>
                     <RadzenGridColumn TItem="TimeRecordViewModel" Context="order" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="50px">
                         <Template Context="r">
-                            <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@(async (args) => await App.ProductivityPage.DeleteTimeRecordRow(r))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Zanknij", Style=Gvm.ToolTipStyle }))">
+                            <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@(async (args) => await ProductivityStore.DeleteTimeRecordRow(r))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Zanknij", Style=Gvm.ToolTipStyle }))">
                             </RadzenButton>
                         </Template>
                         <EditTemplate Context="r">
@@ -202,16 +202,16 @@
             </RadzenGrid>
         </div>
         <div class="details">
-            <p><strong>Klient: </strong>@App.ActiveClient.Name</p>
-            <p><strong>Poświęcony czas: </strong>@App.ActiveClientWithData.GetTimeSpent()</p>
-            @if (App.ActiveClientWithData.SelectedTimeRecord != null)
+            <p><strong>Klient: </strong>@MainStore.GetState().ActiveClient.Name</p>
+            <p><strong>Poświęcony czas: </strong>@MainStore.GetState().ActiveClient.GetTimeSpent()</p>
+            @if (MainStore.GetState().ActiveClient.SelectedTimeRecord != null)
             {
-                <p><strong>Nazwa: </strong>@App.ActiveClientWithData.SelectedTimeRecord.Name</p>
-                <p><strong>Opis: </strong>@App.ActiveClientWithData.SelectedTimeRecord.Description</p>
-                <p><strong>Data utworzenia:</strong>@App.ActiveClientWithData.SelectedTimeRecord.Created</p>
-                <p><strong>Stworzono przez:</strong>@App.ActiveClientWithData.SelectedTimeRecord.CreatedBy</p>
-                <p><strong>Data zmiany:</strong>@App.ActiveClientWithData.SelectedTimeRecord.Updated</p>
-                <p><strong>Zmianiono przez:</strong>@App.ActiveClientWithData.SelectedTimeRecord.UpdatedBy</p>
+                <p><strong>Nazwa: </strong>@MainStore.GetState().ActiveClient.SelectedTimeRecord.Name</p>
+                <p><strong>Opis: </strong>@MainStore.GetState().ActiveClient.SelectedTimeRecord.Description</p>
+                <p><strong>Data utworzenia:</strong>@MainStore.GetState().ActiveClient.SelectedTimeRecord.Created</p>
+                <p><strong>Stworzono przez:</strong>@MainStore.GetState().ActiveClient.SelectedTimeRecord.CreatedBy</p>
+                <p><strong>Data zmiany:</strong>@MainStore.GetState().ActiveClient.SelectedTimeRecord.Updated</p>
+                <p><strong>Zmianiono przez:</strong>@MainStore.GetState().ActiveClient.SelectedTimeRecord.UpdatedBy</p>
 
             }
             else
@@ -225,7 +225,7 @@
     @if (showThirdSection)
     {
         <div class="row-section">
-            <RadzenTemplateForm Data="@App.ProductivityPage.NewTimesheetReport" Submit="@(async (LegalTimeSheetReport.ReportData args) => { await GenerateTimesheetReport(args); })">
+            <RadzenTemplateForm Data="@ProductivityStore.GetState().NewTimesheetReport" Submit="@(async (LegalTimeSheetReport.ReportData args) => { await GenerateTimesheetReport(args); })">
                 <RadzenFieldset Text="Eksportuj dane do pdf">
                     <div class="help-box">
                         <i class="user-icon"><img src="/Images/icons8-reception-36.png" /></i>
@@ -244,22 +244,22 @@
                             <div class="label">
                                 <RadzenLabel Text="NIP" Component="NIP" />
                             </div>
-                            <RadzenMask Mask="***-**-**-***" Pattern="[^0-9]" Placeholder="000-00-00-000" Name="NIP" @bind-Value="@App.ProductivityPage.NewTimesheetReport.NIP" />
+                            <RadzenMask Mask="***-**-**-***" Pattern="[^0-9]" Placeholder="000-00-00-000" Name="NIP" @bind-Value="ProductivityStore.GetState().NewTimesheetReport.NIP" />
                         </div>
                         <div class="text">
                             <div class="label">
                                 <RadzenLabel Text="Numer Faktury" Component="InvoiceNo" />
                             </div>
-                            <RadzenTextBox Placeholder="Numer Faktury..." Style="@(Gvm.FormInputBoxWidth)" @bind-Value="App.ProductivityPage.NewTimesheetReport.InvoiceNumber" Name="InvoiceNo" />
+                            <RadzenTextBox Placeholder="Numer Faktury..." Style="@(Gvm.FormInputBoxWidth)" @bind-Value="ProductivityStore.GetState().NewTimesheetReport.InvoiceNumber" Name="InvoiceNo" />
                         </div>
                         <div class="text">
                             <div class="label">
                                 <RadzenLabel Text="Data Faktury" Component="InvoiceDate" />
                             </div>
-                            <RadzenDatePicker @bind-Value="App.ProductivityPage.NewTimesheetReport.InvoiceDate" DateFormat="d" Name="InvoiceDate" />
+                            <RadzenDatePicker @bind-Value="ProductivityStore.GetState().NewTimesheetReport.InvoiceDate" DateFormat="d" Name="InvoiceDate" />
                             <RadzenRequiredValidator Component="InvoiceDate" Text="Data Faktury nie moze byc pusta!" />
                             <div class="label">
-                                <RadzenCheckBox @bind-Value="@App.ProductivityPage.NewTimesheetReport.UseSelectedMonth" TValue="bool" Name="UseSelected" />
+                                <RadzenCheckBox @bind-Value="ProductivityStore.GetState().NewTimesheetReport.UseSelectedMonth" TValue="bool" Name="UseSelected" />
                                 <RadzenLabel Text="Uzyj tego przefiltrowanego miesiaca" Component="UseSelected" />
                             </div>
 
@@ -270,13 +270,13 @@
                             <div class="label">
                                 <RadzenLabel Text="Data Początkowa" Component="StartDate" />
                             </div>
-                            <RadzenDatePicker @bind-Value="App.ProductivityPage.NewTimesheetReport.StartDate" DateFormat="d" Name="StartDate" />
+                            <RadzenDatePicker @bind-Value="ProductivityStore.GetState().NewTimesheetReport.StartDate" DateFormat="d" Name="StartDate" />
                         </div>
                         <div class="text">
                             <div class="label">
                                 <RadzenLabel Text="Data Końcowa" Component="EndDate" />
                             </div>
-                            <RadzenDatePicker @bind-Value="App.ProductivityPage.NewTimesheetReport.EndDate" DateFormat="d" Name="EndDate" />
+                            <RadzenDatePicker @bind-Value="ProductivityStore.GetState().NewTimesheetReport.EndDate" DateFormat="d" Name="EndDate" />
                         </div>
                         <div class="text">
                             <div class="label">
@@ -284,7 +284,7 @@
                             </div>
                             <RadzenDropDown AllowClear="true" TValue="int"
                                             FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" FilterOperator="StringFilterOperator.StartsWith" AllowFiltering="true" Name="FontBox"
-                                            Data="@App.ProductivityPage.FontsFilterData" TextProperty="DisplayText" ValueProperty="Id" Change="@(args => App.ProductivityPage.SelectedFontChange(args))" />
+                                            Data="@ProductivityStore.GetState().FontsFilterData" TextProperty="DisplayText" ValueProperty="Id" Change="@(args => ProductivityStore.SelectedFontChange(args))" />
                         </div>
                     </div>
                     <div class="form-btn">
@@ -301,5 +301,4 @@
 @code {
 
     private void ShowTooltip(ElementReference elementReference, TooltipOptions options = null) => TooltipService.Open(elementReference, options.Text, options);
-
 }

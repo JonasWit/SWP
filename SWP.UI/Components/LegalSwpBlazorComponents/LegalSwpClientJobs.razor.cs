@@ -2,12 +2,7 @@
 using Radzen;
 using SWP.UI.BlazorApp.LegalApp.Stores.ClientJobs;
 using SWP.UI.BlazorApp.LegalApp.Stores.Main;
-using SWP.UI.Components.LegalSwpBlazorComponents.App;
 using SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace SWP.UI.Components.LegalSwpBlazorComponents
 {

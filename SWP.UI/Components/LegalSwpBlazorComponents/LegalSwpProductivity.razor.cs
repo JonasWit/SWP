@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Components;
-using Microsoft.JSInterop;
 using Radzen;
-using SWP.UI.Components.LegalSwpBlazorComponents.App;
-using SWP.UI.Components.LegalSwpBlazorComponents.App.Reporting;
+using SWP.UI.BlazorApp.LegalApp.Services.Reporting;
+using SWP.UI.BlazorApp.LegalApp.Stores.Main;
+using SWP.UI.BlazorApp.LegalApp.Stores.Productivity;
 using SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data;
 using System;
 using System.Collections.Generic;
@@ -14,11 +14,31 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
     public partial class LegalSwpProductivity
     {
         [Inject]
-        public LegalBlazorApp App { get; set; }
+        public MainStore MainStore { get; set; }
+        [Inject]
+        public ProductivityStore ProductivityStore { get; set; }
         [Inject]
         public GeneralViewModel Gvm { get; set; }
         [Inject]
         public TooltipService TooltipService { get; set; }
+
+        public string ArchvizedClientsFilterValue;
+
+        public void Dispose()
+        {
+            MainStore.RemoveStateChangeListener(UpdateView);
+            ProductivityStore.RemoveStateChangeListener(UpdateView);
+        }
+
+        private void UpdateView() => StateHasChanged();
+
+        protected override void OnInitialized()
+        {
+            MainStore.AddStateChangeListener(UpdateView);
+            ProductivityStore.AddStateChangeListener(UpdateView);
+            ProductivityStore.Initialize();
+        }
+
         [Inject]
         public LegalTimeSheetReport LegalTimeSheetReport { get; set; }
 
@@ -48,9 +68,9 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
 
                 var productivityRecords = new List<TimeRecordViewModel>();
 
-                if (App.ProductivityPage.SelectedFont != null)
+                if (ProductivityStore.GetState().SelectedFont != null)
                 {
-                    reportData.FontName = App.ProductivityPage.SelectedFont.FontName;
+                    reportData.FontName = ProductivityStore.GetState().SelectedFont.FontName;
                 }
                 else
                 {
@@ -59,12 +79,12 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
 
                 if (reportData.UseSelectedMonth)
                 {
-                    if (App.ProductivityPage.SelectedMonth != null)
+                    if (ProductivityStore.GetState().SelectedMonth != null)
                     {
-                        var month = App.ProductivityPage.SelectedMonth.Month;
-                        var year = App.ProductivityPage.SelectedMonth.Year;
+                        var month = ProductivityStore.GetState().SelectedMonth.Month;
+                        var year = ProductivityStore.GetState().SelectedMonth.Year;
 
-                        productivityRecords = App.ActiveClientWithData.TimeRecords
+                        productivityRecords = MainStore.GetState().ActiveClient.TimeRecords
                             .Where(x => x.EventDate.Month == month && x.EventDate.Year == year).ToList();
 
                         reportData.StartDate = new DateTime(year, month, 1);
@@ -72,30 +92,30 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
                     }
                     else
                     {
-                        App.ShowNotification(NotificationSeverity.Warning, "Uwaga!", $"Najpierw przefiltruj dane po wybranym miesiącu", GeneralViewModel.NotificationDuration);
+                        MainStore.ShowNotification(NotificationSeverity.Warning, "Uwaga!", $"Najpierw przefiltruj dane po wybranym miesiącu", GeneralViewModel.NotificationDuration);
                         return;
                     }
                 }
                 else
                 {
-                    productivityRecords = App.ActiveClientWithData.TimeRecords
+                    productivityRecords = MainStore.GetState().ActiveClient.TimeRecords
                         .Where(x => x.EventDate >= reportData.StartDate && x.EventDate <= reportData.EndDate).ToList();
                 }
 
                 if (productivityRecords.Count == 0)
                 {
-                    App.ShowNotification(NotificationSeverity.Warning, "Uwaga!", $"Nie wykryto żadnych wpisów w wybranym przedziale dat", GeneralViewModel.NotificationDuration);
+                    MainStore.ShowNotification(NotificationSeverity.Warning, "Uwaga!", $"Nie wykryto żadnych wpisów w wybranym przedziale dat", GeneralViewModel.NotificationDuration);
                     return;
                 }
 
-                reportData.ClientName = App.ActiveClient.Name;
+                reportData.ClientName = MainStore.GetState().ActiveClient.Name;
                 reportData.Records = productivityRecords;
                 reportData.ReportName = $"Rozliczenie_{DateTime.Now:yyyy-MM-dd-hh-mm-ss}";
                 await legalTimeSheetReport.GeneratePDF(reportData);
             }
             catch (Exception ex)
             {
-                await App.ErrorPage.DisplayMessageAsync(ex);
+                await MainStore.ShowErrorPage(ex);
             }
         }
     }

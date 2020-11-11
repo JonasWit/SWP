@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
 using SWP.UI.BlazorApp.LegalApp.Stores.Main;
-using SWP.UI.Components.LegalSwpBlazorComponents.App;
 using System;
 using System.Threading.Tasks;
 

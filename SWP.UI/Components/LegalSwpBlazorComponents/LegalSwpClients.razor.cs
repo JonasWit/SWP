@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
-using Microsoft.EntityFrameworkCore.Diagnostics;
 using Radzen;
 using SWP.UI.BlazorApp.LegalApp.Stores.Clients;
 using SWP.UI.BlazorApp.LegalApp.Stores.Main;
-using SWP.UI.Components.LegalSwpBlazorComponents.App;
 using SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data;
 using System;
 using System.Threading.Tasks;

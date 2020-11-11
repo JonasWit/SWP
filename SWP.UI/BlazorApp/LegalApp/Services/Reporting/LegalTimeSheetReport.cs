@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace SWP.UI.Components.LegalSwpBlazorComponents.App.Reporting
+namespace SWP.UI.BlazorApp.LegalApp.Services.Reporting
 {
     [UITransientService]
     public class LegalTimeSheetReport : PdfReportFooterStandard
@@ -45,7 +45,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App.Reporting
             _env = env;
             _jSRuntime = jSRuntime;
         }
-            
+
         public async Task GeneratePDF(ReportData reportData)
         {
             _reportData = reportData;
@@ -88,7 +88,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.App.Reporting
             _pdfPTable.HeaderRows = 2;
             _document.Add(_pdfPTable);
 
-            this.OnEndPage(_pdfWriter, _document);
+            OnEndPage(_pdfWriter, _document);
             _document.Close();
 
             return _memoryStream.ToArray();

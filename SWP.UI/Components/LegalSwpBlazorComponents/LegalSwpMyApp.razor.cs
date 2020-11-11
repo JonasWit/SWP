@@ -1,15 +1,9 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Radzen;
-using Radzen.Blazor;
 using SWP.UI.BlazorApp.LegalApp.Stores.Main;
 using SWP.UI.BlazorApp.LegalApp.Stores.MyApp;
-using SWP.UI.Components.LegalSwpBlazorComponents.App;
-using SWP.UI.Components.LegalSwpBlazorComponents.Dialogs;
 using System;
-using System.Collections.Generic;
-using System.Drawing;
 using System.Globalization;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace SWP.UI.Components.LegalSwpBlazorComponents

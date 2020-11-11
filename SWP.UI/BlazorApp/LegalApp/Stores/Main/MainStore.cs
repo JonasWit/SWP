@@ -299,5 +299,21 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
         public void RemoveContactFromActiveCase(int id) => _state.ActiveClient.SelectedCase.ContactPeople.RemoveAll(x => x.Id == id);
 
         public void ReplaceContactFromActiveCase(ContactPersonViewModel entity) => _state.ActiveClient.SelectedCase.ContactPeople[_state.ActiveClient.SelectedCase.ContactPeople.FindIndex(x => x.Id == entity.Id)] = entity;
+
+        public void AddCashMovementToActiveClient(CashMovementViewModel entity) => _state.ActiveClient.CashMovements.Add(entity);
+
+        public void RemoveCashMovementFromActiveClient(int id) => _state.ActiveClient.CashMovements.RemoveAll(x => x.Id == id);
+
+        public void ReplaceCashMovementFromActiveClient(CashMovementViewModel entity) => _state.ActiveClient.CashMovements[_state.ActiveClient.CashMovements.FindIndex(x => x.Id == entity.Id)] = entity;
+
+        public void SetSelectedCashMovement(CashMovementViewModel entity) => _state.ActiveClient.SelectedCashMovement = entity;
+
+        public void AddTimeRecordToActiveClient(TimeRecordViewModel entity) => _state.ActiveClient.TimeRecords.Add(entity);
+
+        public void RemoveTimeRecordFromActiveClient(int id) => _state.ActiveClient.CashMovements.RemoveAll(x => x.Id == id);
+
+        public void ReplaceTimeRecordFromActiveClient(TimeRecordViewModel entity) => _state.ActiveClient.TimeRecords[_state.ActiveClient.TimeRecords.FindIndex(x => x.Id == entity.Id)] = entity;
+
+        public void SetSelectedTimeRecord(TimeRecordViewModel entity) => _state.ActiveClient.SelectedTimeRecord = entity;
     }
 }

@@ -2,10 +2,8 @@
 
 <div class="flex-container-main">
 
-    <div class="show-hide tab-section"><button class="show-hide-btn show-hide-btn-1 @(showFormVisible ? "button-active" : "")" @onclick="ShowHideForm"><span>Dodaj Klienta</span></button></div>
-    @if (showFormVisible)
-    {
-        <div class="row-section">
+    <div class="show-hide tab-section"><button class="show-hide-btn show-hide-btn-1"><span>Dodaj Klienta</span></button></div>
+           <div class="row-section">
             <RadzenTemplateForm Data="@ClientsStore.GetState().NewClient" Submit="@(async (CreateClient.Request args) => { await ClientsStore.SubmitNewClient(args); })">
                 <RadzenFieldset Text="Nowy Klient">
                     <div class="help-box">
@@ -62,12 +60,10 @@
                 </RadzenFieldset>
             </RadzenTemplateForm>
         </div>
-    }
+  
 
-    <div class="show-hide tab-section"><button class="show-hide-btn show-hide-btn-1 @(showClientListVisible ? "button-active" : "")" @onclick="ShowHideClientsList"><span>Lista Klientów</span></button></div>
-    @if (showClientListVisible)
-    {
-        <div class="row-section second">
+    <div class="show-hide tab-section"><button class="show-hide-btn show-hide-btn-1"><span>Lista Klientów</span></button></div>
+           <div class="row-section second">
             <div class="help-box">
                 <i class="user-icon"><img src="/Images/icons8-reception-36.png" /></i>
 
@@ -167,7 +163,7 @@
                 <p><strong>Data utworzenia:</strong> @ClientsStore.GetState().SelectedClient.Created</p>
             </div>
         }
-    }
+    
 </div>
 
 @code {

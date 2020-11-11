@@ -1,9 +1,6 @@
 ﻿@using SWP.UI.BlazorApp.LegalApp.Stores.ClientDetails
  
-<div class="show-hide tab-section"><button class="show-hide-btn show-hide-btn-1 @(showContactsListVisible ? "button-active" : "")" @onclick="ShowHideContactsList"><span>Lista Kontaktów</span></button></div>
-
-@if (showContactsListVisible)
-{
+<div class="show-hide tab-section"><button class="show-hide-btn show-hide-btn-1"><span>Lista Kontaktów</span></button></div>
     <div class="row-section">
 
         <RadzenTemplateForm Data="@ClientDetailsStore.GetState().NewContact" Submit="@(async (CreateContactPerson.Request args) => { await ClientDetailsStore.SubmitNewContact(args); })">
@@ -173,7 +170,7 @@
             </div>
         }
     </div>
-}
+
 
 @code {
 

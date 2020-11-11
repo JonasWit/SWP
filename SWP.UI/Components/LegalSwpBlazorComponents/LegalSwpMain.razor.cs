@@ -51,8 +51,8 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
 
         //public void Dispose() => App.CallStateHasChanged -= new EventHandler(CallStateHasChanged);
 
-        public bool showFormVisible = false;
-        public void ShowHideForm() => showFormVisible = !showFormVisible;
+        public bool showSidebar = false;
+        public void ShowHideSidebar() => showSidebar = !showSidebar;
 
     }
 }

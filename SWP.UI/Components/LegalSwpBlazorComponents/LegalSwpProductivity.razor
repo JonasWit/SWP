@@ -1,10 +1,8 @@
 ﻿
 <div class="flex-container-main">
 
-    <div class="show-hide tab-section"><button class="show-hide-btn show-hide-btn-1 @(showSecondSection ? "button-active" : "")" @onclick="ShowHideSecondSection"><span>Dodaj nowy czas</span></button></div>
-    @if (showSecondSection)
-    {
-        <div class="row-section">
+    <div class="show-hide tab-section"><button class="show-hide-btn show-hide-btn-1"><span>Dodaj nową czynność</span></button></div>
+            <div class="row-section">
             <RadzenTemplateForm Data="@ProductivityStore.GetState().NewTimeRecord" Submit="@(async (CreateTimeRecord.Request args) => { await ProductivityStore.SubmitNewTimeRecord(args); })">
                 <RadzenFieldset Text="Wprowadź nową czynność i czas">
                     <div class="help-box">
@@ -82,11 +80,8 @@
                 </RadzenFieldset>
             </RadzenTemplateForm>
         </div>
-    }
 
-    <div class="show-hide tab-section"><button class="show-hide-btn show-hide-btn-1 @(showFirstSection ? "button-active" : "")" @onclick="ShowHideFirstSection"><span>Lista czasów?</span></button></div>
-    @if (showFirstSection)
-    {
+            <div class="show-hide tab-section"><button class="show-hide-btn show-hide-btn-1"><span>Rozliczenie godzinowe</span></button></div>
         <div class="row-section">
             <RadzenGrid @ref="ProductivityStore.GetState().TimeRecordsGrid" AllowFiltering="true" AllowPaging="true" PageSize="10" AllowSorting="true"
                         Data="@(ProductivityStore.GetState().SelectedMonth == null ? MainStore.GetState().ActiveClient.TimeRecords : MainStore.GetState().ActiveClient.TimeRecords.Where(x => x.EventDate.Month == ProductivityStore.GetState().SelectedMonth.Month &&  x.EventDate.Year == ProductivityStore.GetState().SelectedMonth.Year))" TItem="TimeRecordViewModel" RowUpdate="@ProductivityStore.OnUpdateTimeRecordRow" RowSelect="@(args => ProductivityStore.ActiveTimeRecordChange(args))">
@@ -219,12 +214,8 @@
                 <p>Wybierz kwotę!</p>
             }
         </div>
-    }
-
-    <div class="show-hide tab-section"><button class="show-hide-btn show-hide-btn-1 @(showThirdSection ? "button-active" : "")" @onclick="ShowHideThirdSection"><span>Eksportuj dane</span></button></div>
-    @if (showThirdSection)
-    {
-        <div class="row-section">
+    <div class="show-hide tab-section"><button class="show-hide-btn show-hide-btn-1"><span>Eksportuj dane</span></button></div>
+ <div class="row-section">
             <RadzenTemplateForm Data="@ProductivityStore.GetState().NewTimesheetReport" Submit="@(async (LegalTimeSheetReport.ReportData args) => { await GenerateTimesheetReport(args); })">
                 <RadzenFieldset Text="Eksportuj dane do pdf">
                     <div class="help-box">
@@ -295,7 +286,6 @@
                 </RadzenFieldset>
             </RadzenTemplateForm>
         </div>
-    }
 </div>
 
 @code {

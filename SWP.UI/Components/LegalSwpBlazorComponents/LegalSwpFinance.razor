@@ -1,177 +1,169 @@
 ﻿
 <div class="flex-container-main">
 
-    <div class="show-hide tab-section"><button class="show-hide-btn show-hide-btn-1 @(showFirstSection ? "button-active" : "")" @onclick="ShowHideFirstSection"><span>Dodaj Pozycję</span></button></div>
-    @if (showFirstSection)
-    {
-        <div class="row-section">
+    <div class="show-hide tab-section"><button class="show-hide-btn show-hide-btn-1"><span>Dodaj Pozycję</span></button></div>
+    <div class="row-section">
+        <RadzenTemplateForm Data="@FinanceStore.GetState().NewCashMovement" Submit="@(async (CreateCashMovement.Request args) => { await FinanceStore.SubmitNewCashMovement(args); })">
 
-            <RadzenTemplateForm Data="@FinanceStore.GetState().NewCashMovement" Submit="@(async (CreateCashMovement.Request args) => { await FinanceStore.SubmitNewCashMovement(args); })">
+            <RadzenFieldset Text="Nowa pozycja">
+                <div class="help-box">
+                    <i class="user-icon"><img src="/Images/icons8-reception-36.png" /></i>
 
-                <RadzenFieldset Text="Nowa pozycja">
-                    <div class="help-box">
-                        <i class="user-icon"><img src="/Images/icons8-reception-36.png" /></i>
-
-                        @if (infoBoxVisibleI)
-                        {
-                            <div class="info-text">
-                                <p>Zarządzaj listą swoich klientów. Użyj guzika "Dodaj Nowego Klienta",aby uzupełnić listę kontaktów.</p>
-                                <p>Edytuj oraz usuwaj Klientów z głównej listy. Tekst do zupełnienia.</p>
-                            </div>
-                        }
-                        <button class="info" @onclick="ShowHideInfoBoxI"></button>
-                    </div>
-                    <div class="form">
-                        <div class="text">
-                            <div class="label">
-                                <RadzenLabel Text="Nazwa" />
-                            </div>
-                            <RadzenTextBox Placeholder="Nazwa Sprawy..." @bind-Value="FinanceStore.GetState().NewCashMovement.Name" Name="Name" Style="@(Gvm.FormInputBoxWidth)" />
-                            <RadzenRequiredValidator Text="Nazwa nie może być pusta!" Component="Name" />
-                            <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Name" />
+                    @if (infoBoxVisibleI)
+                    {
+                        <div class="info-text">
+                            <p>Zarządzaj listą swoich klientów. Użyj guzika "Dodaj Nowego Klienta",aby uzupełnić listę kontaktów.</p>
+                            <p>Edytuj oraz usuwaj Klientów z głównej listy. Tekst do zupełnienia.</p>
                         </div>
-
-                        <div class="text">
-                            <div class="label">Kwota</div>
-                            <RadzenNumeric TValue="double" Placeholder="0.0" Step="0.01" @bind-Value="@FinanceStore.GetState().NewCashMovement.Amount" Style="margin-bottom: 20px" />
-                        </div>
-                        <div class="text">
-                            <div class="label">Data</div>
-                            <RadzenDatePicker @bind-Value="FinanceStore.GetState().NewCashMovement.EventDate" DateFormat="d" Name="EventDate" />
-                            <RadzenRequiredValidator Component="EventDate" Text="Data nie może być pusta!" Popup="true" />
-                        </div>
-                    </div>
-
-                    <div class="form-row2">
+                    }
+                    <button class="info" @onclick="ShowHideInfoBoxI"></button>
+                </div>
+                <div class="form">
+                    <div class="text">
                         <div class="label">
-                            <RadzenLabel Text="Rodzaj" />
+                            <RadzenLabel Text="Nazwa" />
                         </div>
+                        <RadzenTextBox Placeholder="Nazwa Sprawy..." @bind-Value="FinanceStore.GetState().NewCashMovement.Name" Name="Name" Style="@(Gvm.FormInputBoxWidth)" />
+                        <RadzenRequiredValidator Text="Nazwa nie może być pusta!" Component="Name" />
+                        <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Name" />
+                    </div>
+
+                    <div class="text">
+                        <div class="label">Kwota</div>
+                        <RadzenNumeric TValue="double" Placeholder="0.0" Step="0.01" @bind-Value="@FinanceStore.GetState().NewCashMovement.Amount" Style="margin-bottom: 20px" />
+                    </div>
+                    <div class="text">
+                        <div class="label">Data</div>
+                        <RadzenDatePicker @bind-Value="FinanceStore.GetState().NewCashMovement.EventDate" DateFormat="d" Name="EventDate" />
+                        <RadzenRequiredValidator Component="EventDate" Text="Data nie może być pusta!" Popup="true" />
+                    </div>
+                </div>
+
+                <div class="form-row2">
+                    <div class="label">
+                        <RadzenLabel Text="Rodzaj" />
+                    </div>
+                    <div>
+                        <RadzenSelectBar @bind-Value="FinanceStore.GetState().NewCashMovement.CashFlowDirection" TValue="int">
+                            <Items>
+                                <RadzenSelectBarItem Text="Wpływ" Value="1" Style="font-size: 12px; width: 100px" />
+                                <RadzenSelectBarItem Text="Wydatek" Value="0" Style="font-size: 12px;width: 100px" />
+                            </Items>
+                        </RadzenSelectBar>
+                    </div>
+                    <div class="label">
+                        <RadzenLabel Text="Koszt Dodatkowy" Component="ExpenseBox" />
+                        <RadzenCheckBox @bind-Value="@FinanceStore.GetState().NewCashMovement.Expense" TValue="bool" />
+                    </div>
+
+                </div>
+
+                <div class="form-btn">
+                    <div class="btn-add">
                         <div>
-                            <RadzenSelectBar @bind-Value="FinanceStore.GetState().NewCashMovement.CashFlowDirection" TValue="int">
-                                <Items>
-                                    <RadzenSelectBarItem Text="Wpływ" Value="1" Style="font-size: 12px; width: 100px" />
-                                    <RadzenSelectBarItem Text="Wydatek" Value="0" Style="font-size: 12px;width: 100px" />
-                                </Items>
-                            </RadzenSelectBar>
-                        </div>
-                        <div class="label">
-                            <RadzenLabel Text="Koszt Dodatkowy" Component="ExpenseBox" />
-                            <RadzenCheckBox @bind-Value="@FinanceStore.GetState().NewCashMovement.Expense" TValue="bool" />
-                        </div>
-
-                    </div>
-
-                    <div class="form-btn">
-                        <div class="btn-add">
-                            <div>
-                                <RadzenButton ButtonType="ButtonType.Submit" Icon="save" Text="Zapisz" ButtonStyle="ButtonStyle.Secondary" Style="@(Gvm.GeneralButton)" />
-                            </div>
+                            <RadzenButton ButtonType="ButtonType.Submit" Icon="save" Text="Zapisz" ButtonStyle="ButtonStyle.Secondary" Style="@(Gvm.GeneralButton)" />
                         </div>
                     </div>
+                </div>
 
-                </RadzenFieldset>
+            </RadzenFieldset>
 
-            </RadzenTemplateForm>
+        </RadzenTemplateForm>
 
-        </div>
-    }
+    </div>
 
-    <div class="show-hide tab-section"><button class="show-hide-btn show-hide-btn-1 @(showSecondSection ? "button-active" : "")" @onclick="ShowHideSecondSection"><span>Transakcje</span></button></div>
-    @if (showSecondSection)
-    {
-        <div class="row-section">
-            <RadzenGrid @ref="FinanceStore.GetState().CashMovementGrid" AllowFiltering="true" AllowPaging="true" PageSize="10" AllowSorting="true" RowSelect="@(args => FinanceStore.ActiveCashMovementChange(args))"
-                        Data="@(FinanceStore.GetState().SelectedMonth == null ? MainStore.GetState().ActiveClient.CashMovements : MainStore.GetState().ActiveClient.CashMovements.Where(x => x.EventDate.Month == FinanceStore.GetState().SelectedMonth.Month && x.EventDate.Year == FinanceStore.GetState().SelectedMonth.Year))" TItem="CashMovementViewModel" RowUpdate="@FinanceStore.OnUpdateCashMovementRow">
-                <Columns>
-                    <RadzenGridColumn TItem="CashMovementViewModel" Property="Name" Title="Nazwa">
-                        <Template Context="c">
-                            <span Style="@(Gvm.TableFontSize)">@(c.Name)</span>
-                        </Template>
-                        <EditTemplate Context="c">
-                            <RadzenTextBox @bind-Value="c.Name" Style="@Gvm.FormInputBoxWidth" Name="Name" />
-                            <RadzenRequiredValidator Component="Name" Text="Nazwa nie może być pusta!" Popup="true" />
-                            <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Name" Popup="true" />
-                        </EditTemplate>
-                    </RadzenGridColumn>
-                    <RadzenGridColumn TItem="CashMovementViewModel" Property="Amount" Title="Kwota">
-                        <Template Context="c">
-                            <span Style="@(Gvm.TableFontSize)">@(c.Amount)</span>
-                        </Template>
-                        <EditTemplate Context="c">
-                            <RadzenNumeric TValue="double" Step="0.01" @bind-Value="@c.Amount" Name="Amount" Style="@Gvm.FormInputBoxWidth" />
-                            <RadzenRequiredValidator Component="Amount" Text="Kwota nie może być pusta!" Popup="true" />
-                        </EditTemplate>
-                    </RadzenGridColumn>
-                    <RadzenGridColumn TItem="CashMovementViewModel" Property="Expense" Title="Koszt" Width="60px">
-                        <Template Context="c">
-                            @if (c.Expense)
-                            {
-                                <span><RadzenIcon Icon="money_off" Style="color : crimson" /></span>
+    <div class="show-hide tab-section"><button class="show-hide-btn show-hide-btn-1"><span>Transakcje</span></button></div>
+    <div class="row-section">
+        <RadzenGrid @ref="FinanceStore.GetState().CashMovementGrid" AllowFiltering="true" AllowPaging="true" PageSize="10" AllowSorting="true" RowSelect="@(args => FinanceStore.ActiveCashMovementChange(args))"
+                    Data="@(FinanceStore.GetState().SelectedMonth == null ? MainStore.GetState().ActiveClient.CashMovements : MainStore.GetState().ActiveClient.CashMovements.Where(x => x.EventDate.Month == FinanceStore.GetState().SelectedMonth.Month && x.EventDate.Year == FinanceStore.GetState().SelectedMonth.Year))" TItem="CashMovementViewModel" RowUpdate="@FinanceStore.OnUpdateCashMovementRow">
+            <Columns>
+                <RadzenGridColumn TItem="CashMovementViewModel" Property="Name" Title="Nazwa">
+                    <Template Context="c">
+                        <span Style="@(Gvm.TableFontSize)">@(c.Name)</span>
+                    </Template>
+                    <EditTemplate Context="c">
+                        <RadzenTextBox @bind-Value="c.Name" Style="@Gvm.FormInputBoxWidth" Name="Name" />
+                        <RadzenRequiredValidator Component="Name" Text="Nazwa nie może być pusta!" Popup="true" />
+                        <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Name" Popup="true" />
+                    </EditTemplate>
+                </RadzenGridColumn>
+                <RadzenGridColumn TItem="CashMovementViewModel" Property="Amount" Title="Kwota">
+                    <Template Context="c">
+                        <span Style="@(Gvm.TableFontSize)">@(c.Amount)</span>
+                    </Template>
+                    <EditTemplate Context="c">
+                        <RadzenNumeric TValue="double" Step="0.01" @bind-Value="@c.Amount" Name="Amount" Style="@Gvm.FormInputBoxWidth" />
+                        <RadzenRequiredValidator Component="Amount" Text="Kwota nie może być pusta!" Popup="true" />
+                    </EditTemplate>
+                </RadzenGridColumn>
+                <RadzenGridColumn TItem="CashMovementViewModel" Property="Expense" Title="Koszt" Width="60px">
+                    <Template Context="c">
+                        @if (c.Expense)
+                        {
+                            <span><RadzenIcon Icon="money_off" Style="color : crimson" /></span>
 
-                            }
-                        </Template>
-                        <EditTemplate Context="c">
-                            <RadzenCheckBox @bind-Value="@c.Expense" TValue="bool" Style="@Gvm.FormInputBoxWidth" />
-                        </EditTemplate>
-                    </RadzenGridColumn>
+                        }
+                    </Template>
+                    <EditTemplate Context="c">
+                        <RadzenCheckBox @bind-Value="@c.Expense" TValue="bool" Style="@Gvm.FormInputBoxWidth" />
+                    </EditTemplate>
+                </RadzenGridColumn>
 
-                    <RadzenGridColumn TItem="CashMovementViewModel" Property="EventDate" Title="Data">
-                        <Template Context="c">
-                            <span Style="@(Gvm.TableFontSize)"> @String.Format("{0:d}", c.EventDate)</span>
-                        </Template>
-                        <EditTemplate Context="c">
-                            <RadzenDatePicker @bind-Value="c.EventDate" DateFormat="d" Name="EventDate" Style="@Gvm.FormInputBoxWidth" />
-                            <RadzenRequiredValidator Component="EventDate" Text="Data nie może być pusta!" Popup="true" />
-                        </EditTemplate>
-                        <FilterTemplate>
-                            <RadzenDropDown AllowClear="true" TValue="int"
-                                            FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" FilterOperator="StringFilterOperator.StartsWith" AllowFiltering="true"
-                                            Data="@FinanceStore.GetState().MonthsFilterData" TextProperty="DisplayText" ValueProperty="Id" Change="@(args => FinanceStore.SelectedMonthChange(args))" />
-                        </FilterTemplate>
-                    </RadzenGridColumn>
+                <RadzenGridColumn TItem="CashMovementViewModel" Property="EventDate" Title="Data">
+                    <Template Context="c">
+                        <span Style="@(Gvm.TableFontSize)"> @String.Format("{0:d}", c.EventDate)</span>
+                    </Template>
+                    <EditTemplate Context="c">
+                        <RadzenDatePicker @bind-Value="c.EventDate" DateFormat="d" Name="EventDate" Style="@Gvm.FormInputBoxWidth" />
+                        <RadzenRequiredValidator Component="EventDate" Text="Data nie może być pusta!" Popup="true" />
+                    </EditTemplate>
+                    <FilterTemplate>
+                        <RadzenDropDown AllowClear="true" TValue="int"
+                                        FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" FilterOperator="StringFilterOperator.StartsWith" AllowFiltering="true"
+                                        Data="@FinanceStore.GetState().MonthsFilterData" TextProperty="DisplayText" ValueProperty="Id" Change="@(args => FinanceStore.SelectedMonthChange(args))" />
+                    </FilterTemplate>
+                </RadzenGridColumn>
 
-                    <RadzenGridColumn TItem="CashMovementViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="100px">
-                        <Template Context="c">
-                            <RadzenButton Icon="edit" Size="ButtonSize.Small" Click="@(args => FinanceStore.EditCashMovementRow(c))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Edytuj", Style=Gvm.ToolTipStyle }))">
-                            </RadzenButton>
-                        </Template>
-                        <EditTemplate Context="c">
-                            <RadzenButton Icon="save" Size="ButtonSize.Small" Click="@((args) => FinanceStore.SaveCashMovementRow(c))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Zapisz", Style=Gvm.ToolTipStyle }))">
-                            </RadzenButton>
-                            <RadzenButton Icon="cancel" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Success" Click="@((args) => FinanceStore.CancelCashMovementEdit(c))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Anuluj", Style=Gvm.ToolTipStyle }))">
-                            </RadzenButton>
-                        </EditTemplate>
-                    </RadzenGridColumn>
-                    <RadzenGridColumn TItem="CashMovementViewModel" Context="order" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="50px">
-                        <Template Context="c">
-                            <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@(async (args) => await FinanceStore.DeleteCashMovementRow(c))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Zamknij", Style=Gvm.ToolTipStyle }))">
-                            </RadzenButton>
-                        </Template>
-                        <EditTemplate Context="c">
-                        </EditTemplate>
-                    </RadzenGridColumn>
-                </Columns>
-            </RadzenGrid>
-        </div>
+                <RadzenGridColumn TItem="CashMovementViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="100px">
+                    <Template Context="c">
+                        <RadzenButton Icon="edit" Size="ButtonSize.Small" Click="@(args => FinanceStore.EditCashMovementRow(c))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Edytuj", Style=Gvm.ToolTipStyle }))">
+                        </RadzenButton>
+                    </Template>
+                    <EditTemplate Context="c">
+                        <RadzenButton Icon="save" Size="ButtonSize.Small" Click="@((args) => FinanceStore.SaveCashMovementRow(c))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Zapisz", Style=Gvm.ToolTipStyle }))">
+                        </RadzenButton>
+                        <RadzenButton Icon="cancel" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Success" Click="@((args) => FinanceStore.CancelCashMovementEdit(c))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Anuluj", Style=Gvm.ToolTipStyle }))">
+                        </RadzenButton>
+                    </EditTemplate>
+                </RadzenGridColumn>
+                <RadzenGridColumn TItem="CashMovementViewModel" Context="order" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="50px">
+                    <Template Context="c">
+                        <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@(async (args) => await FinanceStore.DeleteCashMovementRow(c))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Zamknij", Style=Gvm.ToolTipStyle }))">
+                        </RadzenButton>
+                    </Template>
+                    <EditTemplate Context="c">
+                    </EditTemplate>
+                </RadzenGridColumn>
+            </Columns>
+        </RadzenGrid>
+    </div>
 
-        <div class="details">
-            @if (MainStore.GetState().ActiveClient.SelectedCashMovement != null)
-            {
-                <p><strong>Nazwa: </strong>@MainStore.GetState().ActiveClient.SelectedCashMovement.Name</p>
-                <p><strong>Kwota: </strong>@MainStore.GetState().ActiveClient.SelectedCashMovement.Amount</p>
-                <p><strong>Stworzono przez: </strong>@MainStore.GetState().ActiveClient.SelectedCashMovement.CreatedBy</p>
-                <p><strong>Data utworzenia: </strong>@MainStore.GetState().ActiveClient.SelectedCashMovement.Created</p>
-                <p><strong>Zmieniono przez: </strong>@MainStore.GetState().ActiveClient.SelectedCashMovement.UpdatedBy</p>
-                <p><strong>Ostatnia zmiana: </strong>@MainStore.GetState().ActiveClient.SelectedCashMovement.Updated</p>
+    <div class="details">
+        @if (MainStore.GetState().ActiveClient.SelectedCashMovement != null)
+        {
+            <p><strong>Nazwa: </strong>@MainStore.GetState().ActiveClient.SelectedCashMovement.Name</p>
+            <p><strong>Kwota: </strong>@MainStore.GetState().ActiveClient.SelectedCashMovement.Amount</p>
+            <p><strong>Stworzono przez: </strong>@MainStore.GetState().ActiveClient.SelectedCashMovement.CreatedBy</p>
+            <p><strong>Data utworzenia: </strong>@MainStore.GetState().ActiveClient.SelectedCashMovement.Created</p>
+            <p><strong>Zmieniono przez: </strong>@MainStore.GetState().ActiveClient.SelectedCashMovement.UpdatedBy</p>
+            <p><strong>Ostatnia zmiana: </strong>@MainStore.GetState().ActiveClient.SelectedCashMovement.Updated</p>
 
-            }
-            else
-            {
-                <p><strong>Wybierz kwotę!</strong></p>
-            }
-        </div>
-
-    }
+        }
+        else
+        {
+            <p><strong>Wybierz kwotę!</strong></p>
+        }
+    </div>
 </div>
 
 @code {

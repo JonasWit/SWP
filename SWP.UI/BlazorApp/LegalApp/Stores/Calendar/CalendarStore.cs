@@ -44,6 +44,8 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Calendar
             RefreshCalendarData();
         }
 
+        public void ClearSelectedReminder() => _state.SelectedReminder = null;
+
         #region Reminders Calendar
 
         public List<ReminderViewModel> UpcomingReminders =>

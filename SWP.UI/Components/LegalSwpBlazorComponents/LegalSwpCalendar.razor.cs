@@ -18,17 +18,18 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
         public void Dispose()
         {
             MainStore.RemoveStateChangeListener(UpdateView);
+            MainStore.RemoveStateChangeListener(RefreshCalendar);
             CalendarStore.RemoveStateChangeListener(UpdateView);
         }
 
-        private void UpdateView()
-        {
-            StateHasChanged();
-        }
+        private void UpdateView() => StateHasChanged();
+ 
+        private void RefreshCalendar() => CalendarStore.RefreshCalendarData();
 
         protected override void OnInitialized()
         {
             MainStore.AddStateChangeListener(UpdateView);
+            MainStore.AddStateChangeListener(RefreshCalendar);
             CalendarStore.AddStateChangeListener(UpdateView);
             CalendarStore.Initialize();
         }

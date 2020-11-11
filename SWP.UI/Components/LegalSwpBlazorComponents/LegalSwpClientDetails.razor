@@ -1,10 +1,12 @@
-﻿<div class="show-hide tab-section"><button class="show-hide-btn show-hide-btn-1 @(showContactsListVisible ? "button-active" : "")" @onclick="ShowHideContactsList"><span>Lista Kontaktów</span></button></div>
+﻿@using SWP.UI.BlazorApp.LegalApp.Stores.ClientDetails
+ 
+<div class="show-hide tab-section"><button class="show-hide-btn show-hide-btn-1 @(showContactsListVisible ? "button-active" : "")" @onclick="ShowHideContactsList"><span>Lista Kontaktów</span></button></div>
 
 @if (showContactsListVisible)
 {
     <div class="row-section">
 
-        <RadzenTemplateForm Data="@App.ClientDetailsPage.NewContact" Submit="@(async (CreateContactPerson.Request args) => { await App.ClientDetailsPage.SubmitNewContact(args); })">
+        <RadzenTemplateForm Data="@ClientDetailsStore.GetState().NewContact" Submit="@(async (CreateContactPerson.Request args) => { await ClientDetailsStore.SubmitNewContact(args); })">
             <RadzenFieldset Text="Osoba Kontaktowa">
                 <div class="form">
                     <i class="user-icon"><img src="/Images/icons8-reception-36.png" /></i>
@@ -24,7 +26,7 @@
                         <div class="label">
                             <RadzenLabel Text="Imię" />
                         </div>
-                        <RadzenTextArea Placeholder="Imię..." @bind-Value="App.ClientDetailsPage.NewContact.Name" style="@(Gvm.FormInputBoxWidth)" Name="Name" />
+                        <RadzenTextArea Placeholder="Imię..." @bind-Value="ClientDetailsStore.GetState().NewContact.Name" style="@(Gvm.FormInputBoxWidth)" Name="Name" />
                         <RadzenRequiredValidator Component="Name" Text="Imię nie może być puste!" />
                         <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Name" Style="position: absolute" />
                     </div>
@@ -32,7 +34,7 @@
                         <div class="label">
                             <RadzenLabel Text="Nazwisko" />
                         </div>
-                        <RadzenTextArea Placeholder="Nazwisko..." @bind-Value="App.ClientDetailsPage.NewContact.Surname" style="@(Gvm.FormInputBoxWidth)" Name="Surname" />
+                        <RadzenTextArea Placeholder="Nazwisko..." @bind-Value="ClientDetailsStore.GetState().NewContact.Surname" style="@(Gvm.FormInputBoxWidth)" Name="Surname" />
                         <RadzenRequiredValidator Component="Surname" Text="Nazwisko nie może być puste!" style="width: 100%;" />
                         <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Surname" Style="position: absolute" />
                     </div>
@@ -40,7 +42,7 @@
                         <div class="label">
                             <RadzenLabel Text="Adres" />
                         </div>
-                        <RadzenTextArea Placeholder="Adres..." @bind-Value="App.ClientDetailsPage.NewContact.Address" style="@(Gvm.FormInputBoxWidth)" Name="Address" />
+                        <RadzenTextArea Placeholder="Adres..." @bind-Value="ClientDetailsStore.GetState().NewContact.Address" style="@(Gvm.FormInputBoxWidth)" Name="Address" />
                         <RadzenLengthValidator Max="500" Text="Maksymalnie 500 znaków!" Component="Address" Style="position: absolute" />
                     </div>
                 </div>
@@ -49,21 +51,21 @@
                         <div class="label">
                             <RadzenLabel Text="Telefon" />
                         </div>
-                        <RadzenTextBox Placeholder="Telefon..." @bind-Value="App.ClientDetailsPage.NewContact.PhoneNumber" style="@(Gvm.FormInputBoxWidth)" Name="PhoneNumber1" />
+                        <RadzenTextBox Placeholder="Telefon..." @bind-Value="ClientDetailsStore.GetState().NewContact.PhoneNumber" style="@(Gvm.FormInputBoxWidth)" Name="PhoneNumber1" />
                         <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="PhoneNumber1" Style="position: absolute" />
                     </div>
                     <div class="text">
                         <div class="label">
                             <RadzenLabel Text="Telefon2" />
                         </div>
-                        <RadzenTextBox Placeholder="Telefon..." @bind-Value="App.ClientDetailsPage.NewContact.AlternativePhoneNumber" style="@(Gvm.FormInputBoxWidth)" Name="PhoneNumber2" />
+                        <RadzenTextBox Placeholder="Telefon..." @bind-Value="ClientDetailsStore.GetState().NewContact.AlternativePhoneNumber" style="@(Gvm.FormInputBoxWidth)" Name="PhoneNumber2" />
                         <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="PhoneNumber2" Style="position: absolute" />
                     </div>
                     <div class="text">
                         <div class="label">
                             <RadzenLabel Text="Email" />
                         </div>
-                        <RadzenTextBox Placeholder="Adres Email..." @bind-Value="App.ClientDetailsPage.NewContact.Email" style="@(Gvm.FormInputBoxWidth)" Name="Email" />
+                        <RadzenTextBox Placeholder="Adres Email..." @bind-Value="ClientDetailsStore.GetState().NewContact.Email" style="@(Gvm.FormInputBoxWidth)" Name="Email" />
                         <RadzenEmailValidator Component="Email" Text="Nieprawidłowy adres Email!" />
                         <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Email" Style="position: absolute" />
                     </div>
@@ -78,8 +80,8 @@
             </RadzenFieldset>
         </RadzenTemplateForm>
 
-        <RadzenGrid @ref="App.ClientDetailsPage.ContactsGrid" AllowFiltering="true" AllowPaging="true" PageSize="10" AllowSorting="true"
-                    Data="@App.ActiveClientWithData.ContactPeople" TItem="ContactPersonViewModel" RowUpdate="@App.ClientDetailsPage.OnUpdateContactRow" RowSelect="@(args => App.ClientDetailsPage.ContactSelected(args))">
+        <RadzenGrid @ref="ClientDetailsStore.GetState().ContactsGrid" AllowFiltering="true" AllowPaging="true" PageSize="10" AllowSorting="true"
+                    Data="@MainStore.GetState().ActiveClient.ContactPeople" TItem="ContactPersonViewModel" RowUpdate="@ClientDetailsStore.OnUpdateContactRow" RowSelect="@(args => ClientDetailsStore.ContactSelected(args))">
             <Columns>
                 <RadzenGridColumn TItem="ContactPersonViewModel" Property="Name" Title="Nazwa">
                     <Template Context="contact">
@@ -137,19 +139,19 @@
 
                 <RadzenGridColumn TItem="ContactPersonViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center">
                     <Template Context="c">
-                        <RadzenButton Icon="edit" Size="ButtonSize.Small" Click="@(args => App.ClientDetailsPage.EditContactRow(c))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Edytuj", Style=Gvm.ToolTipStyle }))">
+                        <RadzenButton Icon="edit" Size="ButtonSize.Small" Click="@(args => ClientDetailsStore.EditContactRow(c))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Edytuj", Style=Gvm.ToolTipStyle }))">
                         </RadzenButton>
                     </Template>
                     <EditTemplate Context="c">
-                        <RadzenButton Icon="save" Size="ButtonSize.Small" Click="@((args) => App.ClientDetailsPage.SaveContactRow(c))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Zapisz", Style=Gvm.ToolTipStyle }))">
+                        <RadzenButton Icon="save" Size="ButtonSize.Small" Click="@((args) => ClientDetailsStore.SaveContactRow(c))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Zapisz", Style=Gvm.ToolTipStyle }))">
                         </RadzenButton>
-                        <RadzenButton Icon="cancel" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Success" Click="@((args) => App.ClientDetailsPage.CancelContactEdit(c))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Anuluj", Style=Gvm.ToolTipStyle }))">
+                        <RadzenButton Icon="cancel" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Success" Click="@((args) => ClientDetailsStore.CancelContactEdit(c))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Anuluj", Style=Gvm.ToolTipStyle }))">
                         </RadzenButton>
                     </EditTemplate>
                 </RadzenGridColumn>
                 <RadzenGridColumn TItem="ContactPersonViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center">
                     <Template Context="c">
-                        <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@(async (args) => await App.ClientDetailsPage.DeleteContactRow(c))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Zamknij", Style=Gvm.ToolTipStyle }))">
+                        <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@(async (args) => await ClientDetailsStore.DeleteContactRow(c))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Zamknij", Style=Gvm.ToolTipStyle }))">
                         </RadzenButton>
                     </Template>
                     <EditTemplate Context="client">
@@ -157,17 +159,17 @@
                 </RadzenGridColumn>
             </Columns>
         </RadzenGrid>
-        @if (App.ClientDetailsPage.SelectedContact != null)
+        @if (ClientDetailsStore.GetState().SelectedContact != null)
         {
             <div class="details">
-                <p><strong>Imię:</strong> @App.ClientDetailsPage.SelectedContact.Name</p>
-                <p><strong>Nazwisko:</strong> @App.ClientDetailsPage.SelectedContact.Surname</p>
-                <p><strong>Telefon:</strong> @App.ClientDetailsPage.SelectedContact.PhoneNumber</p>
-                <p><strong>Telefon 2:</strong> @App.ClientDetailsPage.SelectedContact.AlternativePhoneNumber</p>
-                <p><strong>Adres:</strong> @App.ClientDetailsPage.SelectedContact.Address</p>
-                <p><strong>Zmienione przez:</strong> @App.ClientDetailsPage.SelectedContact.UpdatedBy</p>
-                <p><strong>Data zmiany:</strong>@App.ClientDetailsPage.SelectedContact.Updated</p>
-                <p><strong>Data utworzenia:</strong> @App.ClientDetailsPage.SelectedContact.Created</p>
+                <p><strong>Imię:</strong> @ClientDetailsStore.GetState().SelectedContact.Name</p>
+                <p><strong>Nazwisko:</strong> @ClientDetailsStore.GetState().SelectedContact.Surname</p>
+                <p><strong>Telefon:</strong> @ClientDetailsStore.GetState().SelectedContact.PhoneNumber</p>
+                <p><strong>Telefon 2:</strong> @ClientDetailsStore.GetState().SelectedContact.AlternativePhoneNumber</p>
+                <p><strong>Adres:</strong> @ClientDetailsStore.GetState().SelectedContact.Address</p>
+                <p><strong>Zmienione przez:</strong> @ClientDetailsStore.GetState().SelectedContact.UpdatedBy</p>
+                <p><strong>Data zmiany:</strong>@ClientDetailsStore.GetState().SelectedContact.Updated</p>
+                <p><strong>Data utworzenia:</strong> @ClientDetailsStore.GetState().SelectedContact.Created</p>
             </div>
         }
     </div>

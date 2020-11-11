@@ -49,7 +49,7 @@
 
     <RadzenCard>
         <h5>Wybierz Rodzaj Przypomnień</h5>
-        <RadzenSelectBar @bind-Value="CalendarStore.GetState().ChosenReminderType" TValue="int" Style="margin-bottom: 20px;">
+        <RadzenSelectBar @bind-Value="CalendarStore.GetState().ChosenReminderType" TValue="int" Style="margin-bottom: 20px;" Change="CalendarStore.ClearSelectedReminder">
             <Items>
                 <RadzenSelectBarItem Text="Przypomnienie" Value="1" Style="font-size: 12px;" />
                 <RadzenSelectBarItem Text="Termin" Value="2" Style="font-size: 12px;" />

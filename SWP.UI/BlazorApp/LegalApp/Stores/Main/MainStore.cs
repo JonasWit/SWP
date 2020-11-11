@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Radzen;
+using SWP.Application.LegalSwp.Cases;
 using SWP.Application.LegalSwp.Clients;
 using SWP.Application.Log;
+using SWP.Domain.Models.SWPLegal;
 using SWP.UI.BlazorApp.LegalApp.Stores.Enums;
 using SWP.UI.BlazorApp.LegalApp.Stores.Error;
 using SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data;
@@ -180,6 +182,12 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
 
         public void UpdateClientsList(ClientViewModel input) => _state.Clients[_state.Clients.FindIndex(x => x.Id == input.Id)] = input;
 
+        public void UpdateClientContactPerson(ClientContactPerson input) => _state.ActiveClient.ContactPeople[_state.ActiveClient.ContactPeople.FindIndex(x => x.Id == input.Id)] = input;
+
+        public void RemoveClientContactPerson(int id) => _state.ActiveClient.ContactPeople.RemoveAll(x => x.Id == id);
+
+        public void AddClientContactPerson(ClientContactPerson input) => _state.ActiveClient.ContactPeople.Add(input);
+
         public void RefreshClients()
         {
             try
@@ -248,5 +256,48 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
                 BroadcastStateChange();
             }
         }
+
+        public void ReloadCase(int id)
+        {
+            using var scope = _serviceProvider.CreateScope();
+            var getCase = scope.ServiceProvider.GetRequiredService<GetCase>();
+
+            var caseEntity = getCase.Get(id);
+            _state.ActiveClient.Cases.RemoveAll(x => x.Id == id);
+            _state.ActiveClient.Cases.Add(caseEntity);
+            _state.ActiveClient.Cases = _state.ActiveClient.Cases.OrderBy(x => x.Name).ToList();
+            _state.ActiveClient.Cases.TrimExcess();
+            _state.ActiveClient.SelectedCase = caseEntity;
+        }
+
+        public void ClearSelectedCase() => _state.ActiveClient.SelectedCase = null;
+
+        public void AddCaseToActiveClient(CaseViewModel entity) => _state.ActiveClient.Cases.Add(entity);
+
+        public void RemoveCaseFromActiveClient(int id) => _state.ActiveClient.Cases.RemoveAll(x => x.Id == id);
+
+        public void ReplaceCaseFromActiveClient(CaseViewModel entity) => _state.ActiveClient.Cases[_state.ActiveClient.Cases.FindIndex(x => x.Id == entity.Id)] = entity;
+
+        public void SetSelectedCase(CaseViewModel entity) => _state.ActiveClient.SelectedCase = entity;
+
+        public void SetSelectedNote(NoteViewModel entity) => _state.ActiveClient.SelectedCase.SelectedNote = entity;
+
+        public void AddNoteToActiveCase(NoteViewModel entity) => _state.ActiveClient.SelectedCase.Notes.Add(entity);
+
+        public void RemoveNoteFromActiveCase(int id) => _state.ActiveClient.SelectedCase.Notes.RemoveAll(x => x.Id == id);
+
+        public void ReplaceNoteFromActiveCase(NoteViewModel entity) => _state.ActiveClient.SelectedCase.Notes[_state.ActiveClient.SelectedCase.Notes.FindIndex(x => x.Id == entity.Id)] = entity;
+
+        public void AddReminderToActiveCase(ReminderViewModel entity) => _state.ActiveClient.SelectedCase.Reminders.Add(entity);
+
+        public void RemoveReminderFromActiveCase(int id) => _state.ActiveClient.SelectedCase.Reminders.RemoveAll(x => x.Id == id);
+
+        public void ReplaceReminderFromActiveCase(ReminderViewModel entity) => _state.ActiveClient.SelectedCase.Reminders[_state.ActiveClient.SelectedCase.Reminders.FindIndex(x => x.Id == entity.Id)] = entity;
+
+        public void AddContactToActiveCase(ContactPersonViewModel entity) => _state.ActiveClient.SelectedCase.ContactPeople.Add(entity);
+
+        public void RemoveContactFromActiveCase(int id) => _state.ActiveClient.SelectedCase.ContactPeople.RemoveAll(x => x.Id == id);
+
+        public void ReplaceContactFromActiveCase(ContactPersonViewModel entity) => _state.ActiveClient.SelectedCase.ContactPeople[_state.ActiveClient.SelectedCase.ContactPeople.FindIndex(x => x.Id == entity.Id)] = entity;
     }
 }

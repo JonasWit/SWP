@@ -90,7 +90,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
             _state.Loading = false;
         }
 
-        public void ActiveClientChange(object value)
+        public async Task ActiveClientChange(object value)
         {
             if (_state.Loading)
             {
@@ -118,7 +118,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
                 }
                 catch (Exception ex)
                 {
-                    //ErrorPage.DisplayMessage(ex);
+                    await ShowErrorPage(ex);
                 }
                 finally
                 {

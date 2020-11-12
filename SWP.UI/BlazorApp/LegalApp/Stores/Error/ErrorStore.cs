@@ -21,7 +21,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Error
 
         public ErrorState GetState() => _state;
 
-        public ErrorStore(IServiceProvider serviceProvider, CreateLogRecord createLogRecord) : base(serviceProvider)
+        public ErrorStore(IServiceProvider serviceProvider, IActionDispatcher actionDispatcher, CreateLogRecord createLogRecord) : base(serviceProvider, actionDispatcher)
         {
             _state = new ErrorState();
             _createLogRecord = createLogRecord;
@@ -36,6 +36,11 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Error
                 UserId = userId,
                 StackTrace = ex.StackTrace
             });
+        }
+
+        protected override void HandleActions(IAction action)
+        {
+            throw new NotImplementedException();
         }
     }
 }

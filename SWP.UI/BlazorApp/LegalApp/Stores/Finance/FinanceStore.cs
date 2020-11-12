@@ -37,8 +37,8 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Finance
 
         private MainStore _mainStore => _serviceProvider.GetRequiredService<MainStore>();
 
-        public FinanceStore(IServiceProvider serviceProvider, NotificationService notificationService, DialogService dialogService)
-            : base(serviceProvider, notificationService, dialogService)
+        public FinanceStore(IServiceProvider serviceProvider, IActionDispatcher actionDispatcher, NotificationService notificationService, DialogService dialogService)
+            : base(serviceProvider, actionDispatcher, notificationService, dialogService)
         {
             _state = new FinanceState();
         }
@@ -199,6 +199,11 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Finance
             {
                 _state.SelectedMonth = null;
             }
+        }
+
+        protected override void HandleActions(IAction action)
+        {
+            throw new NotImplementedException();
         }
     }
 }

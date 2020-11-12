@@ -17,23 +17,31 @@ namespace SWP.UI.BlazorApp
         public void ShowNotification(NotificationSeverity severity, string summary, string detail, int duration) =>
             _notificationService.Notify(new NotificationMessage() { Severity = severity, Summary = summary, Detail = detail, Duration = duration });
 
-        public StoreBase(IServiceProvider serviceProvider, NotificationService notificationService, DialogService dialogService)
+        public StoreBase(IServiceProvider serviceProvider, IActionDispatcher actionDispatcher, NotificationService notificationService, DialogService dialogService)
         {
             _serviceProvider = serviceProvider;
+            _actionDispatcher = actionDispatcher;
             _notificationService = notificationService;
             _dialogService = dialogService;
+            _actionDispatcher.Subscribe(HandleActions);
         }
 
-        public StoreBase(IServiceProvider serviceProvider, NotificationService notificationService)
+        public StoreBase(IServiceProvider serviceProvider, IActionDispatcher actionDispatcher, NotificationService notificationService)
         {
             _serviceProvider = serviceProvider;
+            _actionDispatcher = actionDispatcher;
             _notificationService = notificationService;
+            _actionDispatcher.Subscribe(HandleActions);
         }
 
-        public StoreBase(IServiceProvider serviceProvider)
+        public StoreBase(IServiceProvider serviceProvider, IActionDispatcher actionDispatcher)
         {
             _serviceProvider = serviceProvider;
+            _actionDispatcher = actionDispatcher;
+            _actionDispatcher.Subscribe(HandleActions);
         }
+
+        protected abstract void HandleActions(IAction action);
 
         #region Observer pattern
 

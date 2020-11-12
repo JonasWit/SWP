@@ -9,9 +9,4 @@ namespace SWP.UI.BlazorApp
     {
         public string Name { get; }
     }
-
-    public interface IAction<Task>
-    {
-        public string Name { get; }
-    }
 }

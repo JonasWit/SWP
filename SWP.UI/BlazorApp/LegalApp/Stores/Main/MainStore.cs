@@ -37,7 +37,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
 
         public MainState GetState() => _state;
 
-        public MainStore(IServiceProvider serviceProvider, NotificationService notificationService, ErrorStore errorStore) : base(serviceProvider, notificationService)
+        public MainStore(IServiceProvider serviceProvider, IActionDispatcher actionDispatcher, NotificationService notificationService, ErrorStore errorStore) : base(serviceProvider, actionDispatcher, notificationService)
         {
             _state = new MainState();
             _errorStore = errorStore;
@@ -315,5 +315,10 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
         public void ReplaceTimeRecordFromActiveClient(TimeRecordViewModel entity) => _state.ActiveClient.TimeRecords[_state.ActiveClient.TimeRecords.FindIndex(x => x.Id == entity.Id)] = entity;
 
         public void SetSelectedTimeRecord(TimeRecordViewModel entity) => _state.ActiveClient.SelectedTimeRecord = entity;
+
+        protected override void HandleActions(IAction action)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

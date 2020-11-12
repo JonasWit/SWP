@@ -51,8 +51,8 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Productivity
 
         private MainStore _mainStore => _serviceProvider.GetRequiredService<MainStore>();
 
-        public ProductivityStore(IServiceProvider serviceProvider, NotificationService notificationService, DialogService dialogService)
-            : base(serviceProvider, notificationService, dialogService)
+        public ProductivityStore(IServiceProvider serviceProvider, IActionDispatcher actionDispatcher, NotificationService notificationService, DialogService dialogService)
+            : base(serviceProvider, actionDispatcher, notificationService, dialogService)
         {
             _state = new ProductivityState();
         }
@@ -289,6 +289,11 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Productivity
             {
                 _state.SelectedFont = null;
             }
+        }
+
+        protected override void HandleActions(IAction action)
+        {
+            throw new NotImplementedException();
         }
     }
 }

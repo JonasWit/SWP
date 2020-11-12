@@ -38,11 +38,12 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.MyApp
         public MyAppState GetState() => _state;
 
         public MyAppStore(
-            IServiceProvider serviceProvider, 
+            IServiceProvider serviceProvider,
+            IActionDispatcher actionDispatcher,
             NotificationService notificationService, 
             DialogService dialogService,
             GeneralViewModel generalViewModel) 
-            : base(serviceProvider, notificationService, dialogService)
+            : base(serviceProvider, actionDispatcher, notificationService, dialogService)
         {
             _state = new MyAppState();
             _generalViewModel = generalViewModel;
@@ -214,6 +215,11 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.MyApp
                     { "Description", "This is sample Description" },
                 },
                 _generalViewModel.DefaultDialogOptions);
+        }
+
+        protected override void HandleActions(IAction action)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -32,8 +32,8 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Calendar
 
         public MainStore MainStore => _serviceProvider.GetRequiredService<MainStore>();
 
-        public CalendarStore(IServiceProvider serviceProvider, NotificationService notificationService, DialogService dialogService, GeneralViewModel generalViewModel) 
-            : base(serviceProvider, notificationService, dialogService)
+        public CalendarStore(IServiceProvider serviceProvider, IActionDispatcher actionDispatcher, NotificationService notificationService, DialogService dialogService, GeneralViewModel generalViewModel) 
+            : base(serviceProvider, actionDispatcher, notificationService, dialogService)
         {
             _state = new CalendarState();
             _generalViewModel = generalViewModel;
@@ -198,6 +198,11 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Calendar
             {
                 _state.SelectedReminder = null;
             }
+        }
+
+        protected override void HandleActions(IAction action)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion

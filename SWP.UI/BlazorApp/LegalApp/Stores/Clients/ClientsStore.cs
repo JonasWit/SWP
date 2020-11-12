@@ -27,7 +27,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Clients
 
         public MainStore MainStore => _serviceProvider.GetRequiredService<MainStore>();
 
-        public ClientsStore(IServiceProvider serviceProvider, NotificationService notificationService) : base(serviceProvider, notificationService)
+        public ClientsStore(IServiceProvider serviceProvider, IActionDispatcher actionDispatcher, NotificationService notificationService) : base(serviceProvider, actionDispatcher, notificationService)
         {
             _state = new ClientsState();
         }
@@ -202,6 +202,11 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Clients
             {
                 BroadcastStateChange();
             }
+        }
+
+        protected override void HandleActions(IAction action)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion

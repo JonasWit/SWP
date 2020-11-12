@@ -37,8 +37,8 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
 
         private MainStore _mainStore => _serviceProvider.GetRequiredService<MainStore>();
 
-        public CasesStore(IServiceProvider serviceProvider, NotificationService notificationService, DialogService dialogService, GeneralViewModel generalViewModel)
-            : base(serviceProvider, notificationService, dialogService)
+        public CasesStore(IServiceProvider serviceProvider, IActionDispatcher actionDispatcher, NotificationService notificationService, DialogService dialogService, GeneralViewModel generalViewModel)
+            : base(serviceProvider, actionDispatcher, notificationService, dialogService)
         {
             _state = new CasesState();
             _generalViewModel = generalViewModel;
@@ -508,6 +508,11 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
             {
                 _state.SelectedContact = null;
             }
+        }
+
+        protected override void HandleActions(IAction action)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion

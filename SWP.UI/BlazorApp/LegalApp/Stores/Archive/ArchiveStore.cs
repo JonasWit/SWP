@@ -25,8 +25,8 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Archive
 
         public MainStore MainStore => _serviceProvider.GetRequiredService<MainStore>();
 
-        public ArchiveStore(IServiceProvider serviceProvider, NotificationService notificationService, DialogService dialogService)
-            : base(serviceProvider, notificationService, dialogService)
+        public ArchiveStore(IServiceProvider serviceProvider, IActionDispatcher actionDispatcher, NotificationService notificationService, DialogService dialogService)
+            : base(serviceProvider, actionDispatcher, notificationService, dialogService)
         {
             _state = new ArchiveState();
         }
@@ -105,7 +105,9 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Archive
             }
         }
 
-
-
+        protected override void HandleActions(IAction action)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

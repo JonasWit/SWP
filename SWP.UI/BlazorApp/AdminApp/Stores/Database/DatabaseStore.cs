@@ -17,16 +17,16 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Database
     public class DatabaseStore : StoreBase
     {
         private readonly DatabaseState _state;
-        private readonly NotificationService _notificationService;
 
         public DatabaseState GetState() => _state;
 
         public DatabaseStore(
             IServiceProvider serviceProvider,
-            NotificationService notificationService) : base(serviceProvider)
+            IActionDispatcher actionDispatcher,
+            NotificationService notificationService) 
+            : base(serviceProvider, actionDispatcher, notificationService)
         {
             _state = new DatabaseState();
-            _notificationService = notificationService;
         }
 
         public async Task InitializeState()
@@ -34,5 +34,9 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Database
             BroadcastStateChange();
         }
 
+        protected override void HandleActions(IAction action)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

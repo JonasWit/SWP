@@ -29,7 +29,7 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Application
 
         public ApplicationState GetState() => _state;
 
-        public ApplicationStore(IServiceProvider serviceProvider, ErrorStore errorStore) : base(serviceProvider)
+        public ApplicationStore(IServiceProvider serviceProvider, IActionDispatcher actionDispatcher, ErrorStore errorStore) : base(serviceProvider, actionDispatcher)
         {
             _state = new ApplicationState();
             _errorStore = errorStore;
@@ -85,6 +85,11 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Application
             {
                 ShowErrorPage(ex);
             }
+        }
+
+        protected override void HandleActions(IAction action)
+        {
+            throw new NotImplementedException();
         }
     }
 }

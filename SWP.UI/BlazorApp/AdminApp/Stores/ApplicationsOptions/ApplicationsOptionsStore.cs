@@ -25,16 +25,16 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.ApplicationsOptions
     public class ApplicationsOptionsStore : StoreBase
     {
         private readonly ApplicationOptionsState _state;
-        private readonly NotificationService _notificationService;
 
         public ApplicationOptionsState GetState() => _state;
 
         public ApplicationsOptionsStore(
-            IServiceProvider serviceProvider, 
-            NotificationService notificationService) : base(serviceProvider)
+            IServiceProvider serviceProvider,
+            IActionDispatcher actionDispatcher,
+            NotificationService notificationService) 
+            : base(serviceProvider, actionDispatcher, notificationService)
         {
             _state = new ApplicationOptionsState();
-            _notificationService = notificationService;
         }
 
         public void InitializeState()
@@ -125,6 +125,11 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.ApplicationsOptions
             {
                 _state.SelectedLogRecord = null;
             }
+        }
+
+        protected override void HandleActions(IAction action)
+        {
+            throw new NotImplementedException();
         }
     }
 

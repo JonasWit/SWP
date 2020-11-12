@@ -66,17 +66,17 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Users
     public class UsersStore : StoreBase
     {
         private readonly UserState _state;
-        private readonly NotificationService _notificationService;
 
         public UserManager<IdentityUser> UserManager => _serviceProvider.GetService<UserManager<IdentityUser>>();
         public UserState GetState() => _state;
 
         public UsersStore(
             IServiceProvider serviceProvider,
-            NotificationService notificationService) : base(serviceProvider)
+            IActionDispatcher actionDispatcher,
+            NotificationService notificationService) 
+            : base(serviceProvider, actionDispatcher, notificationService)
         {
             _state = new UserState();
-            _notificationService = notificationService;
         }
 
         public async Task InitializeState()
@@ -453,12 +453,9 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Users
             }
         }
 
-
-
-
-
-
-
-
+        protected override void HandleActions(IAction action)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

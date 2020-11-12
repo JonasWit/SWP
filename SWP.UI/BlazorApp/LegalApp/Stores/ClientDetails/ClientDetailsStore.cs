@@ -29,8 +29,8 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.ClientDetails
 
         public DialogService DialogService { get; }
 
-        public ClientDetailsStore(IServiceProvider serviceProvider, NotificationService notificationService, DialogService dialogService)
-            : base(serviceProvider, notificationService, dialogService)
+        public ClientDetailsStore(IServiceProvider serviceProvider, IActionDispatcher actionDispatcher, NotificationService notificationService, DialogService dialogService)
+            : base(serviceProvider, actionDispatcher, notificationService, dialogService)
         {
             _state = new ClientDetailsState();
         }
@@ -154,6 +154,11 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.ClientDetails
             {
                 BroadcastStateChange();
             }
+        }
+
+        protected override void HandleActions(IAction action)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion

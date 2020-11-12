@@ -27,8 +27,8 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.ClientJobs
 
         public MainStore MainStore => _serviceProvider.GetRequiredService<MainStore>();
 
-        public ClientJobsStore(IServiceProvider serviceProvider, NotificationService notificationService, DialogService dialogService)
-            : base(serviceProvider, notificationService, dialogService)
+        public ClientJobsStore(IServiceProvider serviceProvider, IActionDispatcher actionDispatcher, NotificationService notificationService, DialogService dialogService)
+            : base(serviceProvider, actionDispatcher, notificationService, dialogService)
         {
             _state = new ClientJobsState();
         }
@@ -212,11 +212,9 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.ClientJobs
             }
         }
 
-
-
-
-
-
-
+        protected override void HandleActions(IAction action)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

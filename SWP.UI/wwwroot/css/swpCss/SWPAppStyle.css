@@ -11,6 +11,7 @@
 body {
     margin: 0;
     padding: 0;
+    caret-color: transparent;
 }
 
     body::-webkit-scrollbar {
@@ -252,6 +253,8 @@ ul, li {
     .sidebar:hover .link-text {
         display: none;
     }
+
+ 
 }
 /*Clients Page*/
 
@@ -485,7 +488,7 @@ ul, li {
 .popup {
     display: flex;
     flex-direction: column;
-    justify-content:;
+   
 }
 
 
@@ -503,8 +506,13 @@ ul, li {
         display: flex;
         flex-direction: column;
         justify-content: flex-start;
+       
     }
+
+
+
 }
+
 
 .app-pie-chart {
     grid-column: 2;
@@ -529,22 +537,20 @@ ul, li {
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
 }
 
-.app-chart h3, h5 {
+.app-chart h3 {
     padding: 5px;
     text-align: center;
     font-size: 20px;
     font-weight: bold;
 }
 
-.app-balance-1 {
-    grid-column: 1;
-    grid-row: 1;
+.app-chart h5 {
+    padding: 5px;
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
 }
 
-.app-balance-2 {
-    grid-column: 1;
-    grid-row: 2;
-}
 
 
 .app-line-chart {
@@ -560,7 +566,7 @@ ul, li {
 .app-line-chart-1 {
     grid-column: 1 / span 2;
     grid-row: 3;
-    /*width: 87rem;*/
+  
 }
 
 .app-line-chart-2 {
@@ -576,4 +582,10 @@ ul, li {
 .app-line-chart-4 {
     grid-column: 1 / span 2;
     grid-row: 6;
+}
+
+.list-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
 }

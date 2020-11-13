@@ -1,15 +1,15 @@
 ﻿@if (MainStore.GetState().Clients.Count != 0)
 {
-    <RadzenButton ButtonStyle="ButtonStyle.Secondary" Icon="refresh" Style="margin-bottom: 20px; width: 150px" Click="MyAppStore.RefreshData"></RadzenButton>
-
-    @*<RadzenListBox AllowFiltering="true" @bind-Value="RelatedUsersFilterValue" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" Data="@App.User.RelatedUsers" TextProperty="UserName" ValueProperty="Id" Style="margin-bottom: 20px; height:200px;" Change="@(args => App.MyAppPage.SelectedUserChange(args))" />*@
-
+<div class="list-row">
+    <div>
+        <RadzenButton ButtonStyle="ButtonStyle.Secondary" Icon="refresh" Style="margin-bottom: 20px; width: 100px" Click="MyAppStore.RefreshData"></RadzenButton>
+    </div>
     <div>
         <RadzenDropDown AllowClear="true"
                         FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" FilterOperator="StringFilterOperator.StartsWith" AllowFiltering="true" @bind-Value="RelatedUsersFilterValue"
                         Data="@MainStore.GetState().User.RelatedUsers" TextProperty="UserName" ValueProperty="Id" Style="margin-bottom: 20px" Change="@(args => MyAppStore.SelectedUserChange(args))" />
     </div>
-
+</div>
     @if (MyAppStore.GetState().SelectedUser != null && MainStore.GetState().User.RootClient && MainStore.GetState().ActiveUserId != MyAppStore.GetState().SelectedUser.Id)
     {
         <h1>Mozna skasowac</h1>
@@ -25,7 +25,7 @@
     <div class="flex-my-app">
         @if (MyAppStore.GetState().ProductivityData.Count != 0)
         {
-            <div class="app-chart app-balance app-balance-1 grid">
+            <div class="app-chart app-balance ">
                 <i><img src="/Images/icons8-profit-40.png" /></i>
                 @if (MainStore.GetState().ActiveClient == null)
                 {
@@ -40,7 +40,7 @@
             </div>
         }
         @if (MyAppStore.GetState().ProductivityData.Count != 0)
-        {<div class="app-chart app-balance app-balance-2 grid">
+        {<div class="app-chart app-balance ">
                 <i><img src="/Images/icons8-initiate-money-transfer-40.png" /></i>
                 @if (MainStore.GetState().ActiveClient == null)
                 {
@@ -56,17 +56,7 @@
             </div>
         }
 
-        @if (MyAppStore.GetState().ClientsCases.Count != 0)
-        {<div class="app-chart app-pie-chart grid">
-                <h3>Liczba spraw poszczególnych klientów</h3>
-                <RadzenChart ColorScheme="@MyAppStore.GetState().ColorScheme" Style="width: 100%;">
-                    <RadzenPieSeries Data="@MyAppStore.GetState().ClientsCases" Title="Sprawy" CategoryProperty="Category" ValueProperty="Number" />
-                    <RadzenLegend Position="LegendPosition.Bottom" />
-                </RadzenChart>
-            </div>
-        }
-
-    </div>
+      </div>
 
     @if (MyAppStore.GetState().ProductivityData.Count != 0)
     {<div class="flex-my-app">
@@ -94,9 +84,9 @@
                 <RadzenChart ColorScheme="@MyAppStore.GetState().ColorScheme">
                     @foreach (var data in MyAppStore.GetState().ProductivityData)
                     {
-                        <RadzenColumnSeries Data="@data.DataByDate" CategoryProperty="Date" Title="@data.Name" ValueProperty="Expenses">
-                            <RadzenColumnOptions Radius="5" />
-                        </RadzenColumnSeries>
+                        <RadzenLineSeries Data="@data.DataByDate" CategoryProperty="Date" Title="@data.Name" ValueProperty="Expenses">
+                            <RadzenMarkers MarkerType="MarkerType.Circle" />
+                        </RadzenLineSeries>
                     }
 
                     <RadzenCategoryAxis Padding="20" FormatString="{0:MMM}" />
@@ -115,9 +105,9 @@
                 <RadzenChart ColorScheme="@MyAppStore.GetState().ColorScheme">
                     @foreach (var data in MyAppStore.GetState().ProductivityData)
                     {
-                        <RadzenBarSeries Data="@data.DataByDate" CategoryProperty="Date" Title="@data.Name" LineType="LineType.Solid" ValueProperty="TimeNumber">
-                            <RadzenBarOptions Radius="5" />
-                        </RadzenBarSeries>
+                        <RadzenLineSeries Data="@data.DataByDate" CategoryProperty="Date" Title="@data.Name" LineType="LineType.Solid" ValueProperty="TimeNumber">
+                            <RadzenMarkers MarkerType="MarkerType.Circle" />
+                        </RadzenLineSeries>
                     }
 
                     <RadzenCategoryAxis Padding="20" FormatString="{0:MMM}" />

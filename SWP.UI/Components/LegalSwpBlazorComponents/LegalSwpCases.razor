@@ -349,7 +349,6 @@
                             </RadzenFieldset>
                         </RadzenTemplateForm>
 
-
                         <RadzenGrid @ref="CasesStore.GetState().ContactsGrid" AllowFiltering="true" AllowPaging="true" PageSize="10" AllowSorting="true"
                                     Data="@MainStore.GetState().ActiveClient.SelectedCase.ContactPeople" TItem="ContactPersonViewModel" RowUpdate="@CasesStore.OnUpdateContactRow" RowSelect="@(args => CasesStore.ContactSelected(args))">
                             <Columns>
@@ -447,11 +446,8 @@
 
 
                     </RadzenTabsItem>
-
                 </Tabs>
             </RadzenTabs>
-
-
         </div>
     }
 

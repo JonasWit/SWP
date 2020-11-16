@@ -27,7 +27,7 @@
         <RadzenCard Style="width:600px; margin-bottom: 20px; height:500px;">
             <div class="row">
                 <div class="col-md-6">
-                    <div>Wybrany Klient:</div>
+                    <div>Wybrana Sprawa:</div>
                     <b>@ArchiveStore.GetState().SelectedArchivizedCase.Name</b>
                     <RadzenButton Click="(async () => await ArchiveStore.RecoverSelectedCase())">Odzyskaj Sprawę</RadzenButton>
                     <RadzenButton Click="(async () => await ArchiveStore.DeleteSelectedCase())">Usuń Sprawę</RadzenButton>

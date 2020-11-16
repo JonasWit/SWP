@@ -124,6 +124,7 @@ ul, li {
 
 .logo {
     margin: auto;
+    padding-bottom: 1.5rem;
 }
 
 .toggle {
@@ -588,4 +589,10 @@ ul, li {
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
+}
+
+.rz-event {
+    position: absolute;
+    padding: 0px !important;
+    height: 1.75rem !important;
 }

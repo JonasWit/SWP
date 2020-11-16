@@ -34,7 +34,8 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
             ArchiveStore.Initialize();
         }
 
-
+        public bool addClientformVisible = false;
+        public void ShowHideClientFormI() => addClientformVisible = !addClientformVisible;
 
 
     }

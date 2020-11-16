@@ -46,7 +46,7 @@
                             </li>
                             <li class="nav-item  ">
                                 <a class="nav-link @(MainStore.GetState().ActivePanel == LegalAppPanels.Cases ? "active" : "")" @onclick="@(() => MainStore.SetActivePanel(LegalAppPanels.Cases))">
-                                    <i><img src="/Images/icons8-business-report-36.png" /></i><span class="@(showSidebar ? "link-text" : "link-text-hidden")"> Sprawy</span>
+                                    <i><img style="height: 36px;" src="/Images/icons8-private-folder-40.png" /></i><span class="@(showSidebar ? "link-text" : "link-text-hidden")"> Sprawy</span>
                                 </a>
                             </li>
                             <li class="nav-item ">
@@ -63,7 +63,7 @@
 
                         <li class="nav-item ">
                             <a class="nav-link @(MainStore.GetState().ActivePanel == LegalAppPanels.Archive ? "active" : "")" @onclick="@(() => MainStore.SetActivePanel(LegalAppPanels.Archive))">
-                                <i><img src="/Images/icons8-calendar-12-36.png" /></i><span class="@(showSidebar ? "link-text" : "link-text-hidden")"> Archiwum</span>
+                                <i><img style="height: 36px;" src="/Images/icons8-filing-cabinet-40.png" /></i><span class="@(showSidebar ? "link-text" : "link-text-hidden")"> Archiwum</span>
                             </a>
                         </li>
                 </ul>

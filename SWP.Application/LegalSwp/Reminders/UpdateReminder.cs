@@ -9,8 +9,8 @@ namespace SWP.Application.LegalSwp.Reminders
     [TransientService]
     public class UpdateReminder
     {
-        private readonly ILegalSwpManager legalSwpManager;
-        public UpdateReminder(ILegalSwpManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
+        private readonly ILegalManager legalSwpManager;
+        public UpdateReminder(ILegalManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
 
         public Task<Reminder> Update(Request request)
         {

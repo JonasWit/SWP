@@ -8,8 +8,8 @@ namespace SWP.Application.LegalSwp.Cases
     [TransientService]
     public class CreateCase
     {
-        private readonly ILegalSwpManager legalSwpManager;
-        public CreateCase(ILegalSwpManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
+        private readonly ILegalManager legalSwpManager;
+        public CreateCase(ILegalManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
 
         public Task<Case> Create(int ClientId, string profile, Request request) => 
             legalSwpManager.CreateCase(ClientId, profile, new Case

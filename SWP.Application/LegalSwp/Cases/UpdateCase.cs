@@ -8,8 +8,8 @@ namespace SWP.Application.LegalSwp.Cases
     [TransientService]
     public class UpdateCase
     {
-        private readonly ILegalSwpManager legalSwpManager;
-        public UpdateCase(ILegalSwpManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
+        private readonly ILegalManager legalSwpManager;
+        public UpdateCase(ILegalManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
 
         public Task<Case> Update(Request request)
         {

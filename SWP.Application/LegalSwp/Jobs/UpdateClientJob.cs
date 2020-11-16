@@ -8,8 +8,8 @@ namespace SWP.Application.LegalSwp.Jobs
     [TransientService]
     public class UpdateClientJob
     {
-        private readonly ILegalSwpManager legalSwpManager;
-        public UpdateClientJob(ILegalSwpManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
+        private readonly ILegalManager legalSwpManager;
+        public UpdateClientJob(ILegalManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
 
         public Task<ClientJob> Update(Request request)
         {

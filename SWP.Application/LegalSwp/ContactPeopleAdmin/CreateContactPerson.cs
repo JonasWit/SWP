@@ -8,8 +8,8 @@ namespace SWP.Application.LegalSwp.ContactPeopleAdmin
     [TransientService]
     public class CreateContactPerson
     {
-        private readonly ILegalSwpManager legalSwpManager;
-        public CreateContactPerson(ILegalSwpManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
+        private readonly ILegalManager legalSwpManager;
+        public CreateContactPerson(ILegalManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
 
         public Task<ClientContactPerson> CreateContactPersonForClient(int clientId, Request request) =>
             legalSwpManager.CreateClientContactPerson(clientId, new ClientContactPerson

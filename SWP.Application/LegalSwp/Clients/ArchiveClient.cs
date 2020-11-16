@@ -6,8 +6,8 @@ namespace SWP.Application.LegalSwp.Clients
     [TransientService]
     public class ArchiveClient
     {
-        private readonly ILegalSwpManager legalSwpManager;
-        public ArchiveClient(ILegalSwpManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
+        private readonly ILegalManager legalSwpManager;
+        public ArchiveClient(ILegalManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
 
         public int CountAllArchivedClients() => legalSwpManager.CountArchivedClients();
 

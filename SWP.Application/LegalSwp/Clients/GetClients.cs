@@ -7,8 +7,8 @@ namespace SWP.Application.LegalSwp.Clients
     [TransientService]
     public class GetClients
     {
-        private readonly ILegalSwpManager legalSwpManager;
-        public GetClients(ILegalSwpManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
+        private readonly ILegalManager legalSwpManager;
+        public GetClients(ILegalManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
 
         public List<Client> GetClientsWithoutData(string claim, bool active = true) => legalSwpManager.GetClientsWithoutCases(claim, active);
         public IEnumerable<int> GetClientCasesIds(int id) => legalSwpManager.GetClientCasesIds(id);

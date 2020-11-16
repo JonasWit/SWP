@@ -128,6 +128,12 @@
                             </RadzenButton>
                         </EditTemplate>
                     </RadzenGridColumn>
+                    <RadzenGridColumn TItem="CaseViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="45px">
+                        <Template Context="cs">
+                            <RadzenButton ButtonStyle="ButtonStyle.Warning" Icon="archive" Size="ButtonSize.Small" Click="@(async (args) => await CasesStore.ArchivizeCase(cs))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Archiwizuj", Style=Gvm.ToolTipStyle }))">
+                            </RadzenButton>
+                        </Template>
+                    </RadzenGridColumn>
                     <RadzenGridColumn TItem="CaseViewModel" Context="order" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="45px">
                         <Template Context="cs">
                             <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@(async (args) => await CasesStore.DeleteCaseRow(cs))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Zamknij", Style=Gvm.ToolTipStyle }))">

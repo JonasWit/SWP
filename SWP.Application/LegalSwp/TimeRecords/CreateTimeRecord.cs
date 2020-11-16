@@ -8,8 +8,8 @@ namespace SWP.Application.LegalSwp.TimeRecords
     [TransientService]
     public class CreateTimeRecord
     {
-        private readonly ILegalSwpManager legalSwpManager;
-        public CreateTimeRecord(ILegalSwpManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
+        private readonly ILegalManager legalSwpManager;
+        public CreateTimeRecord(ILegalManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
 
         public Task<TimeRecord> Create(int clientId, string profile, Request request) =>
             legalSwpManager.CreateTimeRecord(clientId, profile, new TimeRecord

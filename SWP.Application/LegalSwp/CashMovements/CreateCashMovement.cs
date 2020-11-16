@@ -8,8 +8,8 @@ namespace SWP.Application.LegalSwp.CashMovements
     [TransientService]
     public class CreateCashMovement
     {
-        private readonly ILegalSwpManager legalSwpManager;
-        public CreateCashMovement(ILegalSwpManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
+        private readonly ILegalManager legalSwpManager;
+        public CreateCashMovement(ILegalManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
 
         public Task<CashMovement> Create(int clientId, string profile, Request request) =>
             legalSwpManager.CreateCashMovement(clientId, profile, new CashMovement

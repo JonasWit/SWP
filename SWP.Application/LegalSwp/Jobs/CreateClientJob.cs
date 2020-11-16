@@ -9,8 +9,8 @@ namespace SWP.Application.LegalSwp.Jobs
     [TransientService]
     public class CreateClientJob
     {
-        private readonly ILegalSwpManager legalSwpManager;
-        public CreateClientJob(ILegalSwpManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
+        private readonly ILegalManager legalSwpManager;
+        public CreateClientJob(ILegalManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
 
         public Task<ClientJob> Create(Request request) => 
             legalSwpManager.CreateClientJob(request.ClientId, new ClientJob

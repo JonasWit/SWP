@@ -8,8 +8,8 @@ namespace SWP.Application.LegalSwp.TimeRecords
     [TransientService]
     public class UpdateTimeRecord
     {
-        private readonly ILegalSwpManager legalSwpManager;
-        public UpdateTimeRecord(ILegalSwpManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
+        private readonly ILegalManager legalSwpManager;
+        public UpdateTimeRecord(ILegalManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
 
         public Task<TimeRecord> Update(Request request)
         {

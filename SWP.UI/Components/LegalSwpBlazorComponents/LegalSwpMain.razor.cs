@@ -30,29 +30,10 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
             initializing = false;
         }
 
-        //[Parameter]
-        //public string ActiveUserId { get; set; }
-        //[Inject]
-        //public LegalBlazorApp App { get; set; }
-
         private bool initializing = false;
 
-        //protected override async Task OnInitializedAsync()
-        //{
-        //    initializing = true;
-
-        //    await App.Initialize(ActiveUserId);
-        //    App.CallStateHasChanged += new EventHandler(CallStateHasChanged);
-
-        //    initializing = false;
-        //}
-
-        //public void CallStateHasChanged(object sender, EventArgs e) => StateHasChanged();
-
-        //public void Dispose() => App.CallStateHasChanged -= new EventHandler(CallStateHasChanged);
-
         public bool showSidebar = false;
-        public void ShowHideSidebar() => showSidebar = !showSidebar;
 
+        public void ShowHideSidebar() => showSidebar = !showSidebar;
     }
 }

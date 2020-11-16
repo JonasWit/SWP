@@ -7,8 +7,8 @@ namespace SWP.Application.LegalSwp.Jobs
     [TransientService]
     public class ArchiveJob
     {
-        private readonly ILegalSwpManager legalSwpManager;
-        public ArchiveJob(ILegalSwpManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
+        private readonly ILegalManager legalSwpManager;
+        public ArchiveJob(ILegalManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
 
         public int CountAllArchivedClients() => legalSwpManager.CountArchivedClients();
 

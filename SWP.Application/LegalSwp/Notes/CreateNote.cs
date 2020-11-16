@@ -9,8 +9,8 @@ namespace SWP.Application.LegalSwp.Notes
     [TransientService]
     public class CreateNote
     {
-        private readonly ILegalSwpManager legalSwpManager;
-        public CreateNote(ILegalSwpManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
+        private readonly ILegalManager legalSwpManager;
+        public CreateNote(ILegalManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
 
         public Task<Note> Create(int caseId, Request request) =>
             legalSwpManager.CreateNote(caseId, new Note

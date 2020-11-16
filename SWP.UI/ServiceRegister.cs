@@ -69,7 +69,7 @@ namespace SWP.UI
 
             #endregion
 
-            @this.AddTransient<ILegalSwpManager, LegalSwpManager>();
+            @this.AddTransient<ILegalManager, LegalManager>();
             @this.AddTransient<IStatisticsManager, StatisticsManager>();
             @this.AddTransient<ILogManager, LogManager>();
             @this.AddTransient<IFileManager, FileManager>();

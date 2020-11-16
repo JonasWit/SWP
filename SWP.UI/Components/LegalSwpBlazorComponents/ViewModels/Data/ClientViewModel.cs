@@ -18,7 +18,6 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
         public List<CaseViewModel> Cases { get; set; }
-        public List<CaseViewModel> ArchivedCases { get; set; }
         public List<ClientJobViewModel> Jobs { get; set; }
         public List<ClientJobViewModel> ArchivedJobs { get; set; }
         public List<TimeRecordViewModel> TimeRecords { get; set; }
@@ -46,7 +45,6 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data
                 Email = input.Email,
                 PhoneNumber = input.PhoneNumber,
                 Cases = input.Cases == null ? new List<CaseViewModel>() : input.Cases.Where(x => x.Active).Select(x => (CaseViewModel)x).ToList(),
-                ArchivedCases = input.Cases == null ? new List<CaseViewModel>() : input.Cases.Where(x => !x.Active).Select(x => (CaseViewModel)x).ToList(),
                 Jobs = input.Jobs == null ? new List<ClientJobViewModel>() : input.Jobs.Where(x => x.Active).Select(x => (ClientJobViewModel)x).ToList(),
                 ArchivedJobs = input.Jobs == null ? new List<ClientJobViewModel>() : input.Jobs.Where(x => !x.Active).Select(x => (ClientJobViewModel)x).ToList(),
                 TimeRecords = input.TimeRecords == null ? new List<TimeRecordViewModel>() : input.TimeRecords.Select(x => (TimeRecordViewModel)x).ToList(),

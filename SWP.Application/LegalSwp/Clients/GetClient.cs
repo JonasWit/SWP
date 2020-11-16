@@ -6,8 +6,8 @@ namespace SWP.Application.LegalSwp.Clients
     [TransientService]
     public class GetClient
     {
-        private readonly ILegalSwpManager legalSwpManager;
-        public GetClient(ILegalSwpManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
+        private readonly ILegalManager legalSwpManager;
+        public GetClient(ILegalManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
 
         public Client Get(int id) => legalSwpManager.GetClient(id);
         public string GetClientName(int id) => legalSwpManager.GetClientName(id);

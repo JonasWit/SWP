@@ -112,11 +112,6 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
                     var getClient = scope.ServiceProvider.GetRequiredService<GetClient>();
 
                     _state.ActiveClient = getClient.Get(int.Parse(value.ToString()));
-
-                    //FinancePage.GetDataForMonthFilter();
-                    //ProductivityPage.GetDataForMonthFilter();
-
-                    DeactivateLoading();
                 }
                 catch (Exception ex)
                 {
@@ -136,6 +131,39 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
 
                 _state.ActiveClient = null;
 
+                DeactivateLoading();
+            }
+        }
+
+        public async Task ReloadActiveClient()
+        {
+            if (_state.Loading)
+            {
+                return;
+            }
+            else
+            {
+                ActivateLoading("Wczytywanie Klienta...");
+            }
+
+            if (_state.ActiveClient == null)
+            {
+                return;
+            }
+
+            try
+            {
+                using var scope = _serviceProvider.CreateScope();
+                var getClient = scope.ServiceProvider.GetRequiredService<GetClient>();
+
+                _state.ActiveClient = getClient.Get(_state.ActiveClient.Id);
+            }
+            catch (Exception ex)
+            {
+                await ShowErrorPage(ex);
+            }
+            finally
+            {
                 DeactivateLoading();
             }
         }

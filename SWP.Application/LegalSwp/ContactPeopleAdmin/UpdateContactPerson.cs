@@ -8,8 +8,8 @@ namespace SWP.Application.LegalSwp.ContactPeopleAdmin
     [TransientService]
     public class UpdateContactPerson
     {
-        private readonly ILegalSwpManager legalSwpManager;
-        public UpdateContactPerson(ILegalSwpManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
+        private readonly ILegalManager legalSwpManager;
+        public UpdateContactPerson(ILegalManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
 
         public Task<CaseContactPerson> UpdateForCase(Request request)
         {

@@ -9,8 +9,8 @@ namespace SWP.Application.LegalSwp.Notes
     [TransientService]
     public class UpdateNote
     {
-        private readonly ILegalSwpManager legalSwpManager;
-        public UpdateNote(ILegalSwpManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
+        private readonly ILegalManager legalSwpManager;
+        public UpdateNote(ILegalManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
 
         public Task<Note> Update(Request request)
         {

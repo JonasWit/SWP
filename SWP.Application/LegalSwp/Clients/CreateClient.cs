@@ -10,8 +10,8 @@ namespace SWP.Application.LegalSwp.Clients
     [TransientService]
     public class CreateClient
     {
-        private readonly ILegalSwpManager legalSwpManager;
-        public CreateClient(ILegalSwpManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
+        private readonly ILegalManager legalSwpManager;
+        public CreateClient(ILegalManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
 
         public Task<Client> Do(Request request) => legalSwpManager.CreateClient(new Client
         {

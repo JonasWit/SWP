@@ -170,6 +170,29 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
             _state.SelectedContact = null;
         }
 
+        public async Task ArchivizeCase(CaseViewModel c)
+        {
+            try
+            {
+                using var scope = _serviceProvider.CreateScope();
+                var archiveCase = scope.ServiceProvider.GetRequiredService<ArchiveCases>();
+
+                _mainStore.GetState().ActiveClient.Cases.RemoveAll(x => x.Id == c.Id);
+                await archiveCase.ArchivizeCase(c.Id, _mainStore.GetState().User.UserName);
+
+                await _state.CasesGrid.Reload();
+                ShowNotification(NotificationSeverity.Success, "Sukces!", $"Sprawa: {c.Name} została zarchwizowana", GeneralViewModel.NotificationDuration);
+            }
+            catch (Exception ex)
+            {
+                await _mainStore.ShowErrorPage(ex);
+            }
+            finally
+            {
+                BroadcastStateChange();
+            }
+        }
+
         #endregion
 
         #region Notes Tab

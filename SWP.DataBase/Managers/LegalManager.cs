@@ -8,17 +8,17 @@ using System.Threading.Tasks;
 
 namespace SWP.DataBase.Managers
 {
-    public class LegalSwpManager : ILegalSwpManager
+    public class LegalManager : ILegalManager
     {
         private readonly ApplicationDbContext context;
-        public LegalSwpManager(ApplicationDbContext context) => this.context = context;
+        public LegalManager(ApplicationDbContext context) => this.context = context;
 
         #region Client
 
         public Client GetClient(int clientId) =>
             context.Clients
                 .Where(x => x.Id == clientId)
-                .Include(x => x.Cases)
+                .Include(x => x.Cases.Where(y => y.Active))
                     .ThenInclude(y => y.Reminders)
                 .Include(x => x.Cases)
                     .ThenInclude(y => y.Notes)
@@ -421,7 +421,10 @@ namespace SWP.DataBase.Managers
 
         public Task<int> ArchivizeCase(int caseId, string user)
         {
-            var c = context.Cases.FirstOrDefault(x => x.Id == caseId);
+            var c = context.Cases
+                .Include(x => x.Notes)
+                .FirstOrDefault(x => x.Id == caseId);
+
             c.Active = false;
             c.UpdatedBy = user;
             c.Updated = DateTime.Now;
@@ -459,7 +462,7 @@ namespace SWP.DataBase.Managers
             return context.SaveChangesAsync();
         }
 
-        public List<Case> GetArchivedCases() => context.Cases.Where(x => !x.Active).ToList();
+        public List<Case> GetArchivedCases(int clientId) => context.Cases.Where(x => !x.Active && x.ClientId == clientId).ToList();
 
         public Task<int> RecoverClient(int clientId, string user)
         {
@@ -497,9 +500,25 @@ namespace SWP.DataBase.Managers
             return context.SaveChangesAsync();
         }
 
-        public Case RecoverCase(int caseId, string user)
+        public Task<int> RecoverCase(int caseId, string user)
         {
-            throw new NotImplementedException();
+            var c = context.Cases
+                .Include(x => x.Notes)
+                .FirstOrDefault(x => x.Id == caseId);
+
+            c.Active = true;
+            c.UpdatedBy = user;
+            c.Updated = DateTime.Now;
+
+            foreach (var n in c.Notes)
+            {
+                n.Active = true;
+                n.UpdatedBy = user;
+                n.Updated = DateTime.Now;
+            }
+
+            context.Cases.Update(c);
+            return context.SaveChangesAsync();
         }
 
         public async Task<ClientJob> RecoverClientJob(int jobId, string user)

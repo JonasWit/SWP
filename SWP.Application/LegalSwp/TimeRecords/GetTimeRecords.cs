@@ -7,8 +7,8 @@ namespace SWP.Application.LegalSwp.TimeRecords
     [TransientService]
     public class GetTimeRecords
     {
-        private readonly ILegalSwpManager legalSwpManager;
-        public GetTimeRecords(ILegalSwpManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
+        private readonly ILegalManager legalSwpManager;
+        public GetTimeRecords(ILegalManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
 
         public List<TimeRecord> Get(int clientId) => legalSwpManager.GetTimeRecords(clientId);
     }

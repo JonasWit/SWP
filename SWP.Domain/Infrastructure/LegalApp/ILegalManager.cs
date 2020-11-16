@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SWP.Domain.Infrastructure.LegalApp
 {
-    public interface ILegalSwpManager
+    public interface ILegalManager
     {
         #region Clients
 
@@ -34,7 +34,7 @@ namespace SWP.Domain.Infrastructure.LegalApp
         #region Cases
 
         Case GetCase(int id);
-        List<Case> GetArchivedCases();
+        List<Case> GetArchivedCases(int clientId);
         Case GetCaseWithoutData(int id);
         string GetCaseParentName(int id);
         string GetCaseName(int id);
@@ -121,7 +121,7 @@ namespace SWP.Domain.Infrastructure.LegalApp
         Task<int> ArchivizeNote(int noteId, string user);
 
         Task<int> RecoverClient(int clientId, string user);
-        Case RecoverCase(int caseId, string user);
+        Task<int> RecoverCase(int caseId, string user);
         Task<ClientJob> RecoverClientJob(int jobId, string user);
         Note RecoverNote(int noteId, string user);
 

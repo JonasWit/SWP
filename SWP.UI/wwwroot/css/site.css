@@ -11,17 +11,9 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: #fff;
     color: #000;
-    font-size: 15px;
     line-height: 1.5;
 }
-/* 
-a.navbar-brand {
-  white-space: normal;
-  text-align: center;
-  word-break: break-all;
-}
 
-Provide sufficient contrast against white background */
 a {
     color: #262626;
     text-decoration: none;
@@ -31,33 +23,39 @@ ul {
     list-style: none;
 }
 
-.container {
-    width: 90%;
-    max-width: 1100px;
-    margin: auto;
+.navigation {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    padding-top: 1rem;
 }
 
 
-.nav-item a {
-    color: #000;
-    font-size: 14px;
-}
 
-    .nav-item a:hover {
+    .nav-item {
+        padding: 5px;
+    }
+
+        .nav-item a {
+            color: #000;
+            font-size: 14px;
+        }
+
+            .nav-item a:hover {
+                color: #262626;
+                text-decoration: none;
+                border-bottom: 2px solid;
+            }
+
+    .reg-item:hover {
         color: #262626;
         text-decoration: none;
         border-bottom: 2px solid;
     }
 
-.reg-item:hover {
-    color: #262626;
-    text-decoration: none;
-    border-bottom: 2px solid;
-}
-
-.right {
-    margin-left: 40%;
-}
+  /*  .right {
+        margin-left: 40%;
+    }*/
 
     .btn {
         cursor: pointer;
@@ -119,11 +117,10 @@ ul {
     /* Home cards */
 
     .home-cards {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        grid-gap: 20px;
-        padding: 12px;
-    }
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+            }
 
         .home-cards img {
             width: 100%;
@@ -148,20 +145,6 @@ ul {
             }
 
 
-    @media only screen and (max-width: 768px) {
-        .home-cards {
-            display: grid;
-            grid-template-columns: repeat(1, 1fr);
-            grid-gap: 10px;
-            padding: 10px;
-        }
-
-        .right {
-            margin-left: 0;
-        }
-    }
-
-
     img:hover {
         opacity: 0.7;
     }
@@ -172,10 +155,13 @@ ul {
         padding: 5px 10px;
         font-weight: bold;
         border-radius: 8px;
+        transition: background-color linear 1s; 
     }
 
         .main-link:hover {
             text-decoration: none;
+            background-color: black;
+            color: aliceblue;
         }
 
 
@@ -241,3 +227,35 @@ ul {
     .footer {
         height: 150px;
     }
+@media only screen and (max-width: 600px) {
+    .navigation {
+        list-style: none;
+        padding-top: 2rem;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .nav-item a {
+        font-size: 0.85rem !important;
+    }
+
+    .home-cards {
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+@media only screen and (min-width: 768px) {
+    .navigation {
+        width: 100%;
+        justify-content: flex-start;
+    }
+
+    .right {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+        padding-top: 1rem;
+    }
+}

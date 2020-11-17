@@ -11,7 +11,7 @@
 body {
     margin: 0;
     padding: 0;
-    caret-color: transparent;
+    
 }
 
     body::-webkit-scrollbar {
@@ -595,4 +595,15 @@ ul, li {
     position: absolute;
     padding: 0px !important;
     height: 1.75rem !important;
+    font-size: 12px;
+}
+
+.rz-event-content {
+    font-size: 0.75rem !important;
+}
+
+    .flex-archive {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
 }

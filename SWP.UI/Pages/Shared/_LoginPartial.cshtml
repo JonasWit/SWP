@@ -5,11 +5,11 @@
 
 @if (SignInManager.IsSignedIn(User))
 {
-    <ul class="main-menu nav navbar-nav right">
-        <li class="nav-item p-lg-4">
+    <ul class="right">
+        <li class="nav-item">
             <a class="" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">@User.Identity.Name</a>
         </li>
-        <li class="nav-item p-lg-4">
+        <li class="nav-item">
             <form class="" asp-area="Identity" asp-page="/Account/Logout">
                 <button type="submit" class="btn">Wyloguj</button>
             </form>
@@ -18,9 +18,9 @@
 }
 else
 {
-    <ul class="main-menu nav navbar-nav">
-        <li class="nav-item p-lg-4"><a class="reg-item" asp-area="Identity" asp-page="/Account/Register">Zarejestruj się</a></li>
-        <li class="nav-item p-lg-4"><a class="reg-item" asp-area="Identity" asp-page="/Account/Login">Zagoluj</a></li>
+    <ul class="right">
+        <li class="nav-item "><a class="reg-item" asp-area="Identity" asp-page="/Account/Register">Zarejestruj się</a></li>
+        <li class="nav-item "><a class="reg-item" asp-area="Identity" asp-page="/Account/Login">Zaloguj</a></li>
     </ul>
 }
 

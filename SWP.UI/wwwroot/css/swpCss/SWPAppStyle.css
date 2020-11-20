@@ -135,13 +135,18 @@ ul, li {
     transition: var(--transition-speed);
 }
 
+.top-toggle {
+    display: none;
+    border: none;
+    outline: none !important;
+        
+}
+
+
 .sidebar:hover .toggle {
     transform: rotate(-180deg);
 }
 
-.input {
-    margin-left: 5rem;
-}
 
 .search {
     padding: 10px;
@@ -157,14 +162,12 @@ ul, li {
     background: linear-gradient(93deg, rgba(255,255,255,1) 0%, rgba(21,37,255,1) 0%, rgba(0,0,0,1) 100%);
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#ffffff",endColorstr="#000000",GradientType=1);
     padding-top: 1rem;
+
 }
 
-.top-items {
+#top-menu {
     display: flex;
     flex-direction: row;
-    justify-content: space-evenly;
-    justify-items: flex-end;
-    align-items: center;
     margin-left: 8rem;
 }
 
@@ -174,6 +177,9 @@ ul, li {
     margin-right: 60px;
 }
 
+.input {
+    margin-left: 5rem;
+}
 
 #main-window {
     grid-column: 2;
@@ -181,13 +187,16 @@ ul, li {
     padding: 25px;
 }
 
+
+
+
 /*/* Small screens */
 @media only screen and (max-width: 600px) {
     .sidebar {
-        bottom: 0;
+        bottom: -1%;
         width: 100%;
         height: 8rem;
-        overflow-x: scroll;
+        overflow-x: hidden;
         overflow-y: hidden;
     }
 
@@ -198,6 +207,7 @@ ul, li {
     .navigation {
         display: flex;
         flex-direction: row;
+        justify-content: space-between;
     }
 
     .nav-item {
@@ -206,11 +216,15 @@ ul, li {
 
         .nav-item:hover {
             color: var(--active-color);
-            padding: 0px 5px;
+            padding: 0px;
         }
 
     .nav-link {
         justify-content: center;
+    }
+
+    .nav-link img {
+        height: 28px;
     }
 
     .active {
@@ -223,40 +237,45 @@ ul, li {
         margin: 0;
     }
 
-    .sidebar:hover {
-        width: 100%;
-        height: 10rem;
-    }
-}
-
-@media only screen and (max-width: 460px) {
-    #main-window {
+   #main-window {
         grid-column: 1/span 3;
         grid-row: 2 / span 8;
         padding: 25px;
         margin-bottom: 10rem;
     }
 
-    .top-items {
+    .top {
         display: flex;
         flex-direction: row;
-        margin-left: 0;
+        justify-content: space-around;
     }
 
-    .input {
-        margin-left: 0.25rem;
+   .top-menu {
+        height: 8rem;
     }
 
-    .link-text {
-        display: none;
+    .user {
+        padding: 0px;
+        margin-right: 0px;
     }
 
-    .sidebar:hover .link-text {
-        display: none;
+    .top-toggle {
+        display: block;
+        border: none;
+        outline: none !important;
+        margin-top: 1.5rem;
     }
 
- 
+    .top-menu-add {
+        height: 300px;
+    }
+
+    .top-items {
+        margin-left: 125px;
+    }
 }
+
+
 /*Clients Page*/
 
 .flex-container-main {

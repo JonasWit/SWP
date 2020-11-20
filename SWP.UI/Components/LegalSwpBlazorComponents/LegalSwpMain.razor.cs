@@ -36,5 +36,9 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
         public bool showSidebar = false;
 
         public void ShowHideSidebar() => showSidebar = !showSidebar;
+
+        public bool showTopNav = false;
+
+        public void ShowHideTopNav() => showTopNav = !showTopNav;
     }
 }

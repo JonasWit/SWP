@@ -24,13 +24,6 @@
                                 <i><img src="/Images/icons8-calendar-12-36.png" /></i> <span class="@(showSidebar ? "link-text" : "link-text-hidden")">Kalendarz</span>
                             </a>
                         </li>
-                        <li class="nav-item ">
-                            <a class="nav-link @(MainStore.GetState().ActivePanel == LegalAppPanels.ErrorPage ? "active" : "") " @onclick="@(() => MainStore.SetActivePanel(LegalAppPanels.ErrorPage))">
-                                <span class="@(showSidebar ? "link-text" : "link-text-hidden")">
-                                    Error Page For TESTS!
-                                </span>
-                            </a>
-                        </li>
 
                         @if (MainStore.GetState().ActiveClient != null)
                         {
@@ -76,6 +69,9 @@
                         <p>
                             <strong>Wybierz Klienta:</strong>
                             <Radzen.Blazor.RadzenDropDown AllowClear="true" TValue="string" AllowFiltering="true" Data="@MainStore.GetState().Clients" @bind-Value="MainStore.GetState().SelectedClientString" TextProperty="Name" ValueProperty="IdString" Change="@(args => MainStore.ActiveClientChange(args))" Style="width: 200px;" />
+                        </p>
+                        <p>
+                            <RadzenButton Text="Odśwież" Click="MainStore.RefreshClients"></RadzenButton>
                         </p>
 
                     </li>

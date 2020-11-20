@@ -69,14 +69,12 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Calendar
                 {
                     _state.Reminders = getReminders.Get(MainStore.GetState().User.Profile).Select(x => (ReminderViewModel)x).ToList();
                 }
+
+                UpdateRemindersData();
             }
             catch (Exception ex)
             {
                 MainStore.ShowErrorPage(ex).GetAwaiter();
-            }
-            finally
-            {
-                UpdateRemindersData();
             }
         }
 

@@ -26,12 +26,11 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
 
         private void UpdateView() => StateHasChanged();
 
-        //private void ResetSelections() => ClientDetailsStore.ResetSelections();
-
         protected override void OnInitialized()
         {
             MainStore.AddStateChangeListener(UpdateView);
             CasesStore.AddStateChangeListener(UpdateView);
+            MainStore.ActiveClientCasesReload();
             CasesStore.Initialize();
         }
 

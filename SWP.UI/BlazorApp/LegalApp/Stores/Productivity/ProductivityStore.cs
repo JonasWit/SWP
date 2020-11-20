@@ -93,14 +93,11 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Productivity
                 _mainStore.AddCashMovementToActiveClient(result);
 
                 ShowNotification(NotificationSeverity.Success, "Sukces!", $"Kwota: {result.Amount} zł, została dodana do Panelu Finanse", GeneralViewModel.NotificationDuration);
+                BroadcastStateChange();
             }
             catch (Exception ex)
             {
                 await _mainStore.ShowErrorPage(ex);
-            }
-            finally
-            {
-                BroadcastStateChange();
             }
         }
 
@@ -130,14 +127,11 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Productivity
                 await _state.TimeRecordsGrid.Reload();
                 GetDataForMonthFilter();
                 ShowNotification(NotificationSeverity.Success, "Sukces!", $"Wpis: {result.Name}, został zmieniony.", GeneralViewModel.NotificationDuration);
+                BroadcastStateChange();
             }
             catch (Exception ex)
             {
                 await _mainStore.ShowErrorPage(ex);
-            }
-            finally
-            {
-                BroadcastStateChange();
             }
         }
 
@@ -165,14 +159,11 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Productivity
                 await _state.TimeRecordsGrid.Reload();
                 GetDataForMonthFilter();
                 ShowNotification(NotificationSeverity.Warning, "Sukces!", $"Wpis: {time.Name}, został usunięty.", GeneralViewModel.NotificationDuration);
+                BroadcastStateChange();
             }
             catch (Exception ex)
             {
                 await _mainStore.ShowErrorPage(ex);
-            }
-            finally
-            {
-                BroadcastStateChange();
             }
         }
 
@@ -206,14 +197,11 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Productivity
                 GetDataForMonthFilter();
 
                 ShowNotification(NotificationSeverity.Success, "Sukces!", $"Wpis: {result.Name}, został dodany.", GeneralViewModel.NotificationDuration);
+                BroadcastStateChange();
             }
             catch (Exception ex)
             {
                 await _mainStore.ShowErrorPage(ex);
-            }
-            finally
-            {
-                BroadcastStateChange();
             }
         }
 

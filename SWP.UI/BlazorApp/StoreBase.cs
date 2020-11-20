@@ -14,6 +14,8 @@ namespace SWP.UI.BlazorApp
         protected readonly NotificationService _notificationService;
         protected readonly DialogService _dialogService;
 
+        protected bool Loading { get; set; }
+
         public void ShowNotification(NotificationSeverity severity, string summary, string detail, int duration) =>
             _notificationService.Notify(new NotificationMessage() { Severity = severity, Summary = summary, Detail = detail, Duration = duration });
 

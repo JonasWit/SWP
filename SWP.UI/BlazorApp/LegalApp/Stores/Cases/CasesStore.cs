@@ -25,6 +25,8 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
         public RadzenGrid<ContactPersonViewModel> ContactsGrid { get; set; }
         public RadzenScheduler<ReminderViewModel> CasesScheduler { get; set; }
         public ContactPersonViewModel SelectedContact { get; set; }
+        public NoteViewModel SelectedNote { get; set; }
+        public CaseViewModel SelectedCase { get; set; }
     }
 
     [UIScopedService]
@@ -48,6 +50,29 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
         {
        
         }
+        public void ClearSelectedCase() => _state.SelectedCase = null;
+
+        public void SetSelectedCase(CaseViewModel entity) => _state.SelectedCase = entity;
+
+        public void SetSelectedNote(NoteViewModel entity) => _state.SelectedNote = entity;
+
+        public void AddNoteToActiveCase(NoteViewModel entity) => _state.SelectedCase.Notes.Add(entity);
+
+        public void RemoveNoteFromActiveCase(int id) => _state.SelectedCase.Notes.RemoveAll(x => x.Id == id);
+
+        public void ReplaceNoteFromActiveCase(NoteViewModel entity) => _state.SelectedCase.Notes[_state.SelectedCase.Notes.FindIndex(x => x.Id == entity.Id)] = entity;
+
+        public void AddReminderToActiveCase(ReminderViewModel entity) => _state.SelectedCase.Reminders.Add(entity);
+
+        public void RemoveReminderFromActiveCase(int id) => _state.SelectedCase.Reminders.RemoveAll(x => x.Id == id);
+
+        public void ReplaceReminderFromActiveCase(ReminderViewModel entity) => _state.SelectedCase.Reminders[_state.SelectedCase.Reminders.FindIndex(x => x.Id == entity.Id)] = entity;
+
+        public void AddContactToActiveCase(ContactPersonViewModel entity) => _state.SelectedCase.ContactPeople.Add(entity);
+
+        public void RemoveContactFromActiveCase(int id) => _state.SelectedCase.ContactPeople.RemoveAll(x => x.Id == id);
+
+        public void ReplaceContactFromActiveCase(ContactPersonViewModel entity) => _state.SelectedCase.ContactPeople[_state.SelectedCase.ContactPeople.FindIndex(x => x.Id == entity.Id)] = entity;
 
         #region Cases Management
 
@@ -66,14 +91,11 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
 
                 await _state.CasesGrid.Reload();
                 ShowNotification(NotificationSeverity.Success, "Sukces!", $"Sprawa: {result.Name} została dodana.", GeneralViewModel.NotificationDuration);
+                BroadcastStateChange();
             }
             catch (Exception ex)
             {
                 await _mainStore.ShowErrorPage(ex);
-            }
-            finally
-            {
-                BroadcastStateChange();
             }
         }
 
@@ -98,21 +120,18 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
 
                 _mainStore.ReplaceCaseFromActiveClient(result);
 
-                if (_mainStore.GetState().ActiveClient.SelectedCase.Id == result.Id)
+                if (_state.SelectedCase.Id == result.Id)
                 {
-                    _mainStore.SetSelectedCase(_mainStore.GetState().ActiveClient.Cases.FirstOrDefault(x => x.Id == result.Id));
+                    SetSelectedCase(_mainStore.GetState().ActiveClient.Cases.FirstOrDefault(x => x.Id == result.Id));
                 }
 
                 await _state.CasesGrid.Reload();
                 ShowNotification(NotificationSeverity.Success, "Sukces!", $"Sprawa: {result.Name} została zmieniona.", GeneralViewModel.NotificationDuration);
+                BroadcastStateChange();
             }
             catch (Exception ex)
             {
                 await _mainStore.ShowErrorPage(ex);
-            }
-            finally
-            {
-                BroadcastStateChange();
             }
         }
 
@@ -136,22 +155,19 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
 
                 _mainStore.RemoveCaseFromActiveClient(c.Id);
 
-                if (_mainStore.GetState().ActiveClient.SelectedCase != null &&
-                    _mainStore.GetState().ActiveClient.SelectedCase.Id == c.Id)
+                if (_state.SelectedCase != null &&
+                    _state.SelectedCase.Id == c.Id)
                 {
-                    _mainStore.ClearSelectedCase();
+                    ClearSelectedCase();
                 }
 
                 await _state.CasesGrid.Reload();
                 ShowNotification(NotificationSeverity.Warning, "Sukces!", $"Sprawa: {c.Name} została usunięta.", GeneralViewModel.NotificationDuration);
+                BroadcastStateChange();
             }
             catch (Exception ex)
             {
                 await _mainStore.ShowErrorPage(ex);
-            }
-            finally
-            {
-                BroadcastStateChange();
             }
         }
 
@@ -160,11 +176,11 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
             var input = (CaseViewModel)value;
             if (value != null)
             {
-                _mainStore.SetSelectedCase(_mainStore.GetState().ActiveClient.Cases.FirstOrDefault(x => x.Id == input.Id));
+                SetSelectedCase(_mainStore.GetState().ActiveClient.Cases.FirstOrDefault(x => x.Id == input.Id));
             }
             else
             {
-                _mainStore.SetSelectedCase(null);
+                SetSelectedCase(null);
             }
 
             _state.SelectedContact = null;
@@ -182,14 +198,11 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
 
                 await _state.CasesGrid.Reload();
                 ShowNotification(NotificationSeverity.Success, "Sukces!", $"Sprawa: {c.Name} została zarchwizowana", GeneralViewModel.NotificationDuration);
+                BroadcastStateChange();
             }
             catch (Exception ex)
             {
                 await _mainStore.ShowErrorPage(ex);
-            }
-            finally
-            {
-                BroadcastStateChange();
             }
         }
 
@@ -202,11 +215,11 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
             var input = (NoteViewModel)value;
             if (value != null)
             {
-                _mainStore.SetSelectedNote(_mainStore.GetState().ActiveClient.SelectedCase.Notes.FirstOrDefault(x => x.Id == input.Id));
+                SetSelectedNote(_state.SelectedCase.Notes.FirstOrDefault(x => x.Id == input.Id));
             }
             else
             {
-                _mainStore.SetSelectedNote(null);
+                SetSelectedNote(null);
             }
         }
 
@@ -218,22 +231,19 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
                 var createNote = scope.ServiceProvider.GetRequiredService<CreateNote>();
 
                 request.UpdatedBy = _mainStore.GetState().User.UserName;
-                var result = await createNote.Create(_mainStore.GetState().ActiveClient.SelectedCase.Id, request);
+                var result = await createNote.Create(_state.SelectedCase.Id, request);
 
                 _state.NewNote = new CreateNote.Request();
 
-                _mainStore.AddNoteToActiveCase(result);
+                AddNoteToActiveCase(result);
 
                 await _state.NotesGrid.Reload();
                 ShowNotification(NotificationSeverity.Success, "Sukces!", $"Notka: {result.Name} została dodana.", GeneralViewModel.NotificationDuration);
+                BroadcastStateChange();
             }
             catch (Exception ex)
             {
                 await _mainStore.ShowErrorPage(ex);
-            }
-            finally
-            {
-                BroadcastStateChange();
             }
         }
 
@@ -255,18 +265,15 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
                     UpdatedBy = _mainStore.GetState().User.UserName
                 });
 
-                _mainStore.ReplaceNoteFromActiveCase(result);
+                ReplaceNoteFromActiveCase(result);
 
                 await _state.NotesGrid.Reload();
                 ShowNotification(NotificationSeverity.Success, "Sukces!", $"Notka: {result.Name} została zmieniona.", GeneralViewModel.NotificationDuration);
+                BroadcastStateChange();
             }
             catch (Exception ex)
             {
                 await _mainStore.ShowErrorPage(ex);
-            }
-            finally
-            {
-                BroadcastStateChange();
             }
         }
 
@@ -288,18 +295,15 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
 
                 await deleteNote.Delete(note.Id);
 
-                _mainStore.RemoveNoteFromActiveCase(note.Id);
+                RemoveNoteFromActiveCase(note.Id);
 
                 await _state.NotesGrid.Reload();
                 ShowNotification(NotificationSeverity.Warning, "Sukces!", $"Notka: {note.Name} została usunięta.", GeneralViewModel.NotificationDuration);
+                BroadcastStateChange();
             }
             catch (Exception ex)
             {
                 await _mainStore.ShowErrorPage(ex);
-            }
-            finally
-            {
-                BroadcastStateChange();
             }
         }
 
@@ -322,7 +326,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
                 {
                     result.UpdatedBy = _mainStore.GetState().User.UserName;
 
-                    var newReminder = await createReminder.Create(_mainStore.GetState().ActiveClient.SelectedCase.Id, new CreateReminder.Request
+                    var newReminder = await createReminder.Create(_state.SelectedCase.Id, new CreateReminder.Request
                     {
                         IsDeadline = result.IsDeadline,
                         Message = result.Message,
@@ -333,19 +337,16 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
                         UpdatedBy = result.UpdatedBy
                     });
 
-                    _mainStore.AddReminderToActiveCase(newReminder);
+                    AddReminderToActiveCase(newReminder);
 
                     await _state.CasesScheduler.Reload();
                     ShowNotification(NotificationSeverity.Success, "Sukces!", $"Przypomnienie: {newReminder.Name} zostało dodane.", GeneralViewModel.NotificationDuration);
                 }
+                BroadcastStateChange();
             }
             catch (Exception ex)
             {
                 await _mainStore.ShowErrorPage(ex);
-            }
-            finally
-            {
-                BroadcastStateChange();
             }
         }
 
@@ -367,7 +368,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
                     {
                         await deleteReminder.Delete(result.Id);
 
-                        _mainStore.RemoveReminderFromActiveCase(result.Id);
+                        RemoveReminderFromActiveCase(result.Id);
 
                         await _state.CasesScheduler.Reload();
                         ShowNotification(NotificationSeverity.Warning, "Sukces!", $"Przypomnienie: {result.Name} zostało usunięte.", GeneralViewModel.NotificationDuration);
@@ -387,21 +388,18 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
                             UpdatedBy = _mainStore.GetState().User.UserName
                         });
 
-                        _mainStore.RemoveReminderFromActiveCase(updatedReminder.Id);
-                        _mainStore.AddReminderToActiveCase(updatedReminder);
+                        RemoveReminderFromActiveCase(updatedReminder.Id);
+                        AddReminderToActiveCase(updatedReminder);
 
                         await _state.CasesScheduler.Reload();
                         ShowNotification(NotificationSeverity.Success, "Sukces!", $"Przypomnienie: {result.Name} zostało zmienione.", GeneralViewModel.NotificationDuration);
                     }
                 }
+                BroadcastStateChange();
             }
             catch (Exception ex)
             {
                 await _mainStore.ShowErrorPage(ex);
-            }
-            finally
-            {
-                BroadcastStateChange();
             }
         }
 
@@ -446,18 +444,15 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
                     UpdatedBy = _mainStore.GetState().User.UserName
                 });
 
-                _mainStore.ReplaceContactFromActiveCase(result);
+                ReplaceContactFromActiveCase(result);
 
                 await _state.ContactsGrid.Reload();
                 ShowNotification(NotificationSeverity.Success, "Sukces!", $"Kontakt: {result.Name} {result.Surname} został zmieniony.", GeneralViewModel.NotificationDuration);
+                BroadcastStateChange();
             }
             catch (Exception ex)
             {
                 await _mainStore.ShowErrorPage(ex);
-            }
-            finally
-            {
-                BroadcastStateChange();
             }
         }
 
@@ -478,18 +473,15 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
                 var deleteContactPerson = scope.ServiceProvider.GetRequiredService<DeleteContactPerson>();
 
                 await deleteContactPerson.DeleteForCase(contact.Id);
-                _mainStore.RemoveContactFromActiveCase(contact.Id);
+                RemoveContactFromActiveCase(contact.Id);
 
                 await _state.ContactsGrid.Reload();
                 ShowNotification(NotificationSeverity.Warning, "Sukces!", $"Kontakt: {contact.Name} {contact.Surname} został usunięty.", GeneralViewModel.NotificationDuration);
+                BroadcastStateChange();
             }
             catch (Exception ex)
             {
                 await _mainStore.ShowErrorPage(ex);
-            }
-            finally
-            {
-                BroadcastStateChange();
             }
         }
 
@@ -502,21 +494,18 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
                 using var scope = _serviceProvider.CreateScope();
                 var createContactPerson = scope.ServiceProvider.GetRequiredService<CreateContactPerson>();
 
-                var result = await createContactPerson.CreateContactPersonForCase(_mainStore.GetState().ActiveClient.SelectedCase.Id, request);
+                var result = await createContactPerson.CreateContactPersonForCase(_state.SelectedCase.Id, request);
                 _state.NewContact = new CreateContactPerson.Request();
 
-                _mainStore.AddContactToActiveCase(result);
+                AddContactToActiveCase(result);
 
                 await _state.ContactsGrid.Reload();
                 ShowNotification(NotificationSeverity.Success, "Sukces!", $"Kontakt: {result.Name} {result.Surname} został dodany.", GeneralViewModel.NotificationDuration);
+                BroadcastStateChange();
             }
             catch (Exception ex)
             {
                 await _mainStore.ShowErrorPage(ex);
-            }
-            finally
-            {
-                BroadcastStateChange();
             }
         }
 
@@ -525,7 +514,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
             var input = (ContactPersonViewModel)value;
             if (value != null)
             {
-                _state.SelectedContact = _mainStore.GetState().ActiveClient.SelectedCase.ContactPeople.FirstOrDefault(x => x.Id == input.Id);
+                _state.SelectedContact = _state.SelectedCase.ContactPeople.FirstOrDefault(x => x.Id == input.Id);
             }
             else
             {
@@ -540,7 +529,9 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
 
         public override void CleanUpStore()
         {
+            _state.SelectedCase = null;
             _state.SelectedContact = null;
+            _state.SelectedNote = null;
         }
 
         #endregion

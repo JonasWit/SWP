@@ -11,8 +11,6 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data
         public bool Active { get; set; }
         public string ProfileClaim { get; set; }
         public string Address { get; set; }
-        public ClientJobViewModel SelectedJob { get; set; }
-        public CaseViewModel SelectedCase { get; set; }
         public TimeRecordViewModel SelectedTimeRecord { get; set; }
         public CashMovementViewModel SelectedCashMovement { get; set; }
         public string Email { get; set; }

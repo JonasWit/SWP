@@ -74,6 +74,14 @@ namespace SWP.DataBase.Managers
 
         #region Case
 
+        public List<Case> GetCasesForClient(int clientId) =>
+            context.Cases
+                .Where(c => c.ClientId == clientId && c.Active)
+                    .Include(c => c.Reminders)
+                    .Include(c => c.Notes)
+                    .Include(c => c.ContactPeople)
+                .ToList();
+
         public Case GetCase(int id) =>
             context.Cases
                 .Include(x => x.Notes)
@@ -254,6 +262,11 @@ namespace SWP.DataBase.Managers
             context.ClientJobs
                 .Where(x => x.Id == id)
                 .FirstOrDefault();
+
+        public List<ClientJob> GetClientJobs(int clientId) =>
+            context.ClientJobs
+                .Where(x => x.ClientId == clientId)
+                .ToList();
 
         public async Task<ClientJob> UpdateClientJob(ClientJob job)
         {
@@ -544,6 +557,7 @@ namespace SWP.DataBase.Managers
         #region Contact Person
 
         public CaseContactPerson GetCaseContactPerson(int id) => context.CaseContactPeople.AsNoTracking().FirstOrDefault(x => x.Id == id);
+
         public ClientContactPerson GetClientContactPerson(int id) => context.ClientContactPeople.AsNoTracking().FirstOrDefault(x => x.Id == id);
 
         public List<ClientContactPerson> GetContactPeopleForClient(int clientId) =>

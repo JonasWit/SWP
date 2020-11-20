@@ -148,15 +148,15 @@
         </div>
     </div>
 
-    @if (MainStore.GetState().ActiveClient.SelectedCase != null)
+    @if (CasesStore.GetState().SelectedCase != null)
     {
         <div class="details">
-            <p><strong>Nazwa:</strong> @MainStore.GetState().ActiveClient.SelectedCase.Name</p>
-            <p><strong>Sygnatura:</strong> @MainStore.GetState().ActiveClient.SelectedCase.Signature</p>
-            <p><strong>Data utworzenia:</strong> @MainStore.GetState().ActiveClient.SelectedCase.Created</p>
-            <p><strong>Typ Sprawy:</strong> @MainStore.GetState().ActiveClient.SelectedCase.CaseType</p>
-            <p><strong>Opis:</strong> @MainStore.GetState().ActiveClient.SelectedCase.Description</p>
-            <p><strong>Data zmiany:</strong> @MainStore.GetState().ActiveClient.SelectedCase.Updated</p>
+            <p><strong>Nazwa:</strong> @CasesStore.GetState().SelectedCase.Name</p>
+            <p><strong>Sygnatura:</strong> @CasesStore.GetState().SelectedCase.Signature</p>
+            <p><strong>Data utworzenia:</strong> @CasesStore.GetState().SelectedCase.Created</p>
+            <p><strong>Typ Sprawy:</strong> @CasesStore.GetState().SelectedCase.CaseType</p>
+            <p><strong>Opis:</strong> @CasesStore.GetState().SelectedCase.Description</p>
+            <p><strong>Data zmiany:</strong> @CasesStore.GetState().SelectedCase.Updated</p>
         </div>
 
         @*<h3>Aktywna sprawa - @App.ActiveClientWithData.SelectedCase.Name</h3>*@
@@ -168,7 +168,7 @@
                         <RadzenTabsItem Text="Kalendarz Sprawy">
                             <RadzenScheduler @ref="CasesStore.GetState().CasesScheduler" style="height: 768px;"
                                              TItem="ReminderViewModel"
-                                             Data="@MainStore.GetState().ActiveClient.SelectedCase.Reminders"
+                                             Data="@CasesStore.GetState().SelectedCase.Reminders"
                                              StartProperty="Start"
                                              EndProperty="End"
                                              TextProperty="DisplayTextShort"
@@ -222,7 +222,7 @@
                             <div>
                                 <div>
                                     <RadzenGrid @ref="CasesStore.GetState().NotesGrid" AllowFiltering="true" AllowPaging="true" PageSize="10" AllowSorting="true" RowSelect="@(args => CasesStore.ActiveNoteChange(args))"
-                                                Data="@MainStore.GetState().ActiveClient.SelectedCase.Notes" TItem="NoteViewModel" RowUpdate="@CasesStore.OnUpdateNoteRow">
+                                                Data="@CasesStore.GetState().SelectedCase.Notes" TItem="NoteViewModel" RowUpdate="@CasesStore.OnUpdateNoteRow">
                                         <Columns>
                                             <RadzenGridColumn TItem="NoteViewModel" Property="Name" Title="Nazwa">
                                                 <Template Context="note">
@@ -268,11 +268,11 @@
                                     </RadzenGrid>
                                 </div>
 
-                                @if (MainStore.GetState().ActiveClient.SelectedCase != null && MainStore.GetState().ActiveClient.SelectedCase.SelectedNote != null)
+                                @if (CasesStore.GetState().SelectedCase != null && CasesStore.GetState().SelectedNote != null)
                                 {
                                     <div class="details">
-                                        <p><strong>Tytuł: </strong>@MainStore.GetState().ActiveClient.SelectedCase.SelectedNote.Name</p>
-                                        <p><strong>Treść: </strong>@MainStore.GetState().ActiveClient.SelectedCase.SelectedNote.Message</p>
+                                        <p><strong>Tytuł: </strong>@CasesStore.GetState().SelectedNote.Name</p>
+                                        <p><strong>Treść: </strong>@CasesStore.GetState().SelectedNote.Message</p>
 
                                     </div>
                                 }
@@ -356,7 +356,7 @@
                         </RadzenTemplateForm>
 
                         <RadzenGrid @ref="CasesStore.GetState().ContactsGrid" AllowFiltering="true" AllowPaging="true" PageSize="10" AllowSorting="true"
-                                    Data="@MainStore.GetState().ActiveClient.SelectedCase.ContactPeople" TItem="ContactPersonViewModel" RowUpdate="@CasesStore.OnUpdateContactRow" RowSelect="@(args => CasesStore.ContactSelected(args))">
+                                    Data="@CasesStore.GetState().SelectedCase.ContactPeople" TItem="ContactPersonViewModel" RowUpdate="@CasesStore.OnUpdateContactRow" RowSelect="@(args => CasesStore.ContactSelected(args))">
                             <Columns>
                                 <RadzenGridColumn TItem="ContactPersonViewModel" Property="Name" Title="Nazwa">
                                     <Template Context="contact">

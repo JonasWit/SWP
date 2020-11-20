@@ -87,14 +87,11 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.ClientDetails
                 MainStore.UpdateClientContactPerson(result);
                 await _state.ContactsGrid.Reload();
                 ShowNotification(NotificationSeverity.Success, "Sukces!", $"Kontakt: {result.Name} {result.Surname} został zmieniony.", GeneralViewModel.NotificationDuration);
+                BroadcastStateChange();
             }
             catch (Exception ex)
             {
                 await MainStore.ShowErrorPage(ex);
-            }
-            finally
-            {
-                BroadcastStateChange();
             }
         }
         public void SaveContactRow(ContactPersonViewModel contact) => _state.ContactsGrid.UpdateRow(contact);
@@ -119,14 +116,11 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.ClientDetails
    
                 await _state.ContactsGrid.Reload();
                 ShowNotification(NotificationSeverity.Warning, "Sukces!", $"Kontakt: {contact.Name} {contact.Surname} został usunięty.", GeneralViewModel.NotificationDuration);
+                BroadcastStateChange();
             }
             catch (Exception ex)
             {
                 await MainStore.ShowErrorPage(ex);
-            }
-            finally
-            {
-                BroadcastStateChange();
             }
         }
 
@@ -145,14 +139,11 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.ClientDetails
 
                 await _state.ContactsGrid.Reload();
                 ShowNotification(NotificationSeverity.Success, "Sukces!", $"Kontakt: {result.Name} {result.Surname} został dodany.", GeneralViewModel.NotificationDuration);
+                BroadcastStateChange();
             }
             catch (Exception ex)
             {
                 await MainStore.ShowErrorPage(ex);
-            }
-            finally
-            {
-                BroadcastStateChange();
             }
         }
 

@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Radzen;
 using SWP.Application.LegalSwp.Cases;
 using SWP.Application.LegalSwp.Clients;
+using SWP.Application.LegalSwp.Jobs;
 using SWP.Application.Log;
 using SWP.Domain.Models.SWPLegal;
 using SWP.UI.BlazorApp.LegalApp.Stores.Enums;
@@ -185,6 +186,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
         {
             _state.ActivePanel = LegalAppPanels.MyApp;
             _state.ActiveClient = null;
+            _state.SelectedClientString = null;
             ReloadClientsDrop();
             BroadcastStateChange();
         }
@@ -197,6 +199,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
                 var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
 
                 _state.User.RelatedUsers = await userManager.GetUsersForClaimAsync(_state.User.ProfileClaim);
+                BroadcastStateChange();
             }
             catch (Exception ex)
             {
@@ -234,14 +237,11 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
                 _state.Clients = getClients.GetClientsWithoutData(_state.User.Profile, true).Select(x => (ClientViewModel)x).ToList();
                 _state.ActiveClient = null;
                 _state.SelectedClientString = null;
+                BroadcastStateChange();
             }
             catch (Exception ex)
             {
                 ShowErrorPage(ex).GetAwaiter();
-            }
-            finally
-            {
-                BroadcastStateChange();
             }
         }
 
@@ -275,21 +275,14 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
 
                     ClientViewModel newModel = getClient.Get(_state.ActiveClient.Id);
 
-                    if (_state.ActiveClient.SelectedCase != null)
-                    {
-                        newModel.SelectedCase = newModel.Cases.FirstOrDefault(x => x.Id == _state.ActiveClient.SelectedCase.Id);
-                    }
-
                     _state.ActiveClient = newModel;
                 }
+
+                BroadcastStateChange();
             }
             catch (Exception ex)
             {
                 ShowErrorPage(ex).GetAwaiter();
-            }
-            finally
-            {
-                BroadcastStateChange();
             }
         }
 
@@ -303,38 +296,53 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
             _state.ActiveClient.Cases.Add(caseEntity);
             _state.ActiveClient.Cases = _state.ActiveClient.Cases.OrderBy(x => x.Name).ToList();
             _state.ActiveClient.Cases.TrimExcess();
-            _state.ActiveClient.SelectedCase = caseEntity;
         }
 
-        public void ClearSelectedCase() => _state.ActiveClient.SelectedCase = null;
+        public void ActiveClientCasesReload()
+        {
+            try
+            {
+                if (_state.ActiveClient != null)
+                {
+                    using var scope = _serviceProvider.CreateScope();
+                    var getCases = scope.ServiceProvider.GetRequiredService<GetCases>();
+
+                    _state.ActiveClient.Cases = getCases.GetCasesForClient(_state.ActiveClient.Id).Select(x => (CaseViewModel)x).ToList();
+                }
+
+                BroadcastStateChange();
+            }
+            catch (Exception ex)
+            {
+                ShowErrorPage(ex).GetAwaiter();
+            }
+        }
+
+        public void ActiveClientJobsReload()
+        {
+            try
+            {
+                if (_state.ActiveClient != null)
+                {
+                    using var scope = _serviceProvider.CreateScope();
+                    var getJobs = scope.ServiceProvider.GetRequiredService<GetJobs>();
+
+                    _state.ActiveClient.Jobs = getJobs.GetClientJobs(_state.ActiveClient.Id).Select(x => (ClientJobViewModel)x).ToList();
+                }
+
+                BroadcastStateChange();
+            }
+            catch (Exception ex)
+            {
+                ShowErrorPage(ex).GetAwaiter();
+            }
+        }
 
         public void AddCaseToActiveClient(CaseViewModel entity) => _state.ActiveClient.Cases.Add(entity);
 
         public void RemoveCaseFromActiveClient(int id) => _state.ActiveClient.Cases.RemoveAll(x => x.Id == id);
 
         public void ReplaceCaseFromActiveClient(CaseViewModel entity) => _state.ActiveClient.Cases[_state.ActiveClient.Cases.FindIndex(x => x.Id == entity.Id)] = entity;
-
-        public void SetSelectedCase(CaseViewModel entity) => _state.ActiveClient.SelectedCase = entity;
-
-        public void SetSelectedNote(NoteViewModel entity) => _state.ActiveClient.SelectedCase.SelectedNote = entity;
-
-        public void AddNoteToActiveCase(NoteViewModel entity) => _state.ActiveClient.SelectedCase.Notes.Add(entity);
-
-        public void RemoveNoteFromActiveCase(int id) => _state.ActiveClient.SelectedCase.Notes.RemoveAll(x => x.Id == id);
-
-        public void ReplaceNoteFromActiveCase(NoteViewModel entity) => _state.ActiveClient.SelectedCase.Notes[_state.ActiveClient.SelectedCase.Notes.FindIndex(x => x.Id == entity.Id)] = entity;
-
-        public void AddReminderToActiveCase(ReminderViewModel entity) => _state.ActiveClient.SelectedCase.Reminders.Add(entity);
-
-        public void RemoveReminderFromActiveCase(int id) => _state.ActiveClient.SelectedCase.Reminders.RemoveAll(x => x.Id == id);
-
-        public void ReplaceReminderFromActiveCase(ReminderViewModel entity) => _state.ActiveClient.SelectedCase.Reminders[_state.ActiveClient.SelectedCase.Reminders.FindIndex(x => x.Id == entity.Id)] = entity;
-
-        public void AddContactToActiveCase(ContactPersonViewModel entity) => _state.ActiveClient.SelectedCase.ContactPeople.Add(entity);
-
-        public void RemoveContactFromActiveCase(int id) => _state.ActiveClient.SelectedCase.ContactPeople.RemoveAll(x => x.Id == id);
-
-        public void ReplaceContactFromActiveCase(ContactPersonViewModel entity) => _state.ActiveClient.SelectedCase.ContactPeople[_state.ActiveClient.SelectedCase.ContactPeople.FindIndex(x => x.Id == entity.Id)] = entity;
 
         public void AddCashMovementToActiveClient(CashMovementViewModel entity) => _state.ActiveClient.CashMovements.Add(entity);
 

@@ -119,14 +119,11 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Clients
 
                 await _state.ClientsGrid.Reload();
                 ShowNotification(NotificationSeverity.Warning, "Sukces!", $"Klient: {client.Name} został usunięty.", GeneralViewModel.NotificationDuration);
+                BroadcastStateChange();
             }
             catch (Exception ex)
             {
                 await MainStore.ShowErrorPage(ex);
-            }
-            finally
-            {
-                BroadcastStateChange();
             }
         }
 
@@ -157,14 +154,11 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Clients
                 MainStore.RefreshClients();
                 await _state.ClientsGrid.Reload();
                 ShowNotification(NotificationSeverity.Success, "Sukces!", $"Klient: {client.Name} został zarchwizowany.", GeneralViewModel.NotificationDuration);
+                BroadcastStateChange();
             }
             catch (Exception ex)
             {
                 await MainStore.ShowErrorPage(ex);
-            }
-            finally
-            {
-                BroadcastStateChange();
             }
         }
 
@@ -190,14 +184,11 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Clients
                     await _state.ClientsGrid.Reload();
                 }
                 ShowNotification(NotificationSeverity.Success, "Sukces!", $"Klient: {result.Name} został dodany.", GeneralViewModel.NotificationDuration);
+                BroadcastStateChange();
             }
             catch (Exception ex)
             {
                 await MainStore.ShowErrorPage(ex);
-            }
-            finally
-            {
-                BroadcastStateChange();
             }
         }
 

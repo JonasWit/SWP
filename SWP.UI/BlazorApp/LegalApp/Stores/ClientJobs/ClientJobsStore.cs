@@ -16,6 +16,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.ClientJobs
         public CreateClientJob.Request NewClientJob { get; set; } = new CreateClientJob.Request();
         public RadzenGrid<ClientJobViewModel> ClientsJobsGrid { get; set; }
         public ClientJobViewModel SelectedArchivizedClientJob { get; set; }
+        public ClientJobViewModel SelectedJob { get; set; }
     }
 
     [UIScopedService]
@@ -58,14 +59,11 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.ClientJobs
 
                 await _state.ClientsJobsGrid.Reload();
                 ShowNotification(NotificationSeverity.Success, "Sukces!", $"Zadanie: {result.Name}, dla Klineta: {MainStore.GetState().ActiveClient.Name} zostało stworzone.", GeneralViewModel.NotificationDuration);
+                BroadcastStateChange();
             }
             catch (Exception ex)
             {
                 await MainStore.ShowErrorPage(ex);
-            }
-            finally
-            {
-                BroadcastStateChange();
             }
         }
 
@@ -92,14 +90,11 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.ClientJobs
                 MainStore.GetState().ActiveClient.Jobs[MainStore.GetState().ActiveClient.Jobs.FindIndex(x => x.Id == result.Id)] = result;
                 await _state.ClientsJobsGrid.Reload();
                 ShowNotification(NotificationSeverity.Success, "Sukces!", $"Zadanie: {result.Name}, dla Klineta: {MainStore.GetState().ActiveClient.Name} zostało zmienione.", GeneralViewModel.NotificationDuration);
+                BroadcastStateChange();
             }
             catch (Exception ex)
             {
                 await MainStore.ShowErrorPage(ex);
-            }
-            finally
-            {
-                BroadcastStateChange();
             }
         }
 
@@ -128,14 +123,11 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.ClientJobs
 
                 await _state.ClientsJobsGrid.Reload();
                 ShowNotification(NotificationSeverity.Warning, "Sukces!", $"Zadanie: {clientJob.Name}, dla Klineta: {MainStore.GetState().ActiveClient.Name} zostało usunięte.", GeneralViewModel.NotificationDuration);
+                BroadcastStateChange();
             }
             catch (Exception ex)
             {
                 await MainStore.ShowErrorPage(ex);
-            }
-            finally
-            {
-                BroadcastStateChange();
             }
         }
 
@@ -144,11 +136,11 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.ClientJobs
             var input = (ClientJobViewModel)value;
             if (value != null)
             {
-                MainStore.GetState().ActiveClient.SelectedJob = MainStore.GetState().ActiveClient.Jobs.FirstOrDefault(x => x.Id == input.Id);
+                _state.SelectedJob = MainStore.GetState().ActiveClient.Jobs.FirstOrDefault(x => x.Id == input.Id);
             }
             else
             {
-                MainStore.GetState().ActiveClient.SelectedJob = null;
+                _state.SelectedJob = null;
             }
         }
 
@@ -166,14 +158,11 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.ClientJobs
 
                 await _state.ClientsJobsGrid.Reload();
                 ShowNotification(NotificationSeverity.Success, "Sukces!", $"Zadanie: {clientJob.Name} zostało zarchwizowane.", GeneralViewModel.NotificationDuration);
+                BroadcastStateChange();
             }
             catch (Exception ex)
             {
                 await MainStore.ShowErrorPage(ex);
-            }
-            finally
-            {
-                BroadcastStateChange();
             }
         }
 
@@ -201,14 +190,12 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.ClientJobs
                 {
                     ShowNotification(NotificationSeverity.Error, "Uwaga!", $"Brak zaznaczonego klienta!", GeneralViewModel.NotificationDuration);
                 }
+
+                BroadcastStateChange();
             }
             catch (Exception ex)
             {
                 await MainStore.ShowErrorPage(ex);
-            }
-            finally
-            {
-                BroadcastStateChange();
             }
         }
 
@@ -220,6 +207,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.ClientJobs
         public override void CleanUpStore()
         {
             _state.SelectedArchivizedClientJob = null;
+            _state.SelectedJob = null;
         }
     }
 }

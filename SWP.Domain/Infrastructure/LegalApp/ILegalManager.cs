@@ -13,7 +13,6 @@ namespace SWP.Domain.Infrastructure.LegalApp
         Client GetClient(int clientId);
         Client GetClientWithoutCases(int clientId);
         List<Client> GetClientsWithoutCases(string profile, bool active = true);
-
         Task<Client> CreateClient(Client client);
         Task<Client> UpdateClient(Client client);
         Task<int> DeleteClient(int clientId);
@@ -28,11 +27,13 @@ namespace SWP.Domain.Infrastructure.LegalApp
         Task<int> DeleteClientJob(int id);
         Task<ClientJob> UpdateClientJob(ClientJob job);
         ClientJob GetClientJob(int id);
+        List<ClientJob> GetClientJobs(int clientId);
 
         #endregion
 
         #region Cases
 
+        List<Case> GetCasesForClient(int clientId);
         Case GetCase(int id);
         List<Case> GetArchivedCases(int clientId);
         Case GetCaseWithoutData(int id);

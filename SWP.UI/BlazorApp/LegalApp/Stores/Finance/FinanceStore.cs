@@ -99,14 +99,11 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Finance
                 await _state.CashMovementGrid.Reload();
                 GetDataForMonthFilter();
                 ShowNotification(NotificationSeverity.Success, "Sukces!", $"Kwota: {result.Amount} zł, została zmieniona.", GeneralViewModel.NotificationDuration);
+                BroadcastStateChange();
             }
             catch (Exception ex)
             {
                 await _mainStore.ShowErrorPage(ex);
-            }
-            finally
-            {
-                BroadcastStateChange();
             }
         }
 
@@ -132,14 +129,11 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Finance
                 await _state.CashMovementGrid.Reload();
                 GetDataForMonthFilter();
                 ShowNotification(NotificationSeverity.Warning, "Sukces!", $"Kwota: {cash.Amount} zł, została usunięta.", GeneralViewModel.NotificationDuration);
+                BroadcastStateChange();
             }
             catch (Exception ex)
             {
                 await _mainStore.ShowErrorPage(ex);
-            }
-            finally
-            {
-                BroadcastStateChange();
             }
         }
 
@@ -164,14 +158,11 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Finance
                 }
 
                 ShowNotification(NotificationSeverity.Success, "Sukces!", $"Kwota: {result.Amount} zł, została dodana.", GeneralViewModel.NotificationDuration);
+                BroadcastStateChange();
             }
             catch (Exception ex)
             {
                 await _mainStore.ShowErrorPage(ex);
-            }
-            finally
-            {
-                BroadcastStateChange();
             }
         }
 

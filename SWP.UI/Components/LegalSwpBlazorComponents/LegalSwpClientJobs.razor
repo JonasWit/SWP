@@ -116,12 +116,12 @@ else
                 </RadzenGridColumn>
             </Columns>
         </RadzenGrid>
-        @if (MainStore.GetState().ActiveClient.SelectedJob != null)
+        @if (ClientJobsStore.GetState().SelectedJob != null)
         {
             <div class="details">
-                <p><strong>Nazwa:</strong> @MainStore.GetState().ActiveClient.SelectedJob.Name</p>
-                <p><strong>Priorytet:</strong> @MainStore.GetState().ActiveClient.SelectedJob.Priority</p>
-                <p><strong>Opis:</strong> @MainStore.GetState().ActiveClient.SelectedJob.Description</p>
+                <p><strong>Nazwa:</strong> @ClientJobsStore.GetState().SelectedJob.Name</p>
+                <p><strong>Priorytet:</strong> @ClientJobsStore.GetState().SelectedJob.Priority</p>
+                <p><strong>Opis:</strong> @ClientJobsStore.GetState().SelectedJob.Description</p>
 
             </div>
         }

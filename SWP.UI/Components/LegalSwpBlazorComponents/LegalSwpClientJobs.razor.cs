@@ -35,6 +35,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
         {
             MainStore.AddStateChangeListener(UpdateView);
             ClientJobsStore.AddStateChangeListener(UpdateView);
+            MainStore.ActiveClientJobsReload();
             ClientJobsStore.Initialize();
         }
 

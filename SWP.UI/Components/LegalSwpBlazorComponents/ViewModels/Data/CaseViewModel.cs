@@ -15,7 +15,6 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data
         public List<ReminderViewModel> Reminders { get; set; }
         public List<NoteViewModel> Notes { get; set; }
         public List<NoteViewModel> ArchivedNotes { get; set; }
-        public NoteViewModel SelectedNote { get; set; }
         public List<ContactPersonViewModel> ContactPeople { get; set; }
         public long ClientId { get; set; }
 

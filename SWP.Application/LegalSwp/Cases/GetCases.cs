@@ -14,5 +14,6 @@ namespace SWP.Application.LegalSwp.Cases
         public int CountRemindersPerCase(int id) => legalSwpManager.CountRemindersPerCase(id);
         public int CountNotesPerCase(int id) => legalSwpManager.CountNotesPerCase(id);
         public List<Case> GetArchivedCases(int clientId) => legalSwpManager.GetArchivedCases(clientId);
+        public List<Case> GetCasesForClient(int clientId) => legalSwpManager.GetCasesForClient(clientId);
     }
 }

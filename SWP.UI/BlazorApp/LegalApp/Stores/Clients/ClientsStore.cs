@@ -83,14 +83,11 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Clients
 
                 RefreshSelectedClient();
                 ShowNotification(NotificationSeverity.Success, "Sukces!", $"Klient: {result.Name} został zmieniony.", GeneralViewModel.NotificationDuration);
+                BroadcastStateChange();
             }
             catch (Exception ex)
             {
                 await MainStore.ShowErrorPage(ex);
-            }
-            finally
-            {
-                BroadcastStateChange();
             }
         }
 
@@ -207,6 +204,11 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Clients
         protected override void HandleActions(IAction action)
         {
             throw new NotImplementedException();
+        }
+
+        public override void CleanUpStore()
+        {
+            _state.SelectedClient = null;
         }
 
         #endregion

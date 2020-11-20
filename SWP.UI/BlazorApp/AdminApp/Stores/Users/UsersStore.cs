@@ -457,5 +457,10 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Users
         {
             throw new NotImplementedException();
         }
+
+        public override void CleanUpStore()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

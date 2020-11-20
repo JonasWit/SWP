@@ -205,6 +205,11 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Calendar
             throw new NotImplementedException();
         }
 
+        public override void CleanUpStore()
+        {
+            _state.SelectedReminder = null;
+        }
+
         #endregion
 
 

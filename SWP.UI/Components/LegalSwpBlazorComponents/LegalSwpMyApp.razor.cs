@@ -21,6 +21,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
         {
             MainStore.RemoveStateChangeListener(UpdateView);
             MyAppStore.RemoveStateChangeListener(UpdateView);
+            MyAppStore.CleanUpStore();
         }
 
         private void UpdateView()

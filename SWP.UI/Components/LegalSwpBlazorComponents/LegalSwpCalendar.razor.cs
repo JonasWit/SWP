@@ -17,6 +17,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
             MainStore.RemoveStateChangeListener(UpdateView);
             MainStore.RemoveStateChangeListener(RefreshCalendar);
             CalendarStore.RemoveStateChangeListener(UpdateView);
+            CalendarStore.CleanUpStore();
         }
 
         private void UpdateView() => StateHasChanged();

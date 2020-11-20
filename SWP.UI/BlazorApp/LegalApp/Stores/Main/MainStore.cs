@@ -48,7 +48,6 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
             try
             {
                 using var scope = _serviceProvider.CreateScope();
-                var getClients = scope.ServiceProvider.GetRequiredService<GetClients>();
                 var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
 
                 _state.ActiveUserId = userId;
@@ -58,8 +57,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
                 _state.User.Roles = await userManager.GetRolesAsync(_state.User.User) as List<string>;
                 _state.User.RelatedUsers = await userManager.GetUsersForClaimAsync(_state.User.ProfileClaim);
 
-                _state.Clients = getClients.GetClientsWithoutData(_state.User.Profile)?
-                    .Select(x => (ClientViewModel)x).ToList();
+                ReloadClientsDrop();
             }
             catch (Exception ex)
             {
@@ -77,6 +75,14 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
             {
                 BroadcastStateChange();
             }
+        }
+
+        private void ReloadClientsDrop()
+        {
+            using var scope = _serviceProvider.CreateScope();
+            var getClients = scope.ServiceProvider.GetRequiredService<GetClients>();
+
+            _state.Clients = getClients.GetClientsWithoutData(_state.User.Profile)?.Select(x => (ClientViewModel)x).ToList();
         }
 
         public void SetActivePanel(LegalAppPanels panel) => _state.ActivePanel = panel;
@@ -178,6 +184,8 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
         public void DismissErrorPage()
         {
             _state.ActivePanel = LegalAppPanels.MyApp;
+            _state.ActiveClient = null;
+            ReloadClientsDrop();
             BroadcastStateChange();
         }
 
@@ -347,6 +355,11 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
         protected override void HandleActions(IAction action)
         {
             throw new NotImplementedException();
+        }
+
+        public override void CleanUpStore()
+        {
+            _state.SelectedClientString = null;
         }
     }
 }

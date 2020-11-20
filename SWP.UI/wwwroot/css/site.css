@@ -53,9 +53,6 @@ ul {
         border-bottom: 2px solid;
     }
 
-  /*  .right {
-        margin-left: 40%;
-    }*/
 
     .btn {
         cursor: pointer;
@@ -119,7 +116,9 @@ ul {
     .home-cards {
         display: flex;
         flex-direction: row;
-        justify-content: space-around;
+        justify-content: space-between;
+        padding-bottom: 3rem;
+        padding-top: 4rem;
             }
 
         .home-cards img {
@@ -143,11 +142,16 @@ ul {
             .home-cards a:hover i {
                 margin-left: 10px;
             }
+.offer {
+    padding: 0.5rem;
+    width: ;
+}
 
 
-    img:hover {
-        opacity: 0.7;
-    }
+
+img:hover {
+    opacity: 0.7;
+}
 
     .main-link {
         display: inline-block;

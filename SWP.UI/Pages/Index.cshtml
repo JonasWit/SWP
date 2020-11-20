@@ -2,33 +2,34 @@
 @model SWP.UI.Pages.IndexModel
 @{
 }
-<header class="showcase" id="header">
+<!--<header class="showcase" id="header">
     <h2>Systemy Wspomagania Pracy</h2>
     <a class="main-link" asp-page="/Marketing/Products">Poznaj nasze produkty</a>
-    </header>
+</header>-->
 <!--Home cards 1-->
-<h2 class="text-center mt-5" id="offer">OFERTA</h2>
+<!--<h2 class="text-center mt-5" id="offer">OFERTA</h2>
 <hr />
 
 <section class="home-cards">
-    <div class="card shadow mt-4 mb-5 bg-white rounded">
-        <img class="img-card" src="~/Images/pexels-fauxels-3183153.jpg" alt="" /> <div class="card-body">
+    <div class="offer">
+        <img class="" src="~/Images/pexels-fauxels-3183153.jpg" alt="" />
+        <div class="">
             <h3>Aplikacje webowe</h3>
             <p>Zajmujemy się tworzeniem aplikacji webowych oraz późniejszym wsparciem technicznym dla klientów. Aplikacje stworzone przez nas utrzymywane są na platformie hostingowej Webio - na rynku od 2008 roku.</p>
         </div>
     </div>
-    <div>
-        <div class="card shadow mt-4  mb-5 bg-white rounded">
-            <img class="img-card" src="~/Images/pexels-pixabay-265087.jpg" alt="" />
-            <div class="card-body">
-                <h3>Aplikacje desktopowe</h3>
-                <p>Zajmujemy się tworzeniem aplikacji webowych oraz późniejszym wsparciem technicznym dla klientów. Aplikacje stworzone przez nas utrzymywane są na platformie hostingowej Webio - na rynku od 2008 roku.</p>
-            </div>
+
+    <div class="offer">
+        <img class="" src="~/Images/pexels-pixabay-265087.jpg" alt="" />
+        <div class="">
+            <h3>Aplikacje desktopowe</h3>
+            <p>Zajmujemy się tworzeniem aplikacji webowych oraz późniejszym wsparciem technicznym dla klientów. Aplikacje stworzone przez nas utrzymywane są na platformie hostingowej Webio - na rynku od 2008 roku.</p>
         </div>
     </div>
-    <div class="card shadow mt-4  mb-5 bg-white rounded">
-        <img class="img-card" src="~/Images/pexels-fauxels-3183197.jpg" alt="" />
-        <div class="card-body">
+
+    <div class="offer">
+        <img class="" src="~/Images/pexels-fauxels-3183197.jpg" alt="" />
+        <div class="">
             <h3>Indywidualne rozwiązania</h3>
             <p>Szukasz innych rozwiązań? Sprawdź co jeszcze możemy dla Ciebie zrobić.</p>
         </div>
@@ -40,7 +41,62 @@
     <hr />
     <div class="row mt-4 mb-4">
         <div class="col-lg-4 col-md-4 col-sm-12">
-            <h4 class="instr-1"><img src="~/Images/icons8-number-1-48.png"/> Rejestracja <span class="color-font">konta</span></h4>
+            <h4 class="instr-1"><img src="~/Images/icons8-number-1-48.png" /> Rejestracja <span class="color-font">konta</span></h4>
+            Załóż konto! Tylko zarejestrowany uzytkowik może mieć odstęp do usług i uzyskać o nich informacje.
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-12">
+            <h4 class="instr-1"><img src="~/Images/icons8-number-2-48.png" />Przyznanie <span class="color-font">dostępu</span></h4>
+            Każdego użytkownika traktujemy indywidualnie, dlatego przyznanie dostępu do usług jest możliwe jedynie po skontktowaniu sie z nami -tu link to strony kontaktowej-.
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-12">
+            <h4 class="instr-1"><img src="~/Images/icons8-3-c-48.png" /> Użytkowanie <span class="color-font">konta</span></h4>
+            Gdy uzgodnimy z jakich usług użytkownik chciałby korzystać, po stworzeniu przez nas indywidualnego profilu użytkownika oraz po uregulowaniu płatności, dostęp do wybranych usług zostanie odblokowany.
+        </div>
+    </div>
+</section>-->
+
+
+
+<header class="showcase" id="header">
+    <h2>Systemy Wspomagania Pracy</h2>
+    <a class="main-link" asp-page="/Marketing/Products">Poznaj nasze produkty</a>
+</header>
+<!--Home cards 1-->
+<h2 class="text-center mt-5" id="offer">OFERTA</h2>
+<hr />
+
+<section class="home-cards">
+    <div class="offer">
+        <img class="" src="~/Images/pexels-fauxels-3183153.jpg" alt="" />
+        <div class="">
+            <h3>Aplikacje webowe</h3>
+            <p>Zajmujemy się tworzeniem aplikacji webowych oraz późniejszym wsparciem technicznym dla klientów. Aplikacje stworzone przez nas utrzymywane są na platformie hostingowej Webio - na rynku od 2008 roku.</p>
+        </div>
+    </div>
+
+    <div class="offer">
+        <img class="" src="~/Images/pexels-pixabay-265087.jpg" alt="" />
+        <div class="">
+            <h3>Aplikacje desktopowe</h3>
+            <p>Zajmujemy się tworzeniem aplikacji webowych oraz późniejszym wsparciem technicznym dla klientów. Aplikacje stworzone przez nas utrzymywane są na platformie hostingowej Webio - na rynku od 2008 roku.</p>
+        </div>
+    </div>
+
+    <div class="offer">
+        <img class="" src="~/Images/pexels-fauxels-3183197.jpg" alt="" />
+        <div class="">
+            <h3>Indywidualne rozwiązania</h3>
+            <p>Szukasz innych rozwiązań? Sprawdź co jeszcze możemy dla Ciebie zrobić.</p>
+        </div>
+    </div>
+</section>
+
+<section class="mb-5 steps ">
+    <h2 class="text-center mt-5 ">JAK DZIAŁAMY </h2>
+    <hr />
+    <div class="row mt-4 mb-4">
+        <div class="col-lg-4 col-md-4 col-sm-12">
+            <h4 class="instr-1"><img src="~/Images/icons8-number-1-48.png" /> Rejestracja <span class="color-font">konta</span></h4>
             Załóż konto! Tylko zarejestrowany uzytkowik może mieć odstęp do usług i uzyskać o nich informacje.
         </div>
         <div class="col-lg-4 col-md-4 col-sm-12">

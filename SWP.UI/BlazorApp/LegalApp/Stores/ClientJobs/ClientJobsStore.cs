@@ -216,5 +216,10 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.ClientJobs
         {
             throw new NotImplementedException();
         }
+
+        public override void CleanUpStore()
+        {
+            _state.SelectedArchivizedClientJob = null;
+        }
     }
 }

@@ -23,6 +23,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
         {
             MainStore.RemoveStateChangeListener(UpdateView);
             ClientJobsStore.RemoveStateChangeListener(UpdateView);
+            ClientJobsStore.CleanUpStore();
         }
 
         private void UpdateView()

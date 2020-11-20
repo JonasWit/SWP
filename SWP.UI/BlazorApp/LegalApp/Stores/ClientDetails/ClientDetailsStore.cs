@@ -161,6 +161,11 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.ClientDetails
             throw new NotImplementedException();
         }
 
+        public override void CleanUpStore()
+        {
+            _state.SelectedContact = null;
+        }
+
         #endregion
 
 

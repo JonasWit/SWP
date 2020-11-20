@@ -24,6 +24,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
         {
             MainStore.RemoveStateChangeListener(UpdateView);
             FinanceStore.RemoveStateChangeListener(UpdateView);
+            FinanceStore.CleanUpStore();
         }
 
         private void UpdateView() => StateHasChanged();

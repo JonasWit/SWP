@@ -295,5 +295,10 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Productivity
         {
             throw new NotImplementedException();
         }
+
+        public override void CleanUpStore()
+        {
+            _state.SelectedMonth = null;
+        }
     }
 }

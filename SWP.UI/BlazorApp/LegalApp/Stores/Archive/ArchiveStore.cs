@@ -180,5 +180,10 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Archive
         {
             throw new NotImplementedException();
         }
+
+        public override void CleanUpStore()
+        {
+
+        }
     }
 }

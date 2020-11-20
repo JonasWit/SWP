@@ -221,5 +221,10 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.MyApp
         {
             throw new NotImplementedException();
         }
+
+        public override void CleanUpStore()
+        {
+            _state.SelectedUser = null;
+        }
     }
 }

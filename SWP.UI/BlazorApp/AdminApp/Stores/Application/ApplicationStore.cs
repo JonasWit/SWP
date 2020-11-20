@@ -91,5 +91,10 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Application
         {
             throw new NotImplementedException();
         }
+
+        public override void CleanUpStore()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

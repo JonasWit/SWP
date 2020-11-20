@@ -83,7 +83,7 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Application
             }
             catch (Exception ex)
             {
-                ShowErrorPage(ex);
+                ShowErrorPage(ex).GetAwaiter();
             }
         }
 

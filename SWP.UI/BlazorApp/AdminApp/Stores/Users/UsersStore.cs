@@ -167,9 +167,6 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Users
             BroadcastStateChange();
         }
 
-        private void ShowNotification(NotificationSeverity severity, string summary, string detail, int duration) =>
-            _notificationService.Notify(new NotificationMessage() { Severity = severity, Summary = summary, Detail = detail, Duration = duration });
-
         public async Task RoleChanged(int input)
         {
             if (_state.SelectedUser.Claims.Any(x => x.Type == "Root" && x.Value == "Creator"))

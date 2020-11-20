@@ -73,6 +73,7 @@ namespace SWP.UI
 
             services.AddRazorPages();
             services.AddApplicationServices();
+            services.AddDatabaseDeveloperPageExceptionFilter();
         }
 
         public void ConfigureServices(IServiceCollection services)
@@ -125,6 +126,7 @@ namespace SWP.UI
 
             services.AddRazorPages();
             services.AddApplicationServices();
+            services.AddDatabaseDeveloperPageExceptionFilter();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -132,7 +134,7 @@ namespace SWP.UI
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseDatabaseErrorPage();
+                app.UseMigrationsEndPoint();
             }
             else
             {

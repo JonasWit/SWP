@@ -21,7 +21,6 @@ namespace SWP.UI.Components.AdminBlazorComponents
         {
             base.OnInitialized();
             DatabaseStore.AddStateChangeListener(UpdateView);
-            await DatabaseStore.InitializeState();
         }
     }
 }

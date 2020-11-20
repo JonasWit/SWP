@@ -29,11 +29,6 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Database
             _state = new DatabaseState();
         }
 
-        public async Task InitializeState()
-        {
-            BroadcastStateChange();
-        }
-
         protected override void HandleActions(IAction action)
         {
             throw new NotImplementedException();

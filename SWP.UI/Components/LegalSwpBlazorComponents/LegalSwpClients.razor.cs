@@ -31,7 +31,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
             StateHasChanged();
         }
 
-        protected override async Task OnInitializedAsync()
+        protected override void OnInitialized()
         {
             MainStore.AddStateChangeListener(UpdateView);
             ClientsStore.AddStateChangeListener(UpdateView);

@@ -22,16 +22,14 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
 
         protected override async Task OnInitializedAsync()
         {
-            initializing = true;
+            MainStore.EnableLoading("Wczytywanie...");
 
             base.OnInitialized();
             MainStore.AddStateChangeListener(UpdateView);
             await MainStore.InitializeState(ActiveUserId);
 
-            initializing = false;
+            MainStore.DisableLoading();
         }
-
-        private bool initializing = false;
 
         public bool showSidebar = false;
 

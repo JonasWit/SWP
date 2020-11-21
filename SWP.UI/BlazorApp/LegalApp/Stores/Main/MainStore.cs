@@ -20,8 +20,6 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
 {
     public class MainState
     {
-        public bool Loading { get; set; } = false;
-        public string LoadingMessage { get; set; }
         public string ActiveUserId { get; set; }
         public UserModel User { get; set; } = new UserModel();
         public List<ClientViewModel> Clients { get; set; } = new List<ClientViewModel>();
@@ -88,28 +86,9 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
 
         public void SetActivePanel(LegalAppPanels panel) => _state.ActivePanel = panel;
 
-        public void ActivateLoading(string message)
-        {
-            _state.LoadingMessage = message;
-            _state.Loading = true;
-        }
-
-        public void DeactivateLoading()
-        {
-            _state.Loading = false;
-            BroadcastStateChange();
-        }
-
         public async Task ActiveClientChange(object value)
         {
-            if (_state.Loading)
-            {
-                return;
-            }
-            else
-            {
-                ActivateLoading("Wczytywanie Klienta...");
-            }
+            EnableLoading("Wczytywanie Klienta...");
 
             if (value != null)
             {
@@ -126,7 +105,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
                 }
                 finally
                 {
-                    DeactivateLoading();
+                    DisableLoading();
                 }
             }
             else
@@ -138,20 +117,13 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
 
                 _state.ActiveClient = null;
 
-                DeactivateLoading();
+                DisableLoading();
             }
         }
 
         public async Task ReloadActiveClient()
         {
-            if (_state.Loading)
-            {
-                return;
-            }
-            else
-            {
-                ActivateLoading("Wczytywanie Klienta...");
-            }
+            EnableLoading("Wczytywanie Klienta...");
 
             if (_state.ActiveClient == null)
             {
@@ -171,7 +143,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
             }
             finally
             {
-                DeactivateLoading();
+                DisableLoading();
             }
         }
 

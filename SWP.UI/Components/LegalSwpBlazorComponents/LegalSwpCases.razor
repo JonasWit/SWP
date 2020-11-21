@@ -1,464 +1,465 @@
 ﻿
-<div class="flex-container-main">
-    <div class="show-hide tab-section"><button class="show-hide-btn show-hide-btn-1"><span>Dodaj Sprawę</span></button></div>
-    <div class="row-section">
-
-        <RadzenTemplateForm Data="@CasesStore.GetState().NewCase" Submit="@(async (CreateCase.Request args) => { await CasesStore.CreateNewCase(args); })">
-
-            <RadzenFieldset Text="Nowa Sprawa">
-                <div class="help-box">
-                    <i class="user-icon"><img src="/Images/icons8-reception-36.png" /></i>
-
-                    @if (infoBoxVisibleI)
-                    {
-                        <div class="info-text">
-                            <p>Zarządzaj listą swoich klientów. Użyj guzika "Dodaj Nowego Klienta",aby uzupełnić listę kontaktów.</p>
-                            <p>Edytuj oraz usuwaj Klientów z głównej listy. Tekst do zupełnienia.</p>
-                        </div>
-                    }
-                    <button class="info" @onclick="ShowHideInfoBoxI"></button>
-                </div>
-                <div class="form">
-
-                    <div class="text">
-                        <div class="label">
-                            <RadzenLabel Text="Nazwa" />
-                        </div>
-                        <RadzenTextBox Placeholder="Nazwa Sprawy..." @bind-Value="CasesStore.GetState().NewCase.Name" Name="Name" style="@(Gvm.FormInputBoxWidth)" />
-                        <RadzenRequiredValidator Component="Name" Text="Name cannot be empty!" />
-                        <RadzenLengthValidator Max="50" Text="Max 50 characters!" Component="Name" />
-                    </div>
-
-                    <div class="text">
-                        <div class="label">
-                            <RadzenLabel Text="Sygnatura" />
-                        </div>
-                        <RadzenTextBox Placeholder="Sygnatura..." @bind-Value="CasesStore.GetState().NewCase.Signature" Name="Signature" style="@(Gvm.FormInputBoxWidth)" />
-                    </div>
-                </div>
-                <div class="form">
-
-                    <div class="text">
-                        <div class="label">
-                            <RadzenLabel Text="Opis" />
-                        </div>
-                        <RadzenTextArea Placeholder="Opis..." @bind-Value="CasesStore.GetState().NewCase.Description" Name="Description" style="@(Gvm.FormInputBoxWidth)" />
-                        <RadzenLengthValidator Max="500" Text="Max 500 characters!" Component="Description" />
-                    </div>
-                    <div class="text">
-                        <div class="label">
-                            <RadzenLabel Text="Typ Sprawy" />
-                        </div>
-                        <RadzenTextArea Placeholder="Typ Sprawy..." @bind-Value="CasesStore.GetState().NewCase.CaseType" Name="CaseType" style="@(Gvm.FormInputBoxWidth)" />
-                    </div>
-                </div>
-                <div class="form-btn">
-                    <div class="btn-add">
-                        <RadzenButton ButtonType="ButtonType.Submit" Icon="save" Text="Zapisz" ButtonStyle="ButtonStyle.Secondary" Style="@(Gvm.GeneralButton)" />
-                    </div>
-                </div>
-            </RadzenFieldset>
-
-        </RadzenTemplateForm>
-    </div>
-
-    <div class="show-hide tab-section"><button class="show-hide-btn show-hide-btn-1"><span>Lista Spraw</span></button></div>
-    <div class="row-section second">
-        <div class="help-box">
-            <i class="user-icon"><img src="/Images/icons8-reception-36.png" /></i>
-
-            @if (infoBoxVisibleII)
-            {
-                <div class="info-text">
-                    <p>Zarządzaj listą swoich klientów. Użyj guzika "Dodaj Nowego Klienta",aby uzupełnić listę kontaktów.</p>
-                    <p>Edytuj oraz usuwaj Klientów z głównej listy. Tekst do zupełnienia.</p>
-                </div>
-            }
-            <button class="info" @onclick="ShowHideInfoBoxII"></button>
-        </div>
+@if (CasesStore.Loading)
+{
+    <LoaderComponent Message="@CasesStore.LoadingMessage"></LoaderComponent>
+}
+else
+{
+    <div class="flex-container-main">
+        <div class="show-hide tab-section"><button class="show-hide-btn show-hide-btn-1"><span>Dodaj Sprawę</span></button></div>
         <div class="row-section">
-            <RadzenGrid @ref="CasesStore.GetState().CasesGrid" AllowFiltering="true" AllowPaging="true" PageSize="5" AllowSorting="true"
-                        Data="@MainStore.GetState().ActiveClient.Cases" TItem="CaseViewModel" RowUpdate="@CasesStore.OnUpdateCaseRow" RowSelect="@(args => CasesStore.ActiveCaseChange(args))">
-                <Columns>
-                    <RadzenGridColumn TItem="CaseViewModel" Property="Name" Title="Nazwa Sprawy">
-                        <Template Context="cs">
-                            <span Style="@(Gvm.TableFontSize)">@(cs.Name)</span>
-                        </Template>
-                        <EditTemplate Context="cs">
-                            <RadzenTextBox @bind-Value="cs.Name" Name="CaseName" Style="@Gvm.FormInputBoxWidth" />
-                            <RadzenRequiredValidator Text="Nazwa nie może być pusta!" Component="CaseName" Popup="true" />
-                            <RadzenLengthValidator Max="50" Text="Max 50 characters!" Component="CaseName" Popup="true" />
-                        </EditTemplate>
-                    </RadzenGridColumn>
-                    <RadzenGridColumn TItem="CaseViewModel" Property="Signature" Title="Sygnatura">
-                        <Template Context="cs">
-                            <span Style="@(Gvm.TableFontSize)">@(cs.Signature)</span>
-                        </Template>
-                        <EditTemplate Context="cs">
-                            <RadzenTextBox @bind-Value="cs.Signature" Name="Sygnatura" Style="@Gvm.FormInputBoxWidth" />
-                        </EditTemplate>
-                    </RadzenGridColumn>
-                    <RadzenGridColumn TItem="CaseViewModel" Property="CaseType" Title="Typ Sprawy">
-                        <Template Context="cs">
-                            <span Style="@(Gvm.TableFontSize)">@(cs.CaseType)</span>
-                        </Template>
-                        <EditTemplate Context="cs">
-                            <RadzenTextBox @bind-Value="cs.CaseType" Name="Typ sprawy" Style="@Gvm.FormInputBoxWidth" />
-                        </EditTemplate>
-                    </RadzenGridColumn>
-                    <RadzenGridColumn TItem="CaseViewModel" Property="Description" Title="Opis">
-                        <Template Context="cs">
-                            <span Style="@(Gvm.TableFontSize)">@(cs.Description)</span>
-                        </Template>
-                        <EditTemplate Context="cs">
-                            <Radzen.Blazor.RadzenTextArea @bind-Value="cs.Description" Name="Description" Style="@Gvm.FormInputBoxWidth" />
-                            <RadzenLengthValidator Max="500" Text="Maksymalnie 500 znaków!" Component="Description" Popup="true" />
-                        </EditTemplate>
-                    </RadzenGridColumn>
 
-                    <RadzenGridColumn TItem="CaseViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="80px">
-                        <Template Context="cs">
-                            <RadzenButton Icon="edit" Size="ButtonSize.Small" Click="@((args) => CasesStore.EditCaseRow(cs))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Edytuj", Style=Gvm.ToolTipStyle }))">
-                            </RadzenButton>
-                        </Template>
-                        <EditTemplate Context="cs">
-                            <RadzenButton Icon="save" Size="ButtonSize.Small" Click="@((args) => CasesStore.SaveCaseRow(cs))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Zapisz", Style=Gvm.ToolTipStyle }))">
-                            </RadzenButton>
-                            <RadzenButton Icon="cancel" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Success" Click="@((args) => CasesStore.CancelEditCaseRow(cs))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Anuluj", Style=Gvm.ToolTipStyle }))">
-                            </RadzenButton>
-                        </EditTemplate>
-                    </RadzenGridColumn>
-                    <RadzenGridColumn TItem="CaseViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="45px">
-                        <Template Context="cs">
-                            <RadzenButton ButtonStyle="ButtonStyle.Warning" Icon="archive" Size="ButtonSize.Small" Click="@(async (args) => await CasesStore.ArchivizeCase(cs))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Archiwizuj", Style=Gvm.ToolTipStyle }))">
-                            </RadzenButton>
-                        </Template>
-                    </RadzenGridColumn>
-                    <RadzenGridColumn TItem="CaseViewModel" Context="order" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="45px">
-                        <Template Context="cs">
-                            <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@(async (args) => await CasesStore.DeleteCaseRow(cs))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Zamknij", Style=Gvm.ToolTipStyle }))">
-                            </RadzenButton>
-                        </Template>
-                        <EditTemplate Context="cs">
-                        </EditTemplate>
-                    </RadzenGridColumn>
+            <RadzenTemplateForm Data="@CasesStore.GetState().NewCase" Submit="@(async (CreateCase.Request args) => { await CasesStore.CreateNewCase(args); })">
 
-                </Columns>
-            </RadzenGrid>
-        </div>
-    </div>
+                <RadzenFieldset Text="Nowa Sprawa">
+                    <div class="help-box">
+                        <i class="user-icon"><img src="/Images/icons8-reception-36.png" /></i>
 
-    @if (CasesStore.GetState().SelectedCase != null)
-    {
-        <div class="details">
-            <p><strong>Nazwa:</strong> @CasesStore.GetState().SelectedCase.Name</p>
-            <p><strong>Sygnatura:</strong> @CasesStore.GetState().SelectedCase.Signature</p>
-            <p><strong>Data utworzenia:</strong> @CasesStore.GetState().SelectedCase.Created</p>
-            <p><strong>Typ Sprawy:</strong> @CasesStore.GetState().SelectedCase.CaseType</p>
-            <p><strong>Opis:</strong> @CasesStore.GetState().SelectedCase.Description</p>
-            <p><strong>Data zmiany:</strong> @CasesStore.GetState().SelectedCase.Updated</p>
-        </div>
-
-        @*<h3>Aktywna sprawa - @App.ActiveClientWithData.SelectedCase.Name</h3>*@
-
-        <div class="row-section">
-            <RadzenTabs>
-                <Tabs>
-                    <div>
-                        <RadzenTabsItem Text="Kalendarz Sprawy">
-                            <RadzenScheduler @ref="CasesStore.GetState().CasesScheduler" style="height: 768px;"
-                                             TItem="ReminderViewModel"
-                                             Data="@CasesStore.GetState().SelectedCase.Reminders"
-                                             StartProperty="Start"
-                                             EndProperty="End"
-                                             TextProperty="DisplayTextShort"
-                                             SelectedIndex="2"
-                                             SlotSelect="@CasesStore.OnSlotSelect"
-                                             AppointmentSelect="@CasesStore.OnAppointmentSelect"
-                                             AppointmentRender="@CasesStore.OnAppointmentRender"
-                                             TodayText="Dzisiaj">
-                                <ChildContent>
-                                    <RadzenDayView Text="Dzień" StartTime="@(new TimeSpan(0, 0, 0))" EndTime="@(new TimeSpan(24, 0, 0))" />
-                                    <RadzenWeekView Text="Tydzień" StartTime="@(new TimeSpan(0, 0, 0))" EndTime="@(new TimeSpan(24, 0, 0))" />
-                                    <RadzenMonthView Text="Miesiąc" />
-                                </ChildContent>
-                            </RadzenScheduler>
-                        </RadzenTabsItem>
-                    </div>
-                    <div>
-                        <RadzenTabsItem Text="Notatki">
-                            <div>
-                                <RadzenTemplateForm Data="@CasesStore.GetState().NewNote" Submit="@(async (CreateNote.Request args) => { await CasesStore.CreateNewNote(args); })">
-
-                                    <RadzenFieldset Text="Dodaj notatkę">
-                                        <div class="form">
-                                            <div class="text">
-                                                <div class="label">
-                                                    <RadzenLabel Text="Tytuł" />
-                                                </div>
-                                                <RadzenTextBox Placeholder="Tytuł..." style="@(Gvm.FormInputBoxWidth)" @bind-Value="CasesStore.GetState().NewNote.Name" Name="Name" />
-                                                <RadzenRequiredValidator Component="Name" Text="Name cannot be empty!" />
-                                                <RadzenLengthValidator Max="50" Text="Max 50 characters!" Component="Name" />
-                                            </div>
-                                            <div class="text">
-                                                <div class="label">
-                                                    <RadzenLabel Text="Notatka" />
-                                                </div>
-                                                <RadzenTextArea Placeholder="Message..." style="@(Gvm.FormInputBoxWidth)" @bind-Value="CasesStore.GetState().NewNote.Message" Name="Message" />
-                                                <RadzenLengthValidator Max="500" Text="Max 500 characters!" Component="Message" />
-                                            </div>
-
-                                        </div>
-                                        <div class="form-btn">
-                                            <div class="btn-add">
-                                                <div>
-                                                    <RadzenButton ButtonType="ButtonType.Submit" Icon="save" Text="Zapisz" ButtonStyle="ButtonStyle.Secondary" Style="@(Gvm.GeneralButton)" />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </RadzenFieldset>
-                                </RadzenTemplateForm>
-                            </div>
-                            <div>
-                                <div>
-                                    <RadzenGrid @ref="CasesStore.GetState().NotesGrid" AllowFiltering="true" AllowPaging="true" PageSize="10" AllowSorting="true" RowSelect="@(args => CasesStore.ActiveNoteChange(args))"
-                                                Data="@CasesStore.GetState().SelectedCase.Notes" TItem="NoteViewModel" RowUpdate="@CasesStore.OnUpdateNoteRow">
-                                        <Columns>
-                                            <RadzenGridColumn TItem="NoteViewModel" Property="Name" Title="Nazwa">
-                                                <Template Context="note">
-                                                    <span Style="@(Gvm.TableFontSize)">@(note.Name)</span>
-                                                </Template>
-                                                <EditTemplate Context="note">
-                                                    <RadzenTextBox @bind-Value="note.Name" Style="@(Gvm.FormInputBoxWidth)" Name="Name" />
-                                                    <RadzenRequiredValidator Component="Name" Text="Name cannot be empty!" />
-                                                    <RadzenLengthValidator Max="50" Text="Max 50 characters!" Component="Name" />
-                                                </EditTemplate>
-                                            </RadzenGridColumn>
-                                            <RadzenGridColumn TItem="NoteViewModel" Property="Message" Title="Opis">
-                                                <Template Context="note">
-                                                    <span Style="@(Gvm.TableFontSize)">@(note.Message)</span>
-                                                </Template>
-                                                <EditTemplate Context="note">
-                                                    <RadzenTextArea @bind-Value="note.Message" style="@(Gvm.FormInputBoxWidth)" Name="Message" />
-                                                    <RadzenLengthValidator Max="500" Text="Max 500 characters!" Component="Message" />
-                                                </EditTemplate>
-                                            </RadzenGridColumn>
-
-                                            <RadzenGridColumn TItem="NoteViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="80px">
-                                                <Template Context="note">
-                                                    <RadzenButton Icon="edit" Size="ButtonSize.Small" Click="@((args) => CasesStore.EditNoteRow(note))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Edytuj", Style=Gvm.ToolTipStyle }))">
-                                                    </RadzenButton>
-                                                </Template>
-                                                <EditTemplate Context="note">
-                                                    <RadzenButton Icon="save" Size="ButtonSize.Small" Click="@((args) => CasesStore.SaveNoteRow(note))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Zapisz", Style=Gvm.ToolTipStyle }))">
-                                                    </RadzenButton>
-                                                    <RadzenButton Icon="cancel" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Success" Click="@((args) => CasesStore.CancelEditNoteRow(note))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Anuluj", Style=Gvm.ToolTipStyle }))">
-                                                    </RadzenButton>
-                                                </EditTemplate>
-                                            </RadzenGridColumn>
-                                            <RadzenGridColumn TItem="NoteViewModel" Context="order" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="45px">
-                                                <Template Context="note">
-                                                    <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@(async (args) => await CasesStore.DeleteNoteRow (note))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Zamknij", Style=Gvm.ToolTipStyle }))">
-                                                    </RadzenButton>
-                                                </Template>
-                                                <EditTemplate Context="note">
-                                                </EditTemplate>
-                                            </RadzenGridColumn>
-                                        </Columns>
-                                    </RadzenGrid>
-                                </div>
-
-                                @if (CasesStore.GetState().SelectedCase != null && CasesStore.GetState().SelectedNote != null)
-                                {
-                                    <div class="details">
-                                        <p><strong>Tytuł: </strong>@CasesStore.GetState().SelectedNote.Name</p>
-                                        <p><strong>Treść: </strong>@CasesStore.GetState().SelectedNote.Message</p>
-
-                                    </div>
-                                }
-
-                            </div>
-                        </RadzenTabsItem>
-                    </div>
-
-                    <RadzenTabsItem Text="Osoby Kontaktowe">
-                        <RadzenTemplateForm Data="@CasesStore.GetState().NewContact" Submit="@(async (CreateContactPerson.Request args) => { await CasesStore.SubmitNewContact(args); })">
-                            <RadzenFieldset Text="Osoba Kontaktowa">
-                                <div class="help-box">
-                                    <i class="user-icon"><img src="/Images/icons8-reception-36.png" /></i>
-
-                                    @if (infoBoxVisibleIII)
-                                    {
-                                        <div class="info-text">
-                                            <p>Zarządzaj listą swoich klientów. Użyj guzika "Dodaj Nowego Klienta",aby uzupełnić listę kontaktów.</p>
-                                            <p>Edytuj oraz usuwaj Klientów z głównej listy. Tekst do zupełnienia.</p>
-                                        </div>
-                                    }
-                                    <button class="info" @onclick="ShowHideInfoBoxIII"></button>
-                                </div>
-
-                                <div class="form">
-                                    <div class="text">
-                                        <div class="label">
-                                            <RadzenLabel Text="Imię" />
-                                        </div>
-                                        <RadzenTextArea Placeholder="Imię..." @bind-Value="CasesStore.GetState().NewContact.Name" style="@(Gvm.FormInputBoxWidth)" Name="Name" />
-                                        <RadzenRequiredValidator Component="Name" Text="Name cannot be empty!" />
-                                        <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Name" />
-                                    </div>
-                                    <div class="text">
-                                        <div class="label">
-                                            <RadzenLabel Text="Nazwisko" />
-                                        </div>
-                                        <RadzenTextArea Placeholder="Nazwisko..." @bind-Value="CasesStore.GetState().NewContact.Surname" style="@(Gvm.FormInputBoxWidth)" Name="Surname" />
-                                        <RadzenRequiredValidator Component="Surname" Text="Name cannot be empty!" />
-                                        <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Surname" />
-                                    </div>
-                                    <div class="text">
-                                        <div class="label">
-                                            <RadzenLabel Text="Adres" />
-                                        </div>
-                                        <RadzenTextArea Placeholder="Adres..." @bind-Value="CasesStore.GetState().NewContact.Address" style="@(Gvm.FormInputBoxWidth)" Name="Address" />
-                                        <RadzenLengthValidator Max="500" Text="Maksymalnie 500 znaków!" Component="Address" />
-                                    </div>
-                                </div>
-                                <div class="form">
-                                    <div class="text">
-                                        <div class="label">
-                                            <RadzenLabel Text="Telefon" />
-                                        </div>
-                                        <RadzenTextBox Placeholder="Telefon..." @bind-Value="CasesStore.GetState().NewContact.PhoneNumber" style="@(Gvm.FormInputBoxWidth)" Name="PhoneNumber1" />
-                                        <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="PhoneNumber1" />
-                                    </div>
-                                    <div class="text">
-                                        <div class="label">
-                                            <RadzenLabel Text="Telefon2" />
-                                        </div>
-                                        <RadzenTextBox Placeholder="Telefon..." @bind-Value="CasesStore.GetState().NewContact.AlternativePhoneNumber" style="@(Gvm.FormInputBoxWidth)" Name="PhoneNumber2" />
-                                        <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="PhoneNumber2" />
-                                    </div>
-                                    <div class="text">
-                                        <div class="label">
-                                            <RadzenLabel Text="Email" />
-                                        </div>
-                                        <RadzenTextBox Placeholder="Adres Email..." @bind-Value="CasesStore.GetState().NewContact.Email" style="@(Gvm.FormInputBoxWidth)" Name="Email" />
-                                        <RadzenEmailValidator Component="Email" Text="Nieprawidłowy adres Email!" />
-                                        <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Email" />
-                                    </div>
-                                </div>
-                                <div class="form-btn">
-                                    <div class="btn-add">
-                                        <RadzenButton ButtonType="ButtonType.Submit" Icon="save" Text="Dodaj Kontakt" ButtonStyle="ButtonStyle.Secondary" Style="@(Gvm.GeneralButton)" />
-                                    </div>
-                                </div>
-
-                            </RadzenFieldset>
-                        </RadzenTemplateForm>
-
-                        <RadzenGrid @ref="CasesStore.GetState().ContactsGrid" AllowFiltering="true" AllowPaging="true" PageSize="10" AllowSorting="true"
-                                    Data="@CasesStore.GetState().SelectedCase.ContactPeople" TItem="ContactPersonViewModel" RowUpdate="@CasesStore.OnUpdateContactRow" RowSelect="@(args => CasesStore.ContactSelected(args))">
-                            <Columns>
-                                <RadzenGridColumn TItem="ContactPersonViewModel" Property="Name" Title="Nazwa">
-                                    <Template Context="contact">
-                                        <span Style="@(Gvm.TableFontSize)">@(contact.Name)</span>
-                                    </Template>
-                                    <EditTemplate Context="contact">
-                                        <RadzenTextBox @bind-Value="contact.Name" Name="Name" Style="@(Gvm.FormInputBoxWidth)" />
-                                        <RadzenRequiredValidator Text="Inię nie może być puste!" Component="Name" Popup="true" />
-                                        <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Name" Popup="true" />
-                                    </EditTemplate>
-                                </RadzenGridColumn>
-
-                                <RadzenGridColumn TItem="ContactPersonViewModel" Property="Surname" Title="Nazwisko">
-                                    <Template Context="contact">
-                                        <span Style="@(Gvm.TableFontSize)">@(contact.Surname)</span>
-                                    </Template>
-                                    <EditTemplate Context="contact">
-                                        <RadzenTextBox @bind-Value="contact.Surname" Name="Surname" Style="@(Gvm.FormInputBoxWidth)" />
-                                        <RadzenRequiredValidator Text="Nazwosko nie może być puste!" Component="Surname" Popup="true" />
-                                        <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Surname" Popup="true" />
-                                    </EditTemplate>
-                                </RadzenGridColumn>
-                                <RadzenGridColumn TItem="ContactPersonViewModel" Property="Email" Title="Email" Width="100px">
-                                    <Template Context="contact">
-                                        <span Style="@(Gvm.TableFontSize)">@(contact.Email)</span>
-                                    </Template>
-                                    <EditTemplate Context="contact">
-                                        <RadzenTextBox @bind-Value="contact.Email" Name="Nazwa" Style="@(Gvm.FormInputBoxWidth)" />
-                                    </EditTemplate>
-                                </RadzenGridColumn>
-                                <RadzenGridColumn TItem="ContactPersonViewModel" Property="PhoneNumber" Title="Telefon">
-                                    <Template Context="contact">
-                                        <span Style="@(Gvm.TableFontSize)">@(contact.PhoneNumber)</span>
-                                    </Template>
-                                    <EditTemplate Context="contact">
-                                        <RadzenTextBox @bind-Value="contact.PhoneNumber" Name="PhoneNumber" Style="@(Gvm.FormInputBoxWidth)" />
-                                    </EditTemplate>
-                                </RadzenGridColumn>
-                                <RadzenGridColumn TItem="ContactPersonViewModel" Property="AlternativePhoneNumber" Title="Drugi Telefon">
-                                    <Template Context="contact">
-                                        <span Style="@(Gvm.TableFontSize)">@(contact.AlternativePhoneNumber)</span>
-                                    </Template>
-                                    <EditTemplate Context="contact">
-                                        <RadzenTextBox @bind-Value="contact.AlternativePhoneNumber" Name="AlternativePhoneNumber" Style="@(Gvm.FormInputBoxWidth)" />
-                                    </EditTemplate>
-                                </RadzenGridColumn>
-                                <RadzenGridColumn TItem="ContactPersonViewModel" Property="Address" Title="Addres">
-                                    <Template Context="contact">
-                                        <span Style="@(Gvm.TableFontSize)">@(contact.Address)</span>
-                                    </Template>
-                                    <EditTemplate Context="contact">
-                                        <RadzenTextBox @bind-Value="contact.Address" Name="Address" Style="@(Gvm.FormInputBoxWidth)" />
-                                    </EditTemplate>
-                                </RadzenGridColumn>
-
-                                <RadzenGridColumn TItem="ContactPersonViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="80px">
-                                    <Template Context="c">
-                                        <RadzenButton Icon="edit" Size="ButtonSize.Small" Click="@(args => CasesStore.EditContactRow(c))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Edytuj", Style=Gvm.ToolTipStyle }))">
-                                        </RadzenButton>
-                                    </Template>
-                                    <EditTemplate Context="c">
-                                        <RadzenButton Icon="save" Size="ButtonSize.Small" Click="@((args) => CasesStore.SaveContactRow(c))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Zapisz", Style=Gvm.ToolTipStyle }))">
-                                        </RadzenButton>
-                                        <RadzenButton Icon="cancel" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Success" Click="@((args) => CasesStore.CancelContactEdit(c))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Anuluj", Style=Gvm.ToolTipStyle }))">
-                                        </RadzenButton>
-                                    </EditTemplate>
-                                </RadzenGridColumn>
-                                <RadzenGridColumn TItem="ContactPersonViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="45px">
-                                    <Template Context="c">
-                                        <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@(async (args) => await CasesStore.DeleteContactRow(c))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Zamknij", Style=Gvm.ToolTipStyle }))">
-                                        </RadzenButton>
-                                    </Template>
-                                    <EditTemplate Context="client">
-                                    </EditTemplate>
-                                </RadzenGridColumn>
-                            </Columns>
-                        </RadzenGrid>
-
-                        @if (CasesStore.GetState().SelectedContact != null)
+                        @if (infoBoxVisibleI)
                         {
-                            <div class="details">
-                                <p><strong>Imię:</strong> @CasesStore.GetState().SelectedContact.Name</p>
-                                <p><strong>Nazwisko:</strong> @CasesStore.GetState().SelectedContact.Surname</p>
-                                <p><strong>Adres:</strong> @CasesStore.GetState().SelectedContact.Address</p>
-                                <p><strong>Telefon 1:</strong> @CasesStore.GetState().SelectedContact.PhoneNumber</p>
-                                <p><strong>Telefon 2:</strong> @CasesStore.GetState().SelectedContact.AlternativePhoneNumber</p>
-                                <p><strong>Email:</strong> @CasesStore.GetState().SelectedContact.Email</p>
-                                <p><strong>Zmienione przez:</strong> @CasesStore.GetState().SelectedContact.UpdatedBy</p>
-                                <p><strong>Data zmiany:</strong> @CasesStore.GetState().SelectedContact.Updated</p>
-                                <p><strong>Data utworzenia:</strong> @CasesStore.GetState().SelectedContact.Created</p>
+                            <div class="info-text">
+                                <p>Zarządzaj listą swoich klientów. Użyj guzika "Dodaj Nowego Klienta",aby uzupełnić listę kontaktów.</p>
+                                <p>Edytuj oraz usuwaj Klientów z głównej listy. Tekst do zupełnienia.</p>
                             </div>
                         }
+                        <button class="info" @onclick="ShowHideInfoBoxI"></button>
+                    </div>
+                    <div class="form">
 
-                    </RadzenTabsItem>
-                </Tabs>
-            </RadzenTabs>
+                        <div class="text">
+                            <div class="label">
+                                <RadzenLabel Text="Nazwa" />
+                            </div>
+                            <RadzenTextBox Placeholder="Nazwa Sprawy..." @bind-Value="CasesStore.GetState().NewCase.Name" Name="Name" style="@(Gvm.FormInputBoxWidth)" />
+                            <RadzenRequiredValidator Component="Name" Text="Name cannot be empty!" />
+                            <RadzenLengthValidator Max="50" Text="Max 50 characters!" Component="Name" />
+                        </div>
+
+                        <div class="text">
+                            <div class="label">
+                                <RadzenLabel Text="Sygnatura" />
+                            </div>
+                            <RadzenTextBox Placeholder="Sygnatura..." @bind-Value="CasesStore.GetState().NewCase.Signature" Name="Signature" style="@(Gvm.FormInputBoxWidth)" />
+                        </div>
+                    </div>
+                    <div class="form">
+
+                        <div class="text">
+                            <div class="label">
+                                <RadzenLabel Text="Opis" />
+                            </div>
+                            <RadzenTextArea Placeholder="Opis..." @bind-Value="CasesStore.GetState().NewCase.Description" Name="Description" style="@(Gvm.FormInputBoxWidth)" />
+                            <RadzenLengthValidator Max="500" Text="Max 500 characters!" Component="Description" />
+                        </div>
+                        <div class="text">
+                            <div class="label">
+                                <RadzenLabel Text="Typ Sprawy" />
+                            </div>
+                            <RadzenTextArea Placeholder="Typ Sprawy..." @bind-Value="CasesStore.GetState().NewCase.CaseType" Name="CaseType" style="@(Gvm.FormInputBoxWidth)" />
+                        </div>
+                    </div>
+                    <div class="form-btn">
+                        <div class="btn-add">
+                            <RadzenButton ButtonType="ButtonType.Submit" Icon="save" Text="Zapisz" ButtonStyle="ButtonStyle.Secondary" Style="@(Gvm.GeneralButton)" />
+                        </div>
+                    </div>
+                </RadzenFieldset>
+
+            </RadzenTemplateForm>
         </div>
-    }
-</div>
 
-@code {
+        <div class="show-hide tab-section"><button class="show-hide-btn show-hide-btn-1"><span>Lista Spraw</span></button></div>
+        <div class="row-section second">
+            <div class="help-box">
+                <i class="user-icon"><img src="/Images/icons8-reception-36.png" /></i>
 
-    private void ShowTooltip(ElementReference elementReference, TooltipOptions options = null) => TooltipService.Open(elementReference, options.Text, options);
+                @if (infoBoxVisibleII)
+                {
+                    <div class="info-text">
+                        <p>Zarządzaj listą swoich klientów. Użyj guzika "Dodaj Nowego Klienta",aby uzupełnić listę kontaktów.</p>
+                        <p>Edytuj oraz usuwaj Klientów z głównej listy. Tekst do zupełnienia.</p>
+                    </div>
+                }
+                <button class="info" @onclick="ShowHideInfoBoxII"></button>
+            </div>
+            <div class="row-section">
+                <RadzenGrid @ref="CasesStore.GetState().CasesGrid" AllowFiltering="true" AllowPaging="true" PageSize="5" AllowSorting="true"
+                            Data="@MainStore.GetState().ActiveClient.Cases" TItem="CaseViewModel" RowUpdate="@CasesStore.OnUpdateCaseRow" RowSelect="@(args => CasesStore.ActiveCaseChange(args))">
+                    <Columns>
+                        <RadzenGridColumn TItem="CaseViewModel" Property="Name" Title="Nazwa Sprawy">
+                            <Template Context="cs">
+                                <span Style="@(Gvm.TableFontSize)">@(cs.Name)</span>
+                            </Template>
+                            <EditTemplate Context="cs">
+                                <RadzenTextBox @bind-Value="cs.Name" Name="CaseName" Style="@Gvm.FormInputBoxWidth" />
+                                <RadzenRequiredValidator Text="Nazwa nie może być pusta!" Component="CaseName" Popup="true" />
+                                <RadzenLengthValidator Max="50" Text="Max 50 characters!" Component="CaseName" Popup="true" />
+                            </EditTemplate>
+                        </RadzenGridColumn>
+                        <RadzenGridColumn TItem="CaseViewModel" Property="Signature" Title="Sygnatura">
+                            <Template Context="cs">
+                                <span Style="@(Gvm.TableFontSize)">@(cs.Signature)</span>
+                            </Template>
+                            <EditTemplate Context="cs">
+                                <RadzenTextBox @bind-Value="cs.Signature" Name="Sygnatura" Style="@Gvm.FormInputBoxWidth" />
+                            </EditTemplate>
+                        </RadzenGridColumn>
+                        <RadzenGridColumn TItem="CaseViewModel" Property="CaseType" Title="Typ Sprawy">
+                            <Template Context="cs">
+                                <span Style="@(Gvm.TableFontSize)">@(cs.CaseType)</span>
+                            </Template>
+                            <EditTemplate Context="cs">
+                                <RadzenTextBox @bind-Value="cs.CaseType" Name="Typ sprawy" Style="@Gvm.FormInputBoxWidth" />
+                            </EditTemplate>
+                        </RadzenGridColumn>
+                        <RadzenGridColumn TItem="CaseViewModel" Property="Description" Title="Opis">
+                            <Template Context="cs">
+                                <span Style="@(Gvm.TableFontSize)">@(cs.Description)</span>
+                            </Template>
+                            <EditTemplate Context="cs">
+                                <Radzen.Blazor.RadzenTextArea @bind-Value="cs.Description" Name="Description" Style="@Gvm.FormInputBoxWidth" />
+                                <RadzenLengthValidator Max="500" Text="Maksymalnie 500 znaków!" Component="Description" Popup="true" />
+                            </EditTemplate>
+                        </RadzenGridColumn>
 
+                        <RadzenGridColumn TItem="CaseViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="80px">
+                            <Template Context="cs">
+                                <RadzenButton Icon="edit" Size="ButtonSize.Small" Click="@((args) => CasesStore.EditCaseRow(cs))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Edytuj", Style = Gvm.ToolTipStyle }))">
+                                </RadzenButton>
+                            </Template>
+                            <EditTemplate Context="cs">
+                                <RadzenButton Icon="save" Size="ButtonSize.Small" Click="@((args) => CasesStore.SaveCaseRow(cs))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Zapisz", Style = Gvm.ToolTipStyle }))">
+                                </RadzenButton>
+                                <RadzenButton Icon="cancel" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Success" Click="@((args) => CasesStore.CancelEditCaseRow(cs))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Anuluj", Style = Gvm.ToolTipStyle }))">
+                                </RadzenButton>
+                            </EditTemplate>
+                        </RadzenGridColumn>
+                        <RadzenGridColumn TItem="CaseViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="45px">
+                            <Template Context="cs">
+                                <RadzenButton ButtonStyle="ButtonStyle.Warning" Icon="archive" Size="ButtonSize.Small" Click="@(async (args) => await CasesStore.ArchivizeCase(cs))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Archiwizuj", Style = Gvm.ToolTipStyle }))">
+                                </RadzenButton>
+                            </Template>
+                        </RadzenGridColumn>
+                        <RadzenGridColumn TItem="CaseViewModel" Context="order" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="45px">
+                            <Template Context="cs">
+                                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@(async (args) => await CasesStore.DeleteCaseRow(cs))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Zamknij", Style = Gvm.ToolTipStyle }))">
+                                </RadzenButton>
+                            </Template>
+                            <EditTemplate Context="cs">
+                            </EditTemplate>
+                        </RadzenGridColumn>
+
+                    </Columns>
+                </RadzenGrid>
+            </div>
+        </div>
+
+        @if (CasesStore.GetState().SelectedCase != null)
+        {
+            <div class="details">
+                <p><strong>Nazwa:</strong> @CasesStore.GetState().SelectedCase.Name</p>
+                <p><strong>Sygnatura:</strong> @CasesStore.GetState().SelectedCase.Signature</p>
+                <p><strong>Data utworzenia:</strong> @CasesStore.GetState().SelectedCase.Created</p>
+                <p><strong>Typ Sprawy:</strong> @CasesStore.GetState().SelectedCase.CaseType</p>
+                <p><strong>Opis:</strong> @CasesStore.GetState().SelectedCase.Description</p>
+                <p><strong>Data zmiany:</strong> @CasesStore.GetState().SelectedCase.Updated</p>
+            </div>
+
+            @*<h3>Aktywna sprawa - @App.ActiveClientWithData.SelectedCase.Name</h3>*@
+
+            <div class="row-section">
+                <RadzenTabs>
+                    <Tabs>
+                        <div>
+                            <RadzenTabsItem Text="Kalendarz Sprawy">
+                                <RadzenScheduler @ref="CasesStore.GetState().CasesScheduler" style="height: 768px;"
+                                                 TItem="ReminderViewModel"
+                                                 Data="@CasesStore.GetState().SelectedCase.Reminders"
+                                                 StartProperty="Start"
+                                                 EndProperty="End"
+                                                 TextProperty="DisplayTextShort"
+                                                 SelectedIndex="2"
+                                                 SlotSelect="@CasesStore.OnSlotSelect"
+                                                 AppointmentSelect="@CasesStore.OnAppointmentSelect"
+                                                 AppointmentRender="@CasesStore.OnAppointmentRender"
+                                                 TodayText="Dzisiaj">
+                                    <ChildContent>
+                                        <RadzenDayView Text="Dzień" StartTime="@(new TimeSpan(0, 0, 0))" EndTime="@(new TimeSpan(24, 0, 0))" />
+                                        <RadzenWeekView Text="Tydzień" StartTime="@(new TimeSpan(0, 0, 0))" EndTime="@(new TimeSpan(24, 0, 0))" />
+                                        <RadzenMonthView Text="Miesiąc" />
+                                    </ChildContent>
+                                </RadzenScheduler>
+                            </RadzenTabsItem>
+                        </div>
+                        <div>
+                            <RadzenTabsItem Text="Notatki">
+                                <div>
+                                    <RadzenTemplateForm Data="@CasesStore.GetState().NewNote" Submit="@(async (CreateNote.Request args) => { await CasesStore.CreateNewNote(args); })">
+
+                                        <RadzenFieldset Text="Dodaj notatkę">
+                                            <div class="form">
+                                                <div class="text">
+                                                    <div class="label">
+                                                        <RadzenLabel Text="Tytuł" />
+                                                    </div>
+                                                    <RadzenTextBox Placeholder="Tytuł..." style="@(Gvm.FormInputBoxWidth)" @bind-Value="CasesStore.GetState().NewNote.Name" Name="Name" />
+                                                    <RadzenRequiredValidator Component="Name" Text="Name cannot be empty!" />
+                                                    <RadzenLengthValidator Max="50" Text="Max 50 characters!" Component="Name" />
+                                                </div>
+                                                <div class="text">
+                                                    <div class="label">
+                                                        <RadzenLabel Text="Notatka" />
+                                                    </div>
+                                                    <RadzenTextArea Placeholder="Message..." style="@(Gvm.FormInputBoxWidth)" @bind-Value="CasesStore.GetState().NewNote.Message" Name="Message" />
+                                                    <RadzenLengthValidator Max="500" Text="Max 500 characters!" Component="Message" />
+                                                </div>
+
+                                            </div>
+                                            <div class="form-btn">
+                                                <div class="btn-add">
+                                                    <div>
+                                                        <RadzenButton ButtonType="ButtonType.Submit" Icon="save" Text="Zapisz" ButtonStyle="ButtonStyle.Secondary" Style="@(Gvm.GeneralButton)" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </RadzenFieldset>
+                                    </RadzenTemplateForm>
+                                </div>
+                                <div>
+                                    <div>
+                                        <RadzenGrid @ref="CasesStore.GetState().NotesGrid" AllowFiltering="true" AllowPaging="true" PageSize="10" AllowSorting="true" RowSelect="@(args => CasesStore.ActiveNoteChange(args))"
+                                                    Data="@CasesStore.GetState().SelectedCase.Notes" TItem="NoteViewModel" RowUpdate="@CasesStore.OnUpdateNoteRow">
+                                            <Columns>
+                                                <RadzenGridColumn TItem="NoteViewModel" Property="Name" Title="Nazwa">
+                                                    <Template Context="note">
+                                                        <span Style="@(Gvm.TableFontSize)">@(note.Name)</span>
+                                                    </Template>
+                                                    <EditTemplate Context="note">
+                                                        <RadzenTextBox @bind-Value="note.Name" Style="@(Gvm.FormInputBoxWidth)" Name="Name" />
+                                                        <RadzenRequiredValidator Component="Name" Text="Name cannot be empty!" />
+                                                        <RadzenLengthValidator Max="50" Text="Max 50 characters!" Component="Name" />
+                                                    </EditTemplate>
+                                                </RadzenGridColumn>
+                                                <RadzenGridColumn TItem="NoteViewModel" Property="Message" Title="Opis">
+                                                    <Template Context="note">
+                                                        <span Style="@(Gvm.TableFontSize)">@(note.Message)</span>
+                                                    </Template>
+                                                    <EditTemplate Context="note">
+                                                        <RadzenTextArea @bind-Value="note.Message" style="@(Gvm.FormInputBoxWidth)" Name="Message" />
+                                                        <RadzenLengthValidator Max="500" Text="Max 500 characters!" Component="Message" />
+                                                    </EditTemplate>
+                                                </RadzenGridColumn>
+
+                                                <RadzenGridColumn TItem="NoteViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="80px">
+                                                    <Template Context="note">
+                                                        <RadzenButton Icon="edit" Size="ButtonSize.Small" Click="@((args) => CasesStore.EditNoteRow(note))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Edytuj", Style = Gvm.ToolTipStyle }))">
+                                                        </RadzenButton>
+                                                    </Template>
+                                                    <EditTemplate Context="note">
+                                                        <RadzenButton Icon="save" Size="ButtonSize.Small" Click="@((args) => CasesStore.SaveNoteRow(note))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Zapisz", Style = Gvm.ToolTipStyle }))">
+                                                        </RadzenButton>
+                                                        <RadzenButton Icon="cancel" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Success" Click="@((args) => CasesStore.CancelEditNoteRow(note))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Anuluj", Style = Gvm.ToolTipStyle }))">
+                                                        </RadzenButton>
+                                                    </EditTemplate>
+                                                </RadzenGridColumn>
+                                                <RadzenGridColumn TItem="NoteViewModel" Context="order" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="45px">
+                                                    <Template Context="note">
+                                                        <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@(async (args) => await CasesStore.DeleteNoteRow(note))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Zamknij", Style = Gvm.ToolTipStyle }))">
+                                                        </RadzenButton>
+                                                    </Template>
+                                                    <EditTemplate Context="note">
+                                                    </EditTemplate>
+                                                </RadzenGridColumn>
+                                            </Columns>
+                                        </RadzenGrid>
+                                    </div>
+
+                                    @if (CasesStore.GetState().SelectedCase != null && CasesStore.GetState().SelectedNote != null)
+                                    {
+                                        <div class="details">
+                                            <p><strong>Tytuł: </strong>@CasesStore.GetState().SelectedNote.Name</p>
+                                            <p><strong>Treść: </strong>@CasesStore.GetState().SelectedNote.Message</p>
+
+                                        </div>
+                                    }
+
+                                </div>
+                            </RadzenTabsItem>
+                        </div>
+
+                        <RadzenTabsItem Text="Osoby Kontaktowe">
+                            <RadzenTemplateForm Data="@CasesStore.GetState().NewContact" Submit="@(async (CreateContactPerson.Request args) => { await CasesStore.SubmitNewContact(args); })">
+                                <RadzenFieldset Text="Osoba Kontaktowa">
+                                    <div class="help-box">
+                                        <i class="user-icon"><img src="/Images/icons8-reception-36.png" /></i>
+
+                                        @if (infoBoxVisibleIII)
+                                        {
+                                            <div class="info-text">
+                                                <p>Zarządzaj listą swoich klientów. Użyj guzika "Dodaj Nowego Klienta",aby uzupełnić listę kontaktów.</p>
+                                                <p>Edytuj oraz usuwaj Klientów z głównej listy. Tekst do zupełnienia.</p>
+                                            </div>
+                                        }
+                                        <button class="info" @onclick="ShowHideInfoBoxIII"></button>
+                                    </div>
+
+                                    <div class="form">
+                                        <div class="text">
+                                            <div class="label">
+                                                <RadzenLabel Text="Imię" />
+                                            </div>
+                                            <RadzenTextArea Placeholder="Imię..." @bind-Value="CasesStore.GetState().NewContact.Name" style="@(Gvm.FormInputBoxWidth)" Name="Name" />
+                                            <RadzenRequiredValidator Component="Name" Text="Name cannot be empty!" />
+                                            <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Name" />
+                                        </div>
+                                        <div class="text">
+                                            <div class="label">
+                                                <RadzenLabel Text="Nazwisko" />
+                                            </div>
+                                            <RadzenTextArea Placeholder="Nazwisko..." @bind-Value="CasesStore.GetState().NewContact.Surname" style="@(Gvm.FormInputBoxWidth)" Name="Surname" />
+                                            <RadzenRequiredValidator Component="Surname" Text="Name cannot be empty!" />
+                                            <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Surname" />
+                                        </div>
+                                        <div class="text">
+                                            <div class="label">
+                                                <RadzenLabel Text="Adres" />
+                                            </div>
+                                            <RadzenTextArea Placeholder="Adres..." @bind-Value="CasesStore.GetState().NewContact.Address" style="@(Gvm.FormInputBoxWidth)" Name="Address" />
+                                            <RadzenLengthValidator Max="500" Text="Maksymalnie 500 znaków!" Component="Address" />
+                                        </div>
+                                    </div>
+                                    <div class="form">
+                                        <div class="text">
+                                            <div class="label">
+                                                <RadzenLabel Text="Telefon" />
+                                            </div>
+                                            <RadzenTextBox Placeholder="Telefon..." @bind-Value="CasesStore.GetState().NewContact.PhoneNumber" style="@(Gvm.FormInputBoxWidth)" Name="PhoneNumber1" />
+                                            <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="PhoneNumber1" />
+                                        </div>
+                                        <div class="text">
+                                            <div class="label">
+                                                <RadzenLabel Text="Telefon2" />
+                                            </div>
+                                            <RadzenTextBox Placeholder="Telefon..." @bind-Value="CasesStore.GetState().NewContact.AlternativePhoneNumber" style="@(Gvm.FormInputBoxWidth)" Name="PhoneNumber2" />
+                                            <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="PhoneNumber2" />
+                                        </div>
+                                        <div class="text">
+                                            <div class="label">
+                                                <RadzenLabel Text="Email" />
+                                            </div>
+                                            <RadzenTextBox Placeholder="Adres Email..." @bind-Value="CasesStore.GetState().NewContact.Email" style="@(Gvm.FormInputBoxWidth)" Name="Email" />
+                                            <RadzenEmailValidator Component="Email" Text="Nieprawidłowy adres Email!" />
+                                            <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Email" />
+                                        </div>
+                                    </div>
+                                    <div class="form-btn">
+                                        <div class="btn-add">
+                                            <RadzenButton ButtonType="ButtonType.Submit" Icon="save" Text="Dodaj Kontakt" ButtonStyle="ButtonStyle.Secondary" Style="@(Gvm.GeneralButton)" />
+                                        </div>
+                                    </div>
+
+                                </RadzenFieldset>
+                            </RadzenTemplateForm>
+
+                            <RadzenGrid @ref="CasesStore.GetState().ContactsGrid" AllowFiltering="true" AllowPaging="true" PageSize="10" AllowSorting="true"
+                                        Data="@CasesStore.GetState().SelectedCase.ContactPeople" TItem="ContactPersonViewModel" RowUpdate="@CasesStore.OnUpdateContactRow" RowSelect="@(args => CasesStore.ContactSelected(args))">
+                                <Columns>
+                                    <RadzenGridColumn TItem="ContactPersonViewModel" Property="Name" Title="Nazwa">
+                                        <Template Context="contact">
+                                            <span Style="@(Gvm.TableFontSize)">@(contact.Name)</span>
+                                        </Template>
+                                        <EditTemplate Context="contact">
+                                            <RadzenTextBox @bind-Value="contact.Name" Name="Name" Style="@(Gvm.FormInputBoxWidth)" />
+                                            <RadzenRequiredValidator Text="Inię nie może być puste!" Component="Name" Popup="true" />
+                                            <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Name" Popup="true" />
+                                        </EditTemplate>
+                                    </RadzenGridColumn>
+
+                                    <RadzenGridColumn TItem="ContactPersonViewModel" Property="Surname" Title="Nazwisko">
+                                        <Template Context="contact">
+                                            <span Style="@(Gvm.TableFontSize)">@(contact.Surname)</span>
+                                        </Template>
+                                        <EditTemplate Context="contact">
+                                            <RadzenTextBox @bind-Value="contact.Surname" Name="Surname" Style="@(Gvm.FormInputBoxWidth)" />
+                                            <RadzenRequiredValidator Text="Nazwosko nie może być puste!" Component="Surname" Popup="true" />
+                                            <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Surname" Popup="true" />
+                                        </EditTemplate>
+                                    </RadzenGridColumn>
+                                    <RadzenGridColumn TItem="ContactPersonViewModel" Property="Email" Title="Email" Width="100px">
+                                        <Template Context="contact">
+                                            <span Style="@(Gvm.TableFontSize)">@(contact.Email)</span>
+                                        </Template>
+                                        <EditTemplate Context="contact">
+                                            <RadzenTextBox @bind-Value="contact.Email" Name="Nazwa" Style="@(Gvm.FormInputBoxWidth)" />
+                                        </EditTemplate>
+                                    </RadzenGridColumn>
+                                    <RadzenGridColumn TItem="ContactPersonViewModel" Property="PhoneNumber" Title="Telefon">
+                                        <Template Context="contact">
+                                            <span Style="@(Gvm.TableFontSize)">@(contact.PhoneNumber)</span>
+                                        </Template>
+                                        <EditTemplate Context="contact">
+                                            <RadzenTextBox @bind-Value="contact.PhoneNumber" Name="PhoneNumber" Style="@(Gvm.FormInputBoxWidth)" />
+                                        </EditTemplate>
+                                    </RadzenGridColumn>
+                                    <RadzenGridColumn TItem="ContactPersonViewModel" Property="AlternativePhoneNumber" Title="Drugi Telefon">
+                                        <Template Context="contact">
+                                            <span Style="@(Gvm.TableFontSize)">@(contact.AlternativePhoneNumber)</span>
+                                        </Template>
+                                        <EditTemplate Context="contact">
+                                            <RadzenTextBox @bind-Value="contact.AlternativePhoneNumber" Name="AlternativePhoneNumber" Style="@(Gvm.FormInputBoxWidth)" />
+                                        </EditTemplate>
+                                    </RadzenGridColumn>
+                                    <RadzenGridColumn TItem="ContactPersonViewModel" Property="Address" Title="Addres">
+                                        <Template Context="contact">
+                                            <span Style="@(Gvm.TableFontSize)">@(contact.Address)</span>
+                                        </Template>
+                                        <EditTemplate Context="contact">
+                                            <RadzenTextBox @bind-Value="contact.Address" Name="Address" Style="@(Gvm.FormInputBoxWidth)" />
+                                        </EditTemplate>
+                                    </RadzenGridColumn>
+
+                                    <RadzenGridColumn TItem="ContactPersonViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="80px">
+                                        <Template Context="c">
+                                            <RadzenButton Icon="edit" Size="ButtonSize.Small" Click="@(args => CasesStore.EditContactRow(c))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Edytuj", Style = Gvm.ToolTipStyle }))">
+                                            </RadzenButton>
+                                        </Template>
+                                        <EditTemplate Context="c">
+                                            <RadzenButton Icon="save" Size="ButtonSize.Small" Click="@((args) => CasesStore.SaveContactRow(c))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Zapisz", Style = Gvm.ToolTipStyle }))">
+                                            </RadzenButton>
+                                            <RadzenButton Icon="cancel" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Success" Click="@((args) => CasesStore.CancelContactEdit(c))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Anuluj", Style = Gvm.ToolTipStyle }))">
+                                            </RadzenButton>
+                                        </EditTemplate>
+                                    </RadzenGridColumn>
+                                    <RadzenGridColumn TItem="ContactPersonViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="45px">
+                                        <Template Context="c">
+                                            <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@(async (args) => await CasesStore.DeleteContactRow(c))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Zamknij", Style = Gvm.ToolTipStyle }))">
+                                            </RadzenButton>
+                                        </Template>
+                                        <EditTemplate Context="client">
+                                        </EditTemplate>
+                                    </RadzenGridColumn>
+                                </Columns>
+                            </RadzenGrid>
+
+                            @if (CasesStore.GetState().SelectedContact != null)
+                            {
+                                <div class="details">
+                                    <p><strong>Imię:</strong> @CasesStore.GetState().SelectedContact.Name</p>
+                                    <p><strong>Nazwisko:</strong> @CasesStore.GetState().SelectedContact.Surname</p>
+                                    <p><strong>Adres:</strong> @CasesStore.GetState().SelectedContact.Address</p>
+                                    <p><strong>Telefon 1:</strong> @CasesStore.GetState().SelectedContact.PhoneNumber</p>
+                                    <p><strong>Telefon 2:</strong> @CasesStore.GetState().SelectedContact.AlternativePhoneNumber</p>
+                                    <p><strong>Email:</strong> @CasesStore.GetState().SelectedContact.Email</p>
+                                    <p><strong>Zmienione przez:</strong> @CasesStore.GetState().SelectedContact.UpdatedBy</p>
+                                    <p><strong>Data zmiany:</strong> @CasesStore.GetState().SelectedContact.Updated</p>
+                                    <p><strong>Data utworzenia:</strong> @CasesStore.GetState().SelectedContact.Created</p>
+                                </div>
+                            }
+
+                        </RadzenTabsItem>
+                    </Tabs>
+                </RadzenTabs>
+            </div>
+        }
+    </div>
 }

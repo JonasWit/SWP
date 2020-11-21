@@ -1,4 +1,4 @@
-﻿@if (!initializing)
+﻿@if (!MainStore.Loading)
 {
     @if (MainStore.GetState().User.Profile != null)
     {
@@ -39,7 +39,7 @@
                         </li>
                         <li class="nav-item  ">
                             <a class="nav-link @(MainStore.GetState().ActivePanel == LegalAppPanels.Cases ? "active" : "")" @onclick="@(() => MainStore.SetActivePanel(LegalAppPanels.Cases))">
-                                <i><img  src="/Images/icons8-todo-list-36.png" /></i><span class="@(showSidebar ? "link-text" : "link-text-hidden")"> Sprawy</span>
+                                <i><img src="/Images/icons8-todo-list-36.png" /></i><span class="@(showSidebar ? "link-text" : "link-text-hidden")"> Sprawy</span>
                             </a>
                         </li>
                         <li class="nav-item ">
@@ -87,48 +87,41 @@
                 <RadzenDialog />
                 <RadzenTooltip />
                 <RadzenNotification />
-                @if (!MainStore.GetState().Loading)
+                @switch (MainStore.GetState().ActivePanel)
                 {
-                    @switch (MainStore.GetState().ActivePanel)
-                    {
-                        case LegalAppPanels.Clients:
-                            <LegalSwpClients />
-                            break;
-                        case LegalAppPanels.Calendar:
-                            <LegalSwpCalendar />
-                            break;
-                        case LegalAppPanels.Cases:
-                            <LegalSwpCases />
-                            break;
-                        case LegalAppPanels.MyApp:
-                            <LegalSwpMyApp />
-                            break;
-                        case LegalAppPanels.ErrorPage:
-                            <LegalSwpError />
-                            break;
-                        case LegalAppPanels.Finance:
-                            <LegalSwpFinance />
-                            break;
-                        case LegalAppPanels.Productivity:
-                            <LegalSwpProductivity />
-                            break;
-                        case LegalAppPanels.ClientJobs:
-                            <LegalSwpClientJobs />
-                            break;
-                        case LegalAppPanels.Archive:
-                            <LegalSwpArchive />
-                            break;
-                        case LegalAppPanels.ClientDetails:
-                            <LegalSwpClientDetails />
-                            break;
-                        default:
-                            <LegalSwpMyApp />
-                            break;
-                    }
-                }
-                else
-                {
-                    <LoaderComponent @bind-Message="MainStore.GetState().LoadingMessage"></LoaderComponent>
+                    case LegalAppPanels.Clients:
+                        <LegalSwpClients />
+                        break;
+                    case LegalAppPanels.Calendar:
+                        <LegalSwpCalendar />
+                        break;
+                    case LegalAppPanels.Cases:
+                        <LegalSwpCases />
+                        break;
+                    case LegalAppPanels.MyApp:
+                        <LegalSwpMyApp />
+                        break;
+                    case LegalAppPanels.ErrorPage:
+                        <LegalSwpError />
+                        break;
+                    case LegalAppPanels.Finance:
+                        <LegalSwpFinance />
+                        break;
+                    case LegalAppPanels.Productivity:
+                        <LegalSwpProductivity />
+                        break;
+                    case LegalAppPanels.ClientJobs:
+                        <LegalSwpClientJobs />
+                        break;
+                    case LegalAppPanels.Archive:
+                        <LegalSwpArchive />
+                        break;
+                    case LegalAppPanels.ClientDetails:
+                        <LegalSwpClientDetails />
+                        break;
+                    default:
+                        <LegalSwpMyApp />
+                        break;
                 }
             </div>
 
@@ -142,5 +135,5 @@
 }
 else
 {
-    <LoaderComponent Message="@("Wczytywanie...")"></LoaderComponent>
+    <LoaderComponent Message="@MainStore.LoadingMessage"></LoaderComponent>
 }

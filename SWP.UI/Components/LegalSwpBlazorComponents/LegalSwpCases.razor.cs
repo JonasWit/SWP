@@ -28,10 +28,12 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
 
         protected override void OnInitialized()
         {
+            CasesStore.EnableLoading("Wczytywanie Spraw...");
             MainStore.AddStateChangeListener(UpdateView);
             CasesStore.AddStateChangeListener(UpdateView);
             MainStore.ActiveClientCasesReload();
             CasesStore.Initialize();
+            CasesStore.DisableLoading();
         }
 
         public bool showFirstSection = false;
@@ -48,5 +50,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
 
         public bool infoBoxVisibleIII = false;
         public void ShowHideInfoBoxIII() => infoBoxVisibleIII = !infoBoxVisibleIII;
+
+        private void ShowTooltip(ElementReference elementReference, TooltipOptions options = null) => TooltipService.Open(elementReference, options.Text, options);
     }
 }

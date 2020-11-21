@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
 {
-    public class CasesState
+    public class CasesState : StateBase
     {
         public CreateCase.Request NewCase { get; set; } = new CreateCase.Request();
         public CreateNote.Request NewNote { get; set; } = new CreateNote.Request();
@@ -50,6 +50,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
         {
        
         }
+
         public void ClearSelectedCase() => _state.SelectedCase = null;
 
         public void SetSelectedCase(CaseViewModel entity) => _state.SelectedCase = entity;

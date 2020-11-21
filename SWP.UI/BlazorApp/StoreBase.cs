@@ -14,8 +14,22 @@ namespace SWP.UI.BlazorApp
         protected readonly NotificationService _notificationService;
         protected readonly DialogService _dialogService;
 
-        protected bool Loading { get; set; }
+        public bool Loading { get; set; }
+        public string LoadingMessage { get; set; }
 
+        public void EnableLoading(string message)
+        {
+            LoadingMessage = message;
+            Loading = true;
+            BroadcastStateChange();
+        }
+
+        public void DisableLoading()
+        {
+            Loading = false;
+            BroadcastStateChange();
+        }
+ 
         public void ShowNotification(NotificationSeverity severity, string summary, string detail, int duration) =>
             _notificationService.Notify(new NotificationMessage() { Severity = severity, Summary = summary, Detail = detail, Duration = duration });
 
@@ -61,7 +75,7 @@ namespace SWP.UI.BlazorApp
 
         protected void BroadcastStateChange()
         {
-            _listeners.Invoke();
+            _listeners?.Invoke();
         }
 
         #endregion

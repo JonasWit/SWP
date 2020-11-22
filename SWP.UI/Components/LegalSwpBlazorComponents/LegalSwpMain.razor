@@ -73,9 +73,9 @@
 
                 </ul>
                 <ul class="top-items">
-                    <li class="@(showTopNav ? "user" : "link-text-hidden")"><strong>Klient:</strong> <p>@(MainStore.GetState().ActiveClient != null ? MainStore.GetState().ActiveClient.Name : "Brak Aktywnego Klienta" )</p></li>
-                    <li class="@(showTopNav ? "user" : "link-text-hidden")"><strong>Użytkownik:</strong><p> @MainStore.GetState().User.UserName</p></li>
-                    <li class="@(showTopNav ? "user" : "link-text-hidden")"><strong>Profil:</strong><p>@MainStore.GetState().User.Profile</p> </li>
+                    <li class="@(showTopNav ? "user" : "link-text-hidden")"><p><strong>Klient:</strong></p> <p>@(MainStore.GetState().ActiveClient != null ? MainStore.GetState().ActiveClient.Name : "Brak Aktywnego Klienta" )</p></li>
+                    <li class="@(showTopNav ? "user" : "link-text-hidden")"><p><strong>Użytkownik:</strong></p><p> @MainStore.GetState().User.UserName</p></li>
+                    <li class="@(showTopNav ? "user" : "link-text-hidden")"><p><strong>Profil:</strong></p><p>@MainStore.GetState().User.Profile</p> </li>
                 
                 </ul>
                 <div ><button class="top-toggle" @onclick="ShowHideTopNav"><span class="line"></span></button></div>

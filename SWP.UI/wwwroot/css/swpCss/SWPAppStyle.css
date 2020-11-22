@@ -173,7 +173,7 @@ ul, li {
 
     #top-menu {
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
         margin-left: 8rem;
     }
 
@@ -181,30 +181,29 @@ ul, li {
         display: flex;
         flex-direction: row;
         justify-content: space-between;
-        margin: auto;
+        
     }
-
-
 
 
     .top-items {
         display: flex;
         flex-direction: row;
-        justify-content: space-around;
-    }
+        
+
+         
+        
+        }
+
+        .top-items li {
+            padding: 15px;
+            word-wrap: break-word;
+        }
 
     .logout {
         margin-top: 20px;
-        padding-left: 25%;
+        padding-left: 180%;
     }
 }
-
-
-
-
-
-
-
 
 
 @media screen and (max-width : 768px) {
@@ -283,6 +282,7 @@ ul, li {
     .user {
         padding: 0px;
         margin-right: 0px;
+        word-wrap: break-word;
     }
 
     .logout {
@@ -317,6 +317,7 @@ ul, li {
         display: flex;
         flex-direction: row;
         justify-content: space-around;
+        flex-wrap: wrap;
     }
 
     .input p {
@@ -655,7 +656,7 @@ ul, li {
 
 .rz-event {
     position: absolute;
-    padding: 0px !important;
+    padding: 2px !important;
     height: 1.75rem !important;
     font-size: 12px;
 }

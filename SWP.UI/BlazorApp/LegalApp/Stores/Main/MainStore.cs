@@ -90,9 +90,9 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
         {
             EnableLoading(DataLoadingMessage);
 
-            if (value != null)
+            try
             {
-                try
+                if (value != null)
                 {
                     using var scope = _serviceProvider.CreateScope();
                     var getClient = scope.ServiceProvider.GetRequiredService<GetClient>();
@@ -100,23 +100,25 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
                     _state.ActiveClient = getClient.GetCleanClient(int.Parse(value.ToString()));
                     BroadcastStateChange();
                 }
-                catch (Exception ex)
+                else
                 {
-                    await ShowErrorPage(ex);
+                    if (_state.ActivePanel != LegalAppPanels.Calendar)
+                    {
+                        SetActivePanel(LegalAppPanels.MyApp);
+                    }
+
+                    _state.ActiveClient = null;
+                    BroadcastStateChange();
                 }
             }
-            else
+            catch (Exception ex)
             {
-                if (_state.ActivePanel != LegalAppPanels.Calendar)
-                {
-                    SetActivePanel(LegalAppPanels.MyApp);
-                }
-
-                _state.ActiveClient = null;
-                BroadcastStateChange();
+                await ShowErrorPage(ex);
             }
-
-            DisableLoading();
+            finally
+            {
+                DisableLoading();
+            }
         }
 
         public async Task ReloadActiveClient()

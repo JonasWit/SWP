@@ -21,7 +21,7 @@ else
                                  EndProperty="End"
                                  TextProperty="DisplayText"
                                  SelectedIndex="2"
-                                 AppointmentSelect="@CalendarStore.OnAppointmentSelect"
+                                 AppointmentSelect="OnAppointmentSelect"
                                  TodayText="Dzisiaj"
                                  AppointmentRender="@CalendarStore.OnAppointmentRender">
                     <ChildContent>
@@ -40,7 +40,7 @@ else
                                  EndProperty="End"
                                  TextProperty="DisplayTextShort"
                                  SelectedIndex="2"
-                                 AppointmentSelect="@CalendarStore.OnAppointmentSelect"
+                                 AppointmentSelect="OnAppointmentSelect"
                                  TodayText="Dzisiaj"
                                  AppointmentRender="@CalendarStore.OnAppointmentRender">
                     <ChildContent>
@@ -63,7 +63,7 @@ else
                 </Items>
             </RadzenSelectBar>
 
-            <RadzenGrid @ref="CalendarStore.GetState().RemindersGrid" AllowFiltering="true" AllowPaging="true" PageSize="15" AllowSorting="true" RowSelect="@(args => CalendarStore.ActiveReminderChange(args))"
+            <RadzenGrid @ref="CalendarStore.GetState().RemindersGrid" AllowFiltering="true" AllowPaging="true" PageSize="15" AllowSorting="true" RowSelect="@(args => ActiveReminderChange(args))"
                         Data="@(CalendarStore.GetState().ChosenReminderType == 3 ? CalendarStore.GetState().Reminders : CalendarStore.GetState().ChosenReminderType == 2 ? CalendarStore.GetState().Reminders.Where(x => x.IsDeadline) : CalendarStore.GetState().Reminders.Where(x => !x.IsDeadline))" TItem="ReminderViewModel">
                 <Columns>
                     <RadzenGridColumn TItem="ReminderViewModel" Property="IsDeadline" Title="Tremin" Width="60px" Filterable="false">

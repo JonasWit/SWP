@@ -26,7 +26,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
 
             base.OnInitialized();
             MainStore.AddStateChangeListener(UpdateView);
-            await MainStore.InitializeState(ActiveUserId);
+            await MainStore.Initialize(ActiveUserId);
 
             MainStore.DisableLoading();
         }

@@ -2,6 +2,7 @@
 using Radzen;
 using SWP.UI.BlazorApp.LegalApp.Stores.Main;
 using SWP.UI.BlazorApp.LegalApp.Stores.MyApp;
+using SWP.UI.Utilities;
 using System;
 using System.Globalization;
 using System.Threading.Tasks;
@@ -41,7 +42,11 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
             MyAppStore.DisableLoading();
         }
 
-        private string FormatAsPLN(object value) => $"{((double)value).ToString(CultureInfo.CreateSpecificCulture("pl"))} zł";
+        private string FormatAsPLN(object value)
+        {
+            var amount = Convert.ToDouble(value);
+            return amount.FormatPLN();
+        }
 
         private string FormatAsTime(object value)
         {

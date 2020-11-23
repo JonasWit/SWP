@@ -38,7 +38,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
             _errorStore = errorStore;
         }
 
-        public async Task InitializeState(string userId)
+        public async Task Initialize(string userId)
         {
             try
             {
@@ -66,10 +66,6 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
                     StackTrace = ex.StackTrace
                 });
             }
-            finally
-            {
-                BroadcastStateChange();
-            }
         }
 
         private void ReloadClientsDrop()
@@ -94,7 +90,6 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
                     var getClient = scope.ServiceProvider.GetRequiredService<GetClient>();
 
                     _state.ActiveClient = getClient.GetCleanClient(int.Parse(value.ToString()));
-                    BroadcastStateChange();
                 }
                 else
                 {
@@ -104,7 +99,6 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
                     }
 
                     _state.ActiveClient = null;
-                    BroadcastStateChange();
                 }
             }
             catch (Exception ex)

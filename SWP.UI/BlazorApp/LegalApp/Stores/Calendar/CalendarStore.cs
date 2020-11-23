@@ -3,6 +3,7 @@ using Radzen;
 using Radzen.Blazor;
 using SWP.Application.LegalSwp.Cases;
 using SWP.Application.LegalSwp.Reminders;
+using SWP.UI.BlazorApp.LegalApp.Stores.Calendar.Actions;
 using SWP.UI.BlazorApp.LegalApp.Stores.Main;
 using SWP.UI.Components.LegalSwpBlazorComponents.SchedulerInnerComponents;
 using SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data;
@@ -95,7 +96,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Calendar
             BroadcastStateChange();
         }
 
-        public async Task OnAppointmentSelect(SchedulerAppointmentSelectEventArgs<ReminderViewModel> args)
+        private async Task OnAppointmentSelect(SchedulerAppointmentSelectEventArgs<ReminderViewModel> args)
         {
             using var scope = _serviceProvider.CreateScope();
             var getCase = scope.ServiceProvider.GetRequiredService<GetCase>();
@@ -158,7 +159,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Calendar
             }
         }
 
-        public void ActiveReminderChange(object value)
+        private void ActiveReminderChange(object value)
         {
             var input = (ReminderViewModel)value;
             if (input != null)
@@ -171,9 +172,21 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Calendar
             }
         }
 
-        protected override void HandleActions(IAction action)
+        protected override async void HandleActions(IAction action)
         {
-
+            switch (action.Name)
+            {
+                case OnAppointmentSelectAction.OnAppointmentSelect:
+                    var actionTypeI = (OnAppointmentSelectAction)action;
+                    await OnAppointmentSelect(actionTypeI.Args);
+                    break;
+                case ActiveReminderChangeAction.ActiveReminderChange:
+                    var actionTypeII = (ActiveReminderChangeAction)action;
+                    ActiveReminderChange(actionTypeII.Reminder);
+                    break;
+                default:
+                    break;
+            }
         }
 
         public override void CleanUpStore()
@@ -183,6 +196,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Calendar
 
         public override void RefreshSore()
         {
+            _state.SelectedReminder = null;
             RefreshCalendarData();
         }
 

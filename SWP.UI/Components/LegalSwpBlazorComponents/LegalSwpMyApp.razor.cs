@@ -20,12 +20,12 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
 
         public void Dispose()
         {
-            MainStore.RemoveStateChangeListener(UpdateView);
-            MyAppStore.RemoveStateChangeListener(UpdateView);
+            MainStore.RemoveStateChangeListener(RefreshView);
+            MyAppStore.RemoveStateChangeListener(RefreshView);
             MyAppStore.CleanUpStore();
         }
 
-        private void UpdateView()
+        private void RefreshView()
         {
             MyAppStore.RefreshSore();
             StateHasChanged();
@@ -35,8 +35,8 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
         {
             MyAppStore.EnableLoading(MyAppStore.DataLoadingMessage);
 
-            MainStore.AddStateChangeListener(UpdateView);
-            MyAppStore.AddStateChangeListener(UpdateView);
+            MainStore.AddStateChangeListener(RefreshView);
+            MyAppStore.AddStateChangeListener(RefreshView);
             await MyAppStore.Initialize();
 
             MyAppStore.DisableLoading();

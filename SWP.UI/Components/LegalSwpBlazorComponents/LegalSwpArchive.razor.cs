@@ -2,6 +2,7 @@
 using SWP.UI.BlazorApp;
 using SWP.UI.BlazorApp.LegalApp.Stores.Archive;
 using SWP.UI.BlazorApp.LegalApp.Stores.Archive.Actions;
+using SWP.UI.BlazorApp.LegalApp.Stores.Enums;
 using SWP.UI.BlazorApp.LegalApp.Stores.Main;
 using System;
 
@@ -20,21 +21,27 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
 
         public void Dispose()
         {
-            MainStore.RemoveStateChangeListener(UpdateView);
-            ArchiveStore.RemoveStateChangeListener(UpdateView);
+            MainStore.RemoveStateChangeListener(RefreshView);
+            ArchiveStore.RemoveStateChangeListener(RefreshView);
             ArchiveStore.CleanUpStore();
         }
 
-        private void UpdateView()
+        private void RefreshView()
         {
+            if (MainStore.GetState().ActiveClient == null)
+            {
+                MainStore.SetActivePanel(LegalAppPanels.MyApp);
+                return;
+            }
+
             ArchiveStore.RefreshData();
             StateHasChanged();
         }
 
         protected override void OnInitialized()
         {
-            MainStore.AddStateChangeListener(UpdateView);
-            ArchiveStore.AddStateChangeListener(UpdateView);
+            MainStore.AddStateChangeListener(RefreshView);
+            ArchiveStore.AddStateChangeListener(RefreshView);
             ArchiveStore.Initialize();
         }
 

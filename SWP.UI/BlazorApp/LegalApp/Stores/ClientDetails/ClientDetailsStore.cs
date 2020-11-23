@@ -35,10 +35,10 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.ClientDetails
 
         public void Initialize()
         {
-            GetCashMovements(_mainStore.GetState().ActiveClient.Id);
+            GetContactPeople(_mainStore.GetState().ActiveClient.Id);
         }
 
-        public void GetCashMovements(int clientId)
+        public void GetContactPeople(int clientId)
         {
             try
             {
@@ -173,7 +173,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.ClientDetails
 
         public override void RefreshSore()
         {
-            GetCashMovements(_mainStore.GetState().ActiveClient.Id);
+            GetContactPeople(_mainStore.GetState().ActiveClient.Id);
         }
 
         #endregion

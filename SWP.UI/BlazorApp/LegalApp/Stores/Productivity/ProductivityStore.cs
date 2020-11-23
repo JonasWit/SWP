@@ -321,7 +321,9 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Productivity
 
         public override void RefreshSore()
         {
-
+            GetDataForMonthFilter();
+            GetDataForFontFilter();
+            GetTimeRecords(_mainStore.GetState().ActiveClient.Id);
         }
     }
 }

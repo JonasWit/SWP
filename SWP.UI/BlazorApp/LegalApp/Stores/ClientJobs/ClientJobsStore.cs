@@ -34,10 +34,10 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.ClientJobs
 
         public void Initialize()
         {
-            GetCashMovements(_mainStore.GetState().ActiveClient.Id);
+            GetClientJobs(_mainStore.GetState().ActiveClient.Id);
         }
 
-        public void GetCashMovements(int clientId)
+        public void GetClientJobs(int clientId)
         {
             try
             {
@@ -222,7 +222,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.ClientJobs
 
         public override void RefreshSore()
         {
-            GetCashMovements(_mainStore.GetState().ActiveClient.Id);
+            GetClientJobs(_mainStore.GetState().ActiveClient.Id);
         }
     }
 }

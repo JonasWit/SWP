@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Radzen;
 using SWP.UI.BlazorApp.LegalApp.Stores.ClientJobs;
+using SWP.UI.BlazorApp.LegalApp.Stores.Enums;
 using SWP.UI.BlazorApp.LegalApp.Stores.Main;
 using SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data;
 
@@ -21,7 +22,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
 
         public void Dispose()
         {
-            MainStore.RemoveStateChangeListener(UpdateCleanView);
+            MainStore.RemoveStateChangeListener(RefreshView);
             ClientJobsStore.RemoveStateChangeListener(UpdateView);
             ClientJobsStore.CleanUpStore();
         }
@@ -31,15 +32,22 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
             StateHasChanged();
         }
 
-        private void UpdateCleanView()
+        private void RefreshView()
         {
+            if (MainStore.GetState().ActiveClient == null)
+            {
+                MainStore.SetActivePanel(LegalAppPanels.MyApp);
+                return;
+            }
+
             ClientJobsStore.CleanUpStore();
+            ClientJobsStore.RefreshSore();
             StateHasChanged();
         }
 
         protected override void OnInitialized()
         {
-            MainStore.AddStateChangeListener(UpdateCleanView);
+            MainStore.AddStateChangeListener(RefreshView);
             ClientJobsStore.AddStateChangeListener(UpdateView);
             ClientJobsStore.Initialize();
         }

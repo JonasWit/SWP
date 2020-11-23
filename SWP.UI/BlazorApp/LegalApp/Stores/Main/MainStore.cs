@@ -80,16 +80,13 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
 
         public async Task ActiveClientChange(object value)
         {
-            EnableLoading(DataLoadingMessage);
-
             try
             {
                 if (value != null)
                 {
-                    using var scope = _serviceProvider.CreateScope();
-                    var getClient = scope.ServiceProvider.GetRequiredService<GetClient>();
+                    var newId = int.Parse(value.ToString());
 
-                    _state.ActiveClient = getClient.GetCleanClient(int.Parse(value.ToString()));
+                    _state.ActiveClient = _state.Clients.FirstOrDefault(x => x.Id == newId);
                 }
                 else
                 {
@@ -107,7 +104,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
             }
             finally
             {
-                DisableLoading();
+                BroadcastStateChange();
             }
         }
 

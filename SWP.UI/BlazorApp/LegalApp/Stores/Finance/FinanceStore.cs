@@ -237,7 +237,8 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Finance
 
         public override void RefreshSore()
         {
-
+            GetDataForMonthFilter();
+            GetCashMovements(_mainStore.GetState().ActiveClient.Id);
         }
     }
 }

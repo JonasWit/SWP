@@ -54,9 +54,9 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Archive
             }
         }
 
-        public void SelectedArchivizedClientChange(object client) => _state.SelectedArchivizedClient = _state.ArchivizedClients.FirstOrDefault(x => x.Id == int.Parse(client.ToString()));
+        private void SelectedArchivizedClientChange(object client) => _state.SelectedArchivizedClient = _state.ArchivizedClients.FirstOrDefault(x => x.Id == int.Parse(client.ToString()));
 
-        public void SelectedArchivizedCaseChange(object c) => _state.SelectedArchivizedCase = _state.ArchivizedCases.FirstOrDefault(x => x.Id == int.Parse(c.ToString()));
+        private void SelectedArchivizedCaseChange(object c) => _state.SelectedArchivizedCase = _state.ArchivizedCases.FirstOrDefault(x => x.Id == int.Parse(c.ToString()));
 
         private async Task DeleteSelectedClient()
         {
@@ -117,7 +117,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Archive
             }
         }
 
-        public async Task DeleteSelectedCase()
+        private async Task DeleteSelectedCase()
         {
             try
             {
@@ -146,7 +146,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Archive
 
         }
 
-        public async Task RecoverSelectedCase()
+        private async Task RecoverSelectedCase()
         {
             try
             {
@@ -185,6 +185,20 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Archive
                     break;
                 case DeleteSelectedClientAction.DeleteSelectedClient:
                     await DeleteSelectedClient();
+                    break;
+                case DeleteSelectedCaseAction.DeleteSelectedCase:
+                    await DeleteSelectedCase();
+                    break;
+                case RecoverSelectedCaseAction.RecoverSelectedCase:
+                    await RecoverSelectedCase();
+                    break;
+                case SelectedArchivizedClientChangeAction.SelectedArchivizedClientChange:
+                    var actionTypeI = (SelectedArchivizedClientChangeAction)action;
+                    SelectedArchivizedClientChange(actionTypeI.Client);
+                    break;
+                case SelectedArchivizedCaseChangeAction.SelectedArchivizedCaseChange:
+                    var actionTypeII = (SelectedArchivizedCaseChangeAction)action;
+                    SelectedArchivizedCaseChange(actionTypeII.Case);
                     break;
                 default:
                     break;

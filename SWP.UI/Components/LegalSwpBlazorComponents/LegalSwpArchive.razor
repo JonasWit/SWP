@@ -5,13 +5,11 @@
 }
 else
 {
-
     <h1 class="testclass">TEST</h1>
-
 
     <div class="flex-archive">
         <div>
-            <RadzenListBox AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" @bind-Value="ArchvizedClientsFilterValue" Data="@ArchiveStore.GetState().ArchivizedClients" TextProperty="Name" ValueProperty="IdString" Change="@(args => ArchiveStore.SelectedArchivizedClientChange(args))"
+            <RadzenListBox AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" @bind-Value="ArchvizedClientsFilterValue" Data="@ArchiveStore.GetState().ArchivizedClients" TextProperty="Name" ValueProperty="IdString" Change="@(args => SelectedArchivizedClientChange(args))"
                            Style="margin-bottom: 20px; height:100px;" />
         </div>
         <div>
@@ -29,14 +27,11 @@ else
         </div>
 
         <div>
-
-
             @if (MainStore.GetState().ActiveClient != null)
             {<div>
-                    <RadzenListBox AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" @bind-Value="ArchvizedClientsFilterValue" Data="@ArchiveStore.GetState().ArchivizedCases" TextProperty="Name" ValueProperty="IdString" Change="@(args => ArchiveStore.SelectedArchivizedCaseChange(args))"
+                    <RadzenListBox AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" @bind-Value="ArchvizedClientsFilterValue" Data="@ArchiveStore.GetState().ArchivizedCases" TextProperty="Name" ValueProperty="IdString" Change="@(args => SelectedArchivizedCaseChange(args))"
                                    Style="margin-bottom: 20px; height:100px;" />
                 </div>
-
 
                 @if (ArchiveStore.GetState().SelectedArchivizedCase != null)
                 {<div>
@@ -44,14 +39,13 @@ else
 
                             <div>Wybrana Sprawa:</div>
                             <b>@ArchiveStore.GetState().SelectedArchivizedCase.Name</b>
-                            <RadzenButton Click="(async () => await ArchiveStore.RecoverSelectedCase())">Odzyskaj Sprawę</RadzenButton>
-                            <RadzenButton Click="(async () => await ArchiveStore.DeleteSelectedCase())">Usuń Sprawę</RadzenButton>
+                            <RadzenButton Click="RecoverSelectedCase">Odzyskaj Sprawę</RadzenButton>
+                            <RadzenButton Click="DeleteSelectedCase">Usuń Sprawę</RadzenButton>
 
                         </RadzenCard>
                     </div>
                 }
             }
-
         </div>
     </div>
 }

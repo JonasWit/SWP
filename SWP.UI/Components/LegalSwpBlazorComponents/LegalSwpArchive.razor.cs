@@ -18,7 +18,6 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
 
         public string ArchvizedClientsFilterValue;
 
-
         public void Dispose()
         {
             MainStore.RemoveStateChangeListener(UpdateView);
@@ -40,10 +39,19 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
         }
 
         public bool addClientformVisible = false;
+
         public void ShowHideClientFormI() => addClientformVisible = !addClientformVisible;
 
         private void RecoverSelectedClient() => ActionDispatcher.Dispatch(new RecoverSelectedClientAction());
 
         private void DeleteSelectedClient() => ActionDispatcher.Dispatch(new DeleteSelectedClientAction());
+
+        private void RecoverSelectedCase() => ActionDispatcher.Dispatch(new RecoverSelectedCaseAction());
+
+        private void DeleteSelectedCase() => ActionDispatcher.Dispatch(new DeleteSelectedCaseAction());
+
+        private void SelectedArchivizedClientChange(object client) => ActionDispatcher.Dispatch(new SelectedArchivizedClientChangeAction { Client = client });
+
+        private void SelectedArchivizedCaseChange(object c) => ActionDispatcher.Dispatch(new SelectedArchivizedCaseChangeAction { Case = c });
     }
 }

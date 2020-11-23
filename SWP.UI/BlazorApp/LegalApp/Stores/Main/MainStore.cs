@@ -88,6 +88,8 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
 
         public async Task ActiveClientChange(object value)
         {
+            EnableLoading(DataLoadingMessage);
+
             if (value != null)
             {
                 try
@@ -96,14 +98,11 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
                     var getClient = scope.ServiceProvider.GetRequiredService<GetClient>();
 
                     _state.ActiveClient = getClient.GetCleanClient(int.Parse(value.ToString()));
+                    BroadcastStateChange();
                 }
                 catch (Exception ex)
                 {
                     await ShowErrorPage(ex);
-                }
-                finally
-                {
-                    DisableLoading();
                 }
             }
             else
@@ -114,7 +113,10 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
                 }
 
                 _state.ActiveClient = null;
+                BroadcastStateChange();
             }
+
+            DisableLoading();
         }
 
         public async Task ReloadActiveClient()

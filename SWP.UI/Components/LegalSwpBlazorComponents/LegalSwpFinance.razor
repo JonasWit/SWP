@@ -75,7 +75,7 @@
     <div class="show-hide tab-section"><button class="show-hide-btn show-hide-btn-1"><span>Transakcje</span></button></div>
     <div class="row-section">
         <RadzenGrid @ref="FinanceStore.GetState().CashMovementGrid" AllowFiltering="true" AllowPaging="true" PageSize="10" AllowSorting="true" RowSelect="@(args => FinanceStore.ActiveCashMovementChange(args))"
-                    Data="@(FinanceStore.GetState().SelectedMonth == null ? MainStore.GetState().ActiveClient.CashMovements : MainStore.GetState().ActiveClient.CashMovements.Where(x => x.EventDate.Month == FinanceStore.GetState().SelectedMonth.Month && x.EventDate.Year == FinanceStore.GetState().SelectedMonth.Year))" TItem="CashMovementViewModel" RowUpdate="@FinanceStore.OnUpdateCashMovementRow">
+                    Data="@(FinanceStore.GetState().SelectedMonth == null ? FinanceStore.GetState().CashMovements : FinanceStore.GetState().CashMovements.Where(x => x.EventDate.Month == FinanceStore.GetState().SelectedMonth.Month && x.EventDate.Year == FinanceStore.GetState().SelectedMonth.Year))" TItem="CashMovementViewModel" RowUpdate="@FinanceStore.OnUpdateCashMovementRow">
             <Columns>
                 <RadzenGridColumn TItem="CashMovementViewModel" Property="Name" Title="Nazwa">
                     <Template Context="c">
@@ -149,14 +149,14 @@
     </div>
 
     <div class="details">
-        @if (MainStore.GetState().ActiveClient.SelectedCashMovement != null)
+        @if (FinanceStore.GetState().SelectedCashMovement != null)
         {
-            <p><strong>Nazwa: </strong>@MainStore.GetState().ActiveClient.SelectedCashMovement.Name</p>
-            <p><strong>Kwota: </strong>@MainStore.GetState().ActiveClient.SelectedCashMovement.Amount</p>
-            <p><strong>Stworzono przez: </strong>@MainStore.GetState().ActiveClient.SelectedCashMovement.CreatedBy</p>
-            <p><strong>Data utworzenia: </strong>@MainStore.GetState().ActiveClient.SelectedCashMovement.Created</p>
-            <p><strong>Zmieniono przez: </strong>@MainStore.GetState().ActiveClient.SelectedCashMovement.UpdatedBy</p>
-            <p><strong>Ostatnia zmiana: </strong>@MainStore.GetState().ActiveClient.SelectedCashMovement.Updated</p>
+            <p><strong>Nazwa: </strong>@FinanceStore.GetState().SelectedCashMovement.Name</p>
+            <p><strong>Kwota: </strong>@FinanceStore.GetState().SelectedCashMovement.Amount</p>
+            <p><strong>Stworzono przez: </strong>@FinanceStore.GetState().SelectedCashMovement.CreatedBy</p>
+            <p><strong>Data utworzenia: </strong>@FinanceStore.GetState().SelectedCashMovement.Created</p>
+            <p><strong>Zmieniono przez: </strong>@FinanceStore.GetState().SelectedCashMovement.UpdatedBy</p>
+            <p><strong>Ostatnia zmiana: </strong>@FinanceStore.GetState().SelectedCashMovement.Updated</p>
 
         }
         else

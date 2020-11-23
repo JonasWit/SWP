@@ -17,10 +17,11 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Productivity
     {
         public CreateTimeRecord.Request NewTimeRecord { get; set; } = new CreateTimeRecord.Request();
         public LegalTimeSheetReport.ReportData NewTimesheetReport { get; set; } = new LegalTimeSheetReport.ReportData();
-
         public RadzenGrid<TimeRecordViewModel> TimeRecordsGrid { get; set; }
         public FontFilterRecord SelectedFont { get; set; }
         public List<FontFilterRecord> FontsFilterData { get; set; } = new List<FontFilterRecord>();
+        public TimeRecordViewModel SelectedTimeRecord { get; set; }
+        public List<TimeRecordViewModel> TimeRecords { get; set; } = new List<TimeRecordViewModel>();
 
         public class FontFilterRecord
         {
@@ -61,6 +62,32 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Productivity
         {
             GetDataForMonthFilter();
             GetDataForFontFilter();
+            GetTimeRecords(_mainStore.GetState().ActiveClient.Id);
+        }
+
+        public void GetTimeRecords(int clientId)
+        {
+            try
+            {
+                using var scope = _serviceProvider.CreateScope();
+                var getTimeRecords = scope.ServiceProvider.GetRequiredService<GetTimeRecords>();
+
+                _state.TimeRecords = getTimeRecords.Get(clientId).Select(x => (TimeRecordViewModel)x).ToList();
+            }
+            catch (Exception ex)
+            {
+                _mainStore.ShowErrorPage(ex).GetAwaiter();
+            }
+        }
+
+        public string GetTimeSpent()
+        {
+            if (_state.TimeRecords.Count == 0) return "Brak zarejestrowanego czasu.";
+
+            var spentTime = new TimeSpan(_state.TimeRecords.Sum(x => x.RecordedHours), _state.TimeRecords.Sum(x => x.RecordedMinutes), 0);
+            var result = $"Poświęcony czas: {spentTime.Days} dn. {spentTime.Hours} godz. {spentTime.Minutes} min.";
+
+            return result;
         }
 
         public void EditTimeRecordRow(TimeRecordViewModel time) => _state.TimeRecordsGrid.EditRow(time);
@@ -89,8 +116,6 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Productivity
                 };
 
                 var result = await createCashMovement.Create(_mainStore.GetState().ActiveClient.Id, _mainStore.GetState().User.Profile, request);
-
-                _mainStore.AddCashMovementToActiveClient(result);
 
                 ShowNotification(NotificationSeverity.Success, "Sukces!", $"Kwota: {result.Amount} zł, została dodana do Panelu Finanse", GeneralViewModel.NotificationDuration);
                 BroadcastStateChange();
@@ -122,7 +147,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Productivity
                     UpdatedBy = _mainStore.GetState().User.UserName
                 });
 
-                _mainStore.ReplaceTimeRecordFromActiveClient(result);
+                ReplaceTimeRecordFromActiveClient(result);
 
                 await _state.TimeRecordsGrid.Reload();
                 GetDataForMonthFilter();
@@ -153,8 +178,8 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Productivity
 
                 await deleteTimeRecord.Delete(time.Id);
 
-                _mainStore.RemoveTimeRecordFromActiveClient(time.Id);
-                _mainStore.SetSelectedTimeRecord(null);
+                RemoveTimeRecordFromActiveClient(time.Id);
+                SetSelectedTimeRecord(null);
 
                 await _state.TimeRecordsGrid.Reload();
                 GetDataForMonthFilter();
@@ -191,7 +216,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Productivity
                 var result = await createTimeRecord.Create(_mainStore.GetState().ActiveClient.Id, _mainStore.GetState().User.Profile, request);
                 _state.NewTimeRecord = new CreateTimeRecord.Request();
 
-                _mainStore.AddTimeRecordToActiveClient(result);
+                AddTimeRecordToActiveClient(result);
 
                 await _state.TimeRecordsGrid.Reload();
                 GetDataForMonthFilter();
@@ -210,11 +235,11 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Productivity
             var input = (TimeRecordViewModel)value;
             if (value != null)
             {
-                _mainStore.SetSelectedTimeRecord(_mainStore.GetState().ActiveClient.TimeRecords.FirstOrDefault(x => x.Id == input.Id));
+                SetSelectedTimeRecord(_state.TimeRecords.FirstOrDefault(x => x.Id == input.Id));
             }
             else
             {
-                _mainStore.SetSelectedTimeRecord(null);
+                SetSelectedTimeRecord(null);
             }
         }
 
@@ -223,7 +248,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Productivity
             int id = 1;
             _state.MonthsFilterData.Clear();
 
-            foreach (var record in _mainStore.GetState().ActiveClient.TimeRecords)
+            foreach (var record in _state.TimeRecords)
             {
                 var year = record.EventDate.Year;
                 var month = record.EventDate.Month;
@@ -284,9 +309,18 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Productivity
             throw new NotImplementedException();
         }
 
+        public void SetSelectedTimeRecord(TimeRecordViewModel entity) => _state.SelectedTimeRecord = entity;
+
+        public void AddTimeRecordToActiveClient(TimeRecordViewModel entity) => _state.TimeRecords.Add(entity);
+
+        public void ReplaceTimeRecordFromActiveClient(TimeRecordViewModel entity) => _state.TimeRecords[_state.TimeRecords.FindIndex(x => x.Id == entity.Id)] = entity;
+
+        public void RemoveTimeRecordFromActiveClient(int id) => _state.TimeRecords.RemoveAll(x => x.Id == id);
+
         public override void CleanUpStore()
         {
             _state.SelectedMonth = null;
+            _state.SelectedTimeRecord = null;
         }
     }
 }

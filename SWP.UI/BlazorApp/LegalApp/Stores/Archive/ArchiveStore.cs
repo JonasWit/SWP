@@ -155,7 +155,6 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Archive
                     var archiveCases = scope.ServiceProvider.GetRequiredService<ArchiveCases>();
 
                     await archiveCases.RecoverCase(_state.SelectedArchivizedCase.Id, _mainStore.GetState().User.UserName);
-                    _mainStore.ReloadCase(_state.SelectedArchivizedCase.Id);
 
                     ShowNotification(NotificationSeverity.Success, "Sukces!", $"Sprawa: {_state.SelectedArchivizedCase.Name} została odzyskana.", GeneralViewModel.NotificationDuration);
                     _state.SelectedArchivizedClient = null;

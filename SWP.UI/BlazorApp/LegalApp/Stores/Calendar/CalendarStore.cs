@@ -115,18 +115,6 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Calendar
                     await deleteReminder.Delete(result.Id);
                     _state.Reminders.RemoveAll(x => x.Id == result.Id);
 
-                    if (MainStore.GetState().ActiveClient != null)
-                    {
-                        var activeClient = MainStore.GetActiveClient();
-
-                        var c = activeClient.Cases.FirstOrDefault(x => x.Reminders.Any(y => y.Id == result.Id));
-
-                        if (c != null)
-                        {
-                            c.Reminders.RemoveAll(x => x.Id == result.Id);
-                        }
-                    }
-
                     await _state.RemindersScheduler.Reload();
                     ShowNotification(NotificationSeverity.Warning, "Sukces!", $"Przypomnienie: {result.Name} zostało usunięte.", GeneralViewModel.NotificationDuration);
                 }
@@ -148,17 +136,6 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Calendar
                     });
 
                     _state.Reminders[_state.Reminders.FindIndex(x => x.Id == result.Id)] = updatedReminder;
-
-                    if (MainStore.GetState().ActiveClient != null)
-                    {
-                        var c = MainStore.GetState().ActiveClient.Cases.FirstOrDefault(x => x.Reminders.Any(y => y.Id == result.Id));
-
-                        if (c != null)
-                        {
-                            MainStore.GetState().ActiveClient.Cases.FirstOrDefault(x => x.Id == c.Id).Reminders.RemoveAll(x => x.Id == updatedReminder.Id);
-                            MainStore.GetState().ActiveClient.Cases.FirstOrDefault(x => x.Id == c.Id).Reminders.Add(updatedReminder);
-                        }
-                    }
 
                     UpdateRemindersData();
                     await _state.RemindersScheduler.Reload();

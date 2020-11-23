@@ -84,7 +84,7 @@ else
             </div>
             <div class="row-section">
                 <RadzenGrid @ref="CasesStore.GetState().CasesGrid" AllowFiltering="true" AllowPaging="true" PageSize="5" AllowSorting="true"
-                            Data="@MainStore.GetState().ActiveClient.Cases" TItem="CaseViewModel" RowUpdate="@CasesStore.OnUpdateCaseRow" RowSelect="@(args => CasesStore.ActiveCaseChange(args))">
+                            Data="@CasesStore.GetState().Cases" TItem="CaseViewModel" RowUpdate="@CasesStore.OnUpdateCaseRow" RowSelect="@(args => CasesStore.ActiveCaseChange(args))">
                     <Columns>
                         <RadzenGridColumn TItem="CaseViewModel" Property="Name" Title="Nazwa Sprawy">
                             <Template Context="cs">

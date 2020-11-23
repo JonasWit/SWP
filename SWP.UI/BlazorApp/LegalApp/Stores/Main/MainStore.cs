@@ -97,7 +97,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
                     using var scope = _serviceProvider.CreateScope();
                     var getClient = scope.ServiceProvider.GetRequiredService<GetClient>();
 
-                    _state.ActiveClient = getClient.Get(int.Parse(value.ToString()));
+                    _state.ActiveClient = getClient.GetCleanClient(int.Parse(value.ToString()));
                 }
                 catch (Exception ex)
                 {
@@ -193,12 +193,6 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
 
         public void UpdateClientsList(ClientViewModel input) => _state.Clients[_state.Clients.FindIndex(x => x.Id == input.Id)] = input;
 
-        public void UpdateClientContactPerson(ClientContactPerson input) => _state.ActiveClient.ContactPeople[_state.ActiveClient.ContactPeople.FindIndex(x => x.Id == input.Id)] = input;
-
-        public void RemoveClientContactPerson(int id) => _state.ActiveClient.ContactPeople.RemoveAll(x => x.Id == id);
-
-        public void AddClientContactPerson(ClientContactPerson input) => _state.ActiveClient.ContactPeople.Add(input);
-
         public void RefreshClients()
         {
             try
@@ -257,80 +251,6 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
                 ShowErrorPage(ex).GetAwaiter();
             }
         }
-
-        public void ReloadCase(int id)
-        {
-            using var scope = _serviceProvider.CreateScope();
-            var getCase = scope.ServiceProvider.GetRequiredService<GetCase>();
-
-            var caseEntity = getCase.Get(id);
-            _state.ActiveClient.Cases.RemoveAll(x => x.Id == id);
-            _state.ActiveClient.Cases.Add(caseEntity);
-            _state.ActiveClient.Cases = _state.ActiveClient.Cases.OrderBy(x => x.Name).ToList();
-            _state.ActiveClient.Cases.TrimExcess();
-        }
-
-        public void ActiveClientCasesReload()
-        {
-            try
-            {
-                if (_state.ActiveClient != null)
-                {
-                    using var scope = _serviceProvider.CreateScope();
-                    var getCases = scope.ServiceProvider.GetRequiredService<GetCases>();
-
-                    _state.ActiveClient.Cases = getCases.GetCasesForClient(_state.ActiveClient.Id).Select(x => (CaseViewModel)x).ToList();
-                }
-
-                BroadcastStateChange();
-            }
-            catch (Exception ex)
-            {
-                ShowErrorPage(ex).GetAwaiter();
-            }
-        }
-
-        public void ActiveClientJobsReload()
-        {
-            try
-            {
-                if (_state.ActiveClient != null)
-                {
-                    using var scope = _serviceProvider.CreateScope();
-                    var getJobs = scope.ServiceProvider.GetRequiredService<GetJobs>();
-
-                    _state.ActiveClient.Jobs = getJobs.GetClientJobs(_state.ActiveClient.Id).Select(x => (ClientJobViewModel)x).ToList();
-                }
-
-                BroadcastStateChange();
-            }
-            catch (Exception ex)
-            {
-                ShowErrorPage(ex).GetAwaiter();
-            }
-        }
-
-        public void AddCaseToActiveClient(CaseViewModel entity) => _state.ActiveClient.Cases.Add(entity);
-
-        public void RemoveCaseFromActiveClient(int id) => _state.ActiveClient.Cases.RemoveAll(x => x.Id == id);
-
-        public void ReplaceCaseFromActiveClient(CaseViewModel entity) => _state.ActiveClient.Cases[_state.ActiveClient.Cases.FindIndex(x => x.Id == entity.Id)] = entity;
-
-        public void AddCashMovementToActiveClient(CashMovementViewModel entity) => _state.ActiveClient.CashMovements.Add(entity);
-
-        public void RemoveCashMovementFromActiveClient(int id) => _state.ActiveClient.CashMovements.RemoveAll(x => x.Id == id);
-
-        public void ReplaceCashMovementFromActiveClient(CashMovementViewModel entity) => _state.ActiveClient.CashMovements[_state.ActiveClient.CashMovements.FindIndex(x => x.Id == entity.Id)] = entity;
-
-        public void SetSelectedCashMovement(CashMovementViewModel entity) => _state.ActiveClient.SelectedCashMovement = entity;
-
-        public void AddTimeRecordToActiveClient(TimeRecordViewModel entity) => _state.ActiveClient.TimeRecords.Add(entity);
-
-        public void RemoveTimeRecordFromActiveClient(int id) => _state.ActiveClient.CashMovements.RemoveAll(x => x.Id == id);
-
-        public void ReplaceTimeRecordFromActiveClient(TimeRecordViewModel entity) => _state.ActiveClient.TimeRecords[_state.ActiveClient.TimeRecords.FindIndex(x => x.Id == entity.Id)] = entity;
-
-        public void SetSelectedTimeRecord(TimeRecordViewModel entity) => _state.ActiveClient.SelectedTimeRecord = entity;
 
         protected override void HandleActions(IAction action)
         {

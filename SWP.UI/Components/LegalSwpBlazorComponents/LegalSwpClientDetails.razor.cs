@@ -21,22 +21,26 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
 
         public string ArchvizedClientsFilterValue;
 
+        private void ShowTooltip(ElementReference elementReference, TooltipOptions options = null) => TooltipService.Open(elementReference, options.Text, options);
+
         public void Dispose()
         {
-            MainStore.RemoveStateChangeListener(UpdateView);
-            MainStore.RemoveStateChangeListener(ResetSelections);
+            MainStore.RemoveStateChangeListener(UpdateCleanView);
             ClientDetailsStore.RemoveStateChangeListener(UpdateView);
             ClientDetailsStore.CleanUpStore();
         }
 
         private void UpdateView() => StateHasChanged();
 
-        private void ResetSelections() => ClientDetailsStore.ResetSelections();
+        private void UpdateCleanView()
+        {
+            ClientDetailsStore.CleanUpStore();
+            StateHasChanged();
+        }
 
         protected override void OnInitialized()
         {
-            MainStore.AddStateChangeListener(UpdateView);
-            MainStore.AddStateChangeListener(ResetSelections);
+            MainStore.AddStateChangeListener(UpdateCleanView);
             ClientDetailsStore.AddStateChangeListener(UpdateView);
             ClientDetailsStore.Initialize();
         }

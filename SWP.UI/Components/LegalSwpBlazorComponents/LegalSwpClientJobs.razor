@@ -56,7 +56,7 @@ else
     <div class="show-hide tab-section"><button class="show-hide-btn show-hide-btn-1"><span>Lista zadań</span></button></div>
     <div class="row-section">
         <RadzenGrid @ref="ClientJobsStore.GetState().ClientsJobsGrid" AllowFiltering="true" AllowPaging="true" PageSize="10" AllowSorting="true" RowSelect="@(args => ClientJobsStore.ActiveJobChange(args))"
-                    Data="@MainStore.GetState().ActiveClient.Jobs" TItem="ClientJobViewModel" RowUpdate="@ClientJobsStore.OnUpdateClientJobRow">
+                    Data="@ClientJobsStore.GetState().Jobs" TItem="ClientJobViewModel" RowUpdate="@ClientJobsStore.OnUpdateClientJobRow">
             <Columns>
                 <RadzenGridColumn TItem="ClientJobViewModel" Property="Name" Title="Nazwa">
                     <Template Context="job">
@@ -128,7 +128,7 @@ else
     </div>
     <div class="row-section">
         <div class="details">
-            <RadzenListBox AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" @bind-Value="ArchvizedJobsFilterValue" Data="@MainStore.GetState().ActiveClient.ArchivedJobs" TextProperty="Name" ValueProperty="IdString" Change="@(args => ClientJobsStore.SelectedArchivizedClientJobChange(args))" />
+            <RadzenListBox AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" @bind-Value="ArchvizedJobsFilterValue" Data="@ClientJobsStore.GetState().ArchivedJobs" TextProperty="Name" ValueProperty="IdString" Change="@(args => ClientJobsStore.SelectedArchivizedClientJobChange(args))" />
 
 
             @if (ClientJobsStore.GetState().SelectedArchivizedClientJob != null)

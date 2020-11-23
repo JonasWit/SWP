@@ -78,7 +78,7 @@
         </RadzenTemplateForm>
 
         <RadzenGrid @ref="ClientDetailsStore.GetState().ContactsGrid" AllowFiltering="true" AllowPaging="true" PageSize="10" AllowSorting="true"
-                    Data="@MainStore.GetState().ActiveClient.ContactPeople" TItem="ContactPersonViewModel" RowUpdate="@ClientDetailsStore.OnUpdateContactRow" RowSelect="@(args => ClientDetailsStore.ContactSelected(args))">
+                    Data="@ClientDetailsStore.GetState().ContactPeople" TItem="ContactPersonViewModel" RowUpdate="@ClientDetailsStore.OnUpdateContactRow" RowSelect="@(args => ClientDetailsStore.ContactSelected(args))">
             <Columns>
                 <RadzenGridColumn TItem="ContactPersonViewModel" Property="Name" Title="Nazwa">
                     <Template Context="contact">
@@ -159,21 +159,14 @@
         @if (ClientDetailsStore.GetState().SelectedContact != null)
         {
             <div class="details">
-                <p><strong>Imię:</strong> @ClientDetailsStore.GetState().SelectedContact.Name</p>
-                <p><strong>Nazwisko:</strong> @ClientDetailsStore.GetState().SelectedContact.Surname</p>
-                <p><strong>Telefon:</strong> @ClientDetailsStore.GetState().SelectedContact.PhoneNumber</p>
-                <p><strong>Telefon 2:</strong> @ClientDetailsStore.GetState().SelectedContact.AlternativePhoneNumber</p>
-                <p><strong>Adres:</strong> @ClientDetailsStore.GetState().SelectedContact.Address</p>
-                <p><strong>Zmienione przez:</strong> @ClientDetailsStore.GetState().SelectedContact.UpdatedBy</p>
-                <p><strong>Data zmiany:</strong>@ClientDetailsStore.GetState().SelectedContact.Updated</p>
-                <p><strong>Data utworzenia:</strong> @ClientDetailsStore.GetState().SelectedContact.Created</p>
+                <p><strong>Imię: </strong> @(ClientDetailsStore.GetState().SelectedContact.Name ?? "Brak")</p>
+                <p><strong>Nazwisko: </strong> @(ClientDetailsStore.GetState().SelectedContact.Surname ?? "Brak")</p>
+                <p><strong>Telefon: </strong> @(ClientDetailsStore.GetState().SelectedContact.PhoneNumber ?? "Brak")</p>
+                <p><strong>Telefon 2: </strong> @(ClientDetailsStore.GetState().SelectedContact.AlternativePhoneNumber ?? "Brak")</p>
+                <p><strong>Adres: </strong> @(ClientDetailsStore.GetState().SelectedContact.Address ?? "Brak")</p>
+                <p><strong>Zmienione przez: </strong> @(ClientDetailsStore.GetState().SelectedContact.UpdatedBy ?? "Brak")</p>
+                <p><strong>Data zmiany: </strong>@(ClientDetailsStore.GetState().SelectedContact.Updated)</p>
+                <p><strong>Data utworzenia: </strong> @(ClientDetailsStore.GetState().SelectedContact.Created)</p>
             </div>
         }
     </div>
-
-
-@code {
-
-    private void ShowTooltip(ElementReference elementReference, TooltipOptions options = null) => TooltipService.Open(elementReference, options.Text, options);
-
-}

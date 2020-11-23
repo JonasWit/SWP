@@ -26,16 +26,22 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
 
         public void Dispose()
         {
-            MainStore.RemoveStateChangeListener(UpdateView);
+            MainStore.RemoveStateChangeListener(UpdateCleanView);
             ProductivityStore.RemoveStateChangeListener(UpdateView);
             ProductivityStore.CleanUpStore();
         }
 
         private void UpdateView() => StateHasChanged();
 
+        private void UpdateCleanView()
+        {
+            ProductivityStore.CleanUpStore();
+            StateHasChanged();
+        }
+
         protected override void OnInitialized()
         {
-            MainStore.AddStateChangeListener(UpdateView);
+            MainStore.AddStateChangeListener(UpdateCleanView);
             ProductivityStore.AddStateChangeListener(UpdateView);
             ProductivityStore.Initialize();
         }
@@ -85,7 +91,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
                         var month = ProductivityStore.GetState().SelectedMonth.Month;
                         var year = ProductivityStore.GetState().SelectedMonth.Year;
 
-                        productivityRecords = MainStore.GetState().ActiveClient.TimeRecords
+                        productivityRecords = ProductivityStore.GetState().TimeRecords
                             .Where(x => x.EventDate.Month == month && x.EventDate.Year == year).ToList();
 
                         reportData.StartDate = new DateTime(year, month, 1);
@@ -99,7 +105,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
                 }
                 else
                 {
-                    productivityRecords = MainStore.GetState().ActiveClient.TimeRecords
+                    productivityRecords = ProductivityStore.GetState().TimeRecords
                         .Where(x => x.EventDate >= reportData.StartDate && x.EventDate <= reportData.EndDate).ToList();
                 }
 

@@ -22,16 +22,22 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
 
         public void Dispose()
         {
-            MainStore.RemoveStateChangeListener(UpdateView);
+            MainStore.RemoveStateChangeListener(UpdateCleanView);
             FinanceStore.RemoveStateChangeListener(UpdateView);
             FinanceStore.CleanUpStore();
         }
 
         private void UpdateView() => StateHasChanged();
 
+        private void UpdateCleanView()
+        {
+            FinanceStore.CleanUpStore();
+            StateHasChanged();
+        }
+
         protected override void OnInitialized()
         {
-            MainStore.AddStateChangeListener(UpdateView);
+            MainStore.AddStateChangeListener(UpdateCleanView);
             FinanceStore.AddStateChangeListener(UpdateView);
             FinanceStore.Initialize();
         }

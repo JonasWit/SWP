@@ -19,21 +19,24 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
 
         public void Dispose()
         {
-            MainStore.RemoveStateChangeListener(UpdateView);
+            MainStore.RemoveStateChangeListener(UpdateCleanView);
             CasesStore.RemoveStateChangeListener(UpdateView);
             CasesStore.CleanUpStore();
         }
 
         private void UpdateView() => StateHasChanged();
 
+        private void UpdateCleanView()
+        {
+            CasesStore.CleanUpStore();
+            StateHasChanged();
+        }
+
         protected override void OnInitialized()
         {
-            CasesStore.EnableLoading("Wczytywanie Spraw...");
-            MainStore.AddStateChangeListener(UpdateView);
+            MainStore.AddStateChangeListener(UpdateCleanView);
             CasesStore.AddStateChangeListener(UpdateView);
-            MainStore.ActiveClientCasesReload();
             CasesStore.Initialize();
-            CasesStore.DisableLoading();
         }
 
         public bool showFirstSection = false;

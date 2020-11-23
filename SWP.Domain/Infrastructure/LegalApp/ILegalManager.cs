@@ -11,7 +11,7 @@ namespace SWP.Domain.Infrastructure.LegalApp
         #region Clients
 
         Client GetClient(int clientId);
-        Client GetClientWithoutCases(int clientId);
+        Client GetCleanClient(int clientId);
         List<Client> GetClientsWithoutCases(string profile, bool active = true);
         Task<Client> CreateClient(Client client);
         Task<Client> UpdateClient(Client client);

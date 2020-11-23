@@ -21,7 +21,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
 
         public void Dispose()
         {
-            MainStore.RemoveStateChangeListener(UpdateView);
+            MainStore.RemoveStateChangeListener(UpdateCleanView);
             ClientJobsStore.RemoveStateChangeListener(UpdateView);
             ClientJobsStore.CleanUpStore();
         }
@@ -31,11 +31,16 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
             StateHasChanged();
         }
 
+        private void UpdateCleanView()
+        {
+            ClientJobsStore.CleanUpStore();
+            StateHasChanged();
+        }
+
         protected override void OnInitialized()
         {
-            MainStore.AddStateChangeListener(UpdateView);
+            MainStore.AddStateChangeListener(UpdateCleanView);
             ClientJobsStore.AddStateChangeListener(UpdateView);
-            MainStore.ActiveClientJobsReload();
             ClientJobsStore.Initialize();
         }
 

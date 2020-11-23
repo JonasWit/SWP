@@ -18,6 +18,8 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Finance
         public RadzenGrid<CashMovementViewModel> CashMovementGrid { get; set; }
         public MonthFilterRecord SelectedMonth { get; set; }
         public List<MonthFilterRecord> MonthsFilterData { get; set; } = new List<MonthFilterRecord>();
+        public CashMovementViewModel SelectedCashMovement { get; set; }
+        public List<CashMovementViewModel> CashMovements { get; set; } = new List<CashMovementViewModel>();
 
         public class MonthFilterRecord
         {
@@ -46,6 +48,22 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Finance
         public void Initialize()
         {
             GetDataForMonthFilter();
+            GetCashMovements(_mainStore.GetState().ActiveClient.Id);
+        }
+
+        public void GetCashMovements(int clientId)
+        {
+            try
+            {
+                using var scope = _serviceProvider.CreateScope();
+                var getCashMovements = scope.ServiceProvider.GetRequiredService<GetCashMovements>();
+
+                _state.CashMovements = getCashMovements.Get(clientId).Select(x => (CashMovementViewModel)x).ToList();
+            }
+            catch (Exception ex)
+            {
+                _mainStore.ShowErrorPage(ex).GetAwaiter();
+            }
         }
 
         public void GetDataForMonthFilter()
@@ -53,7 +71,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Finance
             int id = 1;
             _state.MonthsFilterData.Clear();
 
-            foreach (var record in _mainStore.GetState().ActiveClient.CashMovements)
+            foreach (var record in _state.CashMovements)
             {
                 var year = record.EventDate.Year;
                 var month = record.EventDate.Month;
@@ -71,12 +89,27 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Finance
             }
         }
 
+        public void AddCashMovementToActiveClient(CashMovementViewModel entity) => _state.CashMovements.Add(entity);
+
+        public void RemoveCashMovementFromActiveClient(int id) => _state.CashMovements.RemoveAll(x => x.Id == id);
+
+        public void ReplaceCashMovementFromActiveClient(CashMovementViewModel entity) => _state.CashMovements[_state.CashMovements.FindIndex(x => x.Id == entity.Id)] = entity;
+
+        public void SetSelectedCashMovement(CashMovementViewModel entity) => _state.SelectedCashMovement = entity;
+
         public void EditCashMovementRow(CashMovementViewModel cash) => _state.CashMovementGrid.EditRow(cash);
 
         public async Task OnUpdateCashMovementRow(CashMovementViewModel cash)
         {
             try
             {
+                if (Math.Abs(cash.Amount) == 0)
+                {
+                    ShowNotification(NotificationSeverity.Warning, "Uwaga!", $"Kwota nie może być zerem.", GeneralViewModel.NotificationDuration);
+                    CancelCashMovementEdit(cash);
+                    return;
+                }
+
                 using var scope = _serviceProvider.CreateScope();
                 var updateCashMovement = scope.ServiceProvider.GetRequiredService<UpdateCashMovement>();
 
@@ -91,11 +124,8 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Finance
                     EventDate = cash.EventDate
                 });
 
-                if (_mainStore.GetState().ActiveClient != null)
-                {
-                    _mainStore.ReplaceCashMovementFromActiveClient(result);
-                }
-
+                ReplaceCashMovementFromActiveClient(result);
+                
                 await _state.CashMovementGrid.Reload();
                 GetDataForMonthFilter();
                 ShowNotification(NotificationSeverity.Success, "Sukces!", $"Kwota: {result.Amount} zł, została zmieniona.", GeneralViewModel.NotificationDuration);
@@ -112,7 +142,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Finance
         public void CancelCashMovementEdit(CashMovementViewModel cash)
         {
             _state.CashMovementGrid.CancelEditRow(cash);
-            _mainStore.RefreshActiveClientData();
+            GetCashMovements(_mainStore.GetState().ActiveClient.Id);
             BroadcastStateChange();
         }
 
@@ -124,7 +154,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Finance
                 var deleteCashMovement = scope.ServiceProvider.GetRequiredService<DeleteCashMovement>();
 
                 await deleteCashMovement.Delete(cash.Id);
-                _mainStore.RemoveCashMovementFromActiveClient(cash.Id);
+                RemoveCashMovementFromActiveClient(cash.Id);
 
                 await _state.CashMovementGrid.Reload();
                 GetDataForMonthFilter();
@@ -141,6 +171,12 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Finance
         {
             try
             {
+                if (Math.Abs(request.Amount) == 0)
+                {
+                    ShowNotification(NotificationSeverity.Warning, "Uwaga!", $"Kwota nie może być zerem.", GeneralViewModel.NotificationDuration);
+                    return;
+                }
+
                 using var scope = _serviceProvider.CreateScope();
                 var createCashMovement = scope.ServiceProvider.GetRequiredService<CreateCashMovement>();
 
@@ -149,7 +185,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Finance
                 var result = await createCashMovement.Create(_mainStore.GetState().ActiveClient.Id, _mainStore.GetState().User.Profile, request);
                 _state.NewCashMovement = new CreateCashMovement.Request();
 
-                _mainStore.AddCashMovementToActiveClient(result);
+                AddCashMovementToActiveClient(result);
 
                 if (_state.CashMovementGrid != null)
                 {
@@ -171,11 +207,11 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Finance
             var input = (CashMovementViewModel)value;
             if (input != null)
             {
-                _mainStore.SetSelectedCashMovement(_mainStore.GetState().ActiveClient.CashMovements.FirstOrDefault(x => x.Id == input.Id));
+                SetSelectedCashMovement(_state.CashMovements.FirstOrDefault(x => x.Id == input.Id));
             }
             else
             {
-                _mainStore.SetSelectedCashMovement(null);
+                SetSelectedCashMovement(null);
             }
         }
 
@@ -200,6 +236,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Finance
         public override void CleanUpStore()
         {
             _state.SelectedMonth = null;
+            _state.SelectedCashMovement = null;
         }
     }
 }

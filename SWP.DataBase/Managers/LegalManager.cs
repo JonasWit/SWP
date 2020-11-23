@@ -30,7 +30,7 @@ namespace SWP.DataBase.Managers
                 .Include(x => x.TimeRecords)
                 .FirstOrDefault();
 
-        public Client GetClientWithoutCases(int clientId) =>
+        public Client GetCleanClient(int clientId) =>
             context.Clients
                 .Where(x => x.Id == clientId)
                 .FirstOrDefault();

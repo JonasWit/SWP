@@ -2,6 +2,7 @@
 using Radzen;
 using Radzen.Blazor;
 using SWP.Application.LegalSwp.ContactPeopleAdmin;
+using SWP.Domain.Models.SWPLegal;
 using SWP.UI.BlazorApp.LegalApp.Stores.Main;
 using SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data;
 using System;
@@ -16,6 +17,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.ClientDetails
         public ContactPersonViewModel SelectedContact { get; set; }
         public CreateContactPerson.Request NewContact { get; set; } = new CreateContactPerson.Request();
         public RadzenGrid<ContactPersonViewModel> ContactsGrid { get; set; }
+        public List<ContactPersonViewModel> ContactPeople { get; set; } = new List<ContactPersonViewModel>();
     }
 
     [UIScopedService]
@@ -25,7 +27,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.ClientDetails
 
         public ClientDetailsState GetState() => _state;
 
-        public MainStore MainStore => _serviceProvider.GetRequiredService<MainStore>();
+        public MainStore _mainStore => _serviceProvider.GetRequiredService<MainStore>();
 
         public DialogService DialogService { get; }
 
@@ -37,20 +39,36 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.ClientDetails
 
         public void Initialize()
         {
-
+            GetCashMovements(_mainStore.GetState().ActiveClient.Id);
         }
 
-        public void ResetSelections()
+        public void GetCashMovements(int clientId)
         {
-            _state.SelectedContact = null;
+            try
+            {
+                using var scope = _serviceProvider.CreateScope();
+                var getContactPeople = scope.ServiceProvider.GetRequiredService<GetContactPeople>();
+
+                _state.ContactPeople = getContactPeople.GetClientContactPeople(clientId).Select(x => (ContactPersonViewModel)x).ToList();
+            }
+            catch (Exception ex)
+            {
+                _mainStore.ShowErrorPage(ex).GetAwaiter();
+            }
         }
+
+        public void UpdateClientContactPerson(ClientContactPerson input) => _state.ContactPeople[_state.ContactPeople.FindIndex(x => x.Id == input.Id)] = input;
+
+        public void RemoveClientContactPerson(int id) => _state.ContactPeople.RemoveAll(x => x.Id == id);
+
+        public void AddClientContactPerson(ClientContactPerson input) => _state.ContactPeople.Add(input);
 
         public void ContactSelected(object value)
         {
             var input = (ContactPersonViewModel)value;
             if (value != null)
             {
-                _state.SelectedContact = MainStore.GetState().ActiveClient.ContactPeople.FirstOrDefault(x => x.Id == input.Id);
+                _state.SelectedContact = _state.ContactPeople.FirstOrDefault(x => x.Id == input.Id);
             }
             else
             {
@@ -60,7 +78,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.ClientDetails
 
         #region Contact
 
-        private void RefreshSelectedContact() => _state.SelectedContact = MainStore.GetState().ActiveClient.ContactPeople.FirstOrDefault(x => x.Id == _state.SelectedContact.Id);
+        private void RefreshSelectedContact() => _state.SelectedContact = _state.ContactPeople.FirstOrDefault(x => x.Id == _state.SelectedContact.Id);
 
         public void EditContactRow(ContactPersonViewModel contact) => _state.ContactsGrid.EditRow(contact);
 
@@ -81,17 +99,17 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.ClientDetails
                     PhoneNumber = contact.PhoneNumber,
                     AlternativePhoneNumber = contact.AlternativePhoneNumber,
                     Updated = DateTime.Now,
-                    UpdatedBy = MainStore.GetState().User.UserName
+                    UpdatedBy = _mainStore.GetState().User.UserName
                 });
 
-                MainStore.UpdateClientContactPerson(result);
+                UpdateClientContactPerson(result);
                 await _state.ContactsGrid.Reload();
                 ShowNotification(NotificationSeverity.Success, "Sukces!", $"Kontakt: {result.Name} {result.Surname} został zmieniony.", GeneralViewModel.NotificationDuration);
                 BroadcastStateChange();
             }
             catch (Exception ex)
             {
-                await MainStore.ShowErrorPage(ex);
+                await _mainStore.ShowErrorPage(ex);
             }
         }
         public void SaveContactRow(ContactPersonViewModel contact) => _state.ContactsGrid.UpdateRow(contact);
@@ -99,7 +117,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.ClientDetails
         public void CancelContactEdit(ContactPersonViewModel contact)
         {
             _state.ContactsGrid.CancelEditRow(contact);
-            MainStore.RefreshActiveClientData();
+            _mainStore.RefreshActiveClientData();
             RefreshSelectedContact();
             BroadcastStateChange();
         }
@@ -112,7 +130,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.ClientDetails
                 var deleteContactPerson = scope.ServiceProvider.GetRequiredService<DeleteContactPerson>();
 
                 await deleteContactPerson.DeleteForClient(contact.Id);
-                MainStore.RemoveClientContactPerson(contact.Id);
+                RemoveClientContactPerson(contact.Id);
    
                 await _state.ContactsGrid.Reload();
                 ShowNotification(NotificationSeverity.Warning, "Sukces!", $"Kontakt: {contact.Name} {contact.Surname} został usunięty.", GeneralViewModel.NotificationDuration);
@@ -120,22 +138,22 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.ClientDetails
             }
             catch (Exception ex)
             {
-                await MainStore.ShowErrorPage(ex);
+                await _mainStore.ShowErrorPage(ex);
             }
         }
 
         public async Task SubmitNewContact(CreateContactPerson.Request request)
         {
-            request.UpdatedBy = MainStore.GetState().User.UserName;
+            request.UpdatedBy = _mainStore.GetState().User.UserName;
 
             try
             {
                 using var scope = _serviceProvider.CreateScope();
                 var createContactPerson = scope.ServiceProvider.GetRequiredService<CreateContactPerson>();
 
-                var result = await createContactPerson.CreateContactPersonForClient(MainStore.GetState().ActiveClient.Id, request);
+                var result = await createContactPerson.CreateContactPersonForClient(_mainStore.GetState().ActiveClient.Id, request);
                 _state.NewContact = new CreateContactPerson.Request();
-                MainStore.AddClientContactPerson(result);
+                AddClientContactPerson(result);
 
                 await _state.ContactsGrid.Reload();
                 ShowNotification(NotificationSeverity.Success, "Sukces!", $"Kontakt: {result.Name} {result.Surname} został dodany.", GeneralViewModel.NotificationDuration);
@@ -143,7 +161,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.ClientDetails
             }
             catch (Exception ex)
             {
-                await MainStore.ShowErrorPage(ex);
+                await _mainStore.ShowErrorPage(ex);
             }
         }
 

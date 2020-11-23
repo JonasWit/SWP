@@ -22,19 +22,15 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.ApplicationsOptions
     }
 
     [UIScopedService]
-    public class ApplicationsOptionsStore : StoreBase
+    public class ApplicationsOptionsStore : StoreBase<ApplicationOptionsState>
     {
-        private readonly ApplicationOptionsState _state;
-
-        public ApplicationOptionsState GetState() => _state;
-
         public ApplicationsOptionsStore(
             IServiceProvider serviceProvider,
             IActionDispatcher actionDispatcher,
             NotificationService notificationService) 
             : base(serviceProvider, actionDispatcher, notificationService)
         {
-            _state = new ApplicationOptionsState();
+
         }
 
         public void InitializeState()

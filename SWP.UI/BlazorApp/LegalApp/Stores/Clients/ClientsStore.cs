@@ -19,17 +19,13 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Clients
     }
 
     [UIScopedService]
-    public class ClientsStore : StoreBase
+    public class ClientsStore : StoreBase<ClientsState>
     {
-        private readonly ClientsState _state;
-
-        public ClientsState GetState() => _state;
-
         public MainStore MainStore => _serviceProvider.GetRequiredService<MainStore>();
 
         public ClientsStore(IServiceProvider serviceProvider, IActionDispatcher actionDispatcher, NotificationService notificationService) : base(serviceProvider, actionDispatcher, notificationService)
         {
-            _state = new ClientsState();
+
         }
 
         public void ClientSelected(object value)

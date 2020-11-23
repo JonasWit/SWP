@@ -23,19 +23,15 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Calendar
     }
 
     [UIScopedService]
-    public class CalendarStore : StoreBase
+    public class CalendarStore : StoreBase<CalendarState>
     {
-        private readonly CalendarState _state;
         private readonly GeneralViewModel _generalViewModel;
-
-        public CalendarState GetState() => _state;
 
         public MainStore MainStore => _serviceProvider.GetRequiredService<MainStore>();
 
         public CalendarStore(IServiceProvider serviceProvider, IActionDispatcher actionDispatcher, NotificationService notificationService, DialogService dialogService, GeneralViewModel generalViewModel) 
             : base(serviceProvider, actionDispatcher, notificationService, dialogService)
         {
-            _state = new CalendarState();
             _generalViewModel = generalViewModel;
         }
 

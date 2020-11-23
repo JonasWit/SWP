@@ -21,18 +21,14 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Archive
     }
 
     [UIScopedService]
-    public class ArchiveStore : StoreBase
+    public class ArchiveStore : StoreBase<ArchiveState>
     {
-        private readonly ArchiveState _state;
-
-        public ArchiveState GetState() => _state;
-
         public MainStore _mainStore => _serviceProvider.GetRequiredService<MainStore>();
 
         public ArchiveStore(IServiceProvider serviceProvider, IActionDispatcher actionDispatcher, NotificationService notificationService, DialogService dialogService)
             : base(serviceProvider, actionDispatcher, notificationService, dialogService)
         {
-            _state = new ArchiveState();
+
         }
 
         public void Initialize()

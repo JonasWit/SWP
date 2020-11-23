@@ -31,18 +31,14 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Finance
     }
 
     [UIScopedService]
-    public class FinanceStore : StoreBase
+    public class FinanceStore : StoreBase<FinanceState>
     {
-        private readonly FinanceState _state;
-
-        public FinanceState GetState() => _state;
-
         private MainStore _mainStore => _serviceProvider.GetRequiredService<MainStore>();
 
         public FinanceStore(IServiceProvider serviceProvider, IActionDispatcher actionDispatcher, NotificationService notificationService, DialogService dialogService)
             : base(serviceProvider, actionDispatcher, notificationService, dialogService)
         {
-            _state = new FinanceState();
+
         }
 
         public void Initialize()

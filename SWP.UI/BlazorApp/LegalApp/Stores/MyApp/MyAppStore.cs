@@ -28,14 +28,10 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.MyApp
     }
 
     [UIScopedService]
-    public class MyAppStore : StoreBase
+    public class MyAppStore : StoreBase<MyAppState>
     {
-        private readonly MyAppState _state;
         private readonly GeneralViewModel _generalViewModel;
-
         public MainStore MainStore => _serviceProvider.GetRequiredService<MainStore>();
-
-        public MyAppState GetState() => _state;
 
         public MyAppStore(
             IServiceProvider serviceProvider,
@@ -45,7 +41,6 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.MyApp
             GeneralViewModel generalViewModel) 
             : base(serviceProvider, actionDispatcher, notificationService, dialogService)
         {
-            _state = new MyAppState();
             _generalViewModel = generalViewModel;
         }
 

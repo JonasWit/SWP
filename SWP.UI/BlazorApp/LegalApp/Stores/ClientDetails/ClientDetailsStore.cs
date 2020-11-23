@@ -21,12 +21,8 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.ClientDetails
     }
 
     [UIScopedService]
-    public class ClientDetailsStore : StoreBase
+    public class ClientDetailsStore : StoreBase<ClientDetailsState>
     {
-        private readonly ClientDetailsState _state;
-
-        public ClientDetailsState GetState() => _state;
-
         public MainStore _mainStore => _serviceProvider.GetRequiredService<MainStore>();
 
         public DialogService DialogService { get; }
@@ -34,7 +30,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.ClientDetails
         public ClientDetailsStore(IServiceProvider serviceProvider, IActionDispatcher actionDispatcher, NotificationService notificationService, DialogService dialogService)
             : base(serviceProvider, actionDispatcher, notificationService, dialogService)
         {
-            _state = new ClientDetailsState();
+
         }
 
         public void Initialize()

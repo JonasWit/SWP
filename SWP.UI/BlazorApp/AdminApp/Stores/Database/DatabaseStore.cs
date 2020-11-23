@@ -14,19 +14,15 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Database
     }
 
     [UIScopedService]
-    public class DatabaseStore : StoreBase
+    public class DatabaseStore : StoreBase<DatabaseState>
     {
-        private readonly DatabaseState _state;
-
-        public DatabaseState GetState() => _state;
-
         public DatabaseStore(
             IServiceProvider serviceProvider,
             IActionDispatcher actionDispatcher,
             NotificationService notificationService) 
             : base(serviceProvider, actionDispatcher, notificationService)
         {
-            _state = new DatabaseState();
+
         }
 
         protected override void HandleActions(IAction action)

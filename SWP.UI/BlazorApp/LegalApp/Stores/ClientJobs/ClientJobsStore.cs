@@ -22,18 +22,14 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.ClientJobs
     }
 
     [UIScopedService]
-    public class ClientJobsStore : StoreBase
+    public class ClientJobsStore : StoreBase<ClientJobsState>
     {
-        private readonly ClientJobsState _state;
-
-        public ClientJobsState GetState() => _state;
-
         public MainStore _mainStore => _serviceProvider.GetRequiredService<MainStore>();
 
         public ClientJobsStore(IServiceProvider serviceProvider, IActionDispatcher actionDispatcher, NotificationService notificationService, DialogService dialogService)
             : base(serviceProvider, actionDispatcher, notificationService, dialogService)
         {
-            _state = new ClientJobsState();
+
         }
 
         public void Initialize()

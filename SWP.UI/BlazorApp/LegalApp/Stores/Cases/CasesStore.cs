@@ -31,19 +31,15 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
     }
 
     [UIScopedService]
-    public class CasesStore : StoreBase
+    public class CasesStore : StoreBase<CasesState>
     {
-        private readonly CasesState _state;
         private readonly GeneralViewModel _generalViewModel;
-
-        public CasesState GetState() => _state;
 
         private MainStore _mainStore => _serviceProvider.GetRequiredService<MainStore>();
 
         public CasesStore(IServiceProvider serviceProvider, IActionDispatcher actionDispatcher, NotificationService notificationService, DialogService dialogService, GeneralViewModel generalViewModel)
             : base(serviceProvider, actionDispatcher, notificationService, dialogService)
         {
-            _state = new CasesState();
             _generalViewModel = generalViewModel;
         }
 

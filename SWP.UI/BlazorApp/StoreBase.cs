@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SWP.UI.BlazorApp
 {
-    public abstract class StoreBase
+    public abstract class StoreBase<TState> where TState : class, new()
     {
         public string DataLoadingMessage => @"Wczytywanie danych...";
 
@@ -15,6 +15,9 @@ namespace SWP.UI.BlazorApp
         protected readonly IServiceProvider _serviceProvider;
         protected readonly NotificationService _notificationService;
         protected readonly DialogService _dialogService;
+
+        protected readonly TState _state;
+        public TState GetState() => _state;
 
         public bool Loading { get; set; } = false;
         public string LoadingMessage { get; set; } = "";
@@ -42,6 +45,7 @@ namespace SWP.UI.BlazorApp
             _notificationService = notificationService;
             _dialogService = dialogService;
             _actionDispatcher.Subscribe(HandleActions);
+            _state = new TState();
         }
 
         public StoreBase(IServiceProvider serviceProvider, IActionDispatcher actionDispatcher, NotificationService notificationService)
@@ -50,6 +54,7 @@ namespace SWP.UI.BlazorApp
             _actionDispatcher = actionDispatcher;
             _notificationService = notificationService;
             _actionDispatcher.Subscribe(HandleActions);
+            _state = new TState();
         }
 
         public StoreBase(IServiceProvider serviceProvider, IActionDispatcher actionDispatcher)
@@ -57,6 +62,7 @@ namespace SWP.UI.BlazorApp
             _serviceProvider = serviceProvider;
             _actionDispatcher = actionDispatcher;
             _actionDispatcher.Subscribe(HandleActions);
+            _state = new TState();
         }
 
         protected abstract void HandleActions(IAction action);

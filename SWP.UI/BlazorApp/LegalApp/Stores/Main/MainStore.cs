@@ -29,16 +29,12 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
     }
 
     [UIScopedService]
-    public class MainStore : StoreBase
+    public class MainStore : StoreBase<MainState>
     {
-        private readonly MainState _state;
         private readonly ErrorStore _errorStore;
-
-        public MainState GetState() => _state;
 
         public MainStore(IServiceProvider serviceProvider, IActionDispatcher actionDispatcher, NotificationService notificationService, ErrorStore errorStore) : base(serviceProvider, actionDispatcher, notificationService)
         {
-            _state = new MainState();
             _errorStore = errorStore;
         }
 

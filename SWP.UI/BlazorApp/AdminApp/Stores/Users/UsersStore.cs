@@ -63,12 +63,9 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Users
     }
 
     [UIScopedService]
-    public class UsersStore : StoreBase
+    public class UsersStore : StoreBase<UserState>
     {
-        private readonly UserState _state;
-
         public UserManager<IdentityUser> UserManager => _serviceProvider.GetService<UserManager<IdentityUser>>();
-        public UserState GetState() => _state;
 
         public UsersStore(
             IServiceProvider serviceProvider,
@@ -76,7 +73,7 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Users
             NotificationService notificationService) 
             : base(serviceProvider, actionDispatcher, notificationService)
         {
-            _state = new UserState();
+
         }
 
         public async Task InitializeState()

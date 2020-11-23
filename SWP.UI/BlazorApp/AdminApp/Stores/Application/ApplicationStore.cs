@@ -22,16 +22,12 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Application
     }
 
     [UIScopedService]
-    public class ApplicationStore : StoreBase
+    public class ApplicationStore : StoreBase<ApplicationState>
     {
-        private readonly ApplicationState _state;
         private readonly ErrorStore _errorStore;
-
-        public ApplicationState GetState() => _state;
 
         public ApplicationStore(IServiceProvider serviceProvider, IActionDispatcher actionDispatcher, ErrorStore errorStore) : base(serviceProvider, actionDispatcher)
         {
-            _state = new ApplicationState();
             _errorStore = errorStore;
         }
 

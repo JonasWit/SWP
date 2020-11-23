@@ -44,18 +44,14 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Productivity
 
 
     [UIScopedService]
-    public class ProductivityStore : StoreBase
+    public class ProductivityStore : StoreBase<ProductivityState>
     {
-        private readonly ProductivityState _state;
-
-        public ProductivityState GetState() => _state;
-
         private MainStore _mainStore => _serviceProvider.GetRequiredService<MainStore>();
 
         public ProductivityStore(IServiceProvider serviceProvider, IActionDispatcher actionDispatcher, NotificationService notificationService, DialogService dialogService)
             : base(serviceProvider, actionDispatcher, notificationService, dialogService)
         {
-            _state = new ProductivityState();
+
         }
 
         public void Initialize()

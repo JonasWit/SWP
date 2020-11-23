@@ -14,16 +14,12 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Error
     }
 
     [UIScopedService]
-    public class ErrorStore : StoreBase
+    public class ErrorStore : StoreBase<ErrorState>
     {
-        private readonly ErrorState _state;
         private readonly CreateLogRecord _createLogRecord;
-
-        public ErrorState GetState() => _state;
 
         public ErrorStore(IServiceProvider serviceProvider, IActionDispatcher actionDispatcher, CreateLogRecord createLogRecord) : base(serviceProvider, actionDispatcher)
         {
-            _state = new ErrorState();
             _createLogRecord = createLogRecord;
         }
 

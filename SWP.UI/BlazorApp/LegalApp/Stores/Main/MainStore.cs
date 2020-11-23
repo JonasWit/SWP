@@ -88,8 +88,6 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
 
         public async Task ActiveClientChange(object value)
         {
-            EnableLoading("Wczytywanie Klienta...");
-
             if (value != null)
             {
                 try
@@ -116,8 +114,6 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
                 }
 
                 _state.ActiveClient = null;
-
-                DisableLoading();
             }
         }
 
@@ -260,6 +256,11 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
         public override void CleanUpStore()
         {
             _state.SelectedClientString = null;
+        }
+
+        public override void RefreshSore()
+        {
+
         }
     }
 }

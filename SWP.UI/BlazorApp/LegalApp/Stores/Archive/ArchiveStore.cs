@@ -184,5 +184,10 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Archive
         {
 
         }
+
+        public override void RefreshSore()
+        {
+            RefreshData();
+        }
     }
 }

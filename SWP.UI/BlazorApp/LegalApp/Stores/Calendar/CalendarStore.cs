@@ -185,6 +185,11 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Calendar
             _state.SelectedReminder = null;
         }
 
+        public override void RefreshSore()
+        {
+            RefreshCalendarData();
+        }
+
         #endregion
 
 

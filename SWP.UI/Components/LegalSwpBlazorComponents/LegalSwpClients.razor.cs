@@ -37,6 +37,8 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
             ClientsStore.AddStateChangeListener(UpdateView);
         }
 
+        private void ShowTooltip(ElementReference elementReference, TooltipOptions options = null) => TooltipService.Open(elementReference, options.Text, options);
+
         public bool addClientformVisible = false;
         public void ShowHideClientFormI() => addClientformVisible = !addClientformVisible;
 

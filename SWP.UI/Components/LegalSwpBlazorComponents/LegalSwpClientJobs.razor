@@ -1,152 +1,152 @@
-﻿
-@if (MainStore.GetState().ActiveClient == null)
+﻿@if (ClientJobsStore.Loading)
 {
-    <h2>In order to see tasks please select a client!</h2>
+    <LoaderComponent Message="@ClientJobsStore.LoadingMessage"></LoaderComponent>
 }
 else
 {
-    <div class="show-hide tab-section"><button class="show-hide-btn show-hide-btn-1"><span>Dodaj zadanie</span></button></div>
-    <div class="row-section">
-        <RadzenTemplateForm Data="@ClientJobsStore.GetState().NewClientJob" Submit="@(async (CreateClientJob.Request args) => { await ClientJobsStore.SubmitNewClientJob(args); })">
-            <RadzenFieldset Text="Nowe Zadanie">
-                <div class="form">
-                    <i class="user-icon"><img src="/Images/icons8-reception-36.png" /></i>
-                    @if (addClientformVisible)
-                    {
-                        <div class="info-text">
-                            <p>Zarządzaj listą swoich klientów. Użyj guzika "Dodaj Nowego Klienta",aby uzupełnić listę kontaktów.</p>
-                            <p>Edytuj oraz usuwaj Klientów z głównej listy. Tekst do zupełnienia.</p>
-                        </div>
-                    }
-                    <button class="info" @onclick="ShowHideClientFormI"></button>
-                </div>
-                <div class="form">
-                    <div class="text">
-                        <div class="label">
-                            <RadzenLabel Text="Priorytet" />
-                        </div>
-                        <RadzenDropDown @bind-Value="ClientJobsStore.GetState().NewClientJob.Priority" Data="@Gvm.Priorities" TextProperty="Number" ValueProperty="Number" />
+    @if (MainStore.GetState().ActiveClient == null)
+    {
+        <h2>In order to see tasks please select a client!</h2>
+    }
+    else
+    {
+        <div class="show-hide tab-section"><button class="show-hide-btn show-hide-btn-1"><span>Dodaj zadanie</span></button></div>
+        <div class="row-section">
+            <RadzenTemplateForm Data="@ClientJobsStore.GetState().NewClientJob" Submit="@(async (CreateClientJob.Request args) => { await ClientJobsStore.SubmitNewClientJob(args); })">
+                <RadzenFieldset Text="Nowe Zadanie">
+                    <div class="form">
+                        <i class="user-icon"><img src="/Images/icons8-reception-36.png" /></i>
+                        @if (addClientformVisible)
+                        {
+                            <div class="info-text">
+                                <p>Zarządzaj listą swoich klientów. Użyj guzika "Dodaj Nowego Klienta",aby uzupełnić listę kontaktów.</p>
+                                <p>Edytuj oraz usuwaj Klientów z głównej listy. Tekst do zupełnienia.</p>
+                            </div>
+                        }
+                        <button class="info" @onclick="ShowHideClientFormI"></button>
                     </div>
-                    <div class="text">
-                        <div class="label">
-                            <RadzenLabel Text="Nazwa" />
+                    <div class="form">
+                        <div class="text">
+                            <div class="label">
+                                <RadzenLabel Text="Priorytet" />
+                            </div>
+                            <RadzenDropDown @bind-Value="ClientJobsStore.GetState().NewClientJob.Priority" Data="@Gvm.Priorities" TextProperty="Number" ValueProperty="Number" />
                         </div>
-                        <RadzenTextBox Placeholder="Nazwa..." @bind-Value="ClientJobsStore.GetState().NewClientJob.Name" Name="Nazwa" style="@(Gvm.FormInputBoxWidth)" />
-                        <RadzenRequiredValidator Component="Nazwa" Text="Nazwa nie może być pusta!" />
-                        <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Nazwa" />
-                    </div>
-
-                    <div class="text">
-                        <div class="label">
-                            <RadzenLabel Text="Opis" />
+                        <div class="text">
+                            <div class="label">
+                                <RadzenLabel Text="Nazwa" />
+                            </div>
+                            <RadzenTextBox Placeholder="Nazwa..." @bind-Value="ClientJobsStore.GetState().NewClientJob.Name" Name="Nazwa" style="@(Gvm.FormInputBoxWidth)" />
+                            <RadzenRequiredValidator Component="Nazwa" Text="Nazwa nie może być pusta!" />
+                            <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Nazwa" />
                         </div>
-                        <RadzenTextArea Placeholder="Opis..." @bind-Value="ClientJobsStore.GetState().NewClientJob.Description" Name="Description" style="@(Gvm.FormInputBoxWidth)" />
-                        <RadzenLengthValidator Max="500" Text="Maksymalnie 500 znaków!" Component="Description" />
+
+                        <div class="text">
+                            <div class="label">
+                                <RadzenLabel Text="Opis" />
+                            </div>
+                            <RadzenTextArea Placeholder="Opis..." @bind-Value="ClientJobsStore.GetState().NewClientJob.Description" Name="Description" style="@(Gvm.FormInputBoxWidth)" />
+                            <RadzenLengthValidator Max="500" Text="Maksymalnie 500 znaków!" Component="Description" />
+                        </div>
                     </div>
-                </div>
-                <div class="form-btn">
-                    <div class="btn-add">
-                        <RadzenButton ButtonType="ButtonType.Submit" Icon="save" Text="Dodaj Zadanie" ButtonStyle="ButtonStyle.Secondary" Style="@(Gvm.GeneralButton)" />
+                    <div class="form-btn">
+                        <div class="btn-add">
+                            <RadzenButton ButtonType="ButtonType.Submit" Icon="save" Text="Dodaj Zadanie" ButtonStyle="ButtonStyle.Secondary" Style="@(Gvm.GeneralButton)" />
+                        </div>
                     </div>
-                </div>
-            </RadzenFieldset>
-        </RadzenTemplateForm>
-    </div>
+                </RadzenFieldset>
+            </RadzenTemplateForm>
+        </div>
 
-    <div class="show-hide tab-section"><button class="show-hide-btn show-hide-btn-1"><span>Lista zadań</span></button></div>
-    <div class="row-section">
-        <RadzenGrid @ref="ClientJobsStore.GetState().ClientsJobsGrid" AllowFiltering="true" AllowPaging="true" PageSize="10" AllowSorting="true" RowSelect="@(args => ClientJobsStore.ActiveJobChange(args))"
-                    Data="@ClientJobsStore.GetState().Jobs" TItem="ClientJobViewModel" RowUpdate="@ClientJobsStore.OnUpdateClientJobRow">
-            <Columns>
-                <RadzenGridColumn TItem="ClientJobViewModel" Property="Name" Title="Nazwa">
-                    <Template Context="job">
-                        <span Style="@(Gvm.TableFontSize)">@(job.Name)</span>
-                    </Template>
-                    <EditTemplate Context="job">
-                        <RadzenTextBox @bind-Value="job.Name" Style="@(Gvm.FormInputBoxWidth)" Name="Nazwa" />
-                        <RadzenRequiredValidator Text="Nazwa nie może być pusta!" Component="Nazwa" Popup="true" />
-                        <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Nazwa" Popup="true" Style="position: absolute" />
-                    </EditTemplate>
-                </RadzenGridColumn>
-                <RadzenGridColumn TItem="ClientJobViewModel" Property="Priority" Title="Priorytet">
-                    <Template Context="job">
-                        <span Style="@(Gvm.TableFontSize)">@(job.Priority)</span>
-                    </Template>
-                    <EditTemplate Context="job">
-                        <RadzenDropDown @bind-Value="job.Priority" Data="@Gvm.Priorities" TextProperty="Number" ValueProperty="Number" Style="@(Gvm.FormInputBoxWidth)" Name="Priority" />
-                    </EditTemplate>
-                </RadzenGridColumn>
-                <RadzenGridColumn TItem="ClientJobViewModel" Property="Description" Title="Opis">
-                    <Template Context="job">
-                        <span Style="@(Gvm.TableFontSize)">@(job.Description)</span>
-                    </Template>
-                    <EditTemplate Context="job">
-                        <RadzenTextArea @bind-Value="job.Description" Style="@(Gvm.FormInputBoxWidth)" Name="Description" />
-                        <RadzenLengthValidator Max="500" Text="Maksymalnie 500 znaków!" Component="Description" Popup="true" Style="position: absolute" />
-                    </EditTemplate>
-                </RadzenGridColumn>
+        <div class="show-hide tab-section"><button class="show-hide-btn show-hide-btn-1"><span>Lista zadań</span></button></div>
+        <div class="row-section">
+            <RadzenGrid @ref="ClientJobsStore.GetState().ClientsJobsGrid" AllowFiltering="true" AllowPaging="true" PageSize="10" AllowSorting="true" RowSelect="@(args => ClientJobsStore.ActiveJobChange(args))"
+                        Data="@ClientJobsStore.GetState().Jobs" TItem="ClientJobViewModel" RowUpdate="@ClientJobsStore.OnUpdateClientJobRow">
+                <Columns>
+                    <RadzenGridColumn TItem="ClientJobViewModel" Property="Name" Title="Nazwa">
+                        <Template Context="job">
+                            <span Style="@(Gvm.TableFontSize)">@(job.Name)</span>
+                        </Template>
+                        <EditTemplate Context="job">
+                            <RadzenTextBox @bind-Value="job.Name" Style="@(Gvm.FormInputBoxWidth)" Name="Nazwa" />
+                            <RadzenRequiredValidator Text="Nazwa nie może być pusta!" Component="Nazwa" Popup="true" />
+                            <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Nazwa" Popup="true" Style="position: absolute" />
+                        </EditTemplate>
+                    </RadzenGridColumn>
+                    <RadzenGridColumn TItem="ClientJobViewModel" Property="Priority" Title="Priorytet">
+                        <Template Context="job">
+                            <span Style="@(Gvm.TableFontSize)">@(job.Priority)</span>
+                        </Template>
+                        <EditTemplate Context="job">
+                            <RadzenDropDown @bind-Value="job.Priority" Data="@Gvm.Priorities" TextProperty="Number" ValueProperty="Number" Style="@(Gvm.FormInputBoxWidth)" Name="Priority" />
+                        </EditTemplate>
+                    </RadzenGridColumn>
+                    <RadzenGridColumn TItem="ClientJobViewModel" Property="Description" Title="Opis">
+                        <Template Context="job">
+                            <span Style="@(Gvm.TableFontSize)">@(job.Description)</span>
+                        </Template>
+                        <EditTemplate Context="job">
+                            <RadzenTextArea @bind-Value="job.Description" Style="@(Gvm.FormInputBoxWidth)" Name="Description" />
+                            <RadzenLengthValidator Max="500" Text="Maksymalnie 500 znaków!" Component="Description" Popup="true" Style="position: absolute" />
+                        </EditTemplate>
+                    </RadzenGridColumn>
 
-                <RadzenGridColumn TItem="ClientJobViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="100px">
-                    <Template Context="job">
-                        <RadzenButton Icon="edit" Size="ButtonSize.Small" Click="@(args => ClientJobsStore.EditClientJobRow(job))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Edytuj", Style = Gvm.ToolTipStyle }))">
-                        </RadzenButton>
-                    </Template>
-                    <EditTemplate Context="job">
-                        <RadzenButton Icon="save" Size="ButtonSize.Small" Click="@((args) => ClientJobsStore.SaveClientJobRow(job))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Zapisz", Style = Gvm.ToolTipStyle }))">
-                        </RadzenButton>
-                        <RadzenButton Icon="cancel" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Success" Click="@((args) => ClientJobsStore.CancelClientJobEdit(job))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Anuluj", Style = Gvm.ToolTipStyle }))">
-                        </RadzenButton>
-                    </EditTemplate>
-                </RadzenGridColumn>
-                <RadzenGridColumn TItem="ClientJobViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="50px">
-                    <Template Context="job">
-                        <RadzenButton ButtonStyle="ButtonStyle.Warning" Icon="archive" Size="ButtonSize.Small" Click="@(async (args) => await ClientJobsStore.ArchivizeClientJob(job))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Archiwizuj", Style = Gvm.ToolTipStyle }))">
-                        </RadzenButton>
-                    </Template>
-                    <EditTemplate Context="job">
-                    </EditTemplate>
-                </RadzenGridColumn>
-                <RadzenGridColumn TItem="ClientJobViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="50px">
-                    <Template Context="job">
-                        <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@(async (args) => await ClientJobsStore.DeleteClientJobRow(job))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Zamknij", Style = Gvm.ToolTipStyle }))">
-                        </RadzenButton>
-                    </Template>
-                    <EditTemplate Context="job">
-                    </EditTemplate>
-                </RadzenGridColumn>
-            </Columns>
-        </RadzenGrid>
-        @if (ClientJobsStore.GetState().SelectedJob != null)
-        {
-            <div class="details">
-                <p><strong>Nazwa:</strong> @ClientJobsStore.GetState().SelectedJob.Name</p>
-                <p><strong>Priorytet:</strong> @ClientJobsStore.GetState().SelectedJob.Priority</p>
-                <p><strong>Opis:</strong> @ClientJobsStore.GetState().SelectedJob.Description</p>
-            </div>
-        }
-
-    </div>
-    <div class="row-section">
-        <div class="details">
-            <RadzenListBox AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" @bind-Value="ArchvizedJobsFilterValue" Data="@ClientJobsStore.GetState().ArchivedJobs" TextProperty="Name" ValueProperty="IdString" Change="@(args => ClientJobsStore.SelectedArchivizedClientJobChange(args))" />
-
-
-            @if (ClientJobsStore.GetState().SelectedArchivizedClientJob != null)
+                    <RadzenGridColumn TItem="ClientJobViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="100px">
+                        <Template Context="job">
+                            <RadzenButton Icon="edit" Size="ButtonSize.Small" Click="@(args => ClientJobsStore.EditClientJobRow(job))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Edytuj", Style = Gvm.ToolTipStyle }))">
+                            </RadzenButton>
+                        </Template>
+                        <EditTemplate Context="job">
+                            <RadzenButton Icon="save" Size="ButtonSize.Small" Click="@((args) => ClientJobsStore.SaveClientJobRow(job))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Zapisz", Style = Gvm.ToolTipStyle }))">
+                            </RadzenButton>
+                            <RadzenButton Icon="cancel" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Success" Click="@((args) => ClientJobsStore.CancelClientJobEdit(job))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Anuluj", Style = Gvm.ToolTipStyle }))">
+                            </RadzenButton>
+                        </EditTemplate>
+                    </RadzenGridColumn>
+                    <RadzenGridColumn TItem="ClientJobViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="50px">
+                        <Template Context="job">
+                            <RadzenButton ButtonStyle="ButtonStyle.Warning" Icon="archive" Size="ButtonSize.Small" Click="@(async (args) => await ClientJobsStore.ArchivizeClientJob(job))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Archiwizuj", Style = Gvm.ToolTipStyle }))">
+                            </RadzenButton>
+                        </Template>
+                        <EditTemplate Context="job">
+                        </EditTemplate>
+                    </RadzenGridColumn>
+                    <RadzenGridColumn TItem="ClientJobViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="50px">
+                        <Template Context="job">
+                            <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@(async (args) => await ClientJobsStore.DeleteClientJobRow(job))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Zamknij", Style = Gvm.ToolTipStyle }))">
+                            </RadzenButton>
+                        </Template>
+                        <EditTemplate Context="job">
+                        </EditTemplate>
+                    </RadzenGridColumn>
+                </Columns>
+            </RadzenGrid>
+            @if (ClientJobsStore.GetState().SelectedJob != null)
             {
                 <div class="details">
-                    <p><strong>Nazwa:</strong> @ClientJobsStore.GetState().SelectedArchivizedClientJob.Name</p>
-                    <p><strong>Priorytet:</strong> @ClientJobsStore.GetState().SelectedArchivizedClientJob.Priority</p>
-                    <p><strong>Opis:</strong> @ClientJobsStore.GetState().SelectedArchivizedClientJob.Description</p>
-                    <RadzenButton ButtonStyle="ButtonStyle.Secondary" Style="@(Gvm.GeneralButton)" Click="@(async () => await ClientJobsStore.RecoverSelectedJob())">Odzyskaj Zadanie </RadzenButton>
+                    <p><strong>Nazwa:</strong> @ClientJobsStore.GetState().SelectedJob.Name</p>
+                    <p><strong>Priorytet:</strong> @ClientJobsStore.GetState().SelectedJob.Priority</p>
+                    <p><strong>Opis:</strong> @ClientJobsStore.GetState().SelectedJob.Description</p>
                 </div>
-
             }
+
         </div>
-    </div>
-}
+        <div class="row-section">
+            <div class="details">
+                <RadzenListBox AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" @bind-Value="ArchvizedJobsFilterValue" Data="@ClientJobsStore.GetState().ArchivedJobs" TextProperty="Name" ValueProperty="IdString" Change="@(args => ClientJobsStore.SelectedArchivizedClientJobChange(args))" />
 
-@code {
 
-    private void ShowTooltip(ElementReference elementReference, TooltipOptions options = null) => TooltipService.Open(elementReference, options.Text, options);
+                @if (ClientJobsStore.GetState().SelectedArchivizedClientJob != null)
+                {
+                    <div class="details">
+                        <p><strong>Nazwa:</strong> @ClientJobsStore.GetState().SelectedArchivizedClientJob.Name</p>
+                        <p><strong>Priorytet:</strong> @ClientJobsStore.GetState().SelectedArchivizedClientJob.Priority</p>
+                        <p><strong>Opis:</strong> @ClientJobsStore.GetState().SelectedArchivizedClientJob.Description</p>
+                        <RadzenButton ButtonStyle="ButtonStyle.Secondary" Style="@(Gvm.GeneralButton)" Click="@(async () => await ClientJobsStore.RecoverSelectedJob())">Odzyskaj Zadanie </RadzenButton>
+                    </div>
 
+                }
+            </div>
+        </div>
+    }
 }

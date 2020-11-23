@@ -21,6 +21,8 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
         public GeneralViewModel Gvm { get; set; }
         [Inject]
         public TooltipService TooltipService { get; set; }
+        [Inject]
+        public LegalTimeSheetReport LegalTimeSheetReport { get; set; }
 
         public string ArchvizedClientsFilterValue;
 
@@ -46,8 +48,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
             ProductivityStore.Initialize();
         }
 
-        [Inject]
-        public LegalTimeSheetReport LegalTimeSheetReport { get; set; }
+        private void ShowTooltip(ElementReference elementReference, TooltipOptions options = null) => TooltipService.Open(elementReference, options.Text, options);
 
         public bool showFirstSection = false;
         public void ShowHideFirstSection() => showFirstSection = !showFirstSection;

@@ -138,7 +138,7 @@ namespace SWP.DataBase.Managers
 
         public List<Reminder> GetReminders(string profile) =>
             context.Clients
-                .Where(x => x.ProfileClaim == profile)
+                .Where(x => x.ProfileClaim == profile && x.Active)
                 .Include(x => x.Cases)
                     .ThenInclude(y => y.Reminders)
                 .SelectMany(x => x.Cases.SelectMany(x => x.Reminders))
@@ -146,7 +146,7 @@ namespace SWP.DataBase.Managers
 
         public List<Reminder> GetRemindersForClient(int clientId) =>
             context.Clients
-                .Where(x => x.Id == clientId)
+                .Where(x => x.Id == clientId && x.Active)
                 .Include(x => x.Cases)
                     .ThenInclude(y => y.Reminders)
                 .SelectMany(x => x.Cases.SelectMany(x => x.Reminders))

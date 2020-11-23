@@ -51,22 +51,8 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.MyApp
 
         public Task Initialize()
         {
-            RefreshData();
+            RefreshSore();
             return Task.CompletedTask;
-        }
-
-        public void RefreshData()
-        {
-            if (MainStore.GetState().ActiveClient != null)
-            {
-                RefreshClientCases();
-                RefreshSpecificProductivityData();
-            }
-            else
-            {
-                RefreshClientCases();
-                RefreshAllProductivityData();
-            }
         }
 
         private void RefreshClientCases()
@@ -225,6 +211,20 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.MyApp
         public override void CleanUpStore()
         {
             _state.SelectedUser = null;
+        }
+
+        public override void RefreshSore()
+        {
+            if (MainStore.GetState().ActiveClient != null)
+            {
+                RefreshClientCases();
+                RefreshSpecificProductivityData();
+            }
+            else
+            {
+                RefreshClientCases();
+                RefreshAllProductivityData();
+            }
         }
     }
 }

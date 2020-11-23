@@ -175,6 +175,11 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.ClientDetails
             _state.SelectedContact = null;
         }
 
+        public override void RefreshSore()
+        {
+            GetCashMovements(_mainStore.GetState().ActiveClient.Id);
+        }
+
         #endregion
 
 

@@ -47,8 +47,14 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Clients
 
         #region Client
 
-        private void RefreshSelectedClient() => _state.SelectedClient = MainStore.GetState().Clients.FirstOrDefault(x => x.Id == _state.SelectedClient.Id);
-
+        private void RefreshSelectedClient()
+        {
+            if (MainStore.GetState().Clients.Any(x => x.Id == _state.SelectedClient.Id))
+            {
+                _state.SelectedClient = MainStore.GetState().Clients.FirstOrDefault(x => x.Id == _state.SelectedClient.Id);
+            }    
+        }
+          
         public void EditClientRow(ClientViewModel client) => _state.ClientsGrid.EditRow(client);
 
         public async Task OnUpdateClientRow(ClientViewModel client)
@@ -200,6 +206,11 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Clients
         public override void CleanUpStore()
         {
             _state.SelectedClient = null;
+        }
+
+        public override void RefreshSore()
+        {
+    
         }
 
         #endregion

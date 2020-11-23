@@ -322,5 +322,10 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Productivity
             _state.SelectedMonth = null;
             _state.SelectedTimeRecord = null;
         }
+
+        public override void RefreshSore()
+        {
+
+        }
     }
 }

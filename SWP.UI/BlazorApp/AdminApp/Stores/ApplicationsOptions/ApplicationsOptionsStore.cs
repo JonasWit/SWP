@@ -136,6 +136,11 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.ApplicationsOptions
         {
             throw new NotImplementedException();
         }
+
+        public override void RefreshSore()
+        {
+            throw new NotImplementedException();
+        }
     }
 
 

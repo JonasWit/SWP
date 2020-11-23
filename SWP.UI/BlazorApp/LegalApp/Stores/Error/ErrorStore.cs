@@ -47,5 +47,10 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Error
         {
 
         }
+
+        public override void RefreshSore()
+        {
+
+        }
     }
 }

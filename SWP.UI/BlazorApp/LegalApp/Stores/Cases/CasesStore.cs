@@ -571,6 +571,11 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
             _state.SelectedNote = null;
         }
 
+        public override void RefreshSore()
+        {
+            GetCases(_mainStore.GetState().ActiveClient.Id);
+        }
+
         #endregion
 
 

@@ -1,107 +1,115 @@
 ﻿@using SWP.UI.BlazorApp.LegalApp.Stores.Calendar
-@inject GeneralViewModel generalViewModel
 
-<h2>Kalendarz</h2>
-<RadzenButton ButtonStyle="ButtonStyle.Secondary" Icon="refresh" Style="margin-bottom: 20px; width: 100px" Click="CalendarStore.RefreshCalendarData"></RadzenButton>
-<div class="calendar-main">
-    <div>
-        @if (MainStore.GetState().ActiveClient == null)
-        {
-            <RadzenScheduler @ref="CalendarStore.GetState().RemindersScheduler" style="height: 768px ;"
-                             TItem="ReminderViewModel"
-                             Data="@CalendarStore.GetState().Reminders"
-                             StartProperty="Start"
-                             EndProperty="End"
-                             TextProperty="DisplayText"
-                             SelectedIndex="2"
-                             AppointmentSelect="@CalendarStore.OnAppointmentSelect"
-                             TodayText="Dzisiaj"
-                             AppointmentRender="@CalendarStore.OnAppointmentRender">
-                <ChildContent>
-                    <RadzenDayView Text="Dzień" StartTime="@(new TimeSpan(0, 0, 0))" EndTime="@(new TimeSpan(24, 0, 0))" />
-                    <RadzenWeekView Text="Tydzień" StartTime="@(new TimeSpan(0, 0, 0))" EndTime="@(new TimeSpan(24, 0, 0))" />
-                    <RadzenMonthView Text="Miesiąc" />
-                </ChildContent>
-            </RadzenScheduler>
-        }
-        else
-        {
-            <RadzenScheduler @ref="CalendarStore.GetState().RemindersScheduler" style="height: 768px ;"
-                             TItem="ReminderViewModel"
-                             Data="@CalendarStore.GetState().Reminders"
-                             StartProperty="Start"
-                             EndProperty="End"
-                             TextProperty="DisplayTextShort"
-                             SelectedIndex="2"
-                             AppointmentSelect="@CalendarStore.OnAppointmentSelect"
-                             TodayText="Dzisiaj"
-                             AppointmentRender="@CalendarStore.OnAppointmentRender">
-                <ChildContent>
-                    <RadzenDayView Text="Dzień" StartTime="@(new TimeSpan(0, 0, 0))" EndTime="@(new TimeSpan(24, 0, 0))" />
-                    <RadzenWeekView Text="Tydzień" StartTime="@(new TimeSpan(0, 0, 0))" EndTime="@(new TimeSpan(24, 0, 0))" />
-                    <RadzenMonthView Text="Miesiąc" />
-                </ChildContent>
-            </RadzenScheduler>
-        }
 
+
+@if (CalendarStore.Loading)
+{
+    <LoaderComponent Message="@CalendarStore.LoadingMessage"></LoaderComponent>
+}
+else
+{
+    <h2>Kalendarz</h2>
+    <RadzenButton ButtonStyle="ButtonStyle.Secondary" Icon="refresh" Style="margin-bottom: 20px; width: 100px" Click="CalendarStore.RefreshCalendarData"></RadzenButton>
+    <div class="calendar-main">
+        <div>
+            @if (MainStore.GetState().ActiveClient == null)
+            {
+                <RadzenScheduler @ref="CalendarStore.GetState().RemindersScheduler" style="height: 768px ;"
+                                 TItem="ReminderViewModel"
+                                 Data="@CalendarStore.GetState().Reminders"
+                                 StartProperty="Start"
+                                 EndProperty="End"
+                                 TextProperty="DisplayText"
+                                 SelectedIndex="2"
+                                 AppointmentSelect="@CalendarStore.OnAppointmentSelect"
+                                 TodayText="Dzisiaj"
+                                 AppointmentRender="@CalendarStore.OnAppointmentRender">
+                    <ChildContent>
+                        <RadzenDayView Text="Dzień" StartTime="@(new TimeSpan(0, 0, 0))" EndTime="@(new TimeSpan(24, 0, 0))" />
+                        <RadzenWeekView Text="Tydzień" StartTime="@(new TimeSpan(0, 0, 0))" EndTime="@(new TimeSpan(24, 0, 0))" />
+                        <RadzenMonthView Text="Miesiąc" />
+                    </ChildContent>
+                </RadzenScheduler>
+            }
+            else
+            {
+                <RadzenScheduler @ref="CalendarStore.GetState().RemindersScheduler" style="height: 768px ;"
+                                 TItem="ReminderViewModel"
+                                 Data="@CalendarStore.GetState().Reminders"
+                                 StartProperty="Start"
+                                 EndProperty="End"
+                                 TextProperty="DisplayTextShort"
+                                 SelectedIndex="2"
+                                 AppointmentSelect="@CalendarStore.OnAppointmentSelect"
+                                 TodayText="Dzisiaj"
+                                 AppointmentRender="@CalendarStore.OnAppointmentRender">
+                    <ChildContent>
+                        <RadzenDayView Text="Dzień" StartTime="@(new TimeSpan(0, 0, 0))" EndTime="@(new TimeSpan(24, 0, 0))" />
+                        <RadzenWeekView Text="Tydzień" StartTime="@(new TimeSpan(0, 0, 0))" EndTime="@(new TimeSpan(24, 0, 0))" />
+                        <RadzenMonthView Text="Miesiąc" />
+                    </ChildContent>
+                </RadzenScheduler>
+            }
+
+        </div>
+
+        <RadzenCard>
+            <h5>Wybierz Rodzaj Przypomnień</h5>
+            <RadzenSelectBar @bind-Value="CalendarStore.GetState().ChosenReminderType" TValue="int" Style="margin-bottom: 20px;" Change="CalendarStore.ClearSelectedReminder">
+                <Items>
+                    <RadzenSelectBarItem Text="Przypomnienie" Value="1" Style="font-size: 12px;" />
+                    <RadzenSelectBarItem Text="Termin" Value="2" Style="font-size: 12px;" />
+                    <RadzenSelectBarItem Text="Wszystko" Value="3" Style="font-size: 12px;" />
+                </Items>
+            </RadzenSelectBar>
+
+            <RadzenGrid @ref="CalendarStore.GetState().RemindersGrid" AllowFiltering="true" AllowPaging="true" PageSize="15" AllowSorting="true" RowSelect="@(args => CalendarStore.ActiveReminderChange(args))"
+                        Data="@(CalendarStore.GetState().ChosenReminderType == 3 ? CalendarStore.GetState().Reminders : CalendarStore.GetState().ChosenReminderType == 2 ? CalendarStore.GetState().Reminders.Where(x => x.IsDeadline) : CalendarStore.GetState().Reminders.Where(x => !x.IsDeadline))" TItem="ReminderViewModel">
+                <Columns>
+                    <RadzenGridColumn TItem="ReminderViewModel" Property="IsDeadline" Title="Tremin" Width="60px" Filterable="false">
+                        <Template Context="record">
+                            @if (record.IsDeadline)
+                            {
+                                <RadzenIcon Icon="gavel" Style="color : crimson" />
+                            }
+                        </Template>
+                    </RadzenGridColumn>
+                    <RadzenGridColumn TItem="ReminderViewModel" Property="ParentClientName" Title="Klient">
+                    </RadzenGridColumn>
+                    <RadzenGridColumn TItem="ReminderViewModel" Property="ParentCaseName" Title="Sprawa">
+                    </RadzenGridColumn>
+                    <RadzenGridColumn TItem="ReminderViewModel" Property="Name" Title="Nazwa">
+                    </RadzenGridColumn>
+                    <RadzenGridColumn TItem="ReminderViewModel" Property="Message" Title="Opis">
+                    </RadzenGridColumn>
+                    <RadzenGridColumn TItem="ReminderViewModel" Property="Start" Title="Początek">
+                        <Template Context="record">
+                            @(Gvm.ReminderDispalyDate(record.Start))
+                        </Template>
+                    </RadzenGridColumn>
+                    <RadzenGridColumn TItem="ReminderViewModel" Property="End" Title="Koniec">
+                        <Template Context="record">
+                            @(Gvm.ReminderDispalyDate(record.End))
+                        </Template>
+                    </RadzenGridColumn>
+                    <RadzenGridColumn TItem="ReminderViewModel" Property="Duration" Title="Czas">
+                    </RadzenGridColumn>
+                </Columns>
+            </RadzenGrid>
+
+
+            @if (CalendarStore.GetState().SelectedReminder != null)
+            {
+                <div class="details">
+                    <p><strong>Klient:</strong> @CalendarStore.GetState().SelectedReminder.ParentClientName</p>
+                    <p><strong>Sprawa:</strong> @CalendarStore.GetState().SelectedReminder.ParentCaseName</p>
+                    <p><strong>Nazwa:</strong> @CalendarStore.GetState().SelectedReminder.Name</p>
+                    <p><strong>Opis:</strong> @CalendarStore.GetState().SelectedReminder.Message</p>
+                    <p><strong>Daty:</strong> @CalendarStore.GetState().SelectedReminder.Start<span>-</span>@CalendarStore.GetState().SelectedReminder.End </p>
+                </div>
+            }
+
+
+        </RadzenCard>
     </div>
-
-    <RadzenCard>
-        <h5>Wybierz Rodzaj Przypomnień</h5>
-        <RadzenSelectBar @bind-Value="CalendarStore.GetState().ChosenReminderType" TValue="int" Style="margin-bottom: 20px;" Change="CalendarStore.ClearSelectedReminder">
-            <Items>
-                <RadzenSelectBarItem Text="Przypomnienie" Value="1" Style="font-size: 12px;" />
-                <RadzenSelectBarItem Text="Termin" Value="2" Style="font-size: 12px;" />
-                <RadzenSelectBarItem Text="Wszystko" Value="3" Style="font-size: 12px;" />
-            </Items>
-        </RadzenSelectBar>
-
-        <RadzenGrid @ref="CalendarStore.GetState().RemindersGrid" AllowFiltering="true" AllowPaging="true" PageSize="15" AllowSorting="true" RowSelect="@(args => CalendarStore.ActiveReminderChange(args))"
-                    Data="@(CalendarStore.GetState().ChosenReminderType == 3 ? CalendarStore.GetState().Reminders : CalendarStore.GetState().ChosenReminderType == 2 ? CalendarStore.GetState().Reminders.Where(x => x.IsDeadline) : CalendarStore.GetState().Reminders.Where(x => !x.IsDeadline))" TItem="ReminderViewModel">
-            <Columns>
-                <RadzenGridColumn TItem="ReminderViewModel" Property="IsDeadline" Title="Tremin" Width="60px" Filterable="false">
-                    <Template Context="record">
-                        @if (record.IsDeadline)
-                        {
-                            <RadzenIcon Icon="gavel" Style="color : crimson" />
-                        }
-                    </Template>
-                </RadzenGridColumn>
-                <RadzenGridColumn TItem="ReminderViewModel" Property="ParentClientName" Title="Klient">
-                </RadzenGridColumn>
-                <RadzenGridColumn TItem="ReminderViewModel" Property="ParentCaseName" Title="Sprawa">
-                </RadzenGridColumn>
-                <RadzenGridColumn TItem="ReminderViewModel" Property="Name" Title="Nazwa">
-                </RadzenGridColumn>
-                <RadzenGridColumn TItem="ReminderViewModel" Property="Message" Title="Opis">
-                </RadzenGridColumn>
-                <RadzenGridColumn TItem="ReminderViewModel" Property="Start" Title="Początek">
-                    <Template Context="record">
-                        @(generalViewModel.ReminderDispalyDate(record.Start))
-                    </Template>
-                </RadzenGridColumn>
-                <RadzenGridColumn TItem="ReminderViewModel" Property="End" Title="Koniec">
-                    <Template Context="record">
-                        @(generalViewModel.ReminderDispalyDate(record.End))
-                    </Template>
-                </RadzenGridColumn>
-                <RadzenGridColumn TItem="ReminderViewModel" Property="Duration" Title="Czas">
-                </RadzenGridColumn>
-            </Columns>
-        </RadzenGrid>
-
-
-        @if (CalendarStore.GetState().SelectedReminder != null)
-        {
-            <div class="details">
-                <p><strong>Klient:</strong> @CalendarStore.GetState().SelectedReminder.ParentClientName</p>
-                <p><strong>Sprawa:</strong> @CalendarStore.GetState().SelectedReminder.ParentCaseName</p>
-                <p><strong>Nazwa:</strong> @CalendarStore.GetState().SelectedReminder.Name</p>
-                <p><strong>Opis:</strong> @CalendarStore.GetState().SelectedReminder.Message</p>
-                <p><strong>Daty:</strong> @CalendarStore.GetState().SelectedReminder.Start<span>-</span>@CalendarStore.GetState().SelectedReminder.End </p>
-            </div>
-        }
-
-
-    </RadzenCard>
-</div>
+}

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using SWP.UI.BlazorApp.LegalApp.Stores.Calendar;
 using SWP.UI.BlazorApp.LegalApp.Stores.Main;
+using SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data;
 using System;
 
 namespace SWP.UI.Components.LegalSwpBlazorComponents
@@ -11,6 +12,8 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
         public MainStore MainStore { get; set; }
         [Inject]
         public CalendarStore CalendarStore { get; set; }
+        [Inject]
+        public GeneralViewModel Gvm { get; set; }
 
         public void Dispose()
         {

@@ -44,6 +44,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
             ClientJobsStore.Initialize();
         }
 
+        private void ShowTooltip(ElementReference elementReference, TooltipOptions options = null) => TooltipService.Open(elementReference, options.Text, options);
 
         public string ArchvizedJobsFilterValue;
 

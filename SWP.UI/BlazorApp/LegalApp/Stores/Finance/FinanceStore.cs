@@ -238,5 +238,10 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Finance
             _state.SelectedMonth = null;
             _state.SelectedCashMovement = null;
         }
+
+        public override void RefreshSore()
+        {
+
+        }
     }
 }

@@ -9,13 +9,15 @@ namespace SWP.UI.BlazorApp
 {
     public abstract class StoreBase
     {
+        public string DataLoadingMessage => @"Wczytywanie danych...";
+
         protected readonly IActionDispatcher _actionDispatcher;
         protected readonly IServiceProvider _serviceProvider;
         protected readonly NotificationService _notificationService;
         protected readonly DialogService _dialogService;
 
-        public bool Loading { get; set; }
-        public string LoadingMessage { get; set; }
+        public bool Loading { get; set; } = false;
+        public string LoadingMessage { get; set; } = "";
 
         public void EnableLoading(string message)
         {
@@ -81,5 +83,7 @@ namespace SWP.UI.BlazorApp
         #endregion
 
         public abstract void CleanUpStore();
+
+        public abstract void RefreshSore();
     }
 }

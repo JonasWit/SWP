@@ -1,8 +1,15 @@
 ﻿
-<h2>Coś poszło nie tak!</h2>
+@if (ErrorStore.Loading)
+{
+    <LoaderComponent Message="@ErrorStore.LoadingMessage"></LoaderComponent>
+}
+else
+{
+    <h2>Coś poszło nie tak!</h2>
 
-<p>Odśwież aplikację klikając guzik poniżej</p>
+    <p>Odśwież aplikację klikając guzik poniżej</p>
 
-<p>@ErrorStore.GetState().Exception.Message</p>
+    <p>@ErrorStore.GetState().Exception.Message</p>
 
-<RadzenButton Click="MainStore.DismissErrorPage">Odśwież</RadzenButton>
+    <RadzenButton Click="MainStore.DismissErrorPage">Odśwież</RadzenButton>
+}

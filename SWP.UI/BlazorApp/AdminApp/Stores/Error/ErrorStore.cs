@@ -49,7 +49,12 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Error
 
         public override void CleanUpStore()
         {
-            throw new NotImplementedException();
+
+        }
+
+        public override void RefreshSore()
+        {
+       
         }
     }
 }

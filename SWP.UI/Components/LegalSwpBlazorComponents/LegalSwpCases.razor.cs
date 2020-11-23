@@ -34,9 +34,13 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
 
         protected override void OnInitialized()
         {
+            CasesStore.EnableLoading(CasesStore.DataLoadingMessage);
+
             MainStore.AddStateChangeListener(UpdateCleanView);
             CasesStore.AddStateChangeListener(UpdateView);
             CasesStore.Initialize();
+
+            CasesStore.DisableLoading();
         }
 
         public bool showFirstSection = false;

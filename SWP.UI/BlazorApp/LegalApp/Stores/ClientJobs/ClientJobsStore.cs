@@ -223,5 +223,10 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.ClientJobs
             _state.SelectedArchivizedClientJob = null;
             _state.SelectedJob = null;
         }
+
+        public override void RefreshSore()
+        {
+            GetCashMovements(_mainStore.GetState().ActiveClient.Id);
+        }
     }
 }

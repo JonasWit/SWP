@@ -42,6 +42,8 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
             FinanceStore.Initialize();
         }
 
+        private void ShowTooltip(ElementReference elementReference, TooltipOptions options = null) => TooltipService.Open(elementReference, options.Text, options);
+
         public bool showFirstSection = false;
         public void ShowHideFirstSection() => showFirstSection = !showFirstSection;
 

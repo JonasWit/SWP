@@ -26,15 +26,19 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
 
         private void UpdateView()
         {
-            MyAppStore.RefreshData();
+            MyAppStore.RefreshSore();
             StateHasChanged();
         }
 
         protected override async Task OnInitializedAsync()
         {
+            MyAppStore.EnableLoading(MyAppStore.DataLoadingMessage);
+
             MainStore.AddStateChangeListener(UpdateView);
             MyAppStore.AddStateChangeListener(UpdateView);
             await MyAppStore.Initialize();
+
+            MyAppStore.DisableLoading();
         }
 
         private string FormatAsPLN(object value) => $"{((double)value).ToString(CultureInfo.CreateSpecificCulture("pl"))} zł";
@@ -62,6 +66,5 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
         }
 
         public string RelatedUsersFilterValue = "";
-
     }
 }

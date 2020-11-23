@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
+using SWP.UI.BlazorApp;
 using SWP.UI.BlazorApp.LegalApp.Stores.Archive;
+using SWP.UI.BlazorApp.LegalApp.Stores.Archive.Actions;
 using SWP.UI.BlazorApp.LegalApp.Stores.Main;
 using System;
 
@@ -11,6 +13,8 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
         public MainStore MainStore { get; set; }
         [Inject]
         public ArchiveStore ArchiveStore { get; set; }
+        [Inject]
+        public IActionDispatcher ActionDispatcher { get; set; }
 
         public string ArchvizedClientsFilterValue;
 
@@ -38,6 +42,8 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
         public bool addClientformVisible = false;
         public void ShowHideClientFormI() => addClientformVisible = !addClientformVisible;
 
+        private void RecoverSelectedClient() => ActionDispatcher.Dispatch(new RecoverSelectedClientAction());
 
+        private void DeleteSelectedClient() => ActionDispatcher.Dispatch(new DeleteSelectedClientAction());
     }
 }

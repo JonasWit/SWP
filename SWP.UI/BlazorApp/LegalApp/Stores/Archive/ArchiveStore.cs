@@ -2,6 +2,7 @@
 using Radzen;
 using SWP.Application.LegalSwp.Cases;
 using SWP.Application.LegalSwp.Clients;
+using SWP.UI.BlazorApp.LegalApp.Stores.Archive.Actions;
 using SWP.UI.BlazorApp.LegalApp.Stores.Main;
 using SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data;
 using System;
@@ -57,7 +58,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Archive
 
         public void SelectedArchivizedCaseChange(object c) => _state.SelectedArchivizedCase = _state.ArchivizedCases.FirstOrDefault(x => x.Id == int.Parse(c.ToString()));
 
-        public async Task DeleteSelectedClient()
+        private async Task DeleteSelectedClient()
         {
             try
             {
@@ -85,7 +86,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Archive
             }
         }
 
-        public async Task RecoverSelectedClient()
+        private async Task RecoverSelectedClient()
         {
             try
             {
@@ -175,9 +176,19 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Archive
             }
         }
 
-        protected override void HandleActions(IAction action)
+        protected override async void HandleActions(IAction action)
         {
-            throw new NotImplementedException();
+            switch (action.Name)
+            {
+                case RecoverSelectedClientAction.RecoverSelectedClient:
+                    await RecoverSelectedClient();
+                    break;
+                case DeleteSelectedClientAction.DeleteSelectedClient:
+                    await DeleteSelectedClient();
+                    break;
+                default:
+                    break;
+            }
         }
 
         public override void CleanUpStore()

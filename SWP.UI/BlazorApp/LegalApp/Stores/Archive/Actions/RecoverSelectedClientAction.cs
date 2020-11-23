@@ -7,6 +7,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Archive.Actions
 {
     public class RecoverSelectedClientAction : IAction
     {
-        public string Name => throw new NotImplementedException();
+        public const string RecoverSelectedClient = "RECOVER_SELECTED_CLIENT";
+        public string Name => RecoverSelectedClient;
     }
 }

@@ -254,7 +254,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
 
         protected override void HandleActions(IAction action)
         {
-            throw new NotImplementedException();
+
         }
 
         public override void CleanUpStore()

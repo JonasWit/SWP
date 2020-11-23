@@ -20,8 +20,8 @@ else
                 <RadzenCard Style="width:600px; margin-bottom: 20px; height:100px;">
                     <div>Wybrany Klient:</div>
                     <b>@ArchiveStore.GetState().SelectedArchivizedClient.Name</b>
-                    <RadzenButton Click="(async () => await ArchiveStore.RecoverSelectedClient())">Odzyskaj Klienta</RadzenButton>
-                    <RadzenButton Click="(async () => await ArchiveStore.DeleteSelectedClient())">Usuń Klienta</RadzenButton>
+                    <RadzenButton Click="RecoverSelectedClient">Odzyskaj Klienta</RadzenButton>
+                    <RadzenButton Click="DeleteSelectedClient">Usuń Klienta</RadzenButton>
 
                 </RadzenCard>
 

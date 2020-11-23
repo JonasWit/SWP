@@ -306,7 +306,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Productivity
 
         protected override void HandleActions(IAction action)
         {
-            throw new NotImplementedException();
+  
         }
 
         public void SetSelectedTimeRecord(TimeRecordViewModel entity) => _state.SelectedTimeRecord = entity;

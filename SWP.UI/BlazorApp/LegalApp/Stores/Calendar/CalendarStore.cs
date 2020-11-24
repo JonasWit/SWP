@@ -51,7 +51,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Calendar
         public List<ReminderViewModel> UpcomingDeadlines =>
             _state.Reminders.Where(x => x.IsDeadline && x.Start >= DateTime.Now && x.Start <= DateTime.Now.AddDays(14)).ToList();
 
-        public void RefreshCalendarData()
+        private void RefreshCalendarData()
         {
             try
             {
@@ -183,6 +183,9 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Calendar
                 case ActiveReminderChangeAction.ActiveReminderChange:
                     var actionTypeII = (ActiveReminderChangeAction)action;
                     ActiveReminderChange(actionTypeII.Reminder);
+                    break;
+                case RefreshCalendarDataAction.RefreshCalendarData:
+                    RefreshCalendarData();
                     break;
                 default:
                     break;

@@ -9,7 +9,7 @@
 else
 {
     <h2>Kalendarz</h2>
-    <RadzenButton ButtonStyle="ButtonStyle.Secondary" Icon="refresh" Style="margin-bottom: 20px; width: 100px" Click="CalendarStore.RefreshCalendarData"></RadzenButton>
+    <RadzenButton ButtonStyle="ButtonStyle.Secondary" Icon="refresh" Style="margin-bottom: 20px; width: 100px" Click="RefreshCalendarData"></RadzenButton>
     <div class="calendar-main">
         <div>
             @if (MainStore.GetState().ActiveClient == null)

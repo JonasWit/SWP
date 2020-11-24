@@ -23,19 +23,17 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
         public void Dispose()
         {
             MainStore.RemoveStateChangeListener(UpdateView);
-            MainStore.RemoveStateChangeListener(RefreshView);
+            MainStore.RemoveStateChangeListener(RefreshCalendarData);
             CalendarStore.RemoveStateChangeListener(UpdateView);
             CalendarStore.CleanUpStore();
         }
 
         private void UpdateView() => StateHasChanged();
- 
-        private void RefreshView() => CalendarStore.RefreshCalendarData();
 
         protected override void OnInitialized()
         {
             MainStore.AddStateChangeListener(UpdateView);
-            MainStore.AddStateChangeListener(RefreshView);
+            MainStore.AddStateChangeListener(RefreshCalendarData);
             CalendarStore.AddStateChangeListener(UpdateView);
             CalendarStore.Initialize();
         }
@@ -43,5 +41,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
         private void OnAppointmentSelect(SchedulerAppointmentSelectEventArgs<ReminderViewModel> args) => ActionDispatcher.Dispatch(new OnAppointmentSelectAction { Args = args });
 
         private void ActiveReminderChange(object args) => ActionDispatcher.Dispatch(new ActiveReminderChangeAction { Reminder = args });
+
+        private void RefreshCalendarData() => ActionDispatcher.Dispatch(new RefreshCalendarDataAction());
     }
 }

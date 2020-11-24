@@ -5,6 +5,7 @@ using SWP.Application.LegalSwp.Cases;
 using SWP.Application.LegalSwp.ContactPeopleAdmin;
 using SWP.Application.LegalSwp.Notes;
 using SWP.Application.LegalSwp.Reminders;
+using SWP.UI.BlazorApp.LegalApp.Stores.Cases.Actions;
 using SWP.UI.BlazorApp.LegalApp.Stores.Main;
 using SWP.UI.Components.LegalSwpBlazorComponents.SchedulerInnerComponents;
 using SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data;
@@ -46,6 +47,19 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
         public void Initialize()
         {
             GetCases(_mainStore.GetState().ActiveClient.Id);
+        }
+
+        protected override async void HandleActions(IAction action)
+        {
+            switch (action.Name)
+            {
+                case CreateNewCaseAction.CreateNewCase:
+                    var actionTypeI = (CreateNewCaseAction)action;
+                    await CreateNewCase(actionTypeI.Request);
+                    break;
+                default:
+                    break;
+            }
         }
 
         public void GetCases(int clientId)
@@ -91,7 +105,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
 
         #region Cases Management
 
-        public async Task CreateNewCase(CreateCase.Request request)
+        private async Task CreateNewCase(CreateCase.Request request)
         {
             try
             {
@@ -553,11 +567,6 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
             {
                 _state.SelectedContact = null;
             }
-        }
-
-        protected override void HandleActions(IAction action)
-        {
-
         }
 
         public override void CleanUpStore()

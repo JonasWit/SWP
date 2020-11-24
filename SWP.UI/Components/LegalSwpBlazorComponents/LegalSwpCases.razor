@@ -9,7 +9,7 @@ else
         <div class="show-hide tab-section"><button class="show-hide-btn show-hide-btn-1"><span>Dodaj Sprawę</span></button></div>
         <div class="row-section">
 
-            <RadzenTemplateForm Data="@CasesStore.GetState().NewCase" Submit="@(async (CreateCase.Request args) => { await CasesStore.CreateNewCase(args); })">
+            <RadzenTemplateForm Data="@CasesStore.GetState().NewCase" Submit="@((CreateCase.Request args) => CreateNewCase(args))">
 
                 <RadzenFieldset Text="Nowa Sprawa">
                     <div class="help-box">

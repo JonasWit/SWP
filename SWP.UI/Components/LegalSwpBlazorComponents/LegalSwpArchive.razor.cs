@@ -49,6 +49,8 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
 
         public void ShowHideClientFormI() => addClientformVisible = !addClientformVisible;
 
+        #region Actions
+
         private void RecoverSelectedClient() => ActionDispatcher.Dispatch(new RecoverSelectedClientAction());
 
         private void DeleteSelectedClient() => ActionDispatcher.Dispatch(new DeleteSelectedClientAction());
@@ -60,5 +62,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
         private void SelectedArchivizedClientChange(object client) => ActionDispatcher.Dispatch(new SelectedArchivizedClientChangeAction { Client = client });
 
         private void SelectedArchivizedCaseChange(object c) => ActionDispatcher.Dispatch(new SelectedArchivizedCaseChangeAction { Case = c });
+
+        #endregion
     }
 }

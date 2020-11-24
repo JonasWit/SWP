@@ -57,6 +57,10 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
                     var actionTypeI = (CreateNewCaseAction)action;
                     await CreateNewCase(actionTypeI.Request);
                     break;
+                case EditCaseRowAction.EditCaseRow:
+                    var actionTypeII = (EditCaseRowAction)action;
+                    EditCaseRow(actionTypeII.Arg);
+                    break;
                 default:
                     break;
             }
@@ -128,7 +132,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
             }
         }
 
-        public void EditCaseRow(CaseViewModel c) => _state.CasesGrid.EditRow(c);
+        private void EditCaseRow(CaseViewModel c) => _state.CasesGrid.EditRow(c);
 
         public async Task OnUpdateCaseRow(CaseViewModel c)
         {

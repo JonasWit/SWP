@@ -38,10 +38,16 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
             CalendarStore.Initialize();
         }
 
+        #region Actions
+
         private void OnAppointmentSelect(SchedulerAppointmentSelectEventArgs<ReminderViewModel> args) => ActionDispatcher.Dispatch(new OnAppointmentSelectAction { Args = args });
 
         private void ActiveReminderChange(object args) => ActionDispatcher.Dispatch(new ActiveReminderChangeAction { Reminder = args });
 
         private void RefreshCalendarData() => ActionDispatcher.Dispatch(new RefreshCalendarDataAction());
+
+        #endregion
+
+
     }
 }

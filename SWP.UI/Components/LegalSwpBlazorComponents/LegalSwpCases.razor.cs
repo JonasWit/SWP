@@ -73,6 +73,13 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
 
         private void ShowTooltip(ElementReference elementReference, TooltipOptions options = null) => TooltipService.Open(elementReference, options.Text, options);
 
+        #region Actions 
+
         private void CreateNewCase(CreateCase.Request request) => ActionDispatcher.Dispatch(new CreateNewCaseAction { Request = request });
+
+        private void EditCaseRow(CaseViewModel data) => ActionDispatcher.Dispatch(new EditCaseRowAction { Arg = data });
+
+        #endregion
+
     }
 }

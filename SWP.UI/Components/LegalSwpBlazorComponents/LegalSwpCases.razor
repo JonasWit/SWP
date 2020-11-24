@@ -124,7 +124,7 @@ else
 
                         <RadzenGridColumn TItem="CaseViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="80px">
                             <Template Context="cs">
-                                <RadzenButton Icon="edit" Size="ButtonSize.Small" Click="@((args) => CasesStore.EditCaseRow(cs))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Edytuj", Style = Gvm.ToolTipStyle }))">
+                                <RadzenButton Icon="edit" Size="ButtonSize.Small" Click="@((args) => EditCaseRow(cs))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Edytuj", Style = Gvm.ToolTipStyle }))">
                                 </RadzenButton>
                             </Template>
                             <EditTemplate Context="cs">

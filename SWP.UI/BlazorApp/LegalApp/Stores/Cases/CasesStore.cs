@@ -66,7 +66,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
             }
         }
 
-        public void GetCases(int clientId)
+        private void GetCases(int clientId)
         {
             try
             {
@@ -83,29 +83,29 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
             }
         }
 
-        public void ClearSelectedCase() => _state.SelectedCase = null;
+        private void ClearSelectedCase() => _state.SelectedCase = null;
 
-        public void SetSelectedCase(CaseViewModel entity) => _state.SelectedCase = entity;
+        private void SetSelectedCase(CaseViewModel entity) => _state.SelectedCase = entity;
 
-        public void SetSelectedNote(NoteViewModel entity) => _state.SelectedNote = entity;
+        private void SetSelectedNote(NoteViewModel entity) => _state.SelectedNote = entity;
 
-        public void AddNoteToActiveCase(NoteViewModel entity) => _state.SelectedCase.Notes.Add(entity);
+        private void AddNoteToActiveCase(NoteViewModel entity) => _state.SelectedCase.Notes.Add(entity);
 
-        public void RemoveNoteFromActiveCase(int id) => _state.SelectedCase.Notes.RemoveAll(x => x.Id == id);
+        private void RemoveNoteFromActiveCase(int id) => _state.SelectedCase.Notes.RemoveAll(x => x.Id == id);
 
-        public void ReplaceNoteFromActiveCase(NoteViewModel entity) => _state.SelectedCase.Notes[_state.SelectedCase.Notes.FindIndex(x => x.Id == entity.Id)] = entity;
+        private void ReplaceNoteFromActiveCase(NoteViewModel entity) => _state.SelectedCase.Notes[_state.SelectedCase.Notes.FindIndex(x => x.Id == entity.Id)] = entity;
 
-        public void AddReminderToActiveCase(ReminderViewModel entity) => _state.SelectedCase.Reminders.Add(entity);
+        private void AddReminderToActiveCase(ReminderViewModel entity) => _state.SelectedCase.Reminders.Add(entity);
 
-        public void RemoveReminderFromActiveCase(int id) => _state.SelectedCase.Reminders.RemoveAll(x => x.Id == id);
+        private void RemoveReminderFromActiveCase(int id) => _state.SelectedCase.Reminders.RemoveAll(x => x.Id == id);
 
-        public void ReplaceReminderFromActiveCase(ReminderViewModel entity) => _state.SelectedCase.Reminders[_state.SelectedCase.Reminders.FindIndex(x => x.Id == entity.Id)] = entity;
+        private void ReplaceReminderFromActiveCase(ReminderViewModel entity) => _state.SelectedCase.Reminders[_state.SelectedCase.Reminders.FindIndex(x => x.Id == entity.Id)] = entity;
 
-        public void AddContactToActiveCase(ContactPersonViewModel entity) => _state.SelectedCase.ContactPeople.Add(entity);
+        private void AddContactToActiveCase(ContactPersonViewModel entity) => _state.SelectedCase.ContactPeople.Add(entity);
 
-        public void RemoveContactFromActiveCase(int id) => _state.SelectedCase.ContactPeople.RemoveAll(x => x.Id == id);
+        private void RemoveContactFromActiveCase(int id) => _state.SelectedCase.ContactPeople.RemoveAll(x => x.Id == id);
 
-        public void ReplaceContactFromActiveCase(ContactPersonViewModel entity) => _state.SelectedCase.ContactPeople[_state.SelectedCase.ContactPeople.FindIndex(x => x.Id == entity.Id)] = entity;
+        private void ReplaceContactFromActiveCase(ContactPersonViewModel entity) => _state.SelectedCase.ContactPeople[_state.SelectedCase.ContactPeople.FindIndex(x => x.Id == entity.Id)] = entity;
 
         #region Cases Management
 

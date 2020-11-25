@@ -11,7 +11,8 @@
 
                     <li class="nav-item ">
                         <a class="nav-link @(MainStore.GetState().ActivePanel == LegalAppPanels.MyApp ? "active" : "") " @onclick="@(() => MainStore.SetActivePanel(LegalAppPanels.MyApp))">
-                            <i><img src="/Images/icons8-web-design-36.png" /></i> <span class="@(showSidebar ? "link-text" : "text-hidden")">Moja Aplikacja</span>
+                            <i><img src="/Images/icons8-web-design-36.png" /></i>
+                            <span class="@(showSidebar ? "link-text" : "text-hidden")">Moja Aplikacja</span>
                         </a>
                     </li>
                     <li class="nav-item  ">
@@ -34,12 +35,12 @@
                         </li>
                         <li class="nav-item ">
                             <a class="nav-link @(MainStore.GetState().ActivePanel == LegalAppPanels.ClientJobs ? "active" : "") " @onclick="@(() => MainStore.SetActivePanel(LegalAppPanels.ClientJobs))">
-                                <i><img src="/Images/icons8-combo-chart-36.png" /></i> <span class="@(showSidebar ? "link-text" : "text-hidden")">Lista Zadań</span>
+                                <i><img src="/Images/icons8-to-do-36.png" /></i> <span class="@(showSidebar ? "link-text" : "text-hidden")">Lista Zadań</span>
                             </a>
                         </li>
                         <li class="nav-item  ">
                             <a class="nav-link @(MainStore.GetState().ActivePanel == LegalAppPanels.Cases ? "active" : "")" @onclick="@(() => MainStore.SetActivePanel(LegalAppPanels.Cases))">
-                                <i><img src="/Images/icons8-todo-list-36.png" /></i><span class="@(showSidebar ? "link-text" : "text-hidden")"> Sprawy</span>
+                                <i><img src="/Images/icons8-documents-36.png" /></i><span class="@(showSidebar ? "link-text" : "text-hidden")"> Sprawy</span>
                             </a>
                         </li>
                         <li class="nav-item ">
@@ -63,7 +64,7 @@
 
             </nav>
 
-            <nav id="top-menu" class="@(!showTopNav ? "top-menu" : "top-menu-add")">
+            <nav id="top-menu" class="@(!showTopNav ? "top-menu" : "top-menu-add") top-nav">
                 <ul class="top">
                     <li class="user input">
                         <strong><p>Wybierz Klienta</p></strong>
@@ -76,9 +77,9 @@
                     <li class="@(showTopNav ? "user" : "link-text-hidden")"><p><strong>Klient:</strong></p> <p>@(MainStore.GetState().ActiveClient != null ? MainStore.GetState().ActiveClient.Name : "Brak Aktywnego Klienta" )</p></li>
                     <li class="@(showTopNav ? "user" : "link-text-hidden")"><p><strong>Użytkownik:</strong></p><p> @MainStore.GetState().User.UserName</p></li>
                     <li class="@(showTopNav ? "user" : "link-text-hidden")"><p><strong>Profil:</strong></p><p>@MainStore.GetState().User.Profile</p> </li>
-                
+
                 </ul>
-                <div ><button class="top-toggle" @onclick="ShowHideTopNav"><span class="line"></span></button></div>
+                <div><button class="top-toggle" @onclick="ShowHideTopNav"><span class="line"></span></button></div>
             </nav>
 
             <div id="main-window">

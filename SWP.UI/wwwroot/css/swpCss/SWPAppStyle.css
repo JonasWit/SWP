@@ -47,11 +47,11 @@ body {
     height: 100vh;
     position: fixed;
     color: var(--secondary-font-color);
-    background: rgb(255,255,255);
+    /*background: rgb(255,255,255);
     background: -moz-linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(21,37,255,1) 0%, rgba(0,0,0,1) 100%);
     background: -webkit-linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(21,37,255,1) 0%, rgba(0,0,0,1) 100%);
     background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(21,37,255,1) 0%, rgba(0,0,0,1) 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#ffffff",endColorstr="#000000",GradientType=1);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#ffffff",endColorstr="#000000",GradientType=1);*/
     /* background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(42,173,251,1) 100%, rgba(243,248,252,1) 100%);*/
     /*height: 100%;*/
     /* background-image: url(../../Images/19366.jpg);
@@ -61,6 +61,20 @@ body {
     width: 8rem;
     z-index: 999;
 }
+
+
+    .sidebar::after {
+        content: "";
+        background: url(../../Images/161.jpg);
+        background-position: left center;
+        opacity: 0.7;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        position: absolute;
+        z-index: -1;
+    }
 
 .sidebar-add {
     width: 20rem;
@@ -77,14 +91,29 @@ body {
 #top-menu {
     grid-column: 1 / span 3;
     grid-row: 1;
-    color: var(--secondary-font-color);
-    background: rgb(255,255,255);
+   /* color: var(--secondary-font-color);*/
+    /*background: rgb(255,255,255);
     background: -moz-linear-gradient(93deg, rgba(255,255,255,1) 0%, rgba(21,37,255,1) 0%, rgba(0,0,0,1) 100%);
     background: -webkit-linear-gradient(93deg, rgba(255,255,255,1) 0%, rgba(21,37,255,1) 0%, rgba(0,0,0,1) 100%);
     background: linear-gradient(93deg, rgba(255,255,255,1) 0%, rgba(21,37,255,1) 0%, rgba(0,0,0,1) 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#ffffff",endColorstr="#000000",GradientType=1);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#ffffff",endColorstr="#000000",GradientType=1);*/
     padding-top: 1rem;
 }
+
+.top-menu::after {
+    content: "";
+    background: url(../../Images/161.jpg);
+    background-position: top center;
+    opacity: 0.6;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    height: 8rem;
+    position: absolute;
+    z-index: -1;
+}
+ 
 
 
 .user {
@@ -598,7 +627,7 @@ ul, li {
     border: 1px solid #b3e0ff;
     margin: 8px;
     padding: 10px;
-    height: 160px;
+    height: /*160px*/ auto;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
 }
 
@@ -670,3 +699,4 @@ ul, li {
     flex-direction: row;
     justify-content: space-evenly;
 }
+

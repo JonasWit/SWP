@@ -6,7 +6,21 @@
             <nav class="sidebar @(!showSidebar ? "" : "sidebar-add")">
                 <ul class="navigation">
                     <li class="logo">
-                        <button @onclick="ShowHideSidebar" class="toggle"><img src="Images/icons8-double-right-40.png" /></button>
+                        <button @onclick="ShowHideSidebar" class="toggle @(showSidebar ? "toggle-rotate" : "") "><img src="Images/icons8-double-right-40.png" /></button>
+                    </li>
+
+                    <li class="nav-item ">
+                        <a class="nav-link profile">
+                            <i><img src="/Images/icons8-profile-36.png" /></i>
+                            <span class="@(showSidebar ? "link-text" : "text-hidden")">@MainStore.GetState().User.UserName</span>
+                        </a>
+                    </li>
+
+                    <li class="nav-item ">
+                        <a class="nav-link profile" href="/Index">
+                            <i><img src="/Images/icons8-exit-36.png" /></i>
+                            <span class="@(showSidebar ? "link-text" : "text-hidden")">Wyloguj</span>
+                        </a>
                     </li>
 
                     <li class="nav-item ">
@@ -60,6 +74,7 @@
                             <i><img src="/Images/icons8-filing-cabinet-36.png" /></i><span class="@(showSidebar ? "link-text" : "text-hidden")"> Archiwum</span>
                         </a>
                     </li>
+
                 </ul>
 
             </nav>
@@ -70,13 +85,13 @@
                         <strong><p>Wybierz Klienta</p></strong>
                         <Radzen.Blazor.RadzenDropDown AllowClear="true" TValue="string" AllowFiltering="true" Data="@MainStore.GetState().Clients" @bind-Value="MainStore.GetState().SelectedClientString" TextProperty="Name" ValueProperty="IdString" Change="@(args => MainStore.ActiveClientChange(args))" Style="width: 200px;" />
                     </li>
-                    <li class="user logout"><p><a href="/Index"><img src="/Images/icons8-exit-36.png" /></a></p></li>
+
 
                 </ul>
                 <ul class="top-items">
                     <li class="@(showTopNav ? "user" : "link-text-hidden")"><p><strong>Klient:</strong></p> <p>@(MainStore.GetState().ActiveClient != null ? MainStore.GetState().ActiveClient.Name : "Brak Aktywnego Klienta" )</p></li>
-                    <li class="@(showTopNav ? "user" : "link-text-hidden")"><p><strong>Użytkownik:</strong></p><p> @MainStore.GetState().User.UserName</p></li>
-                    <li class="@(showTopNav ? "user" : "link-text-hidden")"><p><strong>Profil:</strong></p><p>@MainStore.GetState().User.Profile</p> </li>
+
+
 
                 </ul>
                 <div><button class="top-toggle" @onclick="ShowHideTopNav"><span class="line"></span></button></div>

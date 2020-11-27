@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Radzen;
 using SWP.Application.LegalSwp.Cases;
+using SWP.Application.LegalSwp.Notes;
 using SWP.UI.BlazorApp;
 using SWP.UI.BlazorApp.LegalApp.Stores.Cases;
 using SWP.UI.BlazorApp.LegalApp.Stores.Cases.Actions;
@@ -78,6 +79,34 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
         private void CreateNewCase(CreateCase.Request request) => ActionDispatcher.Dispatch(new CreateNewCaseAction { Request = request });
 
         private void EditCaseRow(CaseViewModel data) => ActionDispatcher.Dispatch(new EditCaseRowAction { Arg = data });
+
+        private void OnUpdateCaseRow(CaseViewModel data) => ActionDispatcher.Dispatch(new OnUpdateCaseRowAction { Arg = data });
+
+        private void CancelEditCaseRow(CaseViewModel data) => ActionDispatcher.Dispatch(new CancelEditCaseRowAction { Arg = data });
+
+        private void SaveCaseRow(CaseViewModel data) => ActionDispatcher.Dispatch(new SaveCaseRowAction { Arg = data });
+
+        private void DeleteCaseRow(CaseViewModel data) => ActionDispatcher.Dispatch(new DeleteCaseRowAction { Arg = data });
+
+        private void ActiveCaseChange(object data) => ActionDispatcher.Dispatch(new ActiveCaseChangeAction { Arg = data });
+
+        private void ArchivizeCase(CaseViewModel data) => ActionDispatcher.Dispatch(new ArchivizeCaseAction { Arg = data });
+
+        private void ActiveNoteChange(object data) => ActionDispatcher.Dispatch(new ActiveNoteChangeAction { Arg = data });
+
+        private void CreateNewNote(CreateNote.Request request) => ActionDispatcher.Dispatch(new CreateNewNoteAction { Request = request });
+
+        private void EditNoteRow(NoteViewModel request) => ActionDispatcher.Dispatch(new EditNoteRowAction { Arg = request });
+
+        private void OnUpdateNoteRow(NoteViewModel request) => ActionDispatcher.Dispatch(new OnUpdateNoteRowAction { Arg = request });
+
+        private void SaveNoteRow(NoteViewModel request) => ActionDispatcher.Dispatch(new SaveNoteRowAction { Arg = request });
+
+        private void CancelEditNoteRow(NoteViewModel request) => ActionDispatcher.Dispatch(new CancelEditNoteRowAction { Arg = request });
+
+        private void DeleteNoteRow(NoteViewModel request) => ActionDispatcher.Dispatch(new DeleteNoteRowAction { Arg = request });
+
+        private void OnSlotSelect(SchedulerSlotSelectEventArgs request) => ActionDispatcher.Dispatch(new OnSlotSelectAction { Arg = request });
 
         #endregion
 

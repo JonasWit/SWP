@@ -81,7 +81,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Productivity
             if (_state.TimeRecords.Count == 0) return "Brak zarejestrowanego czasu.";
 
             var spentTime = new TimeSpan(_state.TimeRecords.Sum(x => x.RecordedHours), _state.TimeRecords.Sum(x => x.RecordedMinutes), 0);
-            var result = $"Poświęcony czas: {spentTime.Days} dn. {spentTime.Hours} godz. {spentTime.Minutes} min.";
+            var result = $"Poświęcony czas: {spentTime.Days} dni {spentTime.Hours} godz. {spentTime.Minutes} min.";
 
             return result;
         }

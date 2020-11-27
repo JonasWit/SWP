@@ -84,7 +84,7 @@ else
             </div>
             <div class="row-section">
                 <RadzenGrid @ref="CasesStore.GetState().CasesGrid" AllowFiltering="true" AllowPaging="true" PageSize="5" AllowSorting="true"
-                            Data="@CasesStore.GetState().Cases" TItem="CaseViewModel" RowUpdate="@CasesStore.OnUpdateCaseRow" RowSelect="@(args => CasesStore.ActiveCaseChange(args))">
+                            Data="@CasesStore.GetState().Cases" TItem="CaseViewModel" RowUpdate="@OnUpdateCaseRow" RowSelect="@(args => ActiveCaseChange(args))">
                     <Columns>
                         <RadzenGridColumn TItem="CaseViewModel" Property="Name" Title="Nazwa Sprawy">
                             <Template Context="cs">
@@ -128,21 +128,21 @@ else
                                 </RadzenButton>
                             </Template>
                             <EditTemplate Context="cs">
-                                <RadzenButton Icon="save" Size="ButtonSize.Small" Click="@((args) => CasesStore.SaveCaseRow(cs))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Zapisz", Style = Gvm.ToolTipStyle }))">
+                                <RadzenButton Icon="save" Size="ButtonSize.Small" Click="@((args) => SaveCaseRow(cs))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Zapisz", Style = Gvm.ToolTipStyle }))">
                                 </RadzenButton>
-                                <RadzenButton Icon="cancel" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Success" Click="@((args) => CasesStore.CancelEditCaseRow(cs))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Anuluj", Style = Gvm.ToolTipStyle }))">
+                                <RadzenButton Icon="cancel" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Success" Click="@((args) => CancelEditCaseRow(cs))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Anuluj", Style = Gvm.ToolTipStyle }))">
                                 </RadzenButton>
                             </EditTemplate>
                         </RadzenGridColumn>
                         <RadzenGridColumn TItem="CaseViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="45px">
                             <Template Context="cs">
-                                <RadzenButton ButtonStyle="ButtonStyle.Warning" Icon="archive" Size="ButtonSize.Small" Click="@(async (args) => await CasesStore.ArchivizeCase(cs))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Archiwizuj", Style = Gvm.ToolTipStyle }))">
+                                <RadzenButton ButtonStyle="ButtonStyle.Warning" Icon="archive" Size="ButtonSize.Small" Click="@((args) => ArchivizeCase(cs))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Archiwizuj", Style = Gvm.ToolTipStyle }))">
                                 </RadzenButton>
                             </Template>
                         </RadzenGridColumn>
                         <RadzenGridColumn TItem="CaseViewModel" Context="order" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="45px">
                             <Template Context="cs">
-                                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@(async (args) => await CasesStore.DeleteCaseRow(cs))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Zamknij", Style = Gvm.ToolTipStyle }))">
+                                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@((args) => DeleteCaseRow(cs))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Zamknij", Style = Gvm.ToolTipStyle }))">
                                 </RadzenButton>
                             </Template>
                             <EditTemplate Context="cs">
@@ -179,7 +179,7 @@ else
                                                  EndProperty="End"
                                                  TextProperty="DisplayTextShort"
                                                  SelectedIndex="2"
-                                                 SlotSelect="@CasesStore.OnSlotSelect"
+                                                 SlotSelect="@OnSlotSelect"
                                                  AppointmentSelect="@CasesStore.OnAppointmentSelect"
                                                  AppointmentRender="@CasesStore.OnAppointmentRender"
                                                  TodayText="Dzisiaj">
@@ -194,7 +194,7 @@ else
                         <div>
                             <RadzenTabsItem Text="Notatki">
                                 <div>
-                                    <RadzenTemplateForm Data="@CasesStore.GetState().NewNote" Submit="@(async (CreateNote.Request args) => { await CasesStore.CreateNewNote(args); })">
+                                    <RadzenTemplateForm Data="@CasesStore.GetState().NewNote" Submit="@((CreateNote.Request args) => CreateNewNote(args))">
 
                                         <RadzenFieldset Text="Dodaj notatkę">
                                             <div class="form">
@@ -227,8 +227,8 @@ else
                                 </div>
                                 <div>
                                     <div>
-                                        <RadzenGrid @ref="CasesStore.GetState().NotesGrid" AllowFiltering="true" AllowPaging="true" PageSize="10" AllowSorting="true" RowSelect="@(args => CasesStore.ActiveNoteChange(args))"
-                                                    Data="@CasesStore.GetState().SelectedCase.Notes" TItem="NoteViewModel" RowUpdate="@CasesStore.OnUpdateNoteRow">
+                                        <RadzenGrid @ref="CasesStore.GetState().NotesGrid" AllowFiltering="true" AllowPaging="true" PageSize="10" AllowSorting="true" RowSelect="@(args => ActiveNoteChange(args))"
+                                                    Data="@CasesStore.GetState().SelectedCase.Notes" TItem="NoteViewModel" RowUpdate="@OnUpdateNoteRow">
                                             <Columns>
                                                 <RadzenGridColumn TItem="NoteViewModel" Property="Name" Title="Nazwa">
                                                     <Template Context="note">
@@ -252,19 +252,19 @@ else
 
                                                 <RadzenGridColumn TItem="NoteViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="80px">
                                                     <Template Context="note">
-                                                        <RadzenButton Icon="edit" Size="ButtonSize.Small" Click="@((args) => CasesStore.EditNoteRow(note))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Edytuj", Style = Gvm.ToolTipStyle }))">
+                                                        <RadzenButton Icon="edit" Size="ButtonSize.Small" Click="@((args) => EditNoteRow(note))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Edytuj", Style = Gvm.ToolTipStyle }))">
                                                         </RadzenButton>
                                                     </Template>
                                                     <EditTemplate Context="note">
-                                                        <RadzenButton Icon="save" Size="ButtonSize.Small" Click="@((args) => CasesStore.SaveNoteRow(note))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Zapisz", Style = Gvm.ToolTipStyle }))">
+                                                        <RadzenButton Icon="save" Size="ButtonSize.Small" Click="@((args) => SaveNoteRow(note))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Zapisz", Style = Gvm.ToolTipStyle }))">
                                                         </RadzenButton>
-                                                        <RadzenButton Icon="cancel" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Success" Click="@((args) => CasesStore.CancelEditNoteRow(note))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Anuluj", Style = Gvm.ToolTipStyle }))">
+                                                        <RadzenButton Icon="cancel" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Success" Click="@((args) => CancelEditNoteRow(note))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Anuluj", Style = Gvm.ToolTipStyle }))">
                                                         </RadzenButton>
                                                     </EditTemplate>
                                                 </RadzenGridColumn>
                                                 <RadzenGridColumn TItem="NoteViewModel" Context="order" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="45px">
                                                     <Template Context="note">
-                                                        <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@(async (args) => await CasesStore.DeleteNoteRow(note))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Zamknij", Style = Gvm.ToolTipStyle }))">
+                                                        <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@((args) => DeleteNoteRow(note))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Zamknij", Style = Gvm.ToolTipStyle }))">
                                                         </RadzenButton>
                                                     </Template>
                                                     <EditTemplate Context="note">

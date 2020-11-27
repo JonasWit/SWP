@@ -54,12 +54,68 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
             switch (action.Name)
             {
                 case CreateNewCaseAction.CreateNewCase:
-                    var actionTypeI = (CreateNewCaseAction)action;
-                    await CreateNewCase(actionTypeI.Request);
+                    var createNewCaseAction = (CreateNewCaseAction)action;
+                    await CreateNewCase(createNewCaseAction.Request);
                     break;
                 case EditCaseRowAction.EditCaseRow:
-                    var actionTypeII = (EditCaseRowAction)action;
-                    EditCaseRow(actionTypeII.Arg);
+                    var editCaseRowAction = (EditCaseRowAction)action;
+                    EditCaseRow(editCaseRowAction.Arg);
+                    break;
+                case OnUpdateCaseRowAction.OnUpdateCaseRow:
+                    var onUpdateCaseRowAction = (OnUpdateCaseRowAction)action;
+                    await OnUpdateCaseRow(onUpdateCaseRowAction.Arg);
+                    break;
+                case CancelEditCaseRowAction.CancelEditCaseRow:
+                    var cancelEditCaseRowAction = (CancelEditCaseRowAction)action;
+                    CancelEditCaseRow(cancelEditCaseRowAction.Arg);
+                    break;
+                case SaveCaseRowAction.SaveCaseRow:
+                    var saveCaseRowAction = (SaveCaseRowAction)action;
+                    SaveCaseRow(saveCaseRowAction.Arg);
+                    break;
+                case DeleteCaseRowAction.DeleteCaseRow:
+                    var deleteCaseRowAction = (DeleteCaseRowAction)action;
+                    await DeleteCaseRow(deleteCaseRowAction.Arg);
+                    break;
+                case ActiveCaseChangeAction.ActiveCaseChange:
+                    var activeCaseChangeAction = (ActiveCaseChangeAction)action;
+                    ActiveCaseChange(activeCaseChangeAction.Arg);
+                    break;
+                case ArchivizeCaseAction.ArchivizeCase:
+                    var archivizeCaseAction = (ArchivizeCaseAction)action;
+                    await ArchivizeCase(archivizeCaseAction.Arg);
+                    break;
+                case ActiveNoteChangeAction.ActiveNoteChange:
+                    var activeNoteChangeAction = (ActiveNoteChangeAction)action;
+                    ActiveNoteChange(activeNoteChangeAction.Arg);
+                    break;
+                case CreateNewNoteAction.CreateNewNote:
+                    var createNewNoteAction = (CreateNewNoteAction)action;
+                    await CreateNewNote(createNewNoteAction.Request);
+                    break;
+                case EditNoteRowAction.EditNoteRow:
+                    var editNoteRowAction = (EditNoteRowAction)action;
+                    EditNoteRow(editNoteRowAction.Arg);
+                    break;
+                case OnUpdateNoteRowAction.OnUpdateNoteRow:
+                    var onUpdateNoteRowAction = (OnUpdateNoteRowAction)action;
+                    await OnUpdateNoteRow(onUpdateNoteRowAction.Arg);
+                    break;
+                case SaveNoteRowAction.SaveNoteRow:
+                    var saveNoteRowAction = (SaveNoteRowAction)action;
+                    SaveNoteRow(saveNoteRowAction.Arg);
+                    break;
+                case CancelEditNoteRowAction.CancelEditNoteRow:
+                    var cancelEditNoteRowAction = (CancelEditNoteRowAction)action;
+                    CancelEditNoteRow(cancelEditNoteRowAction.Arg);
+                    break;
+                case DeleteNoteRowAction.DeleteNoteRow:
+                    var deleteNoteRowAction = (DeleteNoteRowAction)action;
+                    await DeleteNoteRow(deleteNoteRowAction.Arg);
+                    break;
+                case OnSlotSelectAction.OnSlotSelect:
+                    var onSlotSelectAction = (OnSlotSelectAction)action;
+                    await OnSlotSelect(onSlotSelectAction.Arg);
                     break;
                 default:
                     break;
@@ -134,7 +190,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
 
         private void EditCaseRow(CaseViewModel c) => _state.CasesGrid.EditRow(c);
 
-        public async Task OnUpdateCaseRow(CaseViewModel c)
+        private async Task OnUpdateCaseRow(CaseViewModel c)
         {
             try
             {
@@ -168,16 +224,16 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
             }
         }
 
-        public void SaveCaseRow(CaseViewModel c) => _state.CasesGrid.UpdateRow(c);
+        private void SaveCaseRow(CaseViewModel c) => _state.CasesGrid.UpdateRow(c);
 
-        public void CancelEditCaseRow(CaseViewModel c)
+        private void CancelEditCaseRow(CaseViewModel c)
         {
             _state.CasesGrid.CancelEditRow(c);
             _mainStore.RefreshActiveClientData();
             BroadcastStateChange();
         }
 
-        public async Task DeleteCaseRow(CaseViewModel c)
+        private async Task DeleteCaseRow(CaseViewModel c)
         {
             try
             {
@@ -204,7 +260,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
             }
         }
 
-        public void ActiveCaseChange(object value)
+        private void ActiveCaseChange(object value)
         {
             var input = (CaseViewModel)value;
             if (value != null)
@@ -219,7 +275,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
             _state.SelectedContact = null;
         }
 
-        public async Task ArchivizeCase(CaseViewModel c)
+        private async Task ArchivizeCase(CaseViewModel c)
         {
             try
             {
@@ -239,7 +295,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
             }
         }
 
-        public void ReloadCase(int id)
+        private void ReloadCase(int id)
         {
             using var scope = _serviceProvider.CreateScope();
             var getCase = scope.ServiceProvider.GetRequiredService<GetCase>();
@@ -251,17 +307,17 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
             _state.Cases.TrimExcess();
         }
 
-        public void AddCaseToActiveClient(CaseViewModel entity) => _state.Cases.Add(entity);
+        private void AddCaseToActiveClient(CaseViewModel entity) => _state.Cases.Add(entity);
 
-        public void RemoveCaseFromActiveClient(int id) => _state.Cases.RemoveAll(x => x.Id == id);
+        private void RemoveCaseFromActiveClient(int id) => _state.Cases.RemoveAll(x => x.Id == id);
 
-        public void ReplaceCaseFromActiveClient(CaseViewModel entity) => _state.Cases[_state.Cases.FindIndex(x => x.Id == entity.Id)] = entity;
+        private void ReplaceCaseFromActiveClient(CaseViewModel entity) => _state.Cases[_state.Cases.FindIndex(x => x.Id == entity.Id)] = entity;
 
         #endregion
 
         #region Notes Tab
 
-        public void ActiveNoteChange(object value)
+        private void ActiveNoteChange(object value)
         {
             var input = (NoteViewModel)value;
             if (value != null)
@@ -274,7 +330,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
             }
         }
 
-        public async Task CreateNewNote(CreateNote.Request request)
+        private async Task CreateNewNote(CreateNote.Request request)
         {
             try
             {
@@ -298,9 +354,9 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
             }
         }
 
-        public void EditNoteRow(NoteViewModel note) => _state.NotesGrid.EditRow(note);
+        private void EditNoteRow(NoteViewModel note) => _state.NotesGrid.EditRow(note);
 
-        public async Task OnUpdateNoteRow(NoteViewModel note)
+        private async Task OnUpdateNoteRow(NoteViewModel note)
         {
             try
             {
@@ -328,16 +384,16 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
             }
         }
 
-        public void SaveNoteRow(NoteViewModel note) => _state.NotesGrid.UpdateRow(note);
+        private void SaveNoteRow(NoteViewModel note) => _state.NotesGrid.UpdateRow(note);
 
-        public void CancelEditNoteRow(NoteViewModel note)
+        private void CancelEditNoteRow(NoteViewModel note)
         {
             _state.NotesGrid.CancelEditRow(note);
             ReloadCase(note.CaseId);
             BroadcastStateChange();
         }
 
-        public async Task DeleteNoteRow(NoteViewModel note)
+        private async Task DeleteNoteRow(NoteViewModel note)
         {
             try
             {
@@ -362,7 +418,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
 
         #region Cases Scheduler
 
-        public async Task OnSlotSelect(SchedulerSlotSelectEventArgs args)
+        private async Task OnSlotSelect(SchedulerSlotSelectEventArgs args)
         {
             try
             {

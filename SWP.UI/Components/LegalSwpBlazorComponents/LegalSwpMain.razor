@@ -16,67 +16,64 @@
                         </a>
                     </li>
 
-                    <li class="nav-item ">
-                        <a class="nav-link profile" href="/Index">
-                            <i><img src="/Images/icons8-exit-36.png" /></i>
-                            <span class="@(showSidebar ? "link-text" : "text-hidden")">Wyloguj</span>
-                        </a>
-                    </li>
-
-                    <li class="nav-item ">
-                        <a class="nav-link @(MainStore.GetState().ActivePanel == LegalAppPanels.MyApp ? "active" : "") " @onclick="@(() => MainStore.SetActivePanel(LegalAppPanels.MyApp))">
+                    <li class="nav-item @(MainStore.GetState().ActivePanel == LegalAppPanels.MyApp ? "active" : "") " @onclick="@(() => MainStore.SetActivePanel(LegalAppPanels.MyApp))">
+                        <a class="nav-link ">
                             <i><img src="/Images/icons8-web-design-36.png" /></i>
                             <span class="@(showSidebar ? "link-text" : "text-hidden")">Moja Aplikacja</span>
                         </a>
                     </li>
-                    <li class="nav-item  ">
-                        <a class="nav-link @(MainStore.GetState().ActivePanel == LegalAppPanels.Clients ? "active" : "") " @onclick="@(() => MainStore.SetActivePanel(LegalAppPanels.Clients))">
+                    <li class="nav-item  @(MainStore.GetState().ActivePanel == LegalAppPanels.Clients ? "active" : "") " @onclick="@(() => MainStore.SetActivePanel(LegalAppPanels.Clients))">
+                        <a class="nav-link ">
                             <i><img src="/Images/icons8-reception-36.png" /></i> <span class="@(showSidebar ? "link-text" : "text-hidden")">Klienci</span>
                         </a>
                     </li>
-                    <li class="nav-item  ">
-                        <a class="nav-link @(MainStore.GetState().ActivePanel == LegalAppPanels.Calendar ? "active" : "")" @onclick="@(() => MainStore.SetActivePanel(LegalAppPanels.Calendar))">
+                    <li class="nav-item  @(MainStore.GetState().ActivePanel == LegalAppPanels.Calendar ? "active" : "")" @onclick="@(() => MainStore.SetActivePanel(LegalAppPanels.Calendar))">
+                        <a class="nav-link ">
                             <i><img src="/Images/icons8-calendar-12-36.png" /></i> <span class="@(showSidebar ? "link-text" : "text-hidden")">Kalendarz</span>
                         </a>
                     </li>
 
                     @if (MainStore.GetState().ActiveClient != null)
                     {
-                        <li class="nav-item ">
-                            <a class="nav-link @(MainStore.GetState().ActivePanel == LegalAppPanels.ClientDetails ? "active" : "")" @onclick="@(() => MainStore.SetActivePanel(LegalAppPanels.ClientDetails))">
+                        <li class="nav-item @(MainStore.GetState().ActivePanel == LegalAppPanels.ClientDetails ? "active" : "")" @onclick="@(() => MainStore.SetActivePanel(LegalAppPanels.ClientDetails))">
+                            <a class="nav-link ">
                                 <i><img src="/Images/icons8-address-book-40.png" /></i><span class="@(showSidebar ? "link-text" : "text-hidden")"> Lista Kontaktów</span>
                             </a>
                         </li>
-                        <li class="nav-item ">
-                            <a class="nav-link @(MainStore.GetState().ActivePanel == LegalAppPanels.ClientJobs ? "active" : "") " @onclick="@(() => MainStore.SetActivePanel(LegalAppPanels.ClientJobs))">
+                        <li class="nav-item @(MainStore.GetState().ActivePanel == LegalAppPanels.ClientJobs ? "active" : "") " @onclick="@(() => MainStore.SetActivePanel(LegalAppPanels.ClientJobs))">
+                            <a class="nav-link ">
                                 <i><img src="/Images/icons8-to-do-36.png" /></i> <span class="@(showSidebar ? "link-text" : "text-hidden")">Lista Zadań</span>
                             </a>
                         </li>
-                        <li class="nav-item  ">
-                            <a class="nav-link @(MainStore.GetState().ActivePanel == LegalAppPanels.Cases ? "active" : "")" @onclick="@(() => MainStore.SetActivePanel(LegalAppPanels.Cases))">
+                        <li class="nav-item  @(MainStore.GetState().ActivePanel == LegalAppPanels.Cases ? "active" : "")" @onclick="@(() => MainStore.SetActivePanel(LegalAppPanels.Cases))">
+                            <a class="nav-link ">
                                 <i><img src="/Images/icons8-documents-36.png" /></i><span class="@(showSidebar ? "link-text" : "text-hidden")"> Sprawy</span>
                             </a>
                         </li>
-                        <li class="nav-item ">
-                            <a class="nav-link @(MainStore.GetState().ActivePanel == LegalAppPanels.Finance ? "active" : "") " @onclick="@(() => MainStore.SetActivePanel(LegalAppPanels.Finance))">
+                        <li class="nav-item @(MainStore.GetState().ActivePanel == LegalAppPanels.Finance ? "active" : "") " @onclick="@(() => MainStore.SetActivePanel(LegalAppPanels.Finance))">
+                            <a class="nav-link ">
                                 <i><img src="/Images/icons8-money-box-36.png" /></i><span class="@(showSidebar ? "link-text" : "text-hidden")"> Finanse</span>
                             </a>
                         </li>
-                        <li class="nav-item ">
-                            <a class="nav-link @(MainStore.GetState().ActivePanel == LegalAppPanels.Productivity ? "active" : "")" @onclick="@(() => MainStore.SetActivePanel(LegalAppPanels.Productivity))">
+                        <li class="nav-item @(MainStore.GetState().ActivePanel == LegalAppPanels.Productivity ? "active" : "")" @onclick="@(() => MainStore.SetActivePanel(LegalAppPanels.Productivity))">
+                            <a class="nav-link ">
                                 <i><img src="/Images/icons8-combo-chart-36.png" /></i> <span class="@(showSidebar ? "link-text" : "text-hidden")">Produktywność</span>
                             </a>
                         </li>
                     }
 
-                    <li class="nav-item ">
-                        <a class="nav-link @(MainStore.GetState().ActivePanel == LegalAppPanels.Archive ? "active" : "")" @onclick="@(() => MainStore.SetActivePanel(LegalAppPanels.Archive))">
+                    <li class="nav-item @(MainStore.GetState().ActivePanel == LegalAppPanels.Archive ? "active" : "")" @onclick="@(() => MainStore.SetActivePanel(LegalAppPanels.Archive))">
+                        <a class="nav-link ">
                             <i><img src="/Images/icons8-filing-cabinet-36.png" /></i><span class="@(showSidebar ? "link-text" : "text-hidden")"> Archiwum</span>
                         </a>
                     </li>
-
                 </ul>
-
+                <div class="nav-item exit">
+                    <a class="nav-link profile" href="/Index">
+                        <i><img src="/Images/icons8-exit-36.png" /></i>
+                        <span class="@(showSidebar ? "link-text" : "text-hidden")">Wyloguj</span>
+                    </a>
+                </div>
             </nav>
 
             <nav id="top-menu" class="@(!showTopNav ? "top-menu" : "top-menu-add") top-nav">
@@ -89,10 +86,8 @@
 
                 </ul>
                 <ul class="top-items">
-                    <li class="@(showTopNav ? "user" : "link-text-hidden")"><p><strong>Klient:</strong></p> <p>@(MainStore.GetState().ActiveClient != null ? MainStore.GetState().ActiveClient.Name : "Brak Aktywnego Klienta" )</p></li>
-
-
-
+                    <li class="@(showTopNav ? "user" : "link-text-hidden")"><p><strong>Klient: </strong></p> </li>
+                    <li><p> @(MainStore.GetState().ActiveClient != null ? MainStore.GetState().ActiveClient.Name : "Brak Aktywnego Klienta" )</p></li>
                 </ul>
                 <div><button class="top-toggle" @onclick="ShowHideTopNav"><span class="line"></span></button></div>
             </nav>

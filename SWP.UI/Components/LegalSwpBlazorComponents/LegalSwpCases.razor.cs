@@ -108,6 +108,8 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
 
         private void OnSlotSelect(SchedulerSlotSelectEventArgs request) => ActionDispatcher.Dispatch(new OnSlotSelectAction { Arg = request });
 
+        private void OnAppointmentSelect(SchedulerAppointmentSelectEventArgs<ReminderViewModel> args) => ActionDispatcher.Dispatch(new OnAppointmentSelectAction { Arg = args });
+
         #endregion
 
     }

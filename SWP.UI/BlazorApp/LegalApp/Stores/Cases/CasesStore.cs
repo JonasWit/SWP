@@ -117,6 +117,10 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
                     var onSlotSelectAction = (OnSlotSelectAction)action;
                     await OnSlotSelect(onSlotSelectAction.Arg);
                     break;
+                case OnAppointmentSelectAction.OnAppointmentSelect:
+                    var onAppointmentSelectAction = (OnAppointmentSelectAction)action;
+                    await OnAppointmentSelect(onAppointmentSelectAction.Arg);
+                    break;
                 default:
                     break;
             }
@@ -457,7 +461,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
             }
         }
 
-        public async Task OnAppointmentSelect(SchedulerAppointmentSelectEventArgs<ReminderViewModel> args)
+        private async Task OnAppointmentSelect(SchedulerAppointmentSelectEventArgs<ReminderViewModel> args)
         {
             try
             {
@@ -640,6 +644,8 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
         {
             GetCases(_mainStore.GetState().ActiveClient.Id);
         }
+
+
 
         #endregion
 

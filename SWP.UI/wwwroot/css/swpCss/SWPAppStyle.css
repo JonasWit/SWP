@@ -75,12 +75,6 @@ body {
 }
 
 
-
-.user {
-    padding: 10px;
-    margin-right: 60px;
-}
-
 .input {
     margin-left: 10rem;
 }
@@ -159,13 +153,18 @@ ul, li {
 }
 
 .exit {
-    position: absolute;
-    bottom: 20rem;
-    width: 100%;
-
-
+    align-items: flex-end;
+    float: right;
+    padding-left: 20rem;
+    
 }
 
+.top-items {
+    display: flex;
+    flex-direction: row;
+    justify-items: center;
+    justify-content: space-evenly;
+}
 
 @media screen and (min-width: 768px) {
     .top-toggle {
@@ -178,21 +177,10 @@ ul, li {
         margin-left: 7rem;
     }
 
-    .top {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        
-    }
-
 
     .top-items {
         display: flex;
         flex-direction: row;
-        
-
-         
-        
         }
 
         .top-items li {
@@ -323,9 +311,7 @@ ul, li {
     }
 
     .exit {
-        position: absolute;
-        top: 29%;
-        right: -25rem;
+        float: right;
     }
 }
 

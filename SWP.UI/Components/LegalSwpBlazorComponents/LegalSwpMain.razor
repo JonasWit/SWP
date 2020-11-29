@@ -68,27 +68,31 @@
                         </a>
                     </li>
                 </ul>
-                <div class="nav-item exit">
-                    <a class="nav-link profile" href="/Index">
-                        <i><img src="/Images/icons8-exit-36.png" /></i>
-                        <span class="@(showSidebar ? "link-text" : "text-hidden")">Wyloguj</span>
-                    </a>
-                </div>
+
             </nav>
 
-            <nav id="top-menu" class="@(!showTopNav ? "top-menu" : "top-menu-add") top-nav">
-                <ul class="top">
-                    <li class="user input">
-                        <strong><p>Wybierz Klienta</p></strong>
-                        <Radzen.Blazor.RadzenDropDown AllowClear="true" TValue="string" AllowFiltering="true" Data="@MainStore.GetState().Clients" @bind-Value="MainStore.GetState().SelectedClientString" TextProperty="Name" ValueProperty="IdString" Change="@(args => MainStore.ActiveClientChange(args))" Style="width: 200px;" />
+            <nav id="top-menu" class="@(!showTopNav ? "top-menu" : "top-menu-add")">
+                <ul class="top-items">
+                    <li class="">
+                        <p>
+                            <strong>Wybierz Klienta </strong>
+                        </p>
                     </li>
-
-
+                    <li>
+                        <p>
+                            <Radzen.Blazor.RadzenDropDown AllowClear="true" TValue="string" AllowFiltering="true" Data="@MainStore.GetState().Clients" @bind-Value="MainStore.GetState().SelectedClientString" TextProperty="Name" ValueProperty="IdString" Change="@(args => MainStore.ActiveClientChange(args))" Style="width: 200px;" />
+                        </p>
+                    </li>
                 </ul>
                 <ul class="top-items">
                     <li class="@(showTopNav ? "user" : "link-text-hidden")"><p><strong>Klient: </strong></p> </li>
-                    <li><p> @(MainStore.GetState().ActiveClient != null ? MainStore.GetState().ActiveClient.Name : "Brak Aktywnego Klienta" )</p></li>
+                    <li><p>@(MainStore.GetState().ActiveClient != null ? MainStore.GetState().ActiveClient.Name : "Brak Aktywnego Klienta" )</p></li>
                 </ul>
+                <div class="exit">
+                    <a class="nav-link profile" href="/Index">
+                        <i><img src="/Images/icons8-exit-36.png" /></i>
+                    </a>
+                </div>
                 <div><button class="top-toggle" @onclick="ShowHideTopNav"><span class="line"></span></button></div>
             </nav>
 

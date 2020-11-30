@@ -2,6 +2,7 @@
 using Radzen;
 using Radzen.Blazor;
 using SWP.Application.LegalSwp.Clients;
+using SWP.UI.BlazorApp.LegalApp.Stores.Clients.Actions;
 using SWP.UI.BlazorApp.LegalApp.Stores.Main;
 using SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data;
 using System;
@@ -41,6 +42,19 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Clients
             }
         }
 
+        protected override void HandleActions(IAction action)
+        {
+            switch (action.Name)
+            {
+                case EditClientRowAction.EditClientRow:
+                    var editClientRowAction = (EditClientRowAction)action;
+                    EditClientRow(editClientRowAction.Arg);
+                    break;
+                default:
+                    break;
+            }
+        }
+
         #region Client
 
         private void RefreshSelectedClient()
@@ -50,8 +64,8 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Clients
                 _state.SelectedClient = MainStore.GetState().Clients.FirstOrDefault(x => x.Id == _state.SelectedClient.Id);
             }    
         }
-          
-        public void EditClientRow(ClientViewModel client) => _state.ClientsGrid.EditRow(client);
+
+        private void EditClientRow(ClientViewModel client) => _state.ClientsGrid.EditRow(client);
 
         public async Task OnUpdateClientRow(ClientViewModel client)
         {
@@ -194,10 +208,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Clients
             }
         }
 
-        protected override void HandleActions(IAction action)
-        {
-
-        }
+        #endregion
 
         public override void CleanUpStore()
         {
@@ -206,12 +217,8 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Clients
 
         public override void RefreshSore()
         {
-    
+
         }
-
-        #endregion
-
-
 
 
 

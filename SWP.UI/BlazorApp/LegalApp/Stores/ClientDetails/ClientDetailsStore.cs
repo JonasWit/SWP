@@ -37,7 +37,6 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.ClientDetails
             GetContactPeople(_mainStore.GetState().ActiveClient.Id);
         }
 
-
         protected override async void HandleActions(IAction action)
         {
             switch (action.Name)

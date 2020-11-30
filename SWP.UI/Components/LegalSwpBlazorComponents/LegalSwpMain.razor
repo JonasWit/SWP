@@ -32,6 +32,11 @@
                             <i><img src="/Images/icons8-calendar-12-36.png" /></i> <span class="@(showSidebar ? "link-text" : "text-hidden")">Kalendarz</span>
                         </a>
                     </li>
+                    <li class="nav-item  @(MainStore.GetState().ActivePanel == LegalAppPanels.Calendar ? "active" : "")" >
+                        <a class="nav-link ">
+                            <i><img src="/Images/icons8-notification-36.png" /></i> <span class="@(showSidebar ? "link-text" : "text-hidden")">Przypomnienia</span><span class="number">2</span>
+                        </a>
+                    </li>
 
                     @if (MainStore.GetState().ActiveClient != null)
                     {
@@ -73,9 +78,9 @@
 
             <nav id="top-menu" class="@(!showTopNav ? "top-menu" : "top-menu-add")">
                 <ul class="top-items">
-                    <li class="">
+                    <li>
                         <p>
-                            <strong>Wybierz Klienta </strong>
+                            <strong>Wybierz Klienta: </strong>
                         </p>
                     </li>
                     <li>
@@ -87,12 +92,13 @@
                 <ul class="top-items">
                     <li class="@(showTopNav ? "user" : "link-text-hidden")"><p><strong>Klient: </strong></p> </li>
                     <li><p>@(MainStore.GetState().ActiveClient != null ? MainStore.GetState().ActiveClient.Name : "Brak Aktywnego Klienta" )</p></li>
+                    <li class="exit">
+                        <a class="nav-link profile" href="/Index">
+                            <i><img src="/Images/icons8-exit-36.png" /></i>
+                        </a>
+                    </li>
                 </ul>
-                <div class="exit">
-                    <a class="nav-link profile" href="/Index">
-                        <i><img src="/Images/icons8-exit-36.png" /></i>
-                    </a>
-                </div>
+            
                 <div><button class="top-toggle" @onclick="ShowHideTopNav"><span class="line"></span></button></div>
             </nav>
 

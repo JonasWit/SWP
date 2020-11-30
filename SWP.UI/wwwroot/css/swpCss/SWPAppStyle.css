@@ -51,12 +51,18 @@ body {
     transition: width 200ms ease;
     width: 7rem;
     z-index: 999;
+    
 }
 
 
 .sidebar-add {
     width: 17rem;
+    
+    
 }
+
+
+
 
 .navigation {
     list-style: none;
@@ -94,6 +100,7 @@ ul, li {
 .nav-item {
     text-decoration: none;
     padding: 10px;
+    border-bottom: 1px solid #4FAEFC;
 }
 
     .nav-item:hover {
@@ -123,6 +130,10 @@ ul, li {
 
 .nav-link i {
     min-width: 2rem;
+}
+
+.nav-link img {
+    height: 26px;
 }
 
 .logo {
@@ -164,6 +175,17 @@ ul, li {
     flex-direction: row;
     justify-items: center;
     justify-content: space-evenly;
+}
+
+.number {
+    display: inline-flex;
+    border: 1px solid #4FAEFC;
+    background-color: #4FAEFC;
+    border-radius:5px;
+    padding: 2px 8px;
+    margin-left: 2px;
+    font-weight: bold;
+
 }
 
 @media screen and (min-width: 768px) {

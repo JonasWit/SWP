@@ -181,7 +181,7 @@ else
                                                  SelectedIndex="2"
                                                  SlotSelect="@OnSlotSelect"
                                                  AppointmentSelect="@OnAppointmentSelect"
-                                                 AppointmentRender="@CasesStore.OnAppointmentRender"
+                                                 AppointmentRender="@OnAppointmentRender"
                                                  TodayText="Dzisiaj">
                                     <ChildContent>
                                         <RadzenDayView Text="Dzień" StartTime="@(new TimeSpan(0, 0, 0))" EndTime="@(new TimeSpan(24, 0, 0))" />
@@ -288,7 +288,7 @@ else
                         </div>
 
                         <RadzenTabsItem Text="Osoby Kontaktowe">
-                            <RadzenTemplateForm Data="@CasesStore.GetState().NewContact" Submit="@(async (CreateContactPerson.Request args) => { await CasesStore.SubmitNewContact(args); })">
+                            <RadzenTemplateForm Data="@CasesStore.GetState().NewContact" Submit="@((CreateContactPerson.Request args) => SubmitNewContact(args))">
                                 <RadzenFieldset Text="Osoba Kontaktowa">
                                     <div class="help-box">
                                         <i class="user-icon"><img src="/Images/icons8-reception-36.png" /></i>
@@ -362,7 +362,7 @@ else
                             </RadzenTemplateForm>
 
                             <RadzenGrid @ref="CasesStore.GetState().ContactsGrid" AllowFiltering="true" AllowPaging="true" PageSize="10" AllowSorting="true"
-                                        Data="@CasesStore.GetState().SelectedCase.ContactPeople" TItem="ContactPersonViewModel" RowUpdate="@CasesStore.OnUpdateContactRow" RowSelect="@(args => CasesStore.ContactSelected(args))">
+                                        Data="@CasesStore.GetState().SelectedCase.ContactPeople" TItem="ContactPersonViewModel" RowUpdate="@OnUpdateContactRow" RowSelect="@(args => ContactSelected(args))">
                                 <Columns>
                                     <RadzenGridColumn TItem="ContactPersonViewModel" Property="Name" Title="Nazwa">
                                         <Template Context="contact">
@@ -420,19 +420,19 @@ else
 
                                     <RadzenGridColumn TItem="ContactPersonViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="80px">
                                         <Template Context="c">
-                                            <RadzenButton Icon="edit" Size="ButtonSize.Small" Click="@(args => CasesStore.EditContactRow(c))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Edytuj", Style = Gvm.ToolTipStyle }))">
+                                            <RadzenButton Icon="edit" Size="ButtonSize.Small" Click="@(args => EditContactRow(c))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Edytuj", Style = Gvm.ToolTipStyle }))">
                                             </RadzenButton>
                                         </Template>
                                         <EditTemplate Context="c">
-                                            <RadzenButton Icon="save" Size="ButtonSize.Small" Click="@((args) => CasesStore.SaveContactRow(c))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Zapisz", Style = Gvm.ToolTipStyle }))">
+                                            <RadzenButton Icon="save" Size="ButtonSize.Small" Click="@((args) => SaveContactRow(c))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Zapisz", Style = Gvm.ToolTipStyle }))">
                                             </RadzenButton>
-                                            <RadzenButton Icon="cancel" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Success" Click="@((args) => CasesStore.CancelContactEdit(c))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Anuluj", Style = Gvm.ToolTipStyle }))">
+                                            <RadzenButton Icon="cancel" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Success" Click="@((args) => CancelContactEdit(c))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Anuluj", Style = Gvm.ToolTipStyle }))">
                                             </RadzenButton>
                                         </EditTemplate>
                                     </RadzenGridColumn>
                                     <RadzenGridColumn TItem="ContactPersonViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="45px">
                                         <Template Context="c">
-                                            <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@(async (args) => await CasesStore.DeleteContactRow(c))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Zamknij", Style = Gvm.ToolTipStyle }))">
+                                            <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@((args) => DeleteContactRow(c))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Zamknij", Style = Gvm.ToolTipStyle }))">
                                             </RadzenButton>
                                         </Template>
                                         <EditTemplate Context="client">

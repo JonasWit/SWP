@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Radzen;
 using SWP.Application.LegalSwp.Cases;
+using SWP.Application.LegalSwp.ContactPeopleAdmin;
 using SWP.Application.LegalSwp.Notes;
 using SWP.UI.BlazorApp;
 using SWP.UI.BlazorApp.LegalApp.Stores.Cases;
@@ -109,6 +110,22 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
         private void OnSlotSelect(SchedulerSlotSelectEventArgs request) => ActionDispatcher.Dispatch(new OnSlotSelectAction { Arg = request });
 
         private void OnAppointmentSelect(SchedulerAppointmentSelectEventArgs<ReminderViewModel> args) => ActionDispatcher.Dispatch(new OnAppointmentSelectAction { Arg = args });
+
+        private void OnAppointmentRender(SchedulerAppointmentRenderEventArgs<ReminderViewModel> args) => ActionDispatcher.Dispatch(new OnAppointmentRenderAction { Arg = args });
+
+        private void EditContactRow(ContactPersonViewModel args) => ActionDispatcher.Dispatch(new EditContactRowAction { Arg = args });
+
+        private void OnUpdateContactRow(ContactPersonViewModel args) => ActionDispatcher.Dispatch(new OnUpdateContactRowAction { Arg = args });
+
+        private void SaveContactRow(ContactPersonViewModel args) => ActionDispatcher.Dispatch(new SaveContactRowAction { Arg = args });
+
+        private void CancelContactEdit(ContactPersonViewModel contact) => ActionDispatcher.Dispatch(new CancelContactEditAction { Arg = contact });
+
+        private void DeleteContactRow(ContactPersonViewModel contact) => ActionDispatcher.Dispatch(new DeleteContactRowAction { Arg = contact });
+
+        private void SubmitNewContact(CreateContactPerson.Request request) => ActionDispatcher.Dispatch(new SubmitNewContactAction { Request = request });
+
+        private void ContactSelected(object arg) => ActionDispatcher.Dispatch(new ContactSelectedAction { Arg = arg });
 
         #endregion
 

@@ -32,7 +32,7 @@
                             <i><img src="/Images/icons8-calendar-12-36.png" /></i> <span class="@(showSidebar ? "link-text" : "text-hidden")">Kalendarz</span>
                         </a>
                     </li>
-                    <li class="nav-item  @(MainStore.GetState().ActivePanel == LegalAppPanels.Calendar ? "active" : "")" >
+                    <li class="nav-item  @(MainStore.GetState().ActivePanel == LegalAppPanels.Calendar ? "" : "")" >
                         <a class="nav-link ">
                             <i><img src="/Images/icons8-notification-36.png" /></i> <span class="@(showSidebar ? "link-text" : "text-hidden")">Przypomnienia</span><span class="number">2</span>
                         </a>

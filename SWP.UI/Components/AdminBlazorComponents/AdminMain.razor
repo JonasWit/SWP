@@ -17,7 +17,7 @@
                 Database
             </a>
             <a class="navbar-item @(ApplicationStore.GetState().ActivePanel == AdminAppPanels.Application ? "is-active" : "")" @onclick="@(() => ApplicationStore.SetActivePanel(AdminAppPanels.Application))">
-                Applications
+                Application
             </a>
             <a class="navbar-item @(ApplicationStore.GetState().ActivePanel == AdminAppPanels.Portal ? "is-active" : "")" @onclick="@(() => ApplicationStore.SetActivePanel(AdminAppPanels.Portal))">
                 Portal

@@ -25,7 +25,7 @@ namespace SWP.UI.Pages.Applications
         public async Task<IActionResult> OnGet([FromServices] UserManager<IdentityUser> userManager)
         {
             UserData.User = await userManager.FindByIdAsync(ActiveUserId);
-            UserData.Claims = await userManager.GetClaimsAsync(UserData.User) as List<Claim>;
+            UserData.Claims = await userManager.GetClaimsAsync(UserData.User) as List<Claim>; 
 
             foreach (var appClaim in UserData.Claims)
             {

@@ -18,7 +18,7 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Application
         public string ActiveUserId { get; set; }
         public string LoadingMessage { get; set; }
         public UserModel User { get; set; } = new UserModel();
-        public AdminAppPanels ActivePanel { get; set; } = AdminAppPanels.Application;
+        public AdminAppPanels ActivePanel { get; set; } = AdminAppPanels.Users;
     }
 
     [UIScopedService]
@@ -33,7 +33,7 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Application
 
         public void SetActivePanel(AdminAppPanels panel) => _state.ActivePanel = panel;
 
-        public async Task InitializeState(string userId)
+        public async Task Initialize(string userId)
         {
             using var scope = _serviceProvider.CreateScope();
             var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
@@ -85,17 +85,17 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Application
 
         protected override void HandleActions(IAction action)
         {
-            throw new NotImplementedException();
+
         }
 
         public override void CleanUpStore()
         {
-            throw new NotImplementedException();
+
         }
 
         public override void RefreshSore()
         {
-            throw new NotImplementedException();
+    
         }
     }
 }

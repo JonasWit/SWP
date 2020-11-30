@@ -144,6 +144,14 @@ namespace SWP.DataBase.Managers
                 .SelectMany(x => x.Cases.SelectMany(x => x.Reminders))
                 .ToList();
 
+        public List<Reminder> GetUpcomingReminders(string profile) =>
+            context.Clients
+                .Where(x => x.ProfileClaim == profile && x.Active)
+                .Include(x => x.Cases)
+                    .ThenInclude(y => y.Reminders.Where(x => x.Start >= DateTime.Now && x.Start <= DateTime.Now.AddDays(2)))
+                .SelectMany(x => x.Cases.SelectMany(x => x.Reminders))
+                .ToList();
+
         public List<Reminder> GetRemindersForClient(int clientId) =>
             context.Clients
                 .Where(x => x.Id == clientId && x.Active)

@@ -23,7 +23,7 @@ namespace SWP.UI.Components.AdminBlazorComponents
         {
             base.OnInitialized();
             ApplicationStore.AddStateChangeListener(UpdateView);
-            await ApplicationStore.InitializeState(ActiveUserId);
+            await ApplicationStore.Initialize(ActiveUserId);
         }
 
         private bool hamburgerNavActive;

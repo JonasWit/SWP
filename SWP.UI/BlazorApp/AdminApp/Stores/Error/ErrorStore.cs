@@ -40,7 +40,7 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Error
 
         protected override void HandleActions(IAction action)
         {
-            throw new NotImplementedException();
+
         }
 
         public override void CleanUpStore()

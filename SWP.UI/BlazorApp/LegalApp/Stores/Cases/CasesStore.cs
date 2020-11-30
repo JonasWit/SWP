@@ -149,6 +149,10 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
                     var contactSelectedAction = (ContactSelectedAction)action;
                     ContactSelected(contactSelectedAction.Arg);
                     break;
+                case EditContactRowAction.EditContactRow:
+                    var editContactRowAction = (EditContactRowAction)action;
+                    EditContactRow(editContactRowAction.Arg);
+                    break;
                 default:
                     break;
             }

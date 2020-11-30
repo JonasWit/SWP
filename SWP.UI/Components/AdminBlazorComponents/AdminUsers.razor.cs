@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using SWP.UI.BlazorApp;
 using SWP.UI.BlazorApp.AdminApp.Stores.Application;
 using SWP.UI.BlazorApp.AdminApp.Stores.Users;
 using System;
@@ -12,6 +13,8 @@ namespace SWP.UI.Components.AdminBlazorComponents
         public ApplicationStore ApplicationStore { get; set; }
         [Inject]
         public UsersStore UsersStore { get; set; }
+        [Inject]
+        public IActionDispatcher ActionDispatcher { get; set; }
 
         public void Dispose()
         {
@@ -26,7 +29,7 @@ namespace SWP.UI.Components.AdminBlazorComponents
             base.OnInitialized();
             ApplicationStore.AddStateChangeListener(UpdateView); //attach listener to the store
             UsersStore.AddStateChangeListener(UpdateView);
-            await UsersStore.InitializeState();
+            await UsersStore.Initialize();
         }
 
         public string ProfilesFilterValue = "";

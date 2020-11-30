@@ -46,11 +46,9 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Users
             }
             set
             {
-                UserRoleInt = value;
                 UserRole = (RoleType)UserRoleInt;
             }
         }
-
         public RoleType UserRole { get; set; } = RoleType.Users;
         public string ProfileClaim => Claims.FirstOrDefault(x => x.Type == ClaimType.Profile.ToString())?.Value;
         public List<Claim> Claims { get; set; } = new List<Claim>();
@@ -66,22 +64,26 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Users
     public class UsersStore : StoreBase<UserState>
     {
         public UserManager<IdentityUser> UserManager => _serviceProvider.GetService<UserManager<IdentityUser>>();
+        ApplicationStore AppStore => _serviceProvider.GetRequiredService<ApplicationStore>();
 
-        public UsersStore(
-            IServiceProvider serviceProvider,
-            IActionDispatcher actionDispatcher,
-            NotificationService notificationService) 
-            : base(serviceProvider, actionDispatcher, notificationService)
-        {
+        public UsersStore(IServiceProvider serviceProvider, IActionDispatcher actionDispatcher, NotificationService notificationService)
+            : base(serviceProvider, actionDispatcher, notificationService) { }
 
-        }
-
-        public async Task InitializeState()
+        public async Task Initialize()
         {
             _state.AllProfiles = await GetActiveProfiles();
             await GetUsers();
             _state.SelectedRole = _state.SelectedUser.UserRoleInt;
             BroadcastStateChange();
+        }
+
+        protected override void HandleActions(IAction action)
+        {
+            switch (action.Name)
+            {
+                default:
+                    break;
+            }
         }
 
         private async Task<List<ProfileModel>> GetActiveProfiles()
@@ -111,8 +113,10 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Users
             return results;
         }
 
-        public async Task GetUsers()
+        private async Task GetUsers()
         {
+            _state.Users.Clear();
+
             var users = UserManager.Users.Select(x => new IdentityUser
             {
                 Id = x.Id,
@@ -134,8 +138,6 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Users
             {
                 _state.SelectedUser = _state.Users.FirstOrDefault(x => x.Id == _state.SelectedUser.Id);
             }
-
-            BroadcastStateChange();
         }
 
         private async Task<UserModel> GetUser(string Id)
@@ -161,7 +163,6 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Users
             _state.SelectedUser = (UserModel)args;
             _state.SelectedRole = _state.SelectedUser.UserRoleInt;
             _state.Lock = _state.SelectedUser.LockoutEnd != null ? true : false;
-            BroadcastStateChange();
         }
 
         public async Task RoleChanged(int input)
@@ -190,7 +191,7 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Users
 
                 await UserManager.AddToRoleAsync(userIdentity, ((RoleType)input).ToString());
                 await GetUsers();
-
+                await _state.UsersGrid.Reload();
                 ShowNotification(NotificationSeverity.Success, "Done!", $"Role of: {_state.SelectedUser.Name} has been changed to: {(RoleType)input}", 5000);
                 BroadcastStateChange();
             }
@@ -200,33 +201,7 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Users
             }
         }
 
-        private Task ShowErrorPage(Exception ex)
-        {
-            var appStore = _serviceProvider.GetRequiredService<ApplicationStore>();
-            return appStore.ShowErrorPage(ex);
-        }
-
-        public async Task ApplicationProfileChanged(int input)
-        {
-            try
-            {
-                var userIdentity = await UserManager.FindByIdAsync(_state.SelectedUser.Id);
-                var selectedUserRoles = await UserManager.GetRolesAsync(userIdentity) as List<string>;
-
-                foreach (var role in selectedUserRoles)
-                {
-                    await UserManager.RemoveFromRoleAsync(userIdentity, role);
-                }
-
-                await UserManager.AddToRoleAsync(userIdentity, ((RoleType)input).ToString());
-                await GetUsers();
-                BroadcastStateChange();
-            }
-            catch (Exception ex)
-            {
-                await ShowErrorPage(ex);
-            }
-        }
+        private Task ShowErrorPage(Exception ex) => AppStore.ShowErrorPage(ex);
 
         public async Task DeleteClaimRow(Claim claim)
         {
@@ -242,13 +217,13 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Users
 
                     //todo: check if this is  the last user with this profile claim
 
-
                     if (result.Succeeded)
                     {
                         await GetUsers();
-                        _state.SelectedUser = await GetUser(_state.SelectedUser.Id);
+                        _state.SelectedUser = _state.Users.FirstOrDefault(x => x.Id == _state.SelectedUser.Id);
                     }
 
+                    await _state.UsersGrid.Reload();
                     ShowNotification(NotificationSeverity.Success, "Done!", $"Claim: {claim.Value} has been deleted!", 5000);
                     BroadcastStateChange();
                 }
@@ -281,6 +256,9 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Users
                     {
                         await GetUsers();
                         _state.SelectedUser = await GetUser(_state.SelectedUser.Id);
+
+                        await _state.UsersGrid.Reload();
+                        ShowNotification(NotificationSeverity.Success, "Done!", $"Application Claim: {_state.SelectedApplicationClaim} has been added!", 5000);
                         BroadcastStateChange();
                     }
                     else
@@ -319,6 +297,7 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Users
                     {
                         await GetUsers();
                         _state.SelectedUser = await GetUser(_state.SelectedUser.Id);
+                        await _state.UsersGrid.Reload();
                         ShowNotification(NotificationSeverity.Success, "Done!", $"Status Claim: {_state.SelectedStatusClaim} has been added!", 5000);
                         BroadcastStateChange();
                     }
@@ -346,18 +325,20 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Users
                 return;
             }
 
-            if (!string.IsNullOrEmpty(_state.ProfileClaimName))
+            if (!string.IsNullOrEmpty(_state.ProfileClaimName.Trim()))
             {
                 try
                 {
                     var userIdentity = await UserManager.FindByIdAsync(_state.SelectedUser.Id);
-                    var newClaim = new Claim(ClaimType.Profile.ToString(), _state.ProfileClaimName);
+                    var newClaim = new Claim(ClaimType.Profile.ToString(), _state.ProfileClaimName.Trim());
                     var result = await UserManager.AddClaimAsync(userIdentity, newClaim);
 
                     if (result.Succeeded)
                     {
                         await GetUsers();
                         _state.SelectedUser = await GetUser(_state.SelectedUser.Id);
+
+                        await _state.UsersGrid.Reload();
                         ShowNotification(NotificationSeverity.Success, "Done!", $"Claim: {newClaim.Value} has been added!", 5000);
                         BroadcastStateChange();
                     }
@@ -400,6 +381,8 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Users
                     if (result.Succeeded)
                     {
                         ShowNotification(NotificationSeverity.Warning, "Done!", $"User: {_state.SelectedUser.Name} has been locked!", 5000);
+                        await GetUsers();
+                        await _state.UsersGrid.Reload();
                     }
                 }
                 else
@@ -411,10 +394,11 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Users
                     if (result.Succeeded)
                     {
                         ShowNotification(NotificationSeverity.Info, "Done!", $"User: {_state.SelectedUser.Name} has been unlocked!", 5000);
+                        await GetUsers();
+                        await _state.UsersGrid.Reload();
                     }
                 }
 
-                await GetUsers();
                 BroadcastStateChange();
             }
             catch (Exception ex)
@@ -435,10 +419,12 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Users
             try
             {
                 await UserManager.DeleteAsync(await UserManager.FindByIdAsync(user.Id));
-                ShowNotification(NotificationSeverity.Warning, "Done!", $"User: {_state.SelectedUser.Name} has been deleted!", 5000);
                 _state.Users.RemoveAll(x => x.Id == user.Id);
+
                 await _state.UsersGrid.Reload();
                 _state.SelectedUser = null;
+
+                ShowNotification(NotificationSeverity.Warning, "Done!", $"User: {_state.SelectedUser.Name} has been deleted!", 5000);
                 BroadcastStateChange();
             }
             catch (Exception ex)
@@ -447,10 +433,19 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Users
             }
         }
 
-        protected override void HandleActions(IAction action)
-        {
-            throw new NotImplementedException();
-        }
+        #region Actions
+
+
+
+
+
+
+
+
+
+
+
+        #endregion
 
         public override void CleanUpStore()
         {
@@ -459,7 +454,7 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Users
 
         public override void RefreshSore()
         {
-    
+
         }
     }
 }

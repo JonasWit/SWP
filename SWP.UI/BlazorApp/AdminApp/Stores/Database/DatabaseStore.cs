@@ -16,14 +16,8 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Database
     [UIScopedService]
     public class DatabaseStore : StoreBase<DatabaseState>
     {
-        public DatabaseStore(
-            IServiceProvider serviceProvider,
-            IActionDispatcher actionDispatcher,
-            NotificationService notificationService) 
-            : base(serviceProvider, actionDispatcher, notificationService)
-        {
-
-        }
+        public DatabaseStore(IServiceProvider serviceProvider, IActionDispatcher actionDispatcher, NotificationService notificationService)
+            : base(serviceProvider, actionDispatcher, notificationService) { }
 
         protected override void HandleActions(IAction action)
         {

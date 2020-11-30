@@ -25,7 +25,7 @@ namespace SWP.UI.Components.AdminBlazorComponents
             base.OnInitialized();
             ApplicationStore.AddStateChangeListener(UpdateView);
             ApplicationsOptionsStore.AddStateChangeListener(UpdateView);
-            ApplicationsOptionsStore.InitializeState();
+            ApplicationsOptionsStore.Initialize();
         }
     }
 }

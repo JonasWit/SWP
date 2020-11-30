@@ -158,10 +158,14 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.MyApp
 
                 var profileClaim = MainStore.GetState().User.ProfileClaim;
                 var selectedUser = MainStore.GetState().User.RelatedUsers.FirstOrDefault(x => x.Id == _state.SelectedUser.Id);
-                var result = await userManager.RemoveClaimAsync(selectedUser, profileClaim);
+                var userToRemove = await userManager.FindByIdAsync(_state.SelectedUser.Id);
+
+                var result = await userManager.RemoveClaimAsync(userToRemove, profileClaim);
 
                 _state.SelectedUser = MainStore.GetState().User.User;
                 await MainStore.RefreshRelatedUsers();
+
+                ShowNotification(NotificationSeverity.Success, "Sukces!", $"Użytkownik: {userToRemove.UserName} został usunięty z profilu {profileClaim.Value}.", GeneralViewModel.NotificationDuration);
             }
             catch (Exception ex)
             {
@@ -186,12 +190,12 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.MyApp
             }
         }
 
-        public void ConfirmRemoveRelation()
+        public void ConfirmRemove()
         {
-            _dialogService.Open<GenericDialogPopup>("Order TEST",
+            _dialogService.Open<GenericDialogPopup>("Uwaga! Usunięcie danych będzie nieodwracalne!",
                 new Dictionary<string, object>()
                 {
-                    { "Title", "TEST Title Passed" },
+                    { "Title", "Potwierdź usunięcie danych" },
                     { "TaskToExecuteAsync", new Func<Task>(MainStore.ThrowTestException) },
                     { "Description", "This is sample Description" },
                 },

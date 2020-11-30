@@ -25,7 +25,7 @@ else
         @if (MyAppStore.GetState().SelectedUser != null && MainStore.GetState().User.RootClient && MainStore.GetState().ActiveUserId == MyAppStore.GetState().SelectedUser.Id)
         {
             <h1>Uwaga!</h1>
-            <RadzenButton Text=@($"Usuń wszystkie dane powiązane z profilem") Click="MyAppStore.ConfirmRemoveRelation" />
+            <RadzenButton Text=@($"Usuń wszystkie dane powiązane z profilem") Click="MyAppStore.ConfirmRemove" />
         }
 
         <div class="flex-my-app">

@@ -24,16 +24,10 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.ApplicationsOptions
     [UIScopedService]
     public class ApplicationsOptionsStore : StoreBase<ApplicationOptionsState>
     {
-        public ApplicationsOptionsStore(
-            IServiceProvider serviceProvider,
-            IActionDispatcher actionDispatcher,
-            NotificationService notificationService) 
-            : base(serviceProvider, actionDispatcher, notificationService)
-        {
+        public ApplicationsOptionsStore(IServiceProvider serviceProvider, IActionDispatcher actionDispatcher, NotificationService notificationService)
+            : base(serviceProvider, actionDispatcher, notificationService) { }
 
-        }
-
-        public void InitializeState()
+        public void Initialize()
         {
             using var scope = _serviceProvider.CreateScope();
             var getLogRecords = scope.ServiceProvider.GetRequiredService<GetLogRecords>();
@@ -125,17 +119,17 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.ApplicationsOptions
 
         protected override void HandleActions(IAction action)
         {
-            throw new NotImplementedException();
+
         }
 
         public override void CleanUpStore()
         {
-            throw new NotImplementedException();
+
         }
 
         public override void RefreshSore()
         {
-            throw new NotImplementedException();
+
         }
     }
 

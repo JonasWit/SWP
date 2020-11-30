@@ -3,6 +3,7 @@ using Radzen;
 using Radzen.Blazor;
 using SWP.Application.LegalSwp.ContactPeopleAdmin;
 using SWP.Domain.Models.SWPLegal;
+using SWP.UI.BlazorApp.LegalApp.Stores.ClientDetails.Actions;
 using SWP.UI.BlazorApp.LegalApp.Stores.Main;
 using SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data;
 using System;
@@ -25,8 +26,6 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.ClientDetails
     {
         public MainStore _mainStore => _serviceProvider.GetRequiredService<MainStore>();
 
-        public DialogService DialogService { get; }
-
         public ClientDetailsStore(IServiceProvider serviceProvider, IActionDispatcher actionDispatcher, NotificationService notificationService, DialogService dialogService)
             : base(serviceProvider, actionDispatcher, notificationService, dialogService)
         {
@@ -38,7 +37,44 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.ClientDetails
             GetContactPeople(_mainStore.GetState().ActiveClient.Id);
         }
 
-        public void GetContactPeople(int clientId)
+        protected override async void HandleActions(IAction action)
+        {
+            switch (action.Name)
+            {
+                case ContactSelectedAction.ContactSelected:
+                    var contactSelectedAction = (ContactSelectedAction)action;
+                    ContactSelected(contactSelectedAction.Arg);
+                    break;
+                case EditContactRowAction.EditContactRow:
+                    var editContactRowAction = (EditContactRowAction)action;
+                    EditContactRow(editContactRowAction.Arg);
+                    break;
+                case OnUpdateContactRowAction.OnUpdateContactRow:
+                    var onUpdateContactRowAction = (OnUpdateContactRowAction)action;
+                    await OnUpdateContactRow(onUpdateContactRowAction.Arg);
+                    break;
+                case SaveContactRowAction.SaveContactRow:
+                    var saveContactRowAction = (SaveContactRowAction)action;
+                    SaveContactRow(saveContactRowAction.Arg);
+                    break;
+                case CancelContactEditAction.CancelContactEdit:
+                    var cancelContactEditAction = (CancelContactEditAction)action;
+                    CancelContactEdit(cancelContactEditAction.Arg);
+                    break;
+                case DeleteContactRowAction.DeleteContactRow:
+                    var deleteContactRowAction = (DeleteContactRowAction)action;
+                    await DeleteContactRow(deleteContactRowAction.Arg);
+                    break;
+                case SubmitNewContactAction.SubmitNewContact:
+                    var submitNewContactAction = (SubmitNewContactAction)action;
+                    await SubmitNewContact(submitNewContactAction.Arg);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private void GetContactPeople(int clientId)
         {
             try
             {
@@ -53,13 +89,13 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.ClientDetails
             }
         }
 
-        public void UpdateClientContactPerson(ClientContactPerson input) => _state.ContactPeople[_state.ContactPeople.FindIndex(x => x.Id == input.Id)] = input;
+        private void UpdateClientContactPerson(ClientContactPerson input) => _state.ContactPeople[_state.ContactPeople.FindIndex(x => x.Id == input.Id)] = input;
 
-        public void RemoveClientContactPerson(int id) => _state.ContactPeople.RemoveAll(x => x.Id == id);
+        private void RemoveClientContactPerson(int id) => _state.ContactPeople.RemoveAll(x => x.Id == id);
 
-        public void AddClientContactPerson(ClientContactPerson input) => _state.ContactPeople.Add(input);
+        private void AddClientContactPerson(ClientContactPerson input) => _state.ContactPeople.Add(input);
 
-        public void ContactSelected(object value)
+        private void ContactSelected(object value)
         {
             var input = (ContactPersonViewModel)value;
             if (value != null)
@@ -76,9 +112,9 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.ClientDetails
 
         private void RefreshSelectedContact() => _state.SelectedContact = _state.ContactPeople.FirstOrDefault(x => x.Id == _state.SelectedContact.Id);
 
-        public void EditContactRow(ContactPersonViewModel contact) => _state.ContactsGrid.EditRow(contact);
+        private void EditContactRow(ContactPersonViewModel contact) => _state.ContactsGrid.EditRow(contact);
 
-        public async Task OnUpdateContactRow(ContactPersonViewModel contact)
+        private async Task OnUpdateContactRow(ContactPersonViewModel contact)
         {
             try
             {
@@ -108,9 +144,10 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.ClientDetails
                 await _mainStore.ShowErrorPage(ex);
             }
         }
-        public void SaveContactRow(ContactPersonViewModel contact) => _state.ContactsGrid.UpdateRow(contact);
 
-        public void CancelContactEdit(ContactPersonViewModel contact)
+        private void SaveContactRow(ContactPersonViewModel contact) => _state.ContactsGrid.UpdateRow(contact);
+
+        private void CancelContactEdit(ContactPersonViewModel contact)
         {
             _state.ContactsGrid.CancelEditRow(contact);
             _mainStore.RefreshActiveClientData();
@@ -118,7 +155,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.ClientDetails
             BroadcastStateChange();
         }
 
-        public async Task DeleteContactRow(ContactPersonViewModel contact)
+        private async Task DeleteContactRow(ContactPersonViewModel contact)
         {
             try
             {
@@ -138,7 +175,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.ClientDetails
             }
         }
 
-        public async Task SubmitNewContact(CreateContactPerson.Request request)
+        private async Task SubmitNewContact(CreateContactPerson.Request request)
         {
             request.UpdatedBy = _mainStore.GetState().User.UserName;
 
@@ -161,10 +198,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.ClientDetails
             }
         }
 
-        protected override void HandleActions(IAction action)
-        {
-
-        }
+        #endregion
 
         public override void CleanUpStore()
         {
@@ -175,14 +209,5 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.ClientDetails
         {
             GetContactPeople(_mainStore.GetState().ActiveClient.Id);
         }
-
-        #endregion
-
-
-
-
-
-
-
     }
 }

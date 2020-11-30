@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Radzen;
+using SWP.UI.BlazorApp;
 using SWP.UI.BlazorApp.LegalApp.Stores.Clients;
+using SWP.UI.BlazorApp.LegalApp.Stores.Clients.Actions;
 using SWP.UI.BlazorApp.LegalApp.Stores.Main;
 using SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data;
 using System;
@@ -18,6 +20,8 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
         public TooltipService TooltipService { get; set; }
         [Inject]
         public GeneralViewModel Gvm { get; set; }
+        [Inject]
+        public IActionDispatcher ActionDispatcher { get; set; }
 
         public void Dispose()
         {
@@ -50,5 +54,16 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
 
         public bool showClientListVisible = false;
         public void ShowHideClientsList() => showClientListVisible = !showClientListVisible;
+
+        #region Actions
+
+        private void EditClientRow(ClientViewModel arg) => ActionDispatcher.Dispatch(new EditClientRowAction { Arg = arg });
+
+
+
+
+
+
+        #endregion
     }
 }

@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Radzen;
+using SWP.Application.LegalSwp.ContactPeopleAdmin;
+using SWP.UI.BlazorApp;
 using SWP.UI.BlazorApp.LegalApp.Stores.ClientDetails;
+using SWP.UI.BlazorApp.LegalApp.Stores.ClientDetails.Actions;
 using SWP.UI.BlazorApp.LegalApp.Stores.Enums;
 using SWP.UI.BlazorApp.LegalApp.Stores.Main;
 using SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data;
@@ -16,7 +19,8 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
         public ClientDetailsStore ClientDetailsStore { get; set; }
         [Inject]
         public GeneralViewModel Gvm { get; set; }
-
+        [Inject]
+        public IActionDispatcher ActionDispatcher { get; set; }
         [Inject]
         public TooltipService TooltipService { get; set; }
 
@@ -59,6 +63,24 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
         public void ShowHideContactsI() => contactsListInfoVisible = !contactsListInfoVisible;
 
         public bool showContactsListVisible = false;
-        public void ShowHideContactsList() => showContactsListVisible = !showContactsListVisible;   
+        public void ShowHideContactsList() => showContactsListVisible = !showContactsListVisible;
+
+        #region Actions
+
+        private void ContactSelected(object arg) => ActionDispatcher.Dispatch(new ContactSelectedAction { Arg = arg });
+
+        private void EditContactRow(ContactPersonViewModel arg) => ActionDispatcher.Dispatch(new EditContactRowAction { Arg = arg });
+
+        private void OnUpdateContactRow(ContactPersonViewModel arg) => ActionDispatcher.Dispatch(new OnUpdateContactRowAction { Arg = arg });
+
+        private void SaveContactRow(ContactPersonViewModel arg) => ActionDispatcher.Dispatch(new SaveContactRowAction { Arg = arg });
+
+        private void CancelContactEdit(ContactPersonViewModel arg) => ActionDispatcher.Dispatch(new CancelContactEditAction { Arg = arg });
+
+        private void DeleteContactRow(ContactPersonViewModel arg) => ActionDispatcher.Dispatch(new DeleteContactRowAction { Arg = arg });
+
+        private void SubmitNewContact(CreateContactPerson.Request arg) => ActionDispatcher.Dispatch(new SubmitNewContactAction { Arg = arg });
+
+        #endregion
     }
 }

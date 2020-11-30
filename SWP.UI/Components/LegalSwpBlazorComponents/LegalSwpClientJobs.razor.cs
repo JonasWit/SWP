@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Radzen;
+using SWP.Application.LegalSwp.Jobs;
+using SWP.UI.BlazorApp;
 using SWP.UI.BlazorApp.LegalApp.Stores.ClientJobs;
+using SWP.UI.BlazorApp.LegalApp.Stores.ClientJobs.Actions;
 using SWP.UI.BlazorApp.LegalApp.Stores.Enums;
 using SWP.UI.BlazorApp.LegalApp.Stores.Main;
 using SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data;
@@ -17,6 +20,8 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
         public MainStore MainStore { get; set; }
         [Inject]
         public ClientJobsStore ClientJobsStore { get; set; }
+        [Inject]
+        public IActionDispatcher ActionDispatcher { get; set; }
 
         public string ArchvizedClientsFilterValue;
 
@@ -65,7 +70,30 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
         public bool showSecondSection = false;
         public void ShowHideSecondSection() => showSecondSection = !showSecondSection;
 
+        #region Actions
 
+        private void SubmitNewClientJob(CreateClientJob.Request arg) => ActionDispatcher.Dispatch(new SubmitNewClientJobAction { Arg = arg });
+
+        private void EditClientJobRow(ClientJobViewModel arg) => ActionDispatcher.Dispatch(new EditClientJobRowAction { Arg = arg });
+
+        private void OnUpdateClientJobRow(ClientJobViewModel arg) => ActionDispatcher.Dispatch(new OnUpdateClientJobRowAction { Arg = arg });
+
+        private void SaveClientJobRow(ClientJobViewModel arg) => ActionDispatcher.Dispatch(new SaveClientJobRowAction { Arg = arg });
+
+        private void CancelClientJobEdit(ClientJobViewModel arg) => ActionDispatcher.Dispatch(new CancelClientJobEditAction { Arg = arg });
+
+        private void DeleteClientJobRow(ClientJobViewModel arg) => ActionDispatcher.Dispatch(new DeleteClientJobRowAction { Arg = arg });
+
+        private void ActiveJobChange(object arg) => ActionDispatcher.Dispatch(new ActiveJobChangeAction { Arg = arg });
+
+        private void ArchivizeClientJob(ClientJobViewModel arg) => ActionDispatcher.Dispatch(new ArchivizeClientJobAction { Arg = arg });
+        
+        private void SelectedArchivizedClientJobChange(object arg) => ActionDispatcher.Dispatch(new SelectedArchivizedClientJobChangeAction { Arg = arg });
+
+        private void RecoverSelectedJob() => ActionDispatcher.Dispatch(new SelectedArchivizedClientJobChangeAction());
+
+
+        #endregion
 
     }
 }

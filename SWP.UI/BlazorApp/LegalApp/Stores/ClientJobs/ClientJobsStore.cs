@@ -2,6 +2,7 @@
 using Radzen;
 using Radzen.Blazor;
 using SWP.Application.LegalSwp.Jobs;
+using SWP.UI.BlazorApp.LegalApp.Stores.ClientJobs.Actions;
 using SWP.UI.BlazorApp.LegalApp.Stores.Main;
 using SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data;
 using System;
@@ -37,7 +38,55 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.ClientJobs
             GetClientJobs(_mainStore.GetState().ActiveClient.Id);
         }
 
-        public void GetClientJobs(int clientId)
+        protected override async void HandleActions(IAction action)
+        {
+            switch (action.Name)
+            {
+                case SubmitNewClientJobAction.SubmitNewClientJob:
+                    var submitNewClientJobAction = (SubmitNewClientJobAction)action;
+                    await SubmitNewClientJob(submitNewClientJobAction.Arg);
+                    break;
+                case EditClientJobRowAction.EditClientJobRow:
+                    var editClientJobRowAction = (EditClientJobRowAction)action;
+                    EditClientJobRow(editClientJobRowAction.Arg);
+                    break;
+                case OnUpdateClientJobRowAction.OnUpdateClientJobRow:
+                    var onUpdateClientJobRowAction = (OnUpdateClientJobRowAction)action;
+                    await OnUpdateClientJobRow(onUpdateClientJobRowAction.Arg);
+                    break;
+                case SaveClientJobRowAction.SaveClientJobRow:
+                    var saveClientJobRowAction = (SaveClientJobRowAction)action;
+                    SaveClientJobRow(saveClientJobRowAction.Arg);
+                    break;
+                case CancelClientJobEditAction.CancelClientJobEdit:
+                    var cancelClientJobEditAction = (CancelClientJobEditAction)action;
+                    CancelClientJobEdit(cancelClientJobEditAction.Arg);
+                    break;
+                case DeleteClientJobRowAction.DeleteClientJobRow:
+                    var deleteClientJobRowAction = (DeleteClientJobRowAction)action;
+                    await DeleteClientJobRow(deleteClientJobRowAction.Arg);
+                    break;
+                case ActiveJobChangeAction.ActiveJobChange:
+                    var activeJobChangeAction = (ActiveJobChangeAction)action;
+                    ActiveJobChange(activeJobChangeAction.Arg);
+                    break;
+                case ArchivizeClientJobAction.ArchivizeClientJob:
+                    var archivizeClientJobAction = (ArchivizeClientJobAction)action;
+                    await ArchivizeClientJob(archivizeClientJobAction.Arg);
+                    break;
+                case SelectedArchivizedClientJobChangeAction.SelectedArchivizedClientJobChange:
+                    var selectedArchivizedClientJobChangeAction = (SelectedArchivizedClientJobChangeAction)action;
+                    SelectedArchivizedClientJobChange(selectedArchivizedClientJobChangeAction.Arg);
+                    break;
+                case RecoverSelectedJobAction.RecoverSelectedJob:
+                    await RecoverSelectedJob();
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private void GetClientJobs(int clientId)
         {
             try
             {
@@ -55,7 +104,9 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.ClientJobs
             }
         }
 
-        public async Task SubmitNewClientJob(CreateClientJob.Request request)
+        #region Actions
+
+        private async Task SubmitNewClientJob(CreateClientJob.Request request)
         {
             try
             {
@@ -69,7 +120,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.ClientJobs
                 _state.NewClientJob = new CreateClientJob.Request();
 
                 _state.Jobs.Add(result);
-                
+
                 await _state.ClientsJobsGrid.Reload();
                 ShowNotification(NotificationSeverity.Success, "Sukces!", $"Zadanie: {result.Name}, dla Klineta: {_mainStore.GetState().ActiveClient.Name} zostało stworzone.", GeneralViewModel.NotificationDuration);
                 BroadcastStateChange();
@@ -80,9 +131,9 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.ClientJobs
             }
         }
 
-        public void EditClientJobRow(ClientJobViewModel clientJob) => _state.ClientsJobsGrid.EditRow(clientJob);
+        private void EditClientJobRow(ClientJobViewModel clientJob) => _state.ClientsJobsGrid.EditRow(clientJob);
 
-        public async Task OnUpdateClientJobRow(ClientJobViewModel clientJob)
+        private async Task OnUpdateClientJobRow(ClientJobViewModel clientJob)
         {
             try
             {
@@ -111,16 +162,16 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.ClientJobs
             }
         }
 
-        public void SaveClientJobRow(ClientJobViewModel clientJob) => _state.ClientsJobsGrid.UpdateRow(clientJob);
+        private void SaveClientJobRow(ClientJobViewModel clientJob) => _state.ClientsJobsGrid.UpdateRow(clientJob);
 
-        public void CancelClientJobEdit(ClientJobViewModel clientJob)
+        private void CancelClientJobEdit(ClientJobViewModel clientJob)
         {
             _state.ClientsJobsGrid.CancelEditRow(clientJob);
             _mainStore.RefreshActiveClientData();
             BroadcastStateChange();
         }
 
-        public async Task DeleteClientJobRow(ClientJobViewModel clientJob)
+        private async Task DeleteClientJobRow(ClientJobViewModel clientJob)
         {
             try
             {
@@ -130,7 +181,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.ClientJobs
                 await deleteClientJob.Delete(clientJob.Id);
 
                 _state.Jobs.RemoveAll(x => x.Id == clientJob.Id);
-               
+
                 await _state.ClientsJobsGrid.Reload();
                 ShowNotification(NotificationSeverity.Warning, "Sukces!", $"Zadanie: {clientJob.Name}, dla Klineta: {_mainStore.GetState().ActiveClient.Name} zostało usunięte.", GeneralViewModel.NotificationDuration);
                 BroadcastStateChange();
@@ -141,7 +192,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.ClientJobs
             }
         }
 
-        public void ActiveJobChange(object value)
+        private void ActiveJobChange(object value)
         {
             var input = (ClientJobViewModel)value;
             if (value != null)
@@ -154,7 +205,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.ClientJobs
             }
         }
 
-        public async Task ArchivizeClientJob(ClientJobViewModel clientJob)
+        private async Task ArchivizeClientJob(ClientJobViewModel clientJob)
         {
             try
             {
@@ -176,9 +227,9 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.ClientJobs
             }
         }
 
-        public void SelectedArchivizedClientJobChange(object job) =>_state.SelectedArchivizedClientJob = _state.ArchivedJobs.FirstOrDefault(x => x.Id == int.Parse(job.ToString()));
+        private void SelectedArchivizedClientJobChange(object job) => _state.SelectedArchivizedClientJob = _state.ArchivedJobs.FirstOrDefault(x => x.Id == int.Parse(job.ToString()));
 
-        public async Task RecoverSelectedJob()
+        private async Task RecoverSelectedJob()
         {
             try
             {
@@ -209,10 +260,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.ClientJobs
             }
         }
 
-        protected override void HandleActions(IAction action)
-        {
-
-        }
+        #endregion
 
         public override void CleanUpStore()
         {

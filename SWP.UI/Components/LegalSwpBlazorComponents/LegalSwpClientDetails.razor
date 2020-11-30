@@ -9,7 +9,7 @@ else
     <div class="show-hide tab-section"><button class="show-hide-btn show-hide-btn-1"><span>Lista Kontaktów</span></button></div>
     <div class="row-section">
 
-        <RadzenTemplateForm Data="@ClientDetailsStore.GetState().NewContact" Submit="@(async (CreateContactPerson.Request args) => { await ClientDetailsStore.SubmitNewContact(args); })">
+        <RadzenTemplateForm Data="@ClientDetailsStore.GetState().NewContact" Submit="@((CreateContactPerson.Request args) => SubmitNewContact(args))">
             <RadzenFieldset Text="Osoba Kontaktowa">
                 <div class="form">
                     <i class="user-icon"><img src="/Images/icons8-reception-36.png" /></i>
@@ -84,7 +84,7 @@ else
         </RadzenTemplateForm>
 
         <RadzenGrid @ref="ClientDetailsStore.GetState().ContactsGrid" AllowFiltering="true" AllowPaging="true" PageSize="10" AllowSorting="true"
-                    Data="@ClientDetailsStore.GetState().ContactPeople" TItem="ContactPersonViewModel" RowUpdate="@ClientDetailsStore.OnUpdateContactRow" RowSelect="@(args => ClientDetailsStore.ContactSelected(args))">
+                    Data="@ClientDetailsStore.GetState().ContactPeople" TItem="ContactPersonViewModel" RowUpdate="@OnUpdateContactRow" RowSelect="@(args => ContactSelected(args))">
             <Columns>
                 <RadzenGridColumn TItem="ContactPersonViewModel" Property="Name" Title="Nazwa">
                     <Template Context="contact">
@@ -142,19 +142,19 @@ else
 
                 <RadzenGridColumn TItem="ContactPersonViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center">
                     <Template Context="c">
-                        <RadzenButton Icon="edit" Size="ButtonSize.Small" Click="@(args => ClientDetailsStore.EditContactRow(c))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Edytuj", Style = Gvm.ToolTipStyle }))">
+                        <RadzenButton Icon="edit" Size="ButtonSize.Small" Click="@(args => EditContactRow(c))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Edytuj", Style = Gvm.ToolTipStyle }))">
                         </RadzenButton>
                     </Template>
                     <EditTemplate Context="c">
-                        <RadzenButton Icon="save" Size="ButtonSize.Small" Click="@((args) => ClientDetailsStore.SaveContactRow(c))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Zapisz", Style = Gvm.ToolTipStyle }))">
+                        <RadzenButton Icon="save" Size="ButtonSize.Small" Click="@((args) => SaveContactRow(c))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Zapisz", Style = Gvm.ToolTipStyle }))">
                         </RadzenButton>
-                        <RadzenButton Icon="cancel" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Success" Click="@((args) => ClientDetailsStore.CancelContactEdit(c))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Anuluj", Style = Gvm.ToolTipStyle }))">
+                        <RadzenButton Icon="cancel" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Success" Click="@((args) => CancelContactEdit(c))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Anuluj", Style = Gvm.ToolTipStyle }))">
                         </RadzenButton>
                     </EditTemplate>
                 </RadzenGridColumn>
                 <RadzenGridColumn TItem="ContactPersonViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center">
                     <Template Context="c">
-                        <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@(async (args) => await ClientDetailsStore.DeleteContactRow(c))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Zamknij", Style = Gvm.ToolTipStyle }))">
+                        <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@((args) => DeleteContactRow(c))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Zamknij", Style = Gvm.ToolTipStyle }))">
                         </RadzenButton>
                     </Template>
                     <EditTemplate Context="client">

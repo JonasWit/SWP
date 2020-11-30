@@ -121,6 +121,34 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
                     var onAppointmentSelectAction = (OnAppointmentSelectAction)action;
                     await OnAppointmentSelect(onAppointmentSelectAction.Arg);
                     break;
+                case OnAppointmentRenderAction.OnAppointmentRender:
+                    var onAppointmentRenderAction = (OnAppointmentRenderAction)action;
+                    OnAppointmentRender(onAppointmentRenderAction.Arg);
+                    break;
+                case OnUpdateContactRowAction.OnUpdateContactRow:
+                    var onUpdateContactRowAction = (OnUpdateContactRowAction)action;
+                    await OnUpdateContactRow(onUpdateContactRowAction.Arg);
+                    break;
+                case SaveContactRowAction.SaveContactRow:
+                    var saveContactRowAction = (SaveContactRowAction)action;
+                    SaveContactRow(saveContactRowAction.Arg);
+                    break;
+                case CancelContactEditAction.CancelContactEdit:
+                    var cancelContactEditAction = (CancelContactEditAction)action;
+                    CancelContactEdit(cancelContactEditAction.Arg);
+                    break;
+                case DeleteContactRowAction.DeleteContactRow:
+                    var deleteContactRowAction = (DeleteContactRowAction)action;
+                    await DeleteContactRow(deleteContactRowAction.Arg);
+                    break;
+                case SubmitNewContactAction.SubmitNewContactRow:
+                    var submitNewContactAction = (SubmitNewContactAction)action;
+                    await SubmitNewContact(submitNewContactAction.Request);
+                    break;
+                case ContactSelectedAction.ContactSelected:
+                    var contactSelectedAction = (ContactSelectedAction)action;
+                    ContactSelected(contactSelectedAction.Arg);
+                    break;
                 default:
                     break;
             }
@@ -514,7 +542,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
             }
         }
 
-        public void OnAppointmentRender(SchedulerAppointmentRenderEventArgs<ReminderViewModel> args)
+        private void OnAppointmentRender(SchedulerAppointmentRenderEventArgs<ReminderViewModel> args)
         {
             // Never call StateHasChanged in AppointmentRender - would lead to infinite loop
 
@@ -533,9 +561,9 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
 
         #region Contact
 
-        public void EditContactRow(ContactPersonViewModel contact) => _state.ContactsGrid.EditRow(contact);
+        private void EditContactRow(ContactPersonViewModel contact) => _state.ContactsGrid.EditRow(contact);
 
-        public async Task OnUpdateContactRow(ContactPersonViewModel contact)
+        private async Task OnUpdateContactRow(ContactPersonViewModel contact)
         {
             try
             {
@@ -567,16 +595,16 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
             }
         }
 
-        public void SaveContactRow(ContactPersonViewModel contact) => _state.ContactsGrid.UpdateRow(contact);
+        private void SaveContactRow(ContactPersonViewModel contact) => _state.ContactsGrid.UpdateRow(contact);
 
-        public void CancelContactEdit(ContactPersonViewModel contact)
+        private void CancelContactEdit(ContactPersonViewModel contact)
         {
             _state.ContactsGrid.CancelEditRow(contact);
             _mainStore.RefreshActiveClientData();
             BroadcastStateChange();
         }
 
-        public async Task DeleteContactRow(ContactPersonViewModel contact)
+        private async Task DeleteContactRow(ContactPersonViewModel contact)
         {
             try
             {
@@ -596,7 +624,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
             }
         }
 
-        public async Task SubmitNewContact(CreateContactPerson.Request request)
+        private async Task SubmitNewContact(CreateContactPerson.Request request)
         {
             request.UpdatedBy = _mainStore.GetState().User.UserName;
 
@@ -620,7 +648,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
             }
         }
 
-        public void ContactSelected(object value)
+        private void ContactSelected(object value)
         {
             var input = (ContactPersonViewModel)value;
             if (value != null)
@@ -633,6 +661,8 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
             }
         }
 
+        #endregion
+
         public override void CleanUpStore()
         {
             _state.SelectedCase = null;
@@ -644,23 +674,6 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
         {
             GetCases(_mainStore.GetState().ActiveClient.Id);
         }
-
-
-
-        #endregion
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

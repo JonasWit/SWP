@@ -15,6 +15,7 @@
 wwwroot/DownloadableFiles/
 *.exe
 appsettings.json
+appsettings.Production.json
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs

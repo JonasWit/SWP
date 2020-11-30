@@ -23,66 +23,68 @@ namespace SWP.UI
         private readonly IConfiguration configuration;
         public Startup(IConfiguration configuration) => this.configuration = configuration;
 
-        public void ConfigureDevelopmentServices(IServiceCollection services)
-        {
-            services.AddHttpClient();
-            services.AddHttpContextAccessor();
+        //public void ConfigureDevelopmentServices(IServiceCollection services)
+        //{
+        //    services.AddHttpClient();
+        //    services.AddHttpContextAccessor();
 
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(configuration.GetConnectionString("DevConnection")),
-                ServiceLifetime.Transient);
+        //    services.AddDbContext<ApplicationDbContext>(options =>
+        //        options.UseSqlServer(configuration.GetConnectionString("DbConnection")),
+        //        ServiceLifetime.Transient);
 
-            services.AddDefaultIdentity<IdentityUser>(options =>
-            {
-                options.Password.RequireDigit = true;
-                options.Password.RequiredLength = 12;
-                options.Password.RequireNonAlphanumeric = true;
-                options.Password.RequireUppercase = true;
-                options.Password.RequireLowercase = true;
-                options.SignIn.RequireConfirmedAccount = true;
-                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
-                options.Lockout.MaxFailedAccessAttempts = 3;
-                options.Lockout.AllowedForNewUsers = true;
-            })
-            .AddRoles<IdentityRole>()
-            .AddErrorDescriber<PolishIdentityErrorDescriber>()
-            .AddEntityFrameworkStores<ApplicationDbContext>();
+        //    services.AddDefaultIdentity<IdentityUser>(options =>
+        //    {
+        //        options.Password.RequireDigit = true;
+        //        options.Password.RequiredLength = 12;
+        //        options.Password.RequireNonAlphanumeric = true;
+        //        options.Password.RequireUppercase = true;
+        //        options.Password.RequireLowercase = true;
+        //        options.SignIn.RequireConfirmedAccount = true;
+        //        options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
+        //        options.Lockout.MaxFailedAccessAttempts = 3;
+        //        options.Lockout.AllowedForNewUsers = true;
+        //    })
+        //    .AddRoles<IdentityRole>()
+        //    .AddErrorDescriber<PolishIdentityErrorDescriber>()
+        //    .AddEntityFrameworkStores<ApplicationDbContext>();
 
-            services.ConfigureApplicationCookie(options =>
-            {
-                options.Cookie.Name = "SWP";
-            });
+        //    services.ConfigureApplicationCookie(options =>
+        //    {
+        //        options.Cookie.Name = "SWP";
+        //    });
 
-            //Email Confirmations
-            services.AddMailKit(config =>
-                config.UseMailKit(configuration.GetSection("Email").Get<MailKitOptions>()));
-            services.AddTransient<IEmailSender, EmailSender>();
+        //    //Email Confirmations
+        //    services.AddMailKit(config =>
+        //        config.UseMailKit(configuration.GetSection("Email").Get<MailKitOptions>()));
+        //    services.AddTransient<IEmailSender, EmailSender>();
 
-            services.AddAuthorization(options =>
-            {
-                options.AddPolicy(ApplicationPolicy.LegalApplication.ToString(), policy => policy.RequireClaim(ClaimType.Application.ToString(), ApplicationType.LegalSwp.ToString()));
-            });
+        //    services.AddAuthorization(options =>
+        //    {
+        //        options.AddPolicy(ApplicationPolicy.LegalApplication.ToString(), policy => policy.RequireClaim(ClaimType.Application.ToString(), ApplicationType.LegalSwp.ToString()));
+        //    });
 
-            services.AddServerSideBlazor();
+        //    services.AddServerSideBlazor();
 
-            services.Configure<CookiePolicyOptions>(options =>
-            {
-                options.CheckConsentNeeded = context => true;
-                options.MinimumSameSitePolicy = SameSiteMode.None;
-            });
+        //    services.Configure<CookiePolicyOptions>(options =>
+        //    {
+        //        options.CheckConsentNeeded = context => true;
+        //        options.MinimumSameSitePolicy = SameSiteMode.None;
+        //    });
 
-            services.AddRazorPages();
-            services.AddApplicationServices();
-            services.AddDatabaseDeveloperPageExceptionFilter();
-        }
+        //    services.AddRazorPages();
+        //    services.AddApplicationServices();
+        //    services.AddDatabaseDeveloperPageExceptionFilter();
+        //}
 
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddHttpClient();
             services.AddHttpContextAccessor();
 
+            var test = configuration.GetConnectionString("DbConnection");
+
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(configuration.GetConnectionString("DevConnection")),
+                options.UseSqlServer(configuration.GetConnectionString("DbConnection")),
                 ServiceLifetime.Transient);
 
             services.AddDefaultIdentity<IdentityUser>(options => 

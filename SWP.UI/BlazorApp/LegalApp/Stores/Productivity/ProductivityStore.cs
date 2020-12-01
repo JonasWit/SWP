@@ -61,6 +61,11 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Productivity
             GetTimeRecords(_mainStore.GetState().ActiveClient.Id);
         }
 
+        protected override void HandleActions(IAction action)
+        {
+
+        }
+
         public void GetTimeRecords(int clientId)
         {
             try
@@ -298,11 +303,6 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Productivity
             {
                 _state.SelectedFont = null;
             }
-        }
-
-        protected override void HandleActions(IAction action)
-        {
-  
         }
 
         public void SetSelectedTimeRecord(TimeRecordViewModel entity) => _state.SelectedTimeRecord = entity;

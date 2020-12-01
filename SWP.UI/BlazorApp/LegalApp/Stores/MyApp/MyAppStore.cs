@@ -46,13 +46,19 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.MyApp
             return Task.CompletedTask;
         }
 
-        protected override void HandleActions(IAction action)
+        protected override async void HandleActions(IAction action)
         {
             switch (action.Name)
             {
                 case SelectedUserChangeAction.SelectedUserChange:
                     var selectedUserChangeAction = (SelectedUserChangeAction)action;
                     SelectedUserChange(selectedUserChangeAction.Arg);
+                    break;
+                case RemoveRelationAction.RemoveRelation:
+                    await RemoveRelation();
+                    break;
+                case ConfirmRemoveAllDataAction.ConfirmRemoveAllData:
+                    ConfirmRemoveAllData();
                     break;
                 default:
                     break;
@@ -158,7 +164,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.MyApp
             }
         }
 
-        public async Task RemoveRelation()
+        private async Task RemoveRelation()
         {
             try
             {
@@ -175,6 +181,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.MyApp
                 await MainStore.RefreshRelatedUsers();
 
                 ShowNotification(NotificationSeverity.Success, "Sukces!", $"Użytkownik: {userToRemove.UserName} został usunięty z profilu {profileClaim.Value}.", GeneralViewModel.NotificationDuration);
+                BroadcastStateChange();
             }
             catch (Exception ex)
             {
@@ -189,9 +196,10 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.MyApp
                 using var scope = _serviceProvider.CreateScope();
                 var deleteClient = scope.ServiceProvider.GetRequiredService<DeleteClient>();
 
-                await deleteClient.Delete(MainStore.GetState().User.Profile);
+                //await deleteClient.Delete(MainStore.GetState().User.Profile);
 
                 ShowNotification(NotificationSeverity.Success, "Sukces!", $"Usunięto wszystkie dane powiązane z profilem: {MainStore.GetState().User.Profile}", GeneralViewModel.NotificationDuration);
+                BroadcastStateChange();
             }
             catch (Exception ex)
             {
@@ -199,16 +207,20 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.MyApp
             }
         }
 
-        public void ConfirmRemove()
+        private void ConfirmRemoveAllData()
         {
+            EnableLoading("Usuwanie Danych...");
+
             _dialogService.Open<GenericDialogPopup>("Uwaga! Usunięcie danych będzie nieodwracalne!",
                 new Dictionary<string, object>()
                 {
                     { "Title", "Potwierdź usunięcie danych" },
-                    { "TaskToExecuteAsync", new Func<Task>(MainStore.ThrowTestException) },
+                    { "TaskToExecuteAsync", new Func<Task>(RemoveProfileData) },
                     { "Description", "This is sample Description" },
                 },
                 _generalViewModel.DefaultDialogOptions);
+
+            DisableLoading();
         }
 
         public override void CleanUpStore()

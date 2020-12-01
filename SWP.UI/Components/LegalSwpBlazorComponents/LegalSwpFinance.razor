@@ -132,7 +132,7 @@ else
 
                     <RadzenGridColumn TItem="CashMovementViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="100px">
                         <Template Context="c">
-                            <RadzenButton Icon="edit" Size="ButtonSize.Small" Click="@(args => FinanceStore.EditCashMovementRow(c))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Edytuj", Style = Gvm.ToolTipStyle }))">
+                            <RadzenButton Icon="edit" Size="ButtonSize.Small" Click="@(args => EditCashMovementRow(c))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Edytuj", Style = Gvm.ToolTipStyle }))">
                             </RadzenButton>
                         </Template>
                         <EditTemplate Context="c">

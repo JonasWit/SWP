@@ -2,6 +2,7 @@
 using Radzen;
 using Radzen.Blazor;
 using SWP.Application.LegalSwp.CashMovements;
+using SWP.UI.BlazorApp.LegalApp.Stores.Finance.Action;
 using SWP.UI.BlazorApp.LegalApp.Stores.Main;
 using SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data;
 using System;
@@ -47,7 +48,20 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Finance
             GetCashMovements(_mainStore.GetState().ActiveClient.Id);
         }
 
-        public void GetCashMovements(int clientId)
+        protected override void HandleActions(IAction action)
+        {
+            switch (action.Name)
+            {
+                case EditCashMovementRowAction.EditCashMovementRow:
+                    var editCashMovementRowAction = (EditCashMovementRowAction)action;
+                    EditCashMovementRow(editCashMovementRowAction.Arg);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private void GetCashMovements(int clientId)
         {
             try
             {
@@ -62,7 +76,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Finance
             }
         }
 
-        public void GetDataForMonthFilter()
+        private void GetDataForMonthFilter()
         {
             int id = 1;
             _state.MonthsFilterData.Clear();
@@ -85,15 +99,9 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Finance
             }
         }
 
-        public void AddCashMovementToActiveClient(CashMovementViewModel entity) => _state.CashMovements.Add(entity);
+        private void SetSelectedCashMovement(CashMovementViewModel entity) => _state.SelectedCashMovement = entity;
 
-        public void RemoveCashMovementFromActiveClient(int id) => _state.CashMovements.RemoveAll(x => x.Id == id);
-
-        public void ReplaceCashMovementFromActiveClient(CashMovementViewModel entity) => _state.CashMovements[_state.CashMovements.FindIndex(x => x.Id == entity.Id)] = entity;
-
-        public void SetSelectedCashMovement(CashMovementViewModel entity) => _state.SelectedCashMovement = entity;
-
-        public void EditCashMovementRow(CashMovementViewModel cash) => _state.CashMovementGrid.EditRow(cash);
+        private void EditCashMovementRow(CashMovementViewModel cash) => _state.CashMovementGrid.EditRow(cash);
 
         public async Task OnUpdateCashMovementRow(CashMovementViewModel cash)
         {
@@ -120,8 +128,8 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Finance
                     EventDate = cash.EventDate
                 });
 
-                ReplaceCashMovementFromActiveClient(result);
-                
+                _state.CashMovements[_state.CashMovements.FindIndex(x => x.Id == result.Id)] = result;
+
                 await _state.CashMovementGrid.Reload();
                 GetDataForMonthFilter();
                 ShowNotification(NotificationSeverity.Success, "Sukces!", $"Kwota: {result.Amount} zł, została zmieniona.", GeneralViewModel.NotificationDuration);
@@ -150,7 +158,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Finance
                 var deleteCashMovement = scope.ServiceProvider.GetRequiredService<DeleteCashMovement>();
 
                 await deleteCashMovement.Delete(cash.Id);
-                RemoveCashMovementFromActiveClient(cash.Id);
+                _state.CashMovements.RemoveAll(x => x.Id == cash.Id);
 
                 await _state.CashMovementGrid.Reload();
                 GetDataForMonthFilter();
@@ -179,9 +187,9 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Finance
                 request.UpdatedBy = _mainStore.GetState().User.UserName;
 
                 var result = await createCashMovement.Create(_mainStore.GetState().ActiveClient.Id, _mainStore.GetState().User.Profile, request);
-                _state.NewCashMovement = new CreateCashMovement.Request();
 
-                AddCashMovementToActiveClient(result);
+                _state.NewCashMovement = new CreateCashMovement.Request();
+                _state.CashMovements.Add(result);
 
                 if (_state.CashMovementGrid != null)
                 {
@@ -222,11 +230,6 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Finance
             {
                 _state.SelectedMonth = null;
             }
-        }
-
-        protected override void HandleActions(IAction action)
-        {
-
         }
 
         public override void CleanUpStore()

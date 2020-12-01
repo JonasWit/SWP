@@ -19,13 +19,13 @@ else
         @if (MyAppStore.GetState().SelectedUser != null && MainStore.GetState().User.RootClient && MainStore.GetState().ActiveUserId != MyAppStore.GetState().SelectedUser.Id)
         {
             <h1>Mozna skasowac</h1>
-            <RadzenButton Text="Usuń powiązanie!" Click="MyAppStore.RemoveRelation"></RadzenButton>
+            <RadzenButton Text="Usuń powiązanie!" Click="RemoveRelation"></RadzenButton>
         }
 
         @if (MyAppStore.GetState().SelectedUser != null && MainStore.GetState().User.RootClient && MainStore.GetState().ActiveUserId == MyAppStore.GetState().SelectedUser.Id)
         {
             <h1>Uwaga!</h1>
-            <RadzenButton Text=@($"Usuń wszystkie dane powiązane z profilem") Click="MyAppStore.ConfirmRemove" />
+            <RadzenButton Text=@($"Usuń wszystkie dane powiązane z profilem") Click="ConfirmRemoveAllData" />
         }
 
         <div class="flex-my-app">

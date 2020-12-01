@@ -42,13 +42,37 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Clients
             }
         }
 
-        protected override void HandleActions(IAction action)
+        protected override async void HandleActions(IAction action)
         {
             switch (action.Name)
             {
                 case EditClientRowAction.EditClientRow:
                     var editClientRowAction = (EditClientRowAction)action;
                     EditClientRow(editClientRowAction.Arg);
+                    break;
+                case OnUpdateClientRowAction.OnUpdateClientRow:
+                    var onUpdateClientRowAction = (OnUpdateClientRowAction)action;
+                    await OnUpdateClientRow(onUpdateClientRowAction.Arg);
+                    break;
+                case SaveClientRowAction.SaveClientRow:
+                    var saveClientRowAction = (SaveClientRowAction)action;
+                    SaveClientRow(saveClientRowAction.Arg);
+                    break;
+                case CancelClientEditAction.CancelClientEdit:
+                    var cancelClientEditAction = (CancelClientEditAction)action;
+                    CancelClientEdit(cancelClientEditAction.Arg);
+                    break;
+                case DeleteClientRowAction.DeleteClientRow:
+                    var deleteClientRowAction = (DeleteClientRowAction)action;
+                    await DeleteClientRow(deleteClientRowAction.Arg);
+                    break;
+                case ArchivizeClientAction.ArchivizeClient:
+                    var archivizeClientAction = (ArchivizeClientAction)action;
+                    await ArchivizeClient(archivizeClientAction.Arg);
+                    break;
+                case SubmitNewClientAction.SubmitNewClient:
+                    var submitNewClientAction = (SubmitNewClientAction)action;
+                    await SubmitNewClient(submitNewClientAction.Arg);
                     break;
                 default:
                     break;
@@ -67,7 +91,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Clients
 
         private void EditClientRow(ClientViewModel client) => _state.ClientsGrid.EditRow(client);
 
-        public async Task OnUpdateClientRow(ClientViewModel client)
+        private async Task OnUpdateClientRow(ClientViewModel client)
         {
             try
             {
@@ -107,9 +131,9 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Clients
             }
         }
 
-        public void SaveClientRow(ClientViewModel client) => _state.ClientsGrid.UpdateRow(client);
+        private void SaveClientRow(ClientViewModel client) => _state.ClientsGrid.UpdateRow(client);
 
-        public void CancelClientEdit(ClientViewModel client)
+        private void CancelClientEdit(ClientViewModel client)
         {
             _state.ClientsGrid.CancelEditRow(client);
             MainStore.RefreshClients();
@@ -117,7 +141,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Clients
             BroadcastStateChange();
         }
 
-        public async Task DeleteClientRow(ClientViewModel client)
+        private async Task DeleteClientRow(ClientViewModel client)
         {
             try
             {
@@ -143,7 +167,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Clients
             }
         }
 
-        public async Task ArchivizeClient(ClientViewModel client)
+        private async Task ArchivizeClient(ClientViewModel client)
         {
             try
             {
@@ -178,7 +202,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Clients
             }
         }
 
-        public async Task SubmitNewClient(CreateClient.Request request)
+        private async Task SubmitNewClient(CreateClient.Request request)
         {
             if (request == null) return;
 

@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Radzen;
+using SWP.UI.BlazorApp;
 using SWP.UI.BlazorApp.LegalApp.Stores.Main;
 using SWP.UI.BlazorApp.LegalApp.Stores.MyApp;
+using SWP.UI.BlazorApp.LegalApp.Stores.MyApp.Actions;
 using SWP.UI.Utilities;
 using System;
 using System.Globalization;
@@ -17,6 +19,8 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
         public MyAppStore MyAppStore { get; set; }
         [Inject]
         public TooltipService TooltipService { get; set; }
+        [Inject]
+        public IActionDispatcher ActionDispatcher { get; set; }
 
         public void Dispose()
         {
@@ -42,13 +46,13 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
             MyAppStore.DisableLoading();
         }
 
-        private string FormatAsPLN(object value)
+        private static string FormatAsPLN(object value)
         {
             var amount = Convert.ToDouble(value);
             return amount.FormatPLN();
         }
 
-        private string FormatAsTime(object value)
+        private static string FormatAsTime(object value)
         {
             var stringValue = value.ToString();
 
@@ -70,6 +74,23 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
             }
         }
 
+
         public string RelatedUsersFilterValue = "";
+
+        #region Actions
+
+        private void SelectedUserChange(object arg) => ActionDispatcher.Dispatch(new SelectedUserChangeAction { Arg = arg });
+
+
+
+
+
+
+
+
+
+
+        #endregion
+
     }
 }

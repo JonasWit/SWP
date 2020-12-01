@@ -1,0 +1,16 @@
+﻿using SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace SWP.UI.BlazorApp.LegalApp.Stores.Clients.Actions
+{
+    public class CancelClientEditAction : IAction
+    {
+        public const string CancelClientEdit = "CANCEL_CLIENT_EDIT";
+        public string Name => CancelClientEdit;
+
+        public ClientViewModel Arg { get; set; }
+    }
+}

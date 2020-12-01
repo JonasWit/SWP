@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Radzen;
+using SWP.Application.LegalSwp.Clients;
 using SWP.UI.BlazorApp;
 using SWP.UI.BlazorApp.LegalApp.Stores.Clients;
 using SWP.UI.BlazorApp.LegalApp.Stores.Clients.Actions;
@@ -59,10 +60,17 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
 
         private void EditClientRow(ClientViewModel arg) => ActionDispatcher.Dispatch(new EditClientRowAction { Arg = arg });
 
+        private void OnUpdateClientRow(ClientViewModel arg) => ActionDispatcher.Dispatch(new OnUpdateClientRowAction { Arg = arg });
 
+        private void SaveClientRow(ClientViewModel arg) => ActionDispatcher.Dispatch(new SaveClientRowAction { Arg = arg });
 
+        private void CancelClientEdit(ClientViewModel arg) => ActionDispatcher.Dispatch(new CancelClientEditAction { Arg = arg });
 
+        private void DeleteClientRow(ClientViewModel arg) => ActionDispatcher.Dispatch(new DeleteClientRowAction { Arg = arg });
 
+        private void ArchivizeClient(ClientViewModel arg) => ActionDispatcher.Dispatch(new ArchivizeClientAction { Arg = arg });
+
+        private void SubmitNewClient(CreateClient.Request arg) => ActionDispatcher.Dispatch(new SubmitNewClientAction { Arg = arg });
 
         #endregion
     }

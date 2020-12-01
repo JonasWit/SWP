@@ -13,7 +13,7 @@ else
             <div>
                 <RadzenDropDown AllowClear="true"
                                 FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" FilterOperator="StringFilterOperator.StartsWith" AllowFiltering="true" @bind-Value="RelatedUsersFilterValue"
-                                Data="@MainStore.GetState().User.RelatedUsers" TextProperty="UserName" ValueProperty="Id" Style="margin-bottom: 20px" Change="@(args => MyAppStore.SelectedUserChange(args))" />
+                                Data="@MainStore.GetState().User.RelatedUsers" TextProperty="UserName" ValueProperty="Id" Style="margin-bottom: 20px" Change="@(args => SelectedUserChange(args))" />
             </div>
         </div>
         @if (MyAppStore.GetState().SelectedUser != null && MainStore.GetState().User.RootClient && MainStore.GetState().ActiveUserId != MyAppStore.GetState().SelectedUser.Id)

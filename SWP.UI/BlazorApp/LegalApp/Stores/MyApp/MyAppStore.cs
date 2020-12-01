@@ -6,6 +6,7 @@ using SWP.Application.LegalSwp.CashMovements;
 using SWP.Application.LegalSwp.Clients;
 using SWP.Application.LegalSwp.TimeRecords;
 using SWP.UI.BlazorApp.LegalApp.Stores.Main;
+using SWP.UI.BlazorApp.LegalApp.Stores.MyApp.Actions;
 using SWP.UI.Components.LegalSwpBlazorComponents.Dialogs;
 using SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data;
 using SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data.Statistics;
@@ -33,12 +34,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.MyApp
         private readonly GeneralViewModel _generalViewModel;
         public MainStore MainStore => _serviceProvider.GetRequiredService<MainStore>();
 
-        public MyAppStore(
-            IServiceProvider serviceProvider,
-            IActionDispatcher actionDispatcher,
-            NotificationService notificationService, 
-            DialogService dialogService,
-            GeneralViewModel generalViewModel) 
+        public MyAppStore(IServiceProvider serviceProvider, IActionDispatcher actionDispatcher, NotificationService notificationService, DialogService dialogService, GeneralViewModel generalViewModel) 
             : base(serviceProvider, actionDispatcher, notificationService, dialogService)
         {
             _generalViewModel = generalViewModel;
@@ -48,6 +44,19 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.MyApp
         {
             RefreshSore();
             return Task.CompletedTask;
+        }
+
+        protected override void HandleActions(IAction action)
+        {
+            switch (action.Name)
+            {
+                case SelectedUserChangeAction.SelectedUserChange:
+                    var selectedUserChangeAction = (SelectedUserChangeAction)action;
+                    SelectedUserChange(selectedUserChangeAction.Arg);
+                    break;
+                default:
+                    break;
+            }
         }
 
         private void RefreshClientCases()
@@ -136,7 +145,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.MyApp
             }
         }
 
-        public void SelectedUserChange(object value)
+        private void SelectedUserChange(object value)
         {
             var input = (string)value;
             if (value != null)
@@ -200,11 +209,6 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.MyApp
                     { "Description", "This is sample Description" },
                 },
                 _generalViewModel.DefaultDialogOptions);
-        }
-
-        protected override void HandleActions(IAction action)
-        {
-    
         }
 
         public override void CleanUpStore()

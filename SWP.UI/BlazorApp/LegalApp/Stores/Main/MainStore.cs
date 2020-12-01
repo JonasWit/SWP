@@ -68,6 +68,11 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
             }
         }
 
+        protected override void HandleActions(IAction action)
+        {
+
+        }
+
         private void ReloadClientsDrop()
         {
             using var scope = _serviceProvider.CreateScope();
@@ -237,11 +242,6 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
             {
                 ShowErrorPage(ex).GetAwaiter();
             }
-        }
-
-        protected override void HandleActions(IAction action)
-        {
-
         }
 
         public override void CleanUpStore()

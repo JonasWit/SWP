@@ -30,6 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="BlazorApp\LegalApp\Stores\Main\Actions\" />
     <Folder Include="wwwroot\downloadable-files\" />
     <Folder Include="wwwroot\portal-content\" />
     <Folder Include="wwwroot\portal-content\news-images\" />

@@ -31,7 +31,6 @@ namespace SWP.UI.Areas.Identity.Pages.Account
             [EmailAddress]
             public string Email { get; set; }
 
-            //todo: validation for all password requirements
             [Required(ErrorMessage = "Hasło jest wymagane!")]
             [StringLength(20, ErrorMessage = "Hasło musi składać się z 12 do 20 znaków!", MinimumLength = 12)]
             [DataType(DataType.Password)]

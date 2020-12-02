@@ -1,4 +1,5 @@
-﻿using SWP.Domain.Models.Portal;
+﻿using SWP.Domain.Models.Log;
+using SWP.Domain.Models.Portal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,5 +15,6 @@ namespace SWP.Domain.Infrastructure.Portal
         Task<BillingDetail> UpdateBillingDetail(BillingDetail details);
         Task<int> DeleteBillingDetail(int customerId);
         Task<int> ClearCustomerData(string customerId);
+        Task<Activity> CreateActivity(Activity details);
     }
 }

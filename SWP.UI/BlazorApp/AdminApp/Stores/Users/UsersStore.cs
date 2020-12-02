@@ -215,8 +215,6 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Users
                     var deletedClaim = _state.SelectedUser.Claims.FirstOrDefault(x => x.Value == claim.Value);
                     var result = await UserManager.RemoveClaimAsync(userIdentity, deletedClaim);
 
-                    //todo: check if this is  the last user with this profile claim
-
                     if (result.Succeeded)
                     {
                         await GetUsers();

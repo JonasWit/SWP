@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using SWP.Domain.Infrastructure.Portal;
+using SWP.Domain.Models.Log;
 using SWP.Domain.Models.Portal;
 using System;
 using System.Collections.Generic;
@@ -23,8 +24,11 @@ namespace SWP.DataBase.Managers
            var user = await _userManager.FindByIdAsync(customerId);
 
 
+            throw new NotImplementedException();
+        }
 
-
+        public Task<Activity> CreateActivity(Activity details)
+        {
             throw new NotImplementedException();
         }
 

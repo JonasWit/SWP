@@ -9,10 +9,11 @@ using System.Threading.Tasks;
 
 namespace SWP.DataBase.Managers
 {
-    public class LogManager : ILogManager
+    public class LogManager : DataManagerBase, ILogManager
     {
-        private readonly ApplicationDbContext _context;
-        public LogManager(ApplicationDbContext context) => _context = context;
+        public LogManager(ApplicationDbContext context) : base(context)
+        {
+        }
 
         public async Task<LogRecord> CreateLogRecord(LogRecord record)
         {

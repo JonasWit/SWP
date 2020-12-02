@@ -1,11 +1,23 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
-
+@inject IAuthorizationService authService
 
 @if (SignInManager.IsSignedIn(User))
 {
     <ul class="right">
+        @if ((await authService.AuthorizeAsync(User, "RootClient")).Succeeded)
+        {
+            <li class="nav-item">
+                <p>Typ Konta: Konto Głowne</p>
+            </li>
+        }
+        else
+        {
+            <li class="nav-item">
+                <p>Typ Konta: Konto Powiązane</p>
+            </li>
+        }
         <li class="nav-item">
             <a class="" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">@User.Identity.Name</a>
         </li>

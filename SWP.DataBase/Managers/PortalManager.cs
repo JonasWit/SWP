@@ -1,0 +1,51 @@
+﻿using Microsoft.AspNetCore.Identity;
+using SWP.Domain.Infrastructure.Portal;
+using SWP.Domain.Models.Portal;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace SWP.DataBase.Managers
+{
+    public class PortalManager : DataManagerBase, IPortalManager
+    {
+        private readonly UserManager<IdentityUser> _userManager;
+
+        public PortalManager(ApplicationDbContext context, UserManager<IdentityUser> userManager) : base(context)
+        {
+            _userManager = userManager;
+        }
+
+        public async Task<int> ClearCustomerData(string customerId)
+        {
+           var user = await _userManager.FindByIdAsync(customerId);
+
+
+
+
+            throw new NotImplementedException();
+        }
+
+        public Task<BillingDetail> CreateBillingDetail(BillingDetail details)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<int> DeleteBillingDetail(int customerId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public BillingDetail GetBillingDetail(int customerId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<BillingDetail> UpdateBillingDetail(BillingDetail details)
+        {
+            throw new NotImplementedException();
+        }
+    }
+}

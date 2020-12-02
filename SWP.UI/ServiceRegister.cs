@@ -74,6 +74,7 @@ namespace SWP.UI
             @this.AddTransient<ILogManager, LogManager>();
             @this.AddTransient<IFileManager, FileManager>();
             @this.AddTransient<INewsManager, NewsManager>();
+            @this.AddTransient<IPortalManager, PortalManager>();
 
             @this.AddScoped<DialogService>();
             @this.AddScoped<TooltipService>();

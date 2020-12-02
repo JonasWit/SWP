@@ -189,7 +189,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.MyApp
             }
         }
 
-        public async Task RemoveProfileData()
+        private async Task RemoveProfileData()
         {
             try
             {

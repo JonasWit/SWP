@@ -73,16 +73,11 @@ namespace SWP.UI.Areas.Identity.Pages.Account.Manage
             [Display(Name = "REGON")]
             public string REGON { get; set; }
 
-            [Display(Name = "PESEL")]
-            [StringLength(11, ErrorMessage = "PESEL musi składać się z 11 znaków!")]
-            public string PESEL { get; set; }
-
             [Display(Name = "KRS")]
             public string KRS { get; set; }
 
-
-            public static implicit operator BillingDetails(InputModel input) =>
-                new BillingDetails
+            public static implicit operator BillingDetail(InputModel input) =>
+                new BillingDetail
                 {
                     Address = input.Address,
                     AddressCorrespondence = input.AddressCorrespondence,
@@ -91,7 +86,14 @@ namespace SWP.UI.Areas.Identity.Pages.Account.Manage
                     Country = input.Country,
                     Created = DateTime.Now,
                     Updated = DateTime.Now,
-                   
+                    KRS= input.KRS,
+                    Name = input.Name,
+                    NIP = input.NIP,
+                    PhoneNumber = input.PhoneNumber,
+                    PostCode = input.PostCode,
+                    REGON = input.REGON,
+                    Surname = input.Surname,
+                    Vivodership = input.Vivodership,
                 };
         }
 
@@ -102,16 +104,13 @@ namespace SWP.UI.Areas.Identity.Pages.Account.Manage
         /// <returns></returns>
         private async Task LoadAsync(IdentityUser user)
         {
-            var userName = await _userManager.GetUserNameAsync(user);
-            var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
+            Username = await _userManager.GetUserNameAsync(user);
 
-            var claims = await _userManager.GetClaimsAsync(user);
-
-            Username = userName;
+            //todo: load billing data from DB
 
             Input = new InputModel
             {
-                PhoneNumber = phoneNumber
+
             };
         }
 
@@ -142,6 +141,11 @@ namespace SWP.UI.Areas.Identity.Pages.Account.Manage
             }
 
             //todo: save billing data in database
+            BillingDetail billingDetails = Input;
+
+            billingDetails.UpdatedBy = user.UserName;
+            billingDetails.CreatedBy = user.UserName;
+            billingDetails.Updated = DateTime.Now;
 
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
             if (Input.PhoneNumber != phoneNumber)

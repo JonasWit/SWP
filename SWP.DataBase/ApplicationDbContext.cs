@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using SWP.Domain.Models.LegalApp;
 using SWP.Domain.Models.Log;
 using SWP.Domain.Models.News;
+using SWP.Domain.Models.Portal;
 
 namespace SWP.DataBase
 {
@@ -17,7 +18,6 @@ namespace SWP.DataBase
         public DbSet<Reminder> Reminders { get; set; }
         public DbSet<Note> Notes { get; set; }
         public DbSet<CashMovement> CashMovements { get; set; }
-        public DbSet<LogRecord> LogRecords { get; set; }
         public DbSet<ClientContactPerson> ClientContactPeople { get; set; }
         public DbSet<CaseContactPerson> CaseContactPeople { get; set; }
 
@@ -29,13 +29,22 @@ namespace SWP.DataBase
 
         #endregion
 
+        #region Portal
+
+        public DbSet<LogRecord> LogRecords { get; set; }
+        //public DbSet<BillingDetail> BillingDetails { get; set; }
+        //public DbSet<Activity> Activities { get; set; }
+        //Add time for license expire
+
+        #endregion
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            #region Legal SWP
+            #region Legal App
 
             modelBuilder.Entity<Client>()
                 .HasMany(c => c.Cases)

@@ -5,10 +5,11 @@ using System.Linq;
 
 namespace SWP.DataBase.Managers
 {
-    public class StatisticsManager : IStatisticsManager
+    public class StatisticsManager : DataManagerBase, IStatisticsManager
     {
-        private readonly ApplicationDbContext context;
-        public StatisticsManager(ApplicationDbContext context) => this.context = context;
+        public StatisticsManager(ApplicationDbContext context) : base(context)
+        {
+        }
 
         public int CountCaseContacts(int caseId)
         {
@@ -30,7 +31,7 @@ namespace SWP.DataBase.Managers
             throw new NotImplementedException();
         }
 
-        public int CountClients(string profile) => context.Clients.Where(x => x.ProfileClaim == profile).Count();
+        public int CountClients(string profile) => _context.Clients.Where(x => x.ProfileClaim == profile).Count();
 
         public int CountNotes(int caseId)
         {
@@ -42,6 +43,6 @@ namespace SWP.DataBase.Managers
             throw new NotImplementedException();
         }
 
-        public List<string> GetProfiles() => context.Clients.Select(x => x.ProfileClaim).Distinct().ToList();
+        public List<string> GetProfiles() => _context.Clients.Select(x => x.ProfileClaim).Distinct().ToList();
     }
 }

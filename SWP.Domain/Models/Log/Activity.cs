@@ -12,6 +12,8 @@ namespace SWP.Domain.Models.Log
         public int Id { get; set; }
         [Required]
         public string UserId { get; set; }
+        [Required]
+        public string UserName { get; set; }
         [MaxLength(100)]
         public string Message { get; set; }
         [MaxLength(50)]

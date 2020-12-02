@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace SWP.DataBase.Managers
 {
-    public class NewsManager : INewsManager
+    public class NewsManager : DataManagerBase, INewsManager
     {
-        private readonly ApplicationDbContext _context;
-
-        public NewsManager(ApplicationDbContext applicationDbContext) => _context = applicationDbContext;
+        public NewsManager(ApplicationDbContext context) : base(context)
+        {
+        }
 
         public int CountNews(string category) => _context.News.Count(news => news.Category == category);
         

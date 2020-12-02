@@ -7,8 +7,10 @@ using System.Threading.Tasks;
 
 namespace SWP.Domain.Models.Portal
 {
-    public class BillingDetails : BaseModel
+    public class BillingDetail : BaseModel
     {
+        public string UserId { get; set; }
+
         public string PhoneNumber { get; set; }
 
         public string CompanyFullName { get; set; }
@@ -32,8 +34,6 @@ namespace SWP.Domain.Models.Portal
         public string NIP { get; set; }
 
         public string REGON { get; set; }
-
-        public string PESEL { get; set; }
 
         public string KRS { get; set; }
     }

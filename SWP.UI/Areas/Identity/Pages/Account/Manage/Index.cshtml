@@ -48,11 +48,6 @@
                     <span asp-validation-for="Input.REGON" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="Input.PESEL"></label>
-                    <input asp-for="Input.PESEL" class="form-control" />
-                    <span asp-validation-for="Input.PESEL" class="text-danger"></span>
-                </div>
-                <div class="form-group">
                     <label asp-for="Input.KRS"></label>
                     <input asp-for="Input.KRS" class="form-control" />
                     <span asp-validation-for="Input.KRS" class="text-danger"></span>
@@ -94,6 +89,11 @@
                 </div>
                 <button id="update-profile-button" type="submit" class="btn btn-primary">Save</button>
             }
+            else
+            { 
+                <p>Tylko Klient zalogowany na Konto Główne może wprowadzić dane które będą użyte do wystawienia faktury za usługę.</p>    
+            }
+
         </form>
     </div>
 </div>

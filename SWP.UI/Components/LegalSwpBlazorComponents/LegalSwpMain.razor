@@ -8,7 +8,8 @@
                     <li class="logo">
                         <button @onclick="ShowHideSidebar" class="toggle @(showSidebar ? "toggle-rotate" : "") "><img src="Images/icons8-double-right-40.png" /></button>
                     </li>
-
+                </ul>
+                <ul class="navigation account-section">
                     <li class="nav-item ">
                         <a class="nav-link profile">
                             <i><img src="/Images/icons8-profile-36.png" /></i>
@@ -16,6 +17,13 @@
                         </a>
                     </li>
 
+                    <li class="nav-item  @(MainStore.GetState().ActivePanel == LegalAppPanels.Calendar ? "" : "")">
+                        <a class="nav-link ">
+                            <i><img src="/Images/icons8-notification-36.png" /></i> <span class="@(showSidebar ? "link-text" : "text-hidden")">Przypomnienia</span><span class="number">2</span>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="navigation">
                     <li class="nav-item @(MainStore.GetState().ActivePanel == LegalAppPanels.MyApp ? "active" : "") " @onclick="@(() => MainStore.SetActivePanel(LegalAppPanels.MyApp))">
                         <a class="nav-link ">
                             <i><img src="/Images/icons8-web-design-36.png" /></i>
@@ -32,11 +40,7 @@
                             <i><img src="/Images/icons8-calendar-12-36.png" /></i> <span class="@(showSidebar ? "link-text" : "text-hidden")">Kalendarz</span>
                         </a>
                     </li>
-                    <li class="nav-item  @(MainStore.GetState().ActivePanel == LegalAppPanels.Calendar ? "" : "")" >
-                        <a class="nav-link ">
-                            <i><img src="/Images/icons8-notification-36.png" /></i> <span class="@(showSidebar ? "link-text" : "text-hidden")">Przypomnienia</span><span class="number">2</span>
-                        </a>
-                    </li>
+
 
                     @if (MainStore.GetState().ActiveClient != null)
                     {
@@ -72,8 +76,12 @@
                             <i><img src="/Images/icons8-filing-cabinet-36.png" /></i><span class="@(showSidebar ? "link-text" : "text-hidden")"> Archiwum</span>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Index">
+                            <i><img src="/Images/icons8-exit-36.png" /></i><span class="@(showSidebar ? "link-text" : "text-hidden")"> Wyloguj</span>
+                        </a>
+                    </li>
                 </ul>
-
             </nav>
 
             <nav id="top-menu" class="@(!showTopNav ? "top-menu" : "top-menu-add")">
@@ -88,17 +96,9 @@
                             <Radzen.Blazor.RadzenDropDown AllowClear="true" TValue="string" AllowFiltering="true" Data="@MainStore.GetState().Clients" @bind-Value="MainStore.GetState().SelectedClientString" TextProperty="Name" ValueProperty="IdString" Change="@(args => MainStore.ActiveClientChange(args))" Style="width: 200px;" />
                         </p>
                     </li>
+
                 </ul>
-                <ul class="top-items">
-                    <li class="@(showTopNav ? "user" : "link-text-hidden")"><p><strong>Klient: </strong></p> </li>
-                    <li><p>@(MainStore.GetState().ActiveClient != null ? MainStore.GetState().ActiveClient.Name : "Brak Aktywnego Klienta" )</p></li>
-                    <li class="exit">
-                        <a class="nav-link profile" href="/Index">
-                            <i><img src="/Images/icons8-exit-36.png" /></i>
-                        </a>
-                    </li>
-                </ul>
-            
+
                 <div><button class="top-toggle" @onclick="ShowHideTopNav"><span class="line"></span></button></div>
             </nav>
 

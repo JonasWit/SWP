@@ -48,17 +48,13 @@ body {
     position: fixed;
     color: var(--secondary-font-color);
     background: #1a447a;
-    transition: width 200ms ease;
     width: 7rem;
     z-index: 999;
-    
-}
+ }
 
 
 .sidebar-add {
-    width: 17rem;
-    
-    
+    width: 17rem;       
 }
 
 
@@ -106,6 +102,7 @@ ul, li {
     .nav-item:hover {
         
         background: #4FAEFC;
+        border: 1px solid rgb(255,255,255);
     }
 
 .nav-link {
@@ -113,15 +110,15 @@ ul, li {
     align-items: center;
 }
 
-    .active {
-        background: #4FAEFC;
-        
-        
-    }
+.active {
+    background: #4FAEFC;
+    border: 1px solid rgb(255,255,255);
+}
 
 .link-text {
     display: block;
     margin-left: 1rem;
+    color: rgb(255,255,255);
 }
 
 .text-hidden {
@@ -157,36 +154,25 @@ ul, li {
     padding: 10px;
 }
 
-.profile {
-    filter: grayscale(0%) opacity(1) !important;
-    color: var(--secondary-font-color) !important;
-    
-}
 
-.exit {
-    align-items: flex-end;
-    float: right;
-    padding-left: 20rem;
-    
-}
-
-.top-items {
-    display: flex;
-    flex-direction: row;
-    justify-items: center;
-    justify-content: space-evenly;
-}
+    .top-items {
+        display: flex;
+        flex-direction: row;
+        justify-items: center;
+        justify-content: space-evenly;
+    }
 
 .number {
     display: inline-flex;
-    border: 1px solid #4FAEFC;
-    background-color: #4FAEFC;
-    border-radius:5px;
-    padding: 2px 8px;
-    margin-left: 2px;
+    border: 1px solid #ff0000;
+    background-color: #ff0000;
+    border-radius: 5px;
+    padding: 1px 5px;
+    margin-left: 3px;
     font-weight: bold;
-
 }
+
+
 
 @media screen and (min-width: 768px) {
     .top-toggle {
@@ -223,7 +209,7 @@ ul, li {
         bottom: -1%;
         width: 100%;
         height: 8rem;
-        overflow-x: auto;
+        overflow-x: scroll;
         overflow-y: hidden;
     }
 
@@ -332,10 +318,7 @@ ul, li {
         text-align: center;
     }
 
-    .exit {
-        float: right;
     }
-}
 
 
 /*Clients Page*/

@@ -1,9 +1,5 @@
 ﻿using SWP.Domain.Models.Log;
 using SWP.Domain.Models.Portal;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SWP.Domain.Infrastructure.Portal

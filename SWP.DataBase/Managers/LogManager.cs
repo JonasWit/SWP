@@ -15,6 +15,8 @@ namespace SWP.DataBase.Managers
         {
         }
 
+        #region Log
+
         public async Task<LogRecord> CreateLogRecord(LogRecord record)
         {
             if (_context.LogRecords.Where(x => x.UserId == "Automation").Count() > 10)
@@ -40,5 +42,42 @@ namespace SWP.DataBase.Managers
         public LogRecord GetLogRecord(int id) => _context.LogRecords.FirstOrDefault(x => x.Id == id);
 
         public List<TResult> GetLogRecordsWithSpecificData<TResult>(Func<LogRecord, TResult> selector) => _context.LogRecords.Select(selector).ToList();
+
+        #endregion
+
+        #region Activity
+
+        public Activity GetActivityRecord(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<TResult> GetActivityRecordsWithSpecificData<TResult>(Func<Activity, TResult> selector)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<Activity> GetGetActivityRecords()
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<Activity> GetGetActivityRecords(Func<Activity, bool> predicate)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Activity> CreateActivityRecord(Activity record)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<int> DeleteActivityRecord(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
     }
 }

@@ -10,13 +10,8 @@ namespace SWP.Application.PortalCustomers
     [TransientService]
     public class ClearCustomerRelatedData : PortalCustomersBase
     {
-        public ClearCustomerRelatedData(IPortalManager portalManager) : base(portalManager)
-        {
-        }
+        public ClearCustomerRelatedData(IPortalManager portalManager) : base(portalManager) { }
 
         public Task<int> CleanUp(string userId) => _portalManager.ClearCustomerData(userId);
-
-
-
     }
 }

@@ -38,7 +38,7 @@ namespace SWP.DataBase.Managers
 
         public List<Client> GetClientsWithoutCases(string profile, bool active = true) =>
             _context.Clients
-                .Where(x => x.ProfileClaim == profile && active ? x.Active : !x.Active)
+                .Where(x => x.ProfileClaim == profile && (active ? x.Active : !x.Active))
                 .ToList();
 
         public async Task<Client> CreateClient(Client client)

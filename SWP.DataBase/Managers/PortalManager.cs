@@ -3,9 +3,6 @@ using SWP.Domain.Infrastructure.Portal;
 using SWP.Domain.Models.Log;
 using SWP.Domain.Models.Portal;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SWP.DataBase.Managers
@@ -22,6 +19,11 @@ namespace SWP.DataBase.Managers
         public async Task<int> ClearCustomerData(string customerId)
         {
            var user = await _userManager.FindByIdAsync(customerId);
+
+            //todo: handle all data deletion!
+
+
+
 
 
             throw new NotImplementedException();

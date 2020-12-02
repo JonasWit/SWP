@@ -14,6 +14,15 @@ namespace SWP.Application.Log
         private readonly ILogManager logManager;
         public CreateLogRecord(ILogManager logManager) => this.logManager = logManager;
 
+        public Task<LogRecord> Create(string userId, string message, string stack) =>
+            logManager.CreateLogRecord(new LogRecord
+            {
+                UserId = userId,
+                Message = message,
+                StackTrace = stack,
+                Created = DateTime.Now,
+            });
+
         public Task<LogRecord> Create(Request request) =>
             logManager.CreateLogRecord(new LogRecord
             {

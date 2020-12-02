@@ -1,25 +1,31 @@
 ﻿@page
 @model SWP.UI.Areas.Identity.Pages.Account.Manage.ApplicationsProfileModel
 @{
-    ViewData["Title"] = "Change Profile";
+    ViewData["Title"] = "Zmiana nazwy Profilu";
     ViewData["ActivePage"] = ManageNavPages.ApplicationsProfile;
 }
 
-@*<h4>@ViewData["Title"]</h4>
+<h4>@ViewData["Title"]</h4>
+
+<div class="alert alert-warning" role="alert">
+    <p>
+        <strong>Zmiana nazwy Profilu zostanie automatycznie zastosowana do wszystkich powiązanych użytkowników, jak również do wszstkich danych przypisanych do obecnego Profilu. Ta operacja może potrawać do kilku minut. W razie problemów skontaktuj się z Administratorem.</strong>
+    </p>
+</div>
+
 <partial name="_StatusMessage" for="StatusMessage" />
 <div class="row">
     <div class="col-md-6">
         <form id="change-password-form" method="post">
-            <div asp-validation-summary="All" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Input.OldPassword"></label>
-                <input asp-for="Input.OldPassword" class="form-control" />
-                <span asp-validation-for="Input.OldPassword" class="text-danger"></span>
+                <label asp-for="ProfileName"></label>
+                <input asp-for="ProfileName" class="form-control" />
+                <span asp-validation-for="ProfileName" class="text-danger"></span>
             </div>
-            <button type="submit" class="btn btn-primary">Zmień Hasło</button>
+            <button type="submit" class="btn btn-primary">Zmień nazwę Profilu</button>
         </form>
     </div>
-</div>*@
+</div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

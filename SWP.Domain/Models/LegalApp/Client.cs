@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace SWP.Domain.Models.SWPLegal
+namespace SWP.Domain.Models.LegalApp
 {
     public class Client : BaseModel
     {

@@ -1,18 +1,18 @@
 ﻿using SWP.Domain.Models.BaseClasses;
 using System.ComponentModel.DataAnnotations;
 
-namespace SWP.Domain.Models.SWPLegal
+namespace SWP.Domain.Models.LegalApp
 {
-    public class Note : BaseModel
+    public class ClientJob : BaseModel
     {
         public bool Active { get; set; }
         [MaxLength(50)]
         [Required]
         public string Name { get; set; }
         [MaxLength(500)]
-        public string Message { get; set; }
+        public string Description { get; set; }
         public int Priority { get; set; }
-        public int CaseId { get; set; }
-        public Case Case { get; set; }
+        public int ClientId { get; set; }
+        public Client Client { get; set; }
     }
 }

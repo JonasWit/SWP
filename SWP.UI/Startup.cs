@@ -61,6 +61,7 @@ namespace SWP.UI
             services.AddAuthorization(options =>
             {
                 options.AddPolicy(ApplicationPolicy.LegalApplication.ToString(), policy => policy.RequireClaim(ClaimType.Application.ToString(), ApplicationType.LegalSwp.ToString()));
+                options.AddPolicy("RootClient", policy => policy.RequireClaim(ClaimType.Status.ToString(), UserStatus.RootClient.ToString()));
             });
 
             services.AddServerSideBlazor();

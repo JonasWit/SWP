@@ -75,7 +75,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
 
         private void EditCashMovementRow(CashMovementViewModel arg) => ActionDispatcher.Dispatch(new EditCashMovementRowAction { Arg = arg });
 
-
+        private void OnUpdateCashMovementRow(CashMovementViewModel arg) => ActionDispatcher.Dispatch(new OnUpdateCashMovementRowAction { Arg = arg });
 
         #endregion
     }

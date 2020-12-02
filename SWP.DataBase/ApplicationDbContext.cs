@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using SWP.Domain.Models.LegalApp;
 using SWP.Domain.Models.Log;
 using SWP.Domain.Models.News;
-using SWP.Domain.Models.SWPLegal;
 
 namespace SWP.DataBase
 {

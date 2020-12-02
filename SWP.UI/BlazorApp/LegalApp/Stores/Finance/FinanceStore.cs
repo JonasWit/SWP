@@ -48,13 +48,17 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Finance
             GetCashMovements(_mainStore.GetState().ActiveClient.Id);
         }
 
-        protected override void HandleActions(IAction action)
+        protected override async void HandleActions(IAction action)
         {
             switch (action.Name)
             {
                 case EditCashMovementRowAction.EditCashMovementRow:
                     var editCashMovementRowAction = (EditCashMovementRowAction)action;
                     EditCashMovementRow(editCashMovementRowAction.Arg);
+                    break;
+                case OnUpdateCashMovementRowAction.OnUpdateCashMovementRow:
+                    var onUpdateCashMovementRowAction = (OnUpdateCashMovementRowAction)action;
+                    await OnUpdateCashMovementRow(onUpdateCashMovementRowAction.Arg);
                     break;
                 default:
                     break;
@@ -103,7 +107,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Finance
 
         private void EditCashMovementRow(CashMovementViewModel cash) => _state.CashMovementGrid.EditRow(cash);
 
-        public async Task OnUpdateCashMovementRow(CashMovementViewModel cash)
+        private async Task OnUpdateCashMovementRow(CashMovementViewModel cash)
         {
             try
             {

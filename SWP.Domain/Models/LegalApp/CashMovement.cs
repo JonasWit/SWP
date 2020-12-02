@@ -2,7 +2,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace SWP.Domain.Models.SWPLegal
+namespace SWP.Domain.Models.LegalApp
 {
     public class CashMovement : BaseModel
     {

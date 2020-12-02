@@ -1,4 +1,4 @@
-﻿using SWP.Domain.Models.SWPLegal;
+﻿using SWP.Domain.Models.LegalApp;
 using System;
 using System.Collections.Generic;
 using System.Linq;

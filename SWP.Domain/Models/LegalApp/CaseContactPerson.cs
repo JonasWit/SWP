@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace SWP.Domain.Models.SWPLegal
+namespace SWP.Domain.Models.LegalApp
 {
     public class CaseContactPerson : Person
     {

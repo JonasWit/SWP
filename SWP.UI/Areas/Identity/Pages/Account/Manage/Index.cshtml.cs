@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using SWP.Domain.Models.Portal;
 
 namespace SWP.UI.Areas.Identity.Pages.Account.Manage
 {
@@ -73,11 +74,25 @@ namespace SWP.UI.Areas.Identity.Pages.Account.Manage
             public string REGON { get; set; }
 
             [Display(Name = "PESEL")]
+            [StringLength(11, ErrorMessage = "PESEL musi składać się z 11 znaków!")]
             public string PESEL { get; set; }
 
             [Display(Name = "KRS")]
             public string KRS { get; set; }
 
+
+            public static implicit operator BillingDetails(InputModel input) =>
+                new BillingDetails
+                {
+                    Address = input.Address,
+                    AddressCorrespondence = input.AddressCorrespondence,
+                    City = input.City,
+                    CompanyFullName = input.CompanyFullName,
+                    Country = input.Country,
+                    Created = DateTime.Now,
+                    Updated = DateTime.Now,
+                   
+                };
         }
 
         /// <summary>
@@ -125,6 +140,8 @@ namespace SWP.UI.Areas.Identity.Pages.Account.Manage
                 await LoadAsync(user);
                 return Page();
             }
+
+            //todo: save billing data in database
 
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
             if (Input.PhoneNumber != phoneNumber)

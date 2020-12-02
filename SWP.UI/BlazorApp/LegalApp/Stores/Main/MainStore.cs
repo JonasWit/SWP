@@ -1,11 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Radzen;
-using SWP.Application.LegalSwp.Cases;
 using SWP.Application.LegalSwp.Clients;
-using SWP.Application.LegalSwp.Jobs;
 using SWP.Application.Log;
-using SWP.Domain.Models.SWPLegal;
 using SWP.UI.BlazorApp.LegalApp.Stores.Enums;
 using SWP.UI.BlazorApp.LegalApp.Stores.Error;
 using SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data;

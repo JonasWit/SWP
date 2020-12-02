@@ -2,7 +2,7 @@
 using Radzen;
 using Radzen.Blazor;
 using SWP.Application.LegalSwp.ContactPeopleAdmin;
-using SWP.Domain.Models.SWPLegal;
+using SWP.Domain.Models.LegalApp;
 using SWP.UI.BlazorApp.LegalApp.Stores.ClientDetails.Actions;
 using SWP.UI.BlazorApp.LegalApp.Stores.Main;
 using SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data;

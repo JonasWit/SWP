@@ -1,5 +1,4 @@
 ﻿using SWP.Domain.Infrastructure.LegalApp;
-using SWP.Domain.Models.SWPLegal;
 using System.Threading.Tasks;
 
 namespace SWP.Application.LegalSwp.Cases

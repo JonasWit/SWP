@@ -1,5 +1,5 @@
 ﻿using SWP.Domain.Infrastructure.LegalApp;
-using SWP.Domain.Models.SWPLegal;
+using SWP.Domain.Models.LegalApp;
 
 namespace SWP.Application.LegalSwp.TimeRecords
 {

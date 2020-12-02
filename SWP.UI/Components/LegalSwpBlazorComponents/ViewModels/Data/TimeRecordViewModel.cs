@@ -1,4 +1,4 @@
-﻿using SWP.Domain.Models.SWPLegal;
+﻿using SWP.Domain.Models.LegalApp;
 using System;
 
 namespace SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data

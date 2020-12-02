@@ -50,7 +50,8 @@ namespace SWP.UI
 
             services.ConfigureApplicationCookie(options =>
             {
-                options.Cookie.Name = "SWP";
+                options.Cookie.Name = "swp_u_data";
+                options.ExpireTimeSpan = TimeSpan.FromHours(2);
             });
 
             //Email Confirmations
@@ -69,7 +70,7 @@ namespace SWP.UI
             services.Configure<CookiePolicyOptions>(options =>
             {
                 options.CheckConsentNeeded = context => true;
-                options.MinimumSameSitePolicy = SameSiteMode.None;
+                options.MinimumSameSitePolicy = SameSiteMode.Lax;
             });
 
             services.AddRazorPages();

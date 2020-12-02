@@ -9,20 +9,22 @@ namespace SWP.DataBase.Managers
 {
     public class PortalManager : DataManagerBase, IPortalManager
     {
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly IAppUserManager _appUserManager;
 
-        public PortalManager(ApplicationDbContext context, UserManager<IdentityUser> userManager) : base(context)
+        public PortalManager(ApplicationDbContext context, IAppUserManager appUserManager) : base(context)
         {
-            _userManager = userManager;
+            _appUserManager = appUserManager;
         }
 
         public async Task<int> ClearCustomerData(string customerId)
         {
-           var user = await _userManager.FindByIdAsync(customerId);
-
-            //todo: handle all data deletion!
 
 
+
+
+            //todo: handle all data deletion, billing etc.!
+
+            
 
 
 

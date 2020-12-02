@@ -52,6 +52,7 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Users
         public RoleType UserRole { get; set; } = RoleType.Users;
         public string ProfileClaim => Claims.FirstOrDefault(x => x.Type == ClaimType.Profile.ToString())?.Value;
         public List<Claim> Claims { get; set; } = new List<Claim>();
+        public bool RootClient => Claims.Any(x => x.Value == UserStatus.RootClient.ToString());
     }
 
     public class ProfileModel

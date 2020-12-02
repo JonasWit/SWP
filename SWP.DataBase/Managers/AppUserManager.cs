@@ -25,9 +25,9 @@ namespace SWP.DataBase.Managers
 
         public Task<IdentityUser> GetUserByName(string name) => _userManager.FindByNameAsync(name);
 
-        public async Task<string> GetUserProfileByID(string id)
+        public async Task<string> GetUserProfileByID(string userId)
         {
-            var claims = await _userManager.GetClaimsAsync(await GetUserByID(id)) as List<Claim>;
+            var claims = await _userManager.GetClaimsAsync(await GetUserByID(userId)) as List<Claim>;
             var profileClaim = claims.FirstOrDefault(x => x.Type == ClaimType.Profile.ToString());
             return profileClaim.Value;
         }
@@ -67,7 +67,6 @@ namespace SWP.DataBase.Managers
 
                 _context.UpdateRange(clientsToUpdate);
                 await _context.SaveChangesAsync();
-
                 return null;
             }
             catch (ManagerActionResult ex)

@@ -2,12 +2,10 @@
 using Microsoft.Extensions.DependencyInjection;
 using Radzen;
 using SWP.Application.LegalSwp.Clients;
-using SWP.Application.Log;
 using SWP.UI.BlazorApp.LegalApp.Stores.Enums;
 using SWP.UI.BlazorApp.LegalApp.Stores.Error;
 using SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data;
 using SWP.UI.Models;
-using SWP.UI.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -49,14 +47,16 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
             catch (Exception ex)
             {
                 using var scope = _serviceProvider.CreateScope();
-                var portalLogger = scope.ServiceProvider.GetRequiredService<PortalLogger>();
+                //var portalLogger = scope.ServiceProvider.GetRequiredService<PortalLogger>();
 
-                await portalLogger.CreateLogRecord(new CreateLogRecord.Request
-                {
-                    Message = ex.Message,
-                    UserId = _state.ActiveUserId,
-                    StackTrace = ex.StackTrace
-                });
+                //todo:add logging!
+
+                //await portalLogger.CreateLogRecord(new CreateLogRecord.Request
+                //{
+                //    Message = ex.Message,
+                //    UserId = _state.ActiveUserId,
+                //    StackTrace = ex.StackTrace
+                //});
             }
         }
 

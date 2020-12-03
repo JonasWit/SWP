@@ -2,7 +2,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using Radzen;
 using Radzen.Blazor;
-using SWP.Application.Log;
 using SWP.Domain.Enums;
 using SWP.UI.BlazorApp.AdminApp.Stores.Application;
 using System;

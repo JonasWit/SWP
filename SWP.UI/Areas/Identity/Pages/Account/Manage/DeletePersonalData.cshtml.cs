@@ -1,21 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Runtime.CompilerServices;
-using System.Security.Claims;
-using System.Security.Cryptography.X509Certificates;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.Logging;
-using System.Linq;
 using SWP.Application.LegalSwp.Clients;
-using SWP.Domain.Enums;
-using SWP.Application.Log;
 using SWP.Application.PortalCustomers;
-using SWP.UI.Services;
+using SWP.Domain.Enums;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace SWP.UI.Areas.Identity.Pages.Account.Manage
 {
@@ -24,7 +19,6 @@ namespace SWP.UI.Areas.Identity.Pages.Account.Manage
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly DeleteClient _deleteClient;
-        private readonly PortalLogger _portalLogger;
         private readonly ClearCustomerRelatedData _clearCustomerRelatedData;
         private readonly ILogger<DeletePersonalDataModel> _logger;
 
@@ -33,13 +27,11 @@ namespace SWP.UI.Areas.Identity.Pages.Account.Manage
             SignInManager<IdentityUser> signInManager,
             DeleteClient deleteClient,
             ILogger<DeletePersonalDataModel> logger,
-            ClearCustomerRelatedData clearCustomerRelatedData,
-            PortalLogger portalLogger)
+            ClearCustomerRelatedData clearCustomerRelatedData)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _deleteClient = deleteClient;
-            _portalLogger = portalLogger;
             _clearCustomerRelatedData = clearCustomerRelatedData;
             _logger = logger;
         }
@@ -116,19 +108,21 @@ namespace SWP.UI.Areas.Identity.Pages.Account.Manage
 
                             if (actionResult.Succeeded)
                             {
-                                await _portalLogger.CreateLogRecord(new CreateLogRecord.Request
-                                {
-                                    Message = $"Success! Profile {profileClaim.Value} for User {userWithTheSameProfile.UserName} Deleted!",
-                                    UserId = user.Id,
-                                });
+                                //todo:add logging!
+
+                                //await _portalLogger.CreateLogRecord(new CreateLogRecord.Request
+                                //{
+                                //    Message = $"Success! Profile {profileClaim.Value} for User {userWithTheSameProfile.UserName} Deleted!",
+                                //    UserId = user.Id,
+                                //});
                             }
                             else
                             {
-                                await _portalLogger.CreateLogRecord(new CreateLogRecord.Request
-                                {
-                                    Message = $"Issue! Profile {profileClaim.Value} for User {userWithTheSameProfile.UserName} Not Deleted!",
-                                    UserId = user.Id,
-                                });
+                                //await _portalLogger.CreateLogRecord(new CreateLogRecord.Request
+                                //{
+                                //    Message = $"Issue! Profile {profileClaim.Value} for User {userWithTheSameProfile.UserName} Not Deleted!",
+                                //    UserId = user.Id,
+                                //});
                             }
                         }
                     }
@@ -136,12 +130,14 @@ namespace SWP.UI.Areas.Identity.Pages.Account.Manage
             }
             catch (Exception ex)
             {
-                await _portalLogger.CreateLogRecord(new CreateLogRecord.Request
-                {
-                    Message = $"Issue during Delete Data Request from User! - {ex.Message}",
-                    UserId = user.Id,
-                    StackTrace = ex.StackTrace
-                });
+                //todo:add logging!
+
+                //await _portalLogger.CreateLogRecord(new CreateLogRecord.Request
+                //{
+                //    Message = $"Issue during Delete Data Request from User! - {ex.Message}",
+                //    UserId = user.Id,
+                //    StackTrace = ex.StackTrace
+                //});
             }
 
             var result = await _userManager.DeleteAsync(user);
@@ -149,11 +145,13 @@ namespace SWP.UI.Areas.Identity.Pages.Account.Manage
 
             if (!result.Succeeded)
             {
-                await _portalLogger.CreateLogRecord(new CreateLogRecord.Request
-                {
-                    Message = $"Unexpected error occurred deleting user with ID '{userId}'",
-                    UserId = user.Id,
-                });
+                //todo:add logging!
+
+                //await _portalLogger.CreateLogRecord(new CreateLogRecord.Request
+                //{
+                //    Message = $"Unexpected error occurred deleting user with ID '{userId}'",
+                //    UserId = user.Id,
+                //});
 
                 throw new InvalidOperationException($"Unexpected error occurred deleting user with ID '{userId}'.");
             }

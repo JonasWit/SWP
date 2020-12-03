@@ -1,17 +1,22 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace SWP.Domain.Models.Log
 {
     public class LogRecord
     {
-        [Key]
         public int Id { get; set; }
-        [Required]
-        public string UserId { get; set; }
         public string Message { get; set; }
-        public string StackTrace { get; set; }
-        [Required]
-        public DateTime Created { get; set; }
+        public string MessageTemplate { get; set; }
+        public string Level { get; set; }
+        public DateTime TimeStamp { get; set; }
+        public string Exception { get; set; }
+        [Column(TypeName = "Xml")]
+        public string Properties { get; set; }
+        public string LogEvent { get; set; }
     }
 }

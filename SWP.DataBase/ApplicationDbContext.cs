@@ -26,14 +26,8 @@ namespace SWP.DataBase
         #region Portal
 
         public DbSet<NewsRecord> News { get; set; }
-
-        #endregion
-
-        #region Portal
-
-        public DbSet<LogRecord> LogRecords { get; set; }
+        public DbSet<LogRecord> Logs { get; set; }
         public DbSet<BillingDetail> BillingDetails { get; set; }
-        public DbSet<Activity> Activities { get; set; }
         public DbSet<UserLicense> UserLicenses { get; set; }
 
         #endregion
@@ -94,6 +88,8 @@ namespace SWP.DataBase
                 .HasMany(c => c.UserLicenses)
                 .WithOne(e => e.BillingDetail)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<LogRecord>().ToTable("Log");
 
             #endregion
         }

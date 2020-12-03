@@ -24,11 +24,6 @@ namespace SWP.DataBase.Managers
             return _context.SaveChangesAsync();
         }
 
-        public Task<int> CreateActivity(Activity details)
-        {
-            throw new NotImplementedException();
-        }
-
         public Task<int> DeleteBillingDetail(string userId)
         {
             throw new NotImplementedException();

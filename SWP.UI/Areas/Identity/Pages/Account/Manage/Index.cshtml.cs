@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using SWP.Application.Log;
 using SWP.Application.PortalCustomers;
 using SWP.Domain.Models.Portal;
 using SWP.UI.Services;
+using System;
+using System.ComponentModel.DataAnnotations;
+using System.Threading.Tasks;
 
 namespace SWP.UI.Areas.Identity.Pages.Account.Manage
 {
@@ -19,20 +16,17 @@ namespace SWP.UI.Areas.Identity.Pages.Account.Manage
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly GetBillingRecord _getBillingRecord;
         private readonly UpdateBillingRecord _updateBillingRecord;
-        private readonly PortalLogger _portalLogger;
 
         public IndexModel(
             UserManager<IdentityUser> userManager,
             SignInManager<IdentityUser> signInManager,
             GetBillingRecord getBillingRecord,
-            UpdateBillingRecord updateBillingRecord,
-            PortalLogger portalLogger)
+            UpdateBillingRecord updateBillingRecord)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _getBillingRecord = getBillingRecord;
             _updateBillingRecord = updateBillingRecord;
-            _portalLogger = portalLogger;
         }
 
         [Display(Name = "Nazwa użytkownika (Jest to adres email użyty do rejestracji)")]
@@ -185,7 +179,7 @@ namespace SWP.UI.Areas.Identity.Pages.Account.Manage
             }
             catch (Exception ex)
             {
-                await _portalLogger.CreateLogRecord($"{user.UserName}-{user.Id}", $"Exception when updating Billing Detials: {ex.Message}", ex.StackTrace);
+                //await _portalLogger.CreateLogRecord($"{user.UserName}-{user.Id}", $"Exception when updating Billing Detials: {ex.Message}", ex.StackTrace);
                 StatusMessage = "Wystąpił błąd, spróbuj jeszcze raz";
             }
 

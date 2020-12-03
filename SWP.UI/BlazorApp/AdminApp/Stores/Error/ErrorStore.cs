@@ -1,11 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using SWP.Application.Log;
-using SWP.UI.BlazorApp.AdminApp.Stores.Application;
-using SWP.UI.BlazorApp.AdminApp.Stores.Enums;
-using SWP.UI.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System;
 using System.Threading.Tasks;
 
 namespace SWP.UI.BlazorApp.AdminApp.Stores.Error
@@ -20,23 +13,25 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Error
     [UIScopedService]
     public class ErrorStore : StoreBase<ErrorState>
     {
-        private readonly PortalLogger _portalLogger;
-
-        public ErrorStore(IServiceProvider serviceProvider, IActionDispatcher actionDispatcher, PortalLogger portalLogger) 
+        public ErrorStore(IServiceProvider serviceProvider, IActionDispatcher actionDispatcher) 
             : base(serviceProvider, actionDispatcher)
         {
-            _portalLogger = portalLogger;
+
         }
 
         public Task SetException(Exception ex, string userId)
         {
             _state.Exception = ex;
-            return _portalLogger.CreateLogRecord(new CreateLogRecord.Request
-            {
-                Message = ex.Message,
-                UserId = userId,
-                StackTrace = ex.StackTrace
-            });
+            //todo:add logging!
+
+            //return _portalLogger.CreateLogRecord(new CreateLogRecord.Request
+            //{
+            //    Message = ex.Message,
+            //    UserId = userId,
+            //    StackTrace = ex.StackTrace
+            //});
+
+            return Task.CompletedTask;
         }
 
         protected override void HandleActions(IAction action)

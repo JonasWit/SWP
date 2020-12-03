@@ -1,11 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Radzen;
 using Radzen.Blazor;
-using SWP.Application.Log;
 using SWP.UI.BlazorApp.AdminApp.Stores.Application;
-using SWP.UI.BlazorApp.AdminApp.Stores.Error;
 using SWP.UI.Components.AdminBlazorComponents.ViewModels;
-using SWP.UI.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,28 +22,30 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.ApplicationsOptions
     [UIScopedService]
     public class ApplicationsOptionsStore : StoreBase<ApplicationOptionsState>
     {
-        private readonly PortalLogger _portalLogger;
-
-        public ApplicationsOptionsStore(IServiceProvider serviceProvider, IActionDispatcher actionDispatcher, NotificationService notificationService, PortalLogger portalLogger)
+        public ApplicationsOptionsStore(IServiceProvider serviceProvider, IActionDispatcher actionDispatcher, NotificationService notificationService)
             : base(serviceProvider, actionDispatcher, notificationService) 
         {
-            _portalLogger = portalLogger;
+
         }
 
         public void Initialize()
         {
             using var scope = _serviceProvider.CreateScope();
-            var getLogRecords = scope.ServiceProvider.GetRequiredService<GetLogRecords>();
+            //todo:add logging!
+
+            //var getLogRecords = scope.ServiceProvider.GetRequiredService<GetLogRecords>();
 
             RefreshLogs();
         }
 
         public void RefreshLogs()
         {
-            using var scope = _serviceProvider.CreateScope();
-            var logs = scope.ServiceProvider.GetRequiredService<GetLogRecords>();
+            //todo:add logging!
 
-            _state.LogRecords = new List<LogRecordViewModel>(_portalLogger.GetLogRecords().Select(x => (LogRecordViewModel)x));
+            using var scope = _serviceProvider.CreateScope();
+            //var logs = scope.ServiceProvider.GetRequiredService<GetLogRecords>();
+
+            //_state.LogRecords = new List<LogRecordViewModel>(_portalLogger.GetLogRecords().Select(x => (LogRecordViewModel)x));
             BroadcastStateChange();
         }
 
@@ -66,28 +65,29 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.ApplicationsOptions
         {
             try
             {
-                using var scope = _serviceProvider.CreateScope();
-                var deleteLogRecord = scope.ServiceProvider.GetRequiredService<DeleteLogRecord>();
+                //todo:add logging!
 
-                await _portalLogger.DeleteLogRecord(logRecord.Id);
 
-                _state.LogRecords.RemoveAll(x => x.Id == logRecord.Id);
-                await _state.LogGrid.Reload();
+                //using var scope = _serviceProvider.CreateScope();
 
-                if (_state.SelectedLogRecord != null && _state.SelectedLogRecord.Id == logRecord.Id)
-                {
-                    _state.SelectedLogRecord = null;
-                }
 
-                BroadcastStateChange();
+                //_state.LogRecords.RemoveAll(x => x.Id == logRecord.Id);
+                //await _state.LogGrid.Reload();
 
-                _notificationService.Notify(new NotificationMessage()
-                {
-                    Severity = NotificationSeverity.Warning,
-                    Summary = "Deleted!",
-                    Detail = $"Record: {logRecord.Message} has been deleted.",
-                    Duration = 3000
-                });
+                //if (_state.SelectedLogRecord != null && _state.SelectedLogRecord.Id == logRecord.Id)
+                //{
+                //    _state.SelectedLogRecord = null;
+                //}
+
+                //BroadcastStateChange();
+
+                //_notificationService.Notify(new NotificationMessage()
+                //{
+                //    Severity = NotificationSeverity.Warning,
+                //    Summary = "Deleted!",
+                //    Detail = $"Record: {logRecord.Message} has been deleted.",
+                //    Duration = 3000
+                //});
             }
             catch (Exception ex)
             {

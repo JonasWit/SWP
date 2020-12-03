@@ -8,18 +8,6 @@ namespace SWP.Domain.Infrastructure
 {
     public interface ILogManager
     {
-        Task<LogRecord> CreateLogRecord(LogRecord record);
-        Task<int> DeleteLogRecord(int id);
-        LogRecord GetLogRecord(int id);
-        List<TResult> GetLogRecordsWithSpecificData<TResult>(Func<LogRecord, TResult> selector);
-        List<LogRecord> GetLogRecords();
-        List<LogRecord> GetGetLogRecords(Func<LogRecord, bool> predicate);
 
-        Task<int> CreateActivityRecord(Activity record);
-        Task<int> DeleteActivityRecord(int id);
-        Activity GetActivityRecord(int id);
-        List<TResult> GetActivityRecordsWithSpecificData<TResult>(Func<Activity, TResult> selector);
-        List<Activity> GetGetActivityRecords();
-        List<Activity> GetGetActivityRecords(Func<Activity, bool> predicate);
     }
 }

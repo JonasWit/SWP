@@ -13,15 +13,5 @@ namespace SWP.UI.Components.AdminBlazorComponents.ViewModels
         public string Message { get; set; }
         public string StackTrace { get; set; }
         public DateTime Created { get; set; }
-
-        public static implicit operator LogRecordViewModel(LogRecord input) =>
-            new LogRecordViewModel
-            {
-                Id = input.Id,
-                UserId = input.UserId,
-                Message = input.Message,
-                StackTrace = input.StackTrace,
-                Created = input.Created
-            };
     }
 }

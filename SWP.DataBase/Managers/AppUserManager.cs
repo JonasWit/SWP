@@ -50,24 +50,26 @@ namespace SWP.DataBase.Managers
 
                         if (!addResult.Succeeded)
                         {
-                            _context.LogRecords.Add(new LogRecord
-                            {
-                                Created = DateTime.Now,
-                                Message = "Add new profile Issue",
-                                UserId = user.Id,
-                                StackTrace = $"Change from {oldProfile.Value} to {newProfile}"
-                            });
+                            //_context.LogRecords.Add(new LogRecord
+                            //{
+                            //    Created = DateTime.Now,
+                            //    Message = "Add new profile Issue",
+                            //    UserId = user.Id,
+                            //    StackTrace = $"Change from {oldProfile.Value} to {newProfile}"
+                            //});
                         }
                     }
                     else
                     {
-                        _context.LogRecords.Add(new LogRecord
-                        {
-                            Created = DateTime.Now,
-                            Message = "Remove old profile Issue",
-                            UserId = user.Id,
-                            StackTrace = $"Change from {oldProfile.Value} to {newProfile}"
-                        });
+                        //todo:add logging!
+
+                        //_context.LogRecords.Add(new LogRecord
+                        //{
+                        //    Created = DateTime.Now,
+                        //    Message = "Remove old profile Issue",
+                        //    UserId = user.Id,
+                        //    StackTrace = $"Change from {oldProfile.Value} to {newProfile}"
+                        //});
                     }
                 }
 

@@ -63,7 +63,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
 
         public bool showSecondSection = false;
         public void ShowHideSecondSection() => showSecondSection = !showSecondSection;
-        
+
         public bool showThirdSection = false;
         public void ShowHideThirdSection() => showThirdSection = !showThirdSection;
 
@@ -131,7 +131,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
             }
             catch (Exception ex)
             {
-                await MainStore.ShowErrorPage(ex);
+                MainStore.ShowErrorPage(ex);
             }
         }
     }

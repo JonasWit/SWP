@@ -92,7 +92,7 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.ApplicationsOptions
             catch (Exception ex)
             {
                 var appStore = _serviceProvider.GetRequiredService<ApplicationStore>();
-                await appStore.ShowErrorPage(ex);
+                appStore.ShowErrorPage(ex);
             }
         }
 
@@ -106,7 +106,7 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.ApplicationsOptions
             }
             catch (Exception ex)
             {
-                await apstore.ShowErrorPage(ex);
+                apstore.ShowErrorPage(ex);
             } 
         }
 

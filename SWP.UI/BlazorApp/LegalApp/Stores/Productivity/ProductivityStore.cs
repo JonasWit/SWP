@@ -77,7 +77,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Productivity
             }
             catch (Exception ex)
             {
-                _mainStore.ShowErrorPage(ex).GetAwaiter();
+                _mainStore.ShowErrorPage(ex);
             }
         }
 
@@ -123,7 +123,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Productivity
             }
             catch (Exception ex)
             {
-                await _mainStore.ShowErrorPage(ex);
+                _mainStore.ShowErrorPage(ex);
             }
         }
 
@@ -157,7 +157,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Productivity
             }
             catch (Exception ex)
             {
-                await _mainStore.ShowErrorPage(ex);
+                _mainStore.ShowErrorPage(ex);
             }
         }
 
@@ -189,7 +189,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Productivity
             }
             catch (Exception ex)
             {
-                await _mainStore.ShowErrorPage(ex);
+                _mainStore.ShowErrorPage(ex);
             }
         }
 
@@ -227,7 +227,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Productivity
             }
             catch (Exception ex)
             {
-                await _mainStore.ShowErrorPage(ex);
+                _mainStore.ShowErrorPage(ex);
             }
         }
 

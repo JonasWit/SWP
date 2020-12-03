@@ -34,7 +34,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.MyApp
         private readonly GeneralViewModel _generalViewModel;
         public MainStore MainStore => _serviceProvider.GetRequiredService<MainStore>();
 
-        public MyAppStore(IServiceProvider serviceProvider, IActionDispatcher actionDispatcher, NotificationService notificationService, DialogService dialogService, GeneralViewModel generalViewModel) 
+        public MyAppStore(IServiceProvider serviceProvider, IActionDispatcher actionDispatcher, NotificationService notificationService, DialogService dialogService, GeneralViewModel generalViewModel)
             : base(serviceProvider, actionDispatcher, notificationService, dialogService)
         {
             _generalViewModel = generalViewModel;
@@ -185,7 +185,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.MyApp
             }
             catch (Exception ex)
             {
-                await MainStore.ShowErrorPage(ex);
+                MainStore.ShowErrorPage(ex);
             }
         }
 
@@ -203,7 +203,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.MyApp
             }
             catch (Exception ex)
             {
-                await MainStore.ShowErrorPage(ex);
+                MainStore.ShowErrorPage(ex);
             }
         }
 

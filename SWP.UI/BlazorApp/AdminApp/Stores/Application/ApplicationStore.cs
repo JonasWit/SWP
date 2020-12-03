@@ -46,6 +46,11 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Application
             _state.User.Roles = await userManager.GetRolesAsync(_state.User.User) as List<string>;
         }
 
+        protected override void HandleActions(IAction action)
+        {
+
+        }
+
         public void ActivateLoading(string message)
         {
             _state.LoadingMessage = message;
@@ -58,9 +63,9 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Application
             _state.Loading = false;
         }
 
-        public async Task ShowErrorPage(Exception ex)
+        public void ShowErrorPage(Exception ex)
         {
-            await _errorStore.SetException(ex, _state.ActiveUserId);
+            _errorStore.SetException(ex, _state.ActiveUserId, _state.User.UserName);
             _state.ActivePanel = AdminAppPanels.Error;
             BroadcastStateChange();
         }
@@ -79,13 +84,8 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Application
             }
             catch (Exception ex)
             {
-                ShowErrorPage(ex).GetAwaiter();
+                ShowErrorPage(ex);
             }
-        }
-
-        protected override void HandleActions(IAction action)
-        {
-
         }
 
         public override void CleanUpStore()

@@ -29,7 +29,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
     {
         private readonly ErrorStore _errorStore;
 
-        public MainStore(IServiceProvider serviceProvider, IActionDispatcher actionDispatcher, NotificationService notificationService, ErrorStore errorStore) 
+        public MainStore(IServiceProvider serviceProvider, IActionDispatcher actionDispatcher, NotificationService notificationService, ErrorStore errorStore)
             : base(serviceProvider, actionDispatcher, notificationService)
         {
             _errorStore = errorStore;
@@ -110,7 +110,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
             }
             catch (Exception ex)
             {
-                await ShowErrorPage(ex);
+                ShowErrorPage(ex);
             }
             finally
             {
@@ -136,7 +136,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
             }
             catch (Exception ex)
             {
-                await ShowErrorPage(ex);
+                ShowErrorPage(ex);
             }
             finally
             {
@@ -144,9 +144,9 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
             }
         }
 
-        public async Task ShowErrorPage(Exception ex)
+        public void ShowErrorPage(Exception ex)
         {
-            await _errorStore.SetException(ex, _state.ActiveUserId);
+            _errorStore.SetException(ex, _state.ActiveUserId, _state.User.UserName);
             _state.ActivePanel = LegalAppPanels.ErrorPage;
             BroadcastStateChange();
         }
@@ -172,11 +172,11 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
             }
             catch (Exception ex)
             {
-                await ShowErrorPage(ex);
+                ShowErrorPage(ex);
             }
         }
 
-        public Task ThrowTestException()
+        public void ThrowTestException()
         {
             try
             {
@@ -184,7 +184,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
             }
             catch (Exception ex)
             {
-                return ShowErrorPage(ex);
+                ShowErrorPage(ex);
             }
         }
 
@@ -204,7 +204,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
             }
             catch (Exception ex)
             {
-                ShowErrorPage(ex).GetAwaiter();
+                ShowErrorPage(ex);
             }
         }
 
@@ -245,7 +245,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
             }
             catch (Exception ex)
             {
-                ShowErrorPage(ex).GetAwaiter();
+                ShowErrorPage(ex);
             }
         }
 

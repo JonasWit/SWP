@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Serilog;
 using SWP.DataBase;
 using SWP.Domain.Enums;
 using System;
@@ -14,6 +16,12 @@ namespace SWP.UI
     {
         public static void Main(string[] args)
         {
+            var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+
+            var configuration = new ConfigurationBuilder()
+                .AddJsonFile($"appsettings.{env}.json")
+                .Build();
+
             var host = CreateHostBuilder(args).Build();
 
             try
@@ -24,6 +32,10 @@ namespace SWP.UI
                 var rolesManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
                 context.Database.EnsureCreated();
+
+                Log.Logger = new LoggerConfiguration()
+                    .ReadFrom.Configuration(configuration)
+                    .CreateLogger();
 
                 if (!context.Users.Any())
                 {
@@ -43,17 +55,22 @@ namespace SWP.UI
                     userManager.AddClaimAsync(creatorUser, creatorClaim).GetAwaiter().GetResult();
                     userManager.AddToRoleAsync(creatorUser, RoleType.Administrators.ToString()).GetAwaiter().GetResult();
                 }
+
+                host.Run();
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Log.Fatal(ex, "Exception in the Main.");
             }
-
-            host.Run();
+            finally
+            {
+                Log.CloseAndFlush();   
+            }
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
+                .UseSerilog()
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();

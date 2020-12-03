@@ -71,7 +71,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Calendar
             }
             catch (Exception ex)
             {
-                MainStore.ShowErrorPage(ex).GetAwaiter();
+                MainStore.ShowErrorPage(ex);
             }
         }
 

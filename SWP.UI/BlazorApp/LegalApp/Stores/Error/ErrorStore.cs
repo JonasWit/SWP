@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging;
+using System;
 using System.Threading.Tasks;
 
 namespace SWP.UI.BlazorApp.LegalApp.Stores.Error
@@ -13,19 +14,21 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Error
     [UIScopedService]
     public class ErrorStore : StoreBase<ErrorState>
     {
+        private readonly ILogger<ErrorStore> _logger;
+
         public ErrorStore(
             IServiceProvider serviceProvider, 
-            IActionDispatcher actionDispatcher) 
+            IActionDispatcher actionDispatcher, 
+            ILogger<ErrorStore> logger)
             : base(serviceProvider, actionDispatcher)
         {
-
+            _logger = logger;
         }
 
-        public Task SetException(Exception ex, string userId)
+        public void SetException(Exception ex, string userId, string userName)
         {
             _state.Exception = ex;
-            //return _portalLogger.LogException(ex, userId);
-            return Task.CompletedTask;
+            _logger.LogError(ex, "Exception In Legal Application for user {UserId} - {UserName}", userId, userName);
         }
 
         protected override void HandleActions(IAction action)

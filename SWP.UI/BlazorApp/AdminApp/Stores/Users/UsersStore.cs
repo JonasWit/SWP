@@ -197,11 +197,11 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Users
             }
             catch (Exception ex)
             {
-                await ShowErrorPage(ex);
+                ShowErrorPage(ex);
             }
         }
 
-        private Task ShowErrorPage(Exception ex) => AppStore.ShowErrorPage(ex);
+        private void ShowErrorPage(Exception ex) => AppStore.ShowErrorPage(ex);
 
         public async Task DeleteClaimRow(Claim claim)
         {
@@ -227,7 +227,7 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Users
                 }
                 catch (Exception ex)
                 {
-                    await ShowErrorPage(ex);
+                    ShowErrorPage(ex);
                 }
             }
 
@@ -266,7 +266,7 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Users
                 }
                 catch (Exception ex)
                 {
-                    await ShowErrorPage(ex);
+                    ShowErrorPage(ex);
                 }
             }
             else
@@ -306,7 +306,7 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Users
                 }
                 catch (Exception ex)
                 {
-                    await ShowErrorPage(ex);
+                    ShowErrorPage(ex);
                 }
             }
             else
@@ -347,7 +347,7 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Users
                 }
                 catch (Exception ex)
                 {
-                    await ShowErrorPage(ex);
+                    ShowErrorPage(ex);
                 }
             }
             else
@@ -401,7 +401,7 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Users
             }
             catch (Exception ex)
             {
-                await ShowErrorPage(ex);
+                ShowErrorPage(ex);
             }
         }
 
@@ -427,7 +427,7 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Users
             }
             catch (Exception ex)
             {
-                await ShowErrorPage(ex);
+                ShowErrorPage(ex);
             }
         }
 

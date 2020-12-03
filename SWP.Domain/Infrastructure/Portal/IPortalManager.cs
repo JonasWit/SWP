@@ -10,6 +10,6 @@ namespace SWP.Domain.Infrastructure.Portal
         Task<BillingDetail> UpdateBillingDetail(BillingDetail details);
         Task<int> DeleteBillingDetail(string userId);
         Task<int> ClearCustomerData(string userId);
-        Task<Activity> CreateActivity(Activity details);
+        Task<int> CreateActivity(Activity details);
     }
 }

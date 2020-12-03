@@ -24,7 +24,7 @@ namespace SWP.DataBase.Managers
             return _context.SaveChangesAsync();
         }
 
-        public Task<Activity> CreateActivity(Activity details)
+        public Task<int> CreateActivity(Activity details)
         {
             throw new NotImplementedException();
         }

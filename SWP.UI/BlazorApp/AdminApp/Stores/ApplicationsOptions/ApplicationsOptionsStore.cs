@@ -5,6 +5,7 @@ using SWP.Application.Log;
 using SWP.UI.BlazorApp.AdminApp.Stores.Application;
 using SWP.UI.BlazorApp.AdminApp.Stores.Error;
 using SWP.UI.Components.AdminBlazorComponents.ViewModels;
+using SWP.UI.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,8 +25,13 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.ApplicationsOptions
     [UIScopedService]
     public class ApplicationsOptionsStore : StoreBase<ApplicationOptionsState>
     {
-        public ApplicationsOptionsStore(IServiceProvider serviceProvider, IActionDispatcher actionDispatcher, NotificationService notificationService)
-            : base(serviceProvider, actionDispatcher, notificationService) { }
+        private readonly PortalLogger _portalLogger;
+
+        public ApplicationsOptionsStore(IServiceProvider serviceProvider, IActionDispatcher actionDispatcher, NotificationService notificationService, PortalLogger portalLogger)
+            : base(serviceProvider, actionDispatcher, notificationService) 
+        {
+            _portalLogger = portalLogger;
+        }
 
         public void Initialize()
         {
@@ -40,7 +46,7 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.ApplicationsOptions
             using var scope = _serviceProvider.CreateScope();
             var logs = scope.ServiceProvider.GetRequiredService<GetLogRecords>();
 
-            _state.LogRecords = new List<LogRecordViewModel>(logs.GetRecords().Select(x => (LogRecordViewModel)x));
+            _state.LogRecords = new List<LogRecordViewModel>(_portalLogger.GetLogRecords().Select(x => (LogRecordViewModel)x));
             BroadcastStateChange();
         }
 
@@ -63,7 +69,7 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.ApplicationsOptions
                 using var scope = _serviceProvider.CreateScope();
                 var deleteLogRecord = scope.ServiceProvider.GetRequiredService<DeleteLogRecord>();
 
-                await deleteLogRecord.Delete(logRecord.Id);
+                await _portalLogger.DeleteLogRecord(logRecord.Id);
 
                 _state.LogRecords.RemoveAll(x => x.Id == logRecord.Id);
                 await _state.LogGrid.Reload();

@@ -32,9 +32,9 @@ namespace SWP.DataBase
         #region Portal
 
         public DbSet<LogRecord> LogRecords { get; set; }
-        //public DbSet<BillingDetail> BillingDetails { get; set; }
-        //public DbSet<Activity> Activities { get; set; }
-        //Add time for license expire
+        public DbSet<BillingDetail> BillingDetails { get; set; }
+        public DbSet<Activity> Activities { get; set; }
+        public DbSet<UserLicense> UserLicenses { get; set; }
 
         #endregion
 
@@ -84,6 +84,15 @@ namespace SWP.DataBase
             modelBuilder.Entity<Case>()
                 .HasMany(c => c.Notes)
                 .WithOne(e => e.Case)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            #endregion
+
+            #region Portal
+
+            modelBuilder.Entity<BillingDetail>()
+                .HasMany(c => c.UserLicenses)
+                .WithOne(e => e.BillingDetail)
                 .OnDelete(DeleteBehavior.Cascade);
 
             #endregion

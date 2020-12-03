@@ -6,11 +6,10 @@ namespace SWP.Domain.Infrastructure.Portal
 {
     public interface IPortalManager
     {
-        BillingDetail GetBillingDetail(int customerId);
-        Task<BillingDetail> CreateBillingDetail(BillingDetail details);
+        BillingDetail GetBillingDetail(string userId);
         Task<BillingDetail> UpdateBillingDetail(BillingDetail details);
-        Task<int> DeleteBillingDetail(int customerId);
-        Task<int> ClearCustomerData(string customerId);
+        Task<int> DeleteBillingDetail(string userId);
+        Task<int> ClearCustomerData(string userId);
         Task<Activity> CreateActivity(Activity details);
     }
 }

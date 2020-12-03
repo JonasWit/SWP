@@ -15,6 +15,7 @@ using SWP.Application.LegalSwp.Clients;
 using SWP.Domain.Enums;
 using SWP.Application.Log;
 using SWP.Application.PortalCustomers;
+using SWP.UI.Services;
 
 namespace SWP.UI.Areas.Identity.Pages.Account.Manage
 {
@@ -23,7 +24,7 @@ namespace SWP.UI.Areas.Identity.Pages.Account.Manage
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly DeleteClient _deleteClient;
-        private readonly CreateLogRecord _createLogRecord;
+        private readonly PortalLogger _portalLogger;
         private readonly ClearCustomerRelatedData _clearCustomerRelatedData;
         private readonly ILogger<DeletePersonalDataModel> _logger;
 
@@ -32,13 +33,13 @@ namespace SWP.UI.Areas.Identity.Pages.Account.Manage
             SignInManager<IdentityUser> signInManager,
             DeleteClient deleteClient,
             ILogger<DeletePersonalDataModel> logger,
-            CreateLogRecord createLogRecord,
-            ClearCustomerRelatedData clearCustomerRelatedData)
+            ClearCustomerRelatedData clearCustomerRelatedData,
+            PortalLogger portalLogger)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _deleteClient = deleteClient;
-            _createLogRecord = createLogRecord;
+            _portalLogger = portalLogger;
             _clearCustomerRelatedData = clearCustomerRelatedData;
             _logger = logger;
         }
@@ -115,7 +116,7 @@ namespace SWP.UI.Areas.Identity.Pages.Account.Manage
 
                             if (actionResult.Succeeded)
                             {
-                                await _createLogRecord.Create(new CreateLogRecord.Request
+                                await _portalLogger.CreateLogRecord(new CreateLogRecord.Request
                                 {
                                     Message = $"Success! Profile {profileClaim.Value} for User {userWithTheSameProfile.UserName} Deleted!",
                                     UserId = user.Id,
@@ -123,7 +124,7 @@ namespace SWP.UI.Areas.Identity.Pages.Account.Manage
                             }
                             else
                             {
-                                await _createLogRecord.Create(new CreateLogRecord.Request
+                                await _portalLogger.CreateLogRecord(new CreateLogRecord.Request
                                 {
                                     Message = $"Issue! Profile {profileClaim.Value} for User {userWithTheSameProfile.UserName} Not Deleted!",
                                     UserId = user.Id,
@@ -135,7 +136,7 @@ namespace SWP.UI.Areas.Identity.Pages.Account.Manage
             }
             catch (Exception ex)
             {
-                await _createLogRecord.Create(new CreateLogRecord.Request
+                await _portalLogger.CreateLogRecord(new CreateLogRecord.Request
                 {
                     Message = $"Issue during Delete Data Request from User! - {ex.Message}",
                     UserId = user.Id,
@@ -148,7 +149,7 @@ namespace SWP.UI.Areas.Identity.Pages.Account.Manage
 
             if (!result.Succeeded)
             {
-                await _createLogRecord.Create(new CreateLogRecord.Request
+                await _portalLogger.CreateLogRecord(new CreateLogRecord.Request
                 {
                     Message = $"Unexpected error occurred deleting user with ID '{userId}'",
                     UserId = user.Id,

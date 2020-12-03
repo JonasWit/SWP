@@ -11,7 +11,7 @@ namespace SWP.UI.Models
         public IdentityUser User { get; set; }
         public List<Claim> Claims { get; set; } = new List<Claim>();
         public List<string> Roles { get; set; } = new List<string>();
-        public IList<IdentityUser> RelatedUsers { get; set; } = new List<IdentityUser>();
+        public List<IdentityUser> RelatedUsers { get; set; } = new List<IdentityUser>();
         public bool IsLocked => User.LockoutEnd != null;
 
         public string Profile => Claims.FirstOrDefault(x => x.Type == ClaimType.Profile.ToString())?.Value;

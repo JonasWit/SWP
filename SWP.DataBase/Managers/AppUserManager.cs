@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using SWP.Domain.Enums;
 using SWP.Domain.Infrastructure.Portal;
+using SWP.Domain.Models.Log;
 using SWP.Domain.Utilities;
 using System;
 using System.Collections.Generic;
@@ -49,12 +50,24 @@ namespace SWP.DataBase.Managers
 
                         if (!addResult.Succeeded)
                         {
-                            //todo: log issue
+                            _context.LogRecords.Add(new LogRecord
+                            {
+                                Created = DateTime.Now,
+                                Message = "Add new profile Issue",
+                                UserId = user.Id,
+                                StackTrace = $"Change from {oldProfile.Value} to {newProfile}"
+                            });
                         }
                     }
                     else
                     {
-                        //todo: log issue
+                        _context.LogRecords.Add(new LogRecord
+                        {
+                            Created = DateTime.Now,
+                            Message = "Remove old profile Issue",
+                            UserId = user.Id,
+                            StackTrace = $"Change from {oldProfile.Value} to {newProfile}"
+                        });
                     }
                 }
 
@@ -75,6 +88,7 @@ namespace SWP.DataBase.Managers
             }
             finally
             { 
+         
                 //todo: check and cleanup all root profiles or incorrect profiles
             }
         }

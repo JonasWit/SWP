@@ -32,7 +32,7 @@ namespace SWP.Application.Log
                 Created = DateTime.Now,
             });
 
-        public Task<LogRecord> CreateAutomationRecord(AutomationRequest request) =>
+        public Task<LogRecord> Create(AutomationRequest request) =>
             logManager.CreateLogRecord(new LogRecord
             {
                 UserId = "Automation",

@@ -1,4 +1,5 @@
 ﻿using SWP.Domain.Infrastructure.Portal;
+using SWP.Domain.Models.Portal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,7 @@ namespace SWP.Application.PortalCustomers
         {
         }
 
+        public Task<BillingDetail> Update(BillingDetail billingDetail) => _portalManager.UpdateBillingDetail(billingDetail);
 
     }
 }

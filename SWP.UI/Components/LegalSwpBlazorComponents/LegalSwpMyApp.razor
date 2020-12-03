@@ -16,13 +16,15 @@ else
                                 Data="@MainStore.GetState().User.RelatedUsers" TextProperty="UserName" ValueProperty="Id" Style="margin-bottom: 20px" Change="@(args => SelectedUserChange(args))" />
             </div>
         </div>
-        @if (MyAppStore.GetState().SelectedUser != null && MainStore.GetState().User.RootClient && MainStore.GetState().ActiveUserId != MyAppStore.GetState().SelectedUser.Id)
+        @if (MyAppStore.GetState().SelectedUser != null && 
+            MainStore.GetState().User.RootClient && 
+            MainStore.GetState().ActiveUserId != MyAppStore.GetState().SelectedUser.Id)
         {
             <h1>Mozna skasowac</h1>
             <RadzenButton Text="Usuń powiązanie!" Click="RemoveRelation"></RadzenButton>
         }
 
-        @if (MyAppStore.GetState().SelectedUser != null && MainStore.GetState().User.RootClient && MainStore.GetState().ActiveUserId == MyAppStore.GetState().SelectedUser.Id)
+        @if (MainStore.GetState().User.RootClient)
         {
             <h1>Uwaga!</h1>
             <RadzenButton Text=@($"Usuń wszystkie dane powiązane z profilem") Click="ConfirmRemoveAllData" />

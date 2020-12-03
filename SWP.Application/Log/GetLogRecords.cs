@@ -12,9 +12,7 @@ namespace SWP.Application.Log
         private readonly ILogManager logManager;
         public GetLogRecords(ILogManager logManager) => this.logManager = logManager;
 
-        public List<LogRecord> GetRecords() => logManager.GetGetLogRecords();
-
-        public List<LogRecord> GetRecords(Func<LogRecord, bool> predicate) => logManager.GetGetLogRecords(predicate);
+        public List<LogRecord> GetRecords() => logManager.GetLogRecords();
 
         public List<LogRecord> GetRecordsWitohutStacks() => 
             logManager.GetLogRecordsWithSpecificData(x => new LogRecord 

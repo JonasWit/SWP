@@ -35,7 +35,7 @@ namespace SWP.DataBase.Managers
             return _context.SaveChangesAsync();
         }
 
-        public List<LogRecord> GetGetLogRecords() => _context.LogRecords.ToList();
+        public List<LogRecord> GetLogRecords() => _context.LogRecords.ToList();
 
         public List<LogRecord> GetGetLogRecords(Func<LogRecord, bool> predicate) => _context.LogRecords.Where(predicate).ToList();
 
@@ -67,9 +67,10 @@ namespace SWP.DataBase.Managers
             throw new NotImplementedException();
         }
 
-        public Task<Activity> CreateActivityRecord(Activity record)
+        public Task<int> CreateActivityRecord(Activity record)
         {
-            throw new NotImplementedException();
+            _context.Activities.Add(record);
+            return _context.SaveChangesAsync();
         }
 
         public Task<int> DeleteActivityRecord(int id)

@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using SWP.Application.Log;
+using SWP.Application.PortalCustomers;
 using SWP.Domain.Models.Portal;
+using SWP.UI.Services;
 
 namespace SWP.UI.Areas.Identity.Pages.Account.Manage
 {
@@ -14,13 +17,22 @@ namespace SWP.UI.Areas.Identity.Pages.Account.Manage
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly GetBillingRecord _getBillingRecord;
+        private readonly UpdateBillingRecord _updateBillingRecord;
+        private readonly PortalLogger _portalLogger;
 
         public IndexModel(
             UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager)
+            SignInManager<IdentityUser> signInManager,
+            GetBillingRecord getBillingRecord,
+            UpdateBillingRecord updateBillingRecord,
+            PortalLogger portalLogger)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _getBillingRecord = getBillingRecord;
+            _updateBillingRecord = updateBillingRecord;
+            _portalLogger = portalLogger;
         }
 
         [Display(Name = "Nazwa użytkownika (Jest to adres email użyty do rejestracji)")]
@@ -34,6 +46,7 @@ namespace SWP.UI.Areas.Identity.Pages.Account.Manage
 
         public class InputModel
         {
+            public string UserId { get; set; }
             [Phone]
             [Display(Name = "Numer Kontaktowy")]
             public string PhoneNumber { get; set; }
@@ -79,6 +92,7 @@ namespace SWP.UI.Areas.Identity.Pages.Account.Manage
             public static implicit operator BillingDetail(InputModel input) =>
                 new BillingDetail
                 {
+                    UserId = input.UserId,
                     Address = input.Address,
                     AddressCorrespondence = input.AddressCorrespondence,
                     City = input.City,
@@ -86,7 +100,26 @@ namespace SWP.UI.Areas.Identity.Pages.Account.Manage
                     Country = input.Country,
                     Created = DateTime.Now,
                     Updated = DateTime.Now,
-                    KRS= input.KRS,
+                    KRS = input.KRS,
+                    Name = input.Name,
+                    NIP = input.NIP,
+                    PhoneNumber = input.PhoneNumber,
+                    PostCode = input.PostCode,
+                    REGON = input.REGON,
+                    Surname = input.Surname,
+                    Vivodership = input.Vivodership,
+                };
+
+            public static implicit operator InputModel(BillingDetail input) =>
+                new InputModel
+                {
+                    UserId = input.UserId,
+                    Address = input.Address,
+                    AddressCorrespondence = input.AddressCorrespondence,
+                    City = input.City,
+                    CompanyFullName = input.CompanyFullName,
+                    Country = input.Country,
+                    KRS = input.KRS,
                     Name = input.Name,
                     NIP = input.NIP,
                     PhoneNumber = input.PhoneNumber,
@@ -105,13 +138,16 @@ namespace SWP.UI.Areas.Identity.Pages.Account.Manage
         private async Task LoadAsync(IdentityUser user)
         {
             Username = await _userManager.GetUserNameAsync(user);
+            var data = _getBillingRecord.GetDetails(user.Id);
 
-            //todo: load billing data from DB
-
-            Input = new InputModel
+            if (data == null)
             {
-
-            };
+                Input = new InputModel();
+            }
+            else
+            {
+                Input = data;
+            }
         }
 
         public async Task<IActionResult> OnGetAsync()
@@ -139,13 +175,19 @@ namespace SWP.UI.Areas.Identity.Pages.Account.Manage
                 await LoadAsync(user);
                 return Page();
             }
+            
+            Input.UserId = user.Id;
 
-            //todo: save billing data in database
-            BillingDetail billingDetails = Input;
-
-            billingDetails.UpdatedBy = user.UserName;
-            billingDetails.CreatedBy = user.UserName;
-            billingDetails.Updated = DateTime.Now;
+            try
+            {
+                Input = await _updateBillingRecord.Update(Input);
+                StatusMessage = "Dane zostały zaktualizowane";
+            }
+            catch (Exception ex)
+            {
+                await _portalLogger.CreateLogRecord($"{user.UserName}-{user.Id}", $"Exception when updating Billing Detials: {ex.Message}", ex.StackTrace);
+                StatusMessage = "Wystąpił błąd, spróbuj jeszcze raz";
+            }
 
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
             if (Input.PhoneNumber != phoneNumber)
@@ -159,7 +201,6 @@ namespace SWP.UI.Areas.Identity.Pages.Account.Manage
             }
 
             await _signInManager.RefreshSignInAsync(user);
-            StatusMessage = "Your profile has been updated";
             return RedirectToPage();
         }
     }

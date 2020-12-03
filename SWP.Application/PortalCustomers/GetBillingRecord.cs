@@ -1,4 +1,5 @@
 ﻿using SWP.Domain.Infrastructure.Portal;
+using SWP.Domain.Models.Portal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,5 +14,7 @@ namespace SWP.Application.PortalCustomers
         public GetBillingRecord(IPortalManager portalManager) : base(portalManager)
         {
         }
+
+        public BillingDetail GetDetails(string userId) => _portalManager.GetBillingDetail(userId);
     }
 }

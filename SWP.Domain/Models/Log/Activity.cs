@@ -5,7 +5,6 @@ using System.Text;
 
 namespace SWP.Domain.Models.Log
 {
-    //add this table to DB & create logging service
     public class Activity
     {
         [Key]

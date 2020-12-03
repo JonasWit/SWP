@@ -98,8 +98,7 @@
 
                         <RadzenGridColumn TItem="Claim" Context="claim" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="50px">
                             <Template Context="claim">
-                                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@(async args => await UsersStore.DeleteClaimRow(claim))" 
-                                              Visible="@(!((UsersStore.GetState().SelectedUser.RootClient) && (claim.Type == ClaimType.Profile.ToString())))">
+                                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@(async args => await UsersStore.DeleteClaimRow(claim))">
                                 </RadzenButton>
                             </Template>
                         </RadzenGridColumn>

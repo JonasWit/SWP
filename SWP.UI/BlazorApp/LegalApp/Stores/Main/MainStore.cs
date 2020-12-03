@@ -7,6 +7,7 @@ using SWP.UI.BlazorApp.LegalApp.Stores.Enums;
 using SWP.UI.BlazorApp.LegalApp.Stores.Error;
 using SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data;
 using SWP.UI.Models;
+using SWP.UI.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,7 +31,8 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
     {
         private readonly ErrorStore _errorStore;
 
-        public MainStore(IServiceProvider serviceProvider, IActionDispatcher actionDispatcher, NotificationService notificationService, ErrorStore errorStore) : base(serviceProvider, actionDispatcher, notificationService)
+        public MainStore(IServiceProvider serviceProvider, IActionDispatcher actionDispatcher, NotificationService notificationService, ErrorStore errorStore) 
+            : base(serviceProvider, actionDispatcher, notificationService)
         {
             _errorStore = errorStore;
         }
@@ -39,30 +41,36 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
         {
             try
             {
-                using var scope = _serviceProvider.CreateScope();
-                var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
-
                 _state.ActiveUserId = userId;
 
-                _state.User.User = await userManager.FindByIdAsync(_state.ActiveUserId);
-                _state.User.Claims = await userManager.GetClaimsAsync(_state.User.User) as List<Claim>;
-                _state.User.Roles = await userManager.GetRolesAsync(_state.User.User) as List<string>;
-                _state.User.RelatedUsers = await userManager.GetUsersForClaimAsync(_state.User.ProfileClaim);
-
+                await RealodUserData();
                 ReloadClientsDrop();
             }
             catch (Exception ex)
             {
                 using var scope = _serviceProvider.CreateScope();
-                var createLogRecord = scope.ServiceProvider.GetRequiredService<CreateLogRecord>();
+                var portalLogger = scope.ServiceProvider.GetRequiredService<PortalLogger>();
 
-                await createLogRecord.Create(new CreateLogRecord.Request
+                await portalLogger.CreateLogRecord(new CreateLogRecord.Request
                 {
                     Message = ex.Message,
                     UserId = _state.ActiveUserId,
                     StackTrace = ex.StackTrace
                 });
             }
+        }
+
+        private async Task RealodUserData()
+        {
+            using var scope = _serviceProvider.CreateScope();
+            var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+
+            _state.User.User = await userManager.FindByIdAsync(_state.ActiveUserId);
+            _state.User.Claims = await userManager.GetClaimsAsync(_state.User.User) as List<Claim>;
+            _state.User.Roles = await userManager.GetRolesAsync(_state.User.User) as List<string>;
+            _state.User.RelatedUsers = await userManager.GetUsersForClaimAsync(_state.User.ProfileClaim) as List<IdentityUser>;
+
+            _state.User.RelatedUsers.RemoveAll(x => x.Id == _state.ActiveUserId);
         }
 
         protected override void HandleActions(IAction action)
@@ -159,7 +167,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
                 using var scope = _serviceProvider.CreateScope();
                 var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
 
-                _state.User.RelatedUsers = await userManager.GetUsersForClaimAsync(_state.User.ProfileClaim);
+                _state.User.RelatedUsers = await userManager.GetUsersForClaimAsync(_state.User.ProfileClaim) as List<IdentityUser>;
                 BroadcastStateChange();
             }
             catch (Exception ex)

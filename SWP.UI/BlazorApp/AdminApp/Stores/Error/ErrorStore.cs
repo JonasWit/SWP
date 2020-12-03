@@ -2,6 +2,7 @@
 using SWP.Application.Log;
 using SWP.UI.BlazorApp.AdminApp.Stores.Application;
 using SWP.UI.BlazorApp.AdminApp.Stores.Enums;
+using SWP.UI.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,18 +20,18 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Error
     [UIScopedService]
     public class ErrorStore : StoreBase<ErrorState>
     {
-        private readonly CreateLogRecord _createLogRecord;
+        private readonly PortalLogger _portalLogger;
 
-        public ErrorStore(IServiceProvider serviceProvider, IActionDispatcher actionDispatcher, CreateLogRecord createLogRecord) 
+        public ErrorStore(IServiceProvider serviceProvider, IActionDispatcher actionDispatcher, PortalLogger portalLogger) 
             : base(serviceProvider, actionDispatcher)
         {
-            _createLogRecord = createLogRecord;
+            _portalLogger = portalLogger;
         }
 
         public Task SetException(Exception ex, string userId)
         {
             _state.Exception = ex;
-            return _createLogRecord.Create(new CreateLogRecord.Request
+            return _portalLogger.CreateLogRecord(new CreateLogRecord.Request
             {
                 Message = ex.Message,
                 UserId = userId,

@@ -1,4 +1,5 @@
 ﻿using SWP.Application.Log;
+using SWP.UI.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,22 +17,24 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Error
     [UIScopedService]
     public class ErrorStore : StoreBase<ErrorState>
     {
+        private readonly PortalLogger _portalLogger;
         private readonly CreateLogRecord _createLogRecord;
 
-        public ErrorStore(IServiceProvider serviceProvider, IActionDispatcher actionDispatcher, CreateLogRecord createLogRecord) : base(serviceProvider, actionDispatcher)
+        public ErrorStore(
+            IServiceProvider serviceProvider, 
+            IActionDispatcher actionDispatcher, 
+            CreateLogRecord createLogRecord,
+            PortalLogger portalLogger) 
+            : base(serviceProvider, actionDispatcher)
         {
+            _portalLogger = portalLogger;
             _createLogRecord = createLogRecord;
         }
 
         public Task SetException(Exception ex, string userId)
         {
             _state.Exception = ex;
-            return _createLogRecord.Create(new CreateLogRecord.Request
-            {
-                Message = ex.Message,
-                UserId = userId,
-                StackTrace = ex.StackTrace
-            });
+            return _portalLogger.LogException(ex, userId);
         }
 
         protected override void HandleActions(IAction action)

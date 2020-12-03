@@ -1,13 +1,12 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using SWP.Domain.Models.LegalApp;
-using SWP.Domain.Models.Log;
 using SWP.Domain.Models.News;
 using SWP.Domain.Models.Portal;
 
 namespace SWP.DataBase
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class AppContext : IdentityDbContext
     {
         #region Legal SWP
 
@@ -26,13 +25,13 @@ namespace SWP.DataBase
         #region Portal
 
         public DbSet<NewsRecord> News { get; set; }
-        public DbSet<LogRecord> Logs { get; set; }
+        public DbSet<Log> Logs { get; set; }
         public DbSet<BillingDetail> BillingDetails { get; set; }
         public DbSet<UserLicense> UserLicenses { get; set; }
 
         #endregion
 
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
+        public AppContext(DbContextOptions<AppContext> options) : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -89,7 +88,7 @@ namespace SWP.DataBase
                 .WithOne(e => e.BillingDetail)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<LogRecord>().ToTable("Log");
+            modelBuilder.Entity<Log>().ToTable("Log");
 
             #endregion
         }

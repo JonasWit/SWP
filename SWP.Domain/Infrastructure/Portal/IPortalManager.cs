@@ -1,5 +1,4 @@
-﻿using SWP.Domain.Models.Log;
-using SWP.Domain.Models.Portal;
+﻿using SWP.Domain.Models.Portal;
 using System.Threading.Tasks;
 
 namespace SWP.Domain.Infrastructure.Portal

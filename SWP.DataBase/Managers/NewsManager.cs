@@ -10,7 +10,7 @@ namespace SWP.DataBase.Managers
 {
     public class NewsManager : DataManagerBase, INewsManager
     {
-        public NewsManager(ApplicationDbContext context) : base(context)
+        public NewsManager(AppContext context) : base(context)
         {
         }
 

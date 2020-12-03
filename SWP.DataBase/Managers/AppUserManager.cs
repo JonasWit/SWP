@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using SWP.Domain.Enums;
 using SWP.Domain.Infrastructure.Portal;
-using SWP.Domain.Models.Log;
 using SWP.Domain.Utilities;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
@@ -15,7 +13,7 @@ namespace SWP.DataBase.Managers
     {
         private readonly UserManager<IdentityUser> _userManager;
 
-        public AppUserManager(UserManager<IdentityUser> userManager, ApplicationDbContext context) : base(context)
+        public AppUserManager(UserManager<IdentityUser> userManager, AppContext context) : base(context)
         {
             _userManager = userManager;
         }

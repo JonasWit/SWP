@@ -10,7 +10,7 @@ namespace SWP.DataBase.Managers
 {
     public class LegalManager : DataManagerBase, ILegalManager
     {
-        public LegalManager(ApplicationDbContext context) : base(context)
+        public LegalManager(AppContext context) : base(context)
         {
         }
 

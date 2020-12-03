@@ -8,7 +8,7 @@ namespace SWP.DataBase.Managers
 {
     public abstract class DataManagerBase
     {
-        protected readonly ApplicationDbContext _context;
-        protected DataManagerBase(ApplicationDbContext context) => _context = context;
+        protected readonly AppContext _context;
+        protected DataManagerBase(AppContext context) => _context = context;
     }
 }

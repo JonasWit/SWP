@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SWP.Domain.Models.Log
+namespace SWP.Domain.Models.Portal
 {
-    public class LogRecord
+    public class Log
     {
         public int Id { get; set; }
         public string Message { get; set; }

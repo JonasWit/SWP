@@ -19,7 +19,7 @@ namespace SWP.UI
             try
             {
                 using var scope = host.Services.CreateScope();
-                var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+                var context = scope.ServiceProvider.GetRequiredService<DataBase.AppContext>();
                 var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
                 var rolesManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 

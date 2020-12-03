@@ -7,7 +7,7 @@ namespace SWP.DataBase.Managers
 {
     public class StatisticsManager : DataManagerBase, IStatisticsManager
     {
-        public StatisticsManager(ApplicationDbContext context) : base(context)
+        public StatisticsManager(AppContext context) : base(context)
         {
         }
 

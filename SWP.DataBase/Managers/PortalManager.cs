@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Identity;
-using SWP.Domain.Infrastructure.Portal;
-using SWP.Domain.Models.Log;
+﻿using SWP.Domain.Infrastructure.Portal;
 using SWP.Domain.Models.Portal;
 using System;
 using System.Linq;
@@ -12,7 +10,7 @@ namespace SWP.DataBase.Managers
     {
         private readonly IAppUserManager _appUserManager;
 
-        public PortalManager(ApplicationDbContext context, IAppUserManager appUserManager) : base(context)
+        public PortalManager(AppContext context, IAppUserManager appUserManager) : base(context)
         {
             _appUserManager = appUserManager;
         }

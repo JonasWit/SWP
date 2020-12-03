@@ -28,7 +28,7 @@ namespace SWP.UI
             services.AddHttpClient();
             services.AddHttpContextAccessor();
 
-            services.AddDbContext<ApplicationDbContext>(options =>
+            services.AddDbContext<DataBase.AppContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("DbConnection")),
                 ServiceLifetime.Transient);
 
@@ -46,7 +46,7 @@ namespace SWP.UI
             })
             .AddRoles<IdentityRole>()
             .AddErrorDescriber<PolishIdentityErrorDescriber>()
-            .AddEntityFrameworkStores<ApplicationDbContext>();
+            .AddEntityFrameworkStores<DataBase.AppContext>();
 
             services.ConfigureApplicationCookie(options =>
             {

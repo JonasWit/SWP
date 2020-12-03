@@ -26,13 +26,11 @@ namespace SWP.UI.BlazorApp
         {
             LoadingMessage = message;
             Loading = true;
-            BroadcastStateChange();
         }
 
         public void DisableLoading()
         {
             Loading = false;
-            BroadcastStateChange();
         }
  
         public void ShowNotification(NotificationSeverity severity, string summary, string detail, int duration) =>

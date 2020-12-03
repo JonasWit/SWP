@@ -13,6 +13,7 @@ using SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data.Statistics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace SWP.UI.BlazorApp.LegalApp.Stores.MyApp
@@ -230,6 +231,8 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.MyApp
 
         public override void RefreshSore()
         {
+            EnableLoading("Wczytywanie");
+
             if (MainStore.GetState().ActiveClient != null)
             {
                 RefreshClientCases();
@@ -240,6 +243,8 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.MyApp
                 RefreshClientCases();
                 RefreshAllProductivityData();
             }
+
+            DisableLoading();
         }
     }
 }

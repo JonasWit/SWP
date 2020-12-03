@@ -58,8 +58,6 @@ body {
 }
 
 
-
-
 .navigation {
     list-style: none;
     padding-top: 2rem;
@@ -171,6 +169,7 @@ ul, li {
     margin-left: 3px;
     font-weight: bold;
 }
+
 
 
 
@@ -646,7 +645,7 @@ ul, li {
 .list-row {
     display: flex;
     flex-direction: row;
-    justify-content: flex-start;
+    justify-content: space-between;
 }
 
 .rz-event {

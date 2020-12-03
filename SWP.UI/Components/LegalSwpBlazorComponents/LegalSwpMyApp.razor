@@ -1,4 +1,5 @@
-﻿@if (MyAppStore.Loading)
+﻿
+@if (MyAppStore.Loading)
 {
     <LoaderComponent Message="@MyAppStore.LoadingMessage"></LoaderComponent>
 }
@@ -7,21 +8,21 @@ else
     @if (MainStore.GetState().Clients.Count != 0)
     {
         <div class="list-row">
-            <div>
-                <RadzenButton ButtonStyle="ButtonStyle.Secondary" Icon="refresh" Style="margin-bottom: 20px; width: 100px" Click="MyAppStore.RefreshSore"></RadzenButton>
+            <div class="list-row">
+                <strong class="label">Wybierz profil: </strong><RadzenDropDown AllowClear="true"
+                                                                               FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" FilterOperator="StringFilterOperator.StartsWith" AllowFiltering="true" @bind-Value="RelatedUsersFilterValue"
+                                                                               Data="@MainStore.GetState().User.RelatedUsers" TextProperty="UserName" ValueProperty="Id" Style="width: 200px; padding: 0" Change="@(args => SelectedUserChange(args))" />
             </div>
-            <div>
-                <RadzenDropDown AllowClear="true"
-                                FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" FilterOperator="StringFilterOperator.StartsWith" AllowFiltering="true" @bind-Value="RelatedUsersFilterValue"
-                                Data="@MainStore.GetState().User.RelatedUsers" TextProperty="UserName" ValueProperty="Id" Style="margin-bottom: 20px" Change="@(args => SelectedUserChange(args))" />
+            <div class="list-row">
+                <RadzenButton ButtonStyle="ButtonStyle.Secondary" Icon="refresh" Style="margin-bottom: 20px; width: 100px" Click="MyAppStore.RefreshSore"></RadzenButton>
             </div>
         </div>
 
         <RadzenButton Text="TEST!" Click="MainStore.ThrowTestException"></RadzenButton>
 
         @if (MyAppStore.GetState().SelectedUser != null &&
-           MainStore.GetState().User.RootClient &&
-           MainStore.GetState().ActiveUserId != MyAppStore.GetState().SelectedUser.Id)
+  MainStore.GetState().User.RootClient &&
+  MainStore.GetState().ActiveUserId != MyAppStore.GetState().SelectedUser.Id)
         {
             <h1>Mozna skasowac</h1>
             <RadzenButton Text="Usuń powiązanie!" Click="RemoveRelation"></RadzenButton>
@@ -165,3 +166,4 @@ else
         <h2>Nie masz jeszcze zadnych klientow!</h2>
     }
 }
+

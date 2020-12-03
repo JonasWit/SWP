@@ -9,7 +9,7 @@
                         <button @onclick="ShowHideSidebar" class="toggle @(showSidebar ? "toggle-rotate" : "") "><img src="Images/icons8-double-right-40.png" /></button>
                     </li>
                 </ul>
-                <ul class="navigation account-section">
+                <ul class="navigation ">
                     <li class="nav-item ">
                         <a class="nav-link profile">
                             <i><img src="/Images/icons8-profile-36.png" /></i>
@@ -22,8 +22,6 @@
                             <i><img src="/Images/icons8-notification-36.png" /></i> <span class="@(showSidebar ? "link-text" : "text-hidden")">Przypomnienia</span><span class="number">2</span>
                         </a>
                     </li>
-                </ul>
-                <ul class="navigation">
                     <li class="nav-item @(MainStore.GetState().ActivePanel == LegalAppPanels.MyApp ? "active" : "") " @onclick="@(() => MainStore.SetActivePanel(LegalAppPanels.MyApp))">
                         <a class="nav-link ">
                             <i><img src="/Images/icons8-web-design-36.png" /></i>

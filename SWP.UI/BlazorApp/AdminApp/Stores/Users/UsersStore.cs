@@ -158,12 +158,7 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Users
             };
         }
 
-        public void RowSelected(object args)
-        {
-            _state.SelectedUser = (UserModel)args;
-            _state.SelectedRole = _state.SelectedUser.UserRoleInt;
-            _state.Lock = _state.SelectedUser.LockoutEnd != null ? true : false;
-        }
+
 
         public async Task RoleChanged(int input)
         {
@@ -432,8 +427,12 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Users
         }
 
         #region Actions
-
-
+        public void RowSelected(object args)
+        {
+            _state.SelectedUser = (UserModel)args;
+            _state.SelectedRole = _state.SelectedUser.UserRoleInt;
+            _state.Lock = _state.SelectedUser.LockoutEnd != null ? true : false;
+        }
 
 
 

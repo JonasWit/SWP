@@ -5,7 +5,11 @@ using System.Threading.Tasks;
 
 namespace SWP.UI.BlazorApp.AdminApp.Stores.Users.Actions
 {
-    public class RowSelectedAction
+    public class RowSelectedAction : IAction
     {
+        public const string RowSelected = "ROW_SELECTED";
+        public string Name => RowSelected;
+
+        public object Arg { get; set; }
     }
 }

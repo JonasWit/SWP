@@ -1,5 +1,19 @@
-﻿<h3>Exception occured!</h3>
-
-<p>@ErrorStore.GetState().Exception.Message</p>
-
-<RadzenButton Click="ApplicationStore.DismissErrorPage">Refresh Application</RadzenButton>
+﻿<div class="section">
+    <RadzenCard>
+        <div class="columns is-0 is-centered">
+            <h3>Exception Message</h3>
+        </div>
+        <div class="columns is-0 is-centered mb-6">
+            <p>@ErrorStore.GetState().Exception.Message</p>
+        </div>
+        <div class="columns is-0 is-centered">
+            <h3>Exception Stack</h3>
+        </div>
+        <div class="columns is-0 is-centered mb-6">
+            <p>@ErrorStore.GetState().Exception.StackTrace</p>
+        </div>
+        <div class="columns is-0 is-centered">
+            <RadzenButton Click="ApplicationStore.DismissErrorPage">Refresh Application</RadzenButton>
+        </div>
+    </RadzenCard>
+</div>

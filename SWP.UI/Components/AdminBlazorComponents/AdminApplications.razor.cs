@@ -2,6 +2,8 @@
 using SWP.UI.BlazorApp.AdminApp.Stores.Application;
 using SWP.UI.BlazorApp.AdminApp.Stores.ApplicationsOptions;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace SWP.UI.Components.AdminBlazorComponents
 {
@@ -11,6 +13,8 @@ namespace SWP.UI.Components.AdminBlazorComponents
         public ApplicationStore ApplicationStore { get; set; }
         [Inject]
         public ApplicationsOptionsStore ApplicationsOptionsStore { get; set; }
+
+        public IEnumerable<LogRecordType> LogLevels => Enum.GetValues(typeof(LogRecordType)).Cast<LogRecordType>();
 
         public void Dispose()
         {

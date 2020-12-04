@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Radzen;
 using SWP.UI.BlazorApp.AdminApp.Stores.Enums;
 using SWP.UI.BlazorApp.AdminApp.Stores.Error;
@@ -25,10 +26,13 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Application
     public class ApplicationStore : StoreBase<ApplicationState>
     {
         private readonly ErrorStore _errorStore;
+        private readonly ILogger<ApplicationStore> _logger;
 
-        public ApplicationStore(IServiceProvider serviceProvider, IActionDispatcher actionDispatcher, ErrorStore errorStore) : base(serviceProvider, actionDispatcher)
+        public ApplicationStore(IServiceProvider serviceProvider, IActionDispatcher actionDispatcher, ErrorStore errorStore, ILogger<ApplicationStore> logger) 
+            : base(serviceProvider, actionDispatcher)
         {
             _errorStore = errorStore;
+            _logger = logger;
         }
 
         public void SetActivePanel(AdminAppPanels panel) => _state.ActivePanel = panel;
@@ -44,6 +48,8 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Application
             _state.User.User = await userManager.FindByIdAsync(_state.ActiveUserId);
             _state.User.Claims = await userManager.GetClaimsAsync(_state.User.User) as List<Claim>;
             _state.User.Roles = await userManager.GetRolesAsync(_state.User.User) as List<string>;
+
+            _logger.LogWarning("Admin Panel accessed by {userName}", _state.User.User.UserName);
         }
 
         protected override void HandleActions(IAction action)

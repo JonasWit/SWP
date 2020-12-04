@@ -88,6 +88,9 @@ namespace SWP.UI.BlazorApp
 
         public abstract void CleanUpStore();
 
-        public abstract void RefreshSore();
+        public virtual void RefreshSore()
+        {
+            ShowNotification(NotificationSeverity.Success, "Sukces!", "Panel Odświeżony", 1500);
+        }
     }
 }

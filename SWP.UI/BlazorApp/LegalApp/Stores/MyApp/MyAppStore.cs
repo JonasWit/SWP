@@ -231,7 +231,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.MyApp
 
         public override void RefreshSore()
         {
-            EnableLoading("Wczytywanie");
+            Loading = true;
 
             if (MainStore.GetState().ActiveClient != null)
             {
@@ -244,7 +244,8 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.MyApp
                 RefreshAllProductivityData();
             }
 
-            DisableLoading();
+            base.RefreshSore();
+            Loading = false;
         }
     }
 }

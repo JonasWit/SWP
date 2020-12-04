@@ -50,11 +50,12 @@ body {
     background: #1a447a;
     width: 7rem;
     z-index: 999;
- }
+    transition: all 0.5s ;
+}
 
 
 .sidebar-add {
-    width: 17rem;       
+    width: 17rem;
 }
 
 
@@ -64,6 +65,7 @@ body {
     margin: 0;
     display: flex;
     flex-direction: column;
+    white-space: nowrap;
 }
 
 #top-menu {
@@ -98,7 +100,6 @@ ul, li {
 }
 
     .nav-item:hover {
-        
         background: #4FAEFC;
         border: 1px solid rgb(255,255,255);
     }
@@ -117,6 +118,8 @@ ul, li {
     display: block;
     margin-left: 1rem;
     color: rgb(255,255,255);
+    
+   
 }
 
 .text-hidden {
@@ -133,11 +136,11 @@ ul, li {
 
 .logo {
     margin: auto;
-    padding-bottom: 1.5rem;
+    padding-bottom: 1.1rem;
 }
 
 .toggle {
-    background-color: transparent;    
+    background-color: transparent;
     border: none;
     outline: none !important;
     transform: rotate(0deg);
@@ -153,24 +156,64 @@ ul, li {
 }
 
 
-    .top-items {
-        display: flex;
-        flex-direction: row;
-        justify-items: center;
-        justify-content: space-evenly;
-    }
 
-.number {
-    display: inline-flex;
-    border: 1px solid #ff0000;
-    background-color: #ff0000;
-    border-radius: 5px;
-    padding: 1px 5px;
-    margin-left: 3px;
-    font-weight: bold;
+.top-items {
+    display: flex;
+    flex-direction: row;
+    justify-items: center;
+    justify-content: space-between;
 }
 
+    .top-items li {
+        padding: 15px;
+        border: none !important;
+        /*word-wrap: break-word;*/
+    }
 
+        .top-items li:hover {
+            background: transparent !important;
+        }
+
+
+        .number {
+            display: inline-flex;
+            border: 1px solid #ff0000;
+            background-color: #ff0000;
+            border-radius: 5px;
+            padding: 1px 5px;
+            margin-left: 3px;
+            font-weight: bold;
+        }
+
+        .profile {
+            cursor: auto;
+        }
+
+        .drop-list {
+            margin-top: 0.5rem;
+        }
+.refresher {
+    background-color: transparent !important;
+    border: none;
+    outline: none !important;
+}
+
+.spin {
+    animation: spin 1s ease-in-out infinite;
+    -webkit-animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+    to {
+        -webkit-transform: rotate(360deg);
+    }
+}
+
+@-webkit-keyframes spin {
+    to {
+        -webkit-transform: rotate(360deg);
+    }
+}
 
 
 @media screen and (min-width: 768px) {
@@ -185,20 +228,11 @@ ul, li {
     }
 
 
-    .top-items {
-        display: flex;
-        flex-direction: row;
-        }
 
-        .top-items li {
-            padding: 15px;
-            word-wrap: break-word;
-        }
 
     .logout {
         margin-top: 20px;
         padding-left: 140%;
-        
     }
 }
 
@@ -207,8 +241,8 @@ ul, li {
     .sidebar {
         bottom: -1%;
         width: 100%;
-        height: 8rem;
-        overflow-x: scroll;
+        height: 5rem;
+        overflow-x: auto;
         overflow-y: hidden;
     }
 
@@ -217,6 +251,7 @@ ul, li {
     }
 
     .navigation {
+        padding: 0;
         display: flex;
         flex-direction: row;
         justify-content: space-between;
@@ -256,19 +291,13 @@ ul, li {
         grid-column: 1/span 3;
         grid-row: 2 / span 8;
         padding: 25px;
-        margin-top: 10rem;
+        margin-top: 1rem;
         margin-bottom: 10rem;
     }
 
-    .top {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        margin: auto;
-    }
-
+ 
     .top-menu {
-        height: 15rem;
+        height: 100%;
     }
 
     #top-menu {
@@ -278,11 +307,10 @@ ul, li {
     }
 
     .user {
-        
         word-wrap: break-word;
     }
 
- 
+
     .top-toggle {
         display: block;
         border: none;
@@ -302,22 +330,33 @@ ul, li {
     }
 
     .top-menu-add {
-        height: 150px;
+        height: 100%;
     }
 
     .top-items {
         display: flex;
         flex-direction: column;
-        justify-content: space-evenly;
-        flex-wrap: wrap;
         margin: auto;
     }
+
+    .top-items li{
+        padding: 0;
+
+    }
+    .nav-item-hidden {
+        display: none;
+    }
+
+    .drop-list p{
+        text-align: center;
+        padding: 0;
+    }
+
 
     .input p {
         text-align: center;
     }
-
-    }
+}
 
 
 /*Clients Page*/
@@ -664,4 +703,3 @@ ul, li {
     flex-direction: row;
     justify-content: space-evenly;
 }
-

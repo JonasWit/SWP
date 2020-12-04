@@ -10,18 +10,7 @@
                     </li>
                 </ul>
                 <ul class="navigation ">
-                    <li class="nav-item ">
-                        <a class="nav-link profile">
-                            <i><img src="/Images/icons8-profile-36.png" /></i>
-                            <span class="@(showSidebar ? "link-text" : "text-hidden")">@MainStore.GetState().User.UserName</span>
-                        </a>
-                    </li>
-
-                    <li class="nav-item  @(MainStore.GetState().ActivePanel == LegalAppPanels.Calendar ? "" : "")">
-                        <a class="nav-link ">
-                            <i><img src="/Images/icons8-notification-36.png" /></i> <span class="@(showSidebar ? "link-text" : "text-hidden")">Przypomnienia</span><span class="number">2</span>
-                        </a>
-                    </li>
+             
                     <li class="nav-item @(MainStore.GetState().ActivePanel == LegalAppPanels.MyApp ? "active" : "") " @onclick="@(() => MainStore.SetActivePanel(LegalAppPanels.MyApp))">
                         <a class="nav-link ">
                             <i><img src="/Images/icons8-web-design-36.png" /></i>
@@ -74,25 +63,39 @@
                             <i><img src="/Images/icons8-filing-cabinet-36.png" /></i><span class="@(showSidebar ? "link-text" : "text-hidden")"> Archiwum</span>
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/Index">
-                            <i><img src="/Images/icons8-exit-36.png" /></i><span class="@(showSidebar ? "link-text" : "text-hidden")"> Wyloguj</span>
-                        </a>
-                    </li>
+                    
                 </ul>
             </nav>
 
-            <nav id="top-menu" class="@(!showTopNav ? "top-menu" : "top-menu-add")">
+            <nav id="top-menu" class="@(!showTopNav ? "" : "top-menu-add")">
                 <ul class="top-items">
-                    <li>
+                    <li class="drop-list">
                         <p>
                             <strong>Wybierz Klienta: </strong>
                         </p>
                     </li>
-                    <li>
+                    <li class="drop-list">
                         <p>
                             <Radzen.Blazor.RadzenDropDown AllowClear="true" TValue="string" AllowFiltering="true" Data="@MainStore.GetState().Clients" @bind-Value="MainStore.GetState().SelectedClientString" TextProperty="Name" ValueProperty="IdString" Change="@(args => MainStore.ActiveClientChange(args))" Style="width: 200px;" />
                         </p>
+                    </li>
+
+                    <li class="nav-item @(showTopNav ? "nav-item" : "nav-item-hidden")">
+                        <a class="nav-link profile">
+                            <i><img src="/Images/icons8-profile-36.png" /></i>
+                            <span class="link-text">@MainStore.GetState().User.UserName</span>
+                        </a>
+                    </li>
+
+                    <li class="nav-item  @(MainStore.GetState().ActivePanel == LegalAppPanels.Calendar ? "" : "") @(showTopNav ? "nav-item" : "nav-item-hidden")">
+                        <a class="nav-link ">
+                            <i><img src="/Images/icons8-notification-36.png" /></i> <span class="link-text">Przypomnienia</span><span class="number">2</span>
+                        </a>
+                    </li>
+                    <li class="nav-item @(showTopNav ? "nav-item" : "nav-item-hidden")">
+                        <a class="nav-link" href="/Index">
+                            <i><img src="/Images/icons8-exit-36.png" /></i><span class="link-text"> Wyloguj</span>
+                        </a>
                     </li>
 
                 </ul>

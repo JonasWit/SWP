@@ -14,7 +14,8 @@ else
                                                                                Data="@MainStore.GetState().User.RelatedUsers" TextProperty="UserName" ValueProperty="Id" Style="width: 200px; padding: 0" Change="@(args => SelectedUserChange(args))" />
             </div>
             <div class="list-row">
-                <RadzenButton ButtonStyle="ButtonStyle.Secondary" Icon="refresh" Style="margin-bottom: 20px; width: 100px" Click="MyAppStore.RefreshSore"></RadzenButton>
+                <button @onclick="MyAppStore.RefreshSore" class="refresher spin" ><img src="Images/icons8-synchronize-40.png"/></button>
+                @*<RadzenButton ButtonStyle="ButtonStyle.Secondary" Icon="refresh" Style="margin-bottom: 20px; width: 100px" Click="MyAppStore.RefreshSore"></RadzenButton>*@
             </div>
         </div>
 

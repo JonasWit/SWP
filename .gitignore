@@ -345,3 +345,4 @@ ASALocalRun/
 
 # BeatPulse healthcheck temp database
 healthchecksdb
+/SWP.UI/wwwroot/portal-content/news-images

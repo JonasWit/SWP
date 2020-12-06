@@ -78,7 +78,7 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Application
 
         public void DismissErrorPage()
         {
-            _state.ActivePanel = AdminAppPanels.Application;
+            _state.ActivePanel = AdminAppPanels.Log;
             BroadcastStateChange();
         }
 

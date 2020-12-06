@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace SWP.UI.Components.AdminBlazorComponents
 {
-    public partial class AdminDatabase : IDisposable
+    public partial class AdminCommunication : IDisposable
     {
         [Inject]
         public DatabaseStore DatabaseStore { get; set; }

@@ -9,8 +9,8 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Enums
     {
         Users = 0,
         Error = 1,
-        Database = 2,
-        Application = 3,
+        Communication = 2,
+        Log = 3,
         Portal = 4
     }
 }

@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SWP.UI.BlazorApp.AdminApp.Stores.ApplicationsOptions
+namespace SWP.UI.BlazorApp.AdminApp.Stores.AdminLog
 {
     public enum LogRecordType
     {
@@ -34,12 +34,12 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.ApplicationsOptions
     }
 
     [UIScopedService]
-    public class ApplicationsOptionsStore : StoreBase<ApplicationOptionsState>
+    public class LogStore : StoreBase<ApplicationOptionsState>
     {
         ApplicationStore AppStore => _serviceProvider.GetRequiredService<ApplicationStore>();
 
-        public ApplicationsOptionsStore(IServiceProvider serviceProvider, IActionDispatcher actionDispatcher, NotificationService notificationService)
-            : base(serviceProvider, actionDispatcher, notificationService) 
+        public LogStore(IServiceProvider serviceProvider, IActionDispatcher actionDispatcher, NotificationService notificationService)
+            : base(serviceProvider, actionDispatcher, notificationService)
         {
 
         }
@@ -98,7 +98,7 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.ApplicationsOptions
             }
             finally
             {
-                Loading = false;     
+                Loading = false;
             }
         }
 

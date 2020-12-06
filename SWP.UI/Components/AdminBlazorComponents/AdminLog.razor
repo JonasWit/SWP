@@ -5,7 +5,7 @@
             <h3>Choose Log Levels</h3>
         </div>
         <div class="columns is-0 is-centered mb-6">
-            <RadzenSelectBar @bind-Value="ApplicationsOptionsStore.GetState().SelectedLogRecordTypes" TValue="IEnumerable<int>" Change="@((args) => ApplicationsOptionsStore.SelectedLogTypesChange(args))" Multiple="true">
+            <RadzenSelectBar @bind-Value="Store.GetState().SelectedLogRecordTypes" TValue="IEnumerable<int>" Change="@((args) => Store.SelectedLogTypesChange(args))" Multiple="true">
                 <Items>
                     @foreach (var level in LogLevels)
                     {
@@ -21,7 +21,7 @@
                         <h3>Start Date</h3>
                     </div>
                     <div class="columns is-0 is-centered">
-                        <RadzenDatePicker TValue="DateTime?" ShowTime="true" ShowSeconds="true" HoursStep="1" MinutesStep="5" SecondsStep="10" DateFormat="MM/dd/yyyy HH:mm" Change=@((args) => ApplicationsOptionsStore.LogStartDateChange(args)) />
+                        <RadzenDatePicker TValue="DateTime?" ShowTime="true" ShowSeconds="true" HoursStep="1" MinutesStep="5" SecondsStep="10" DateFormat="MM/dd/yyyy HH:mm" Change=@((args) => Store.LogStartDateChange(args)) />
                     </div>
                 </div>
             </div>
@@ -31,34 +31,34 @@
                         <h3>End Date</h3>
                     </div>
                     <div class="columns is-0 is-centered">
-                        <RadzenDatePicker TValue="DateTime?" ShowTime="true" ShowSeconds="true" HoursStep="1" MinutesStep="5" SecondsStep="10" DateFormat="MM/dd/yyyy HH:mm" Change=@((args) =>  ApplicationsOptionsStore.LogEndDateChange(args)) />
+                        <RadzenDatePicker TValue="DateTime?" ShowTime="true" ShowSeconds="true" HoursStep="1" MinutesStep="5" SecondsStep="10" DateFormat="MM/dd/yyyy HH:mm" Change=@((args) =>  Store.LogEndDateChange(args)) />
                     </div>
                 </div>
             </div>
         </div>
         <div class="columns is-0 is-centered">
-            <RadzenButton ButtonStyle="ButtonStyle.Secondary" Click="@ApplicationsOptionsStore.RefreshLogs">Refresh Log Data</RadzenButton>
+            <RadzenButton ButtonStyle="ButtonStyle.Secondary" Click="@Store.RefreshLogs">Refresh Log Data</RadzenButton>
         </div>
     </RadzenCard>
 </div>
 
 <div class="section">
-    @if (!ApplicationsOptionsStore.GetState().Loading)
+    @if (!Store.GetState().Loading)
     {
         <RadzenCard>
             <div class="columns is-0 is-centered">
                 <h2>Log Records</h2>
             </div>
             <div class="columns is-0 is-centered">
-                <RadzenGrid @ref="ApplicationsOptionsStore.GetState().LogGrid"
+                <RadzenGrid @ref="Store.GetState().LogGrid"
                             AllowFiltering="true"
                             AllowPaging="true"
                             PageSize="15"
                             AllowSorting="true"
-                            Data="@ApplicationsOptionsStore.GetState().LogRecords"
+                            Data="@Store.GetState().LogRecords"
                             TItem="@Log"
-                            Value="@ApplicationsOptionsStore.GetState().SelectedLogRecord"
-                            RowSelect="@(args => ApplicationsOptionsStore.RowSelected(args))">
+                            Value="@Store.GetState().SelectedLogRecord"
+                            RowSelect="@(args => Store.RowSelected(args))">
                     <Columns>
                         <RadzenGridColumn TItem="Log" Property="Id" Title="Id" Width="50px" />
                         <RadzenGridColumn TItem="Log" Property="Message" Title="Message" Width="200px"/>
@@ -70,7 +70,7 @@
                         <RadzenGridColumn TItem="Log" Property="LogEvent" Title="Log Event" />
                         <RadzenGridColumn TItem="Log" Context="um" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="50px">
                             <Template Context="lr">
-                                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@(async () => await ApplicationsOptionsStore.DeleteLogRecord(lr))">
+                                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@(async () => await Store.DeleteLogRecord(lr))">
                                 </RadzenButton>
                             </Template>
                         </RadzenGridColumn>
@@ -87,7 +87,7 @@
     }
 </div>
 
-@if (ApplicationsOptionsStore.GetState().SelectedLogRecord != null)
+@if (Store.GetState().SelectedLogRecord != null)
 {
     <div class="section">
         <RadzenCard>
@@ -98,7 +98,7 @@
                         <h2>Time Stamp</h2>
                     </div>
                     <div class="columns is-0 is-centered mb-4">
-                        <p>@ApplicationsOptionsStore.GetState().SelectedLogRecord.TimeStamp</p>
+                        <p>@Store.GetState().SelectedLogRecord.TimeStamp</p>
                     </div>
                 </div>
                 <div class="column is-half">
@@ -106,7 +106,7 @@
                         <h2>Level</h2>
                     </div>
                     <div class="columns is-0 is-centered mb-4">
-                        <p>@ApplicationsOptionsStore.GetState().SelectedLogRecord.Level</p>
+                        <p>@Store.GetState().SelectedLogRecord.Level</p>
                     </div>
                 </div>
 
@@ -119,7 +119,7 @@
                 <h2>Message</h2>
             </div>
             <div class="columns is-0 is-centered mb-4">
-                <p>@ApplicationsOptionsStore.GetState().SelectedLogRecord.Message</p>
+                <p>@Store.GetState().SelectedLogRecord.Message</p>
             </div>
         </RadzenCard>
     </div>
@@ -129,7 +129,7 @@
                 <h2>Message Template</h2>
             </div>
             <div class="columns is-0 is-centered mb-4">
-                <p>@ApplicationsOptionsStore.GetState().SelectedLogRecord.MessageTemplate</p>
+                <p>@Store.GetState().SelectedLogRecord.MessageTemplate</p>
             </div>
         </RadzenCard>
     </div>
@@ -139,7 +139,7 @@
                 <h2>Properties</h2>
             </div>
             <div class="columns is-0 is-centered mb-4">
-                <p>@ApplicationsOptionsStore.GetState().SelectedLogRecord.Properties</p>
+                <p>@Store.GetState().SelectedLogRecord.Properties</p>
             </div>
         </RadzenCard>
     </div>
@@ -149,7 +149,7 @@
                 <h2>Exception</h2>
             </div>
             <div class="columns is-0 is-centered mb-4">
-                <p>@ApplicationsOptionsStore.GetState().SelectedLogRecord.Exception</p>
+                <p>@Store.GetState().SelectedLogRecord.Exception</p>
             </div>
         </RadzenCard>
     </div>
@@ -159,7 +159,7 @@
                 <h2>Log Event</h2>
             </div>
             <div class="columns is-0 is-centered mb-4">
-                <p>@ApplicationsOptionsStore.GetState().SelectedLogRecord.LogEvent</p>
+                <p>@Store.GetState().SelectedLogRecord.LogEvent</p>
             </div>
         </RadzenCard>
     </div>

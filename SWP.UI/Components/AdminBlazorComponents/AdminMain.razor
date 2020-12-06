@@ -8,17 +8,17 @@
     </div>
     <div class="navbar-menu @(hamburgerNavActive ? "is-active" : "")">
         <div class="navbar-start">
+            <a class="navbar-item @(ApplicationStore.GetState().ActivePanel == AdminAppPanels.Portal ? "is-active" : "")" @onclick="@(() => ApplicationStore.SetActivePanel(AdminAppPanels.Portal))">
+                Portal
+            </a>
             <a class="navbar-item @(ApplicationStore.GetState().ActivePanel == AdminAppPanels.Users ? "is-active" : "")" @onclick="@(() => ApplicationStore.SetActivePanel(AdminAppPanels.Users))">
                 Users
             </a>
-            <a class="navbar-item @(ApplicationStore.GetState().ActivePanel == AdminAppPanels.Database ? "is-active" : "")" @onclick="@(() => ApplicationStore.SetActivePanel(AdminAppPanels.Database))">
-                Database
+            <a class="navbar-item @(ApplicationStore.GetState().ActivePanel == AdminAppPanels.Communication ? "is-active" : "")" @onclick="@(() => ApplicationStore.SetActivePanel(AdminAppPanels.Communication))">
+                Communication
             </a>
-            <a class="navbar-item @(ApplicationStore.GetState().ActivePanel == AdminAppPanels.Application ? "is-active" : "")" @onclick="@(() => ApplicationStore.SetActivePanel(AdminAppPanels.Application))">
-                Application
-            </a>
-            <a class="navbar-item @(ApplicationStore.GetState().ActivePanel == AdminAppPanels.Portal ? "is-active" : "")" @onclick="@(() => ApplicationStore.SetActivePanel(AdminAppPanels.Portal))">
-                Portal
+            <a class="navbar-item @(ApplicationStore.GetState().ActivePanel == AdminAppPanels.Log ? "is-active" : "")" @onclick="@(() => ApplicationStore.SetActivePanel(AdminAppPanels.Log))">
+                Log
             </a>
         </div>
         <div class="navbar-end">
@@ -37,11 +37,11 @@
             case AdminAppPanels.Users:
                 <AdminUsers />
                 break;
-            case AdminAppPanels.Database:
-                <AdminDatabase />
+            case AdminAppPanels.Communication:
+                <AdminCommunication />
                 break;
-            case AdminAppPanels.Application:
-                <AdminApplications />
+            case AdminAppPanels.Log:
+                <AdminLog />
                 break;
             case AdminAppPanels.Error:
                 <AdminError />

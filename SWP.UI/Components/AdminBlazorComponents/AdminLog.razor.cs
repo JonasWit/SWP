@@ -1,25 +1,25 @@
 ﻿using Microsoft.AspNetCore.Components;
+using SWP.UI.BlazorApp.AdminApp.Stores.AdminLog;
 using SWP.UI.BlazorApp.AdminApp.Stores.Application;
-using SWP.UI.BlazorApp.AdminApp.Stores.ApplicationsOptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace SWP.UI.Components.AdminBlazorComponents
 {
-    public partial class AdminApplications : IDisposable
+    public partial class AdminLog : IDisposable
     {
         [Inject]
         public ApplicationStore ApplicationStore { get; set; }
         [Inject]
-        public ApplicationsOptionsStore ApplicationsOptionsStore { get; set; }
+        public LogStore Store { get; set; }
 
         public IEnumerable<LogRecordType> LogLevels => Enum.GetValues(typeof(LogRecordType)).Cast<LogRecordType>();
 
         public void Dispose()
         {
             ApplicationStore.RemoveStateChangeListener(UpdateView);
-            ApplicationsOptionsStore.RemoveStateChangeListener(UpdateView);
+            Store.RemoveStateChangeListener(UpdateView);
         }
 
         private void UpdateView() => StateHasChanged();
@@ -28,8 +28,8 @@ namespace SWP.UI.Components.AdminBlazorComponents
         {
             base.OnInitialized();
             ApplicationStore.AddStateChangeListener(UpdateView);
-            ApplicationsOptionsStore.AddStateChangeListener(UpdateView);
-            ApplicationsOptionsStore.Initialize();
+            Store.AddStateChangeListener(UpdateView);
+            Store.Initialize();
         }
     }
 }

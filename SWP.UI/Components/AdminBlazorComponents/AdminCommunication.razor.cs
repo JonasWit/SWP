@@ -31,6 +31,8 @@ namespace SWP.UI.Components.AdminBlazorComponents
 
         private void Send() => ActionDispatcher.Dispatch(new SendAction());
 
+        private void RecipientsSwitchChange() => ActionDispatcher.Dispatch(new RecipientsSwitchChangeAction());
+
         #endregion
 
     }

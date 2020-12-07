@@ -4,7 +4,33 @@
             <h2>Recipients</h2>
         </div>
 
+        <div class="columns is-vcentered is-centered">
+            <div class="column is-half">
+                <div class="columns is-0 is-centered">
 
+
+                </div>
+            </div>
+            <div class="column is-half">
+                <div class="columns is-vcentered is-centered">
+                    <div class="rows">
+                        <div class="row is-full">
+                            <h3>Only Main Users</h3>
+                            <RadzenSwitch @bind-Value=@Store.GetState().MainUsersOnly Style="margin-bottom: 10px" Change="RecipientsSwitchChange"/>
+                        </div>
+                        <div class="row is-full">
+                            <h3>Only Related Users</h3>
+                            <RadzenSwitch @bind-Value=@Store.GetState().RelatedUsersOnly Style="margin-bottom: 10px" Change="RecipientsSwitchChange" />
+                        </div>
+                        <div class="row is-full">
+                            <h3>Only Legal App Users</h3>
+                            <RadzenSwitch @bind-Value=@Store.GetState().LegalAppUsersOnly Style="margin-bottom: 10px" Change="RecipientsSwitchChange" />
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
     </RadzenCard>
 </div>
 
@@ -14,7 +40,7 @@
             <h2>Title</h2>
         </div>
         <div class="columns is-0 is-centered mb-6">
-            <RadzenTextBox style="width: 100%;" @bind-Value=@Store.GetState().Title/>
+            <RadzenTextBox style="width: 100%;" @bind-Value=@Store.GetState().Title />
         </div>
         <div class="columns is-0 is-centered">
             <h2>Body</h2>

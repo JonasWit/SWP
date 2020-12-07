@@ -16,6 +16,10 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Communication
         public string Body { get; set; }
         public string Title { get; set; }
         public List<string> Recipients { get; set; }
+
+        public bool MainUsersOnly { get; set; } = false;
+        public bool RelatedUsersOnly { get; set; } = false;
+        public bool LegalAppUsersOnly { get; set; } = false;
     }
 
     [UIScopedService]
@@ -35,9 +39,26 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Communication
                 case SendAction.Send:
                     await Send();
                     break;
+                case RecipientsSwitchChangeAction.RecipientsSwitchChange:
+                    RecipientsSwitchChange();
+                    break;
                 default:
                     break;
             }
+        }
+
+        public void RecipientsSwitchChange()
+        {
+            bool mainUsers = _state.MainUsersOnly;
+            bool relatedUsers = _state.RelatedUsersOnly;
+
+            if (_state.MainUsersOnly) relatedUsers = false;
+            if (_state.RelatedUsersOnly) mainUsers = false;
+
+            _state.MainUsersOnly = mainUsers;
+            _state.RelatedUsersOnly = relatedUsers;
+
+            BroadcastStateChange();
         }
 
         public async Task Send()
@@ -73,7 +94,7 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Communication
 
         public override void RefreshSore()
         {
-      
+            
         }
     }
 }

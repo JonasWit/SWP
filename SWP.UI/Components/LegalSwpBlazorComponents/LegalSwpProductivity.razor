@@ -175,24 +175,29 @@ else
                     <RadzenGridColumn TItem="TimeRecordViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="100px">
                         <Template Context="r">
                             <RadzenButton Icon="edit" Size="ButtonSize.Small" Click="@(args => EditTimeRecordRow(r))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Edytuj", Style = Gvm.ToolTipStyle }))">
+                                Edytuj
                             </RadzenButton>
                         </Template>
                         <EditTemplate Context="r">
                             <RadzenButton Icon="save" Size="ButtonSize.Small" Click="@((args) => SaveTimeRecordRow(r))">
+                                Zapisz
                             </RadzenButton>
                             <RadzenButton Icon="cancel" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Success" Click="@((args) => CancelTimeRecordEdit(r))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Anuluj", Style = Gvm.ToolTipStyle }))">
+                                Anuluj
                             </RadzenButton>
                         </EditTemplate>
                     </RadzenGridColumn>
-                    <RadzenGridColumn TItem="TimeRecordViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="50px">
+                    <RadzenGridColumn TItem="TimeRecordViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="55px">
                         <Template Context="r">
                             <RadzenButton ButtonStyle="ButtonStyle.Success" Icon="monetization_on" Size="ButtonSize.Small" Click="@((args) => AddRecordRowToCashMovements(r))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Dodaj do rozliczenia", Style = Gvm.ToolTipStyle }))">
+                                Dodaj
                             </RadzenButton>
                         </Template>
                     </RadzenGridColumn>
                     <RadzenGridColumn TItem="TimeRecordViewModel" Context="order" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="50px">
                         <Template Context="r">
-                            <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@((args) => DeleteTimeRecordRow(r))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Zanknij", Style = Gvm.ToolTipStyle }))">
+                            <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@((args) => DeleteTimeRecordRow(r))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Usuń", Style = Gvm.ToolTipStyle }))">
+                                Usuń
                             </RadzenButton>
                         </Template>
                         <EditTemplate Context="r">

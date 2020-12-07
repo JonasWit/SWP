@@ -94,18 +94,22 @@ else
                     <RadzenGridColumn TItem="ClientJobViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="100px">
                         <Template Context="job">
                             <RadzenButton Icon="edit" Size="ButtonSize.Small" Click="@(args => EditClientJobRow(job))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Edytuj", Style = Gvm.ToolTipStyle }))">
+                                Edytuj
                             </RadzenButton>
                         </Template>
                         <EditTemplate Context="job">
                             <RadzenButton Icon="save" Size="ButtonSize.Small" Click="@((args) => SaveClientJobRow(job))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Zapisz", Style = Gvm.ToolTipStyle }))">
+                                Zapisz
                             </RadzenButton>
                             <RadzenButton Icon="cancel" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Success" Click="@((args) => CancelClientJobEdit(job))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Anuluj", Style = Gvm.ToolTipStyle }))">
+                                Anuluj
                             </RadzenButton>
                         </EditTemplate>
                     </RadzenGridColumn>
-                    <RadzenGridColumn TItem="ClientJobViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="50px">
+                    <RadzenGridColumn TItem="ClientJobViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="100px">
                         <Template Context="job">
                             <RadzenButton ButtonStyle="ButtonStyle.Warning" Icon="archive" Size="ButtonSize.Small" Click="@((args) => ArchivizeClientJob(job))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Archiwizuj", Style = Gvm.ToolTipStyle }))">
+                                Archiwizuj
                             </RadzenButton>
                         </Template>
                         <EditTemplate Context="job">
@@ -113,7 +117,8 @@ else
                     </RadzenGridColumn>
                     <RadzenGridColumn TItem="ClientJobViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="50px">
                         <Template Context="job">
-                            <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@((args) => DeleteClientJobRow(job))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Zamknij", Style = Gvm.ToolTipStyle }))">
+                            <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@((args) => DeleteClientJobRow(job))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Usuń", Style = Gvm.ToolTipStyle }))">
+                                Usuń
                             </RadzenButton>
                         </Template>
                         <EditTemplate Context="job">

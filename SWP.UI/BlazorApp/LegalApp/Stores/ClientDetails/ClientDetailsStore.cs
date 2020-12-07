@@ -110,8 +110,18 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.ClientDetails
 
         #region Contact
 
-        private void RefreshSelectedContact() => _state.SelectedContact = _state.ContactPeople.FirstOrDefault(x => x.Id == _state.SelectedContact.Id);
-
+        private void RefreshSelectedContact()
+        {
+            if (_state.SelectedContact != null && _state.ContactPeople.Any(x => x.Id == _state.SelectedContact.Id))
+            {
+                _state.SelectedContact = _state.ContactPeople.FirstOrDefault(x => x.Id == _state.SelectedContact.Id);
+            }
+            else
+            {
+                _state.SelectedContact = null;
+            }
+        }
+           
         private void EditContactRow(ContactPersonViewModel contact) => _state.ContactsGrid.EditRow(contact);
 
         private async Task OnUpdateContactRow(ContactPersonViewModel contact)

@@ -31,7 +31,7 @@ else
                         </div>
                         <RadzenTextArea Placeholder="Imię..." @bind-Value="ClientDetailsStore.GetState().NewContact.Name" style="@(Gvm.FormInputBoxWidth)" Name="Name" />
                         <RadzenRequiredValidator Component="Name" Text="Imię nie może być puste!" />
-                        <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Name" Style="position: absolute" />
+                        <div><RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Name" Style="position: absolute" /></div>
                     </div>
                     <div class="text">
                         <div class="label">
@@ -39,14 +39,14 @@ else
                         </div>
                         <RadzenTextArea Placeholder="Nazwisko..." @bind-Value="ClientDetailsStore.GetState().NewContact.Surname" style="@(Gvm.FormInputBoxWidth)" Name="Surname" />
                         <RadzenRequiredValidator Component="Surname" Text="Nazwisko nie może być puste!" style="width: 100%;" />
-                        <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Surname" Style="position: absolute" />
+                        <div><RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Surname" Style="position: absolute" /></div>
                     </div>
                     <div class="text">
                         <div class="label">
                             <RadzenLabel Text="Adres" />
                         </div>
                         <RadzenTextArea Placeholder="Adres..." @bind-Value="ClientDetailsStore.GetState().NewContact.Address" style="@(Gvm.FormInputBoxWidth)" Name="Address" />
-                        <RadzenLengthValidator Max="500" Text="Maksymalnie 500 znaków!" Component="Address" Style="position: absolute" />
+                        <div><RadzenLengthValidator Max="500" Text="Maksymalnie 500 znaków!" Component="Address" Style="position: absolute" /></div>
                     </div>
                 </div>
                 <div class="form">
@@ -55,14 +55,14 @@ else
                             <RadzenLabel Text="Telefon" />
                         </div>
                         <RadzenTextBox Placeholder="Telefon..." @bind-Value="ClientDetailsStore.GetState().NewContact.PhoneNumber" style="@(Gvm.FormInputBoxWidth)" Name="PhoneNumber1" />
-                        <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="PhoneNumber1" Style="position: absolute" />
+                        <div><RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="PhoneNumber1" Style="position: absolute" /></div>
                     </div>
                     <div class="text">
                         <div class="label">
                             <RadzenLabel Text="Telefon2" />
                         </div>
                         <RadzenTextBox Placeholder="Telefon..." @bind-Value="ClientDetailsStore.GetState().NewContact.AlternativePhoneNumber" style="@(Gvm.FormInputBoxWidth)" Name="PhoneNumber2" />
-                        <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="PhoneNumber2" Style="position: absolute" />
+                        <div><RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="PhoneNumber2" Style="position: absolute" /></div>
                     </div>
                     <div class="text">
                         <div class="label">
@@ -70,7 +70,7 @@ else
                         </div>
                         <RadzenTextBox Placeholder="Adres Email..." @bind-Value="ClientDetailsStore.GetState().NewContact.Email" style="@(Gvm.FormInputBoxWidth)" Name="Email" />
                         <RadzenEmailValidator Component="Email" Text="Nieprawidłowy adres Email!" />
-                        <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Email" Style="position: absolute" />
+                        <div><RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Email" Style="position: absolute" /></div>
                     </div>
                 </div>
                 <div class="form-btn">
@@ -93,7 +93,7 @@ else
                     <EditTemplate Context="contact">
                         <RadzenTextBox @bind-Value="contact.Name" Name="Name" Style="@(Gvm.FormInputBoxWidth)" />
                         <RadzenRequiredValidator Text="Inię nie może być puste!" Component="Name" Popup="true" />
-                        <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Name" Popup="true" />
+                      <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Name" Popup="true" />
                     </EditTemplate>
                 </RadzenGridColumn>
 
@@ -103,8 +103,8 @@ else
                     </Template>
                     <EditTemplate Context="contact">
                         <RadzenTextBox @bind-Value="contact.Surname" Name="Surname" Style="@(Gvm.FormInputBoxWidth)" />
-                        <RadzenRequiredValidator Text="Nazwosko nie może być puste!" Component="Surname" Popup="true" />
-                        <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Surname" Popup="true" />
+                        <RadzenRequiredValidator Text="Nazwisko nie może być puste!" Component="Surname" Popup="true" />
+                     <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Surname" Popup="true" />
                     </EditTemplate>
                 </RadzenGridColumn>
                 <RadzenGridColumn TItem="ContactPersonViewModel" Property="Email" Title="Email" Width="100px">
@@ -140,21 +140,25 @@ else
                     </EditTemplate>
                 </RadzenGridColumn>
 
-                <RadzenGridColumn TItem="ContactPersonViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center">
+                <RadzenGridColumn TItem="ContactPersonViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="100px">
                     <Template Context="c">
                         <RadzenButton Icon="edit" Size="ButtonSize.Small" Click="@(args => EditContactRow(c))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Edytuj", Style = Gvm.ToolTipStyle }))">
+                            Edytuj
                         </RadzenButton>
                     </Template>
                     <EditTemplate Context="c">
                         <RadzenButton Icon="save" Size="ButtonSize.Small" Click="@((args) => SaveContactRow(c))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Zapisz", Style = Gvm.ToolTipStyle }))">
+                            Zapisz
                         </RadzenButton>
                         <RadzenButton Icon="cancel" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Success" Click="@((args) => CancelContactEdit(c))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Anuluj", Style = Gvm.ToolTipStyle }))">
+                            Anuluj
                         </RadzenButton>
                     </EditTemplate>
                 </RadzenGridColumn>
-                <RadzenGridColumn TItem="ContactPersonViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center">
+                <RadzenGridColumn TItem="ContactPersonViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="80px">
                     <Template Context="c">
-                        <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@((args) => DeleteContactRow(c))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Zamknij", Style = Gvm.ToolTipStyle }))">
+                        <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@((args) => DeleteContactRow(c))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Usuń", Style = Gvm.ToolTipStyle }))">
+                            Usuń
                         </RadzenButton>
                     </Template>
                     <EditTemplate Context="client">

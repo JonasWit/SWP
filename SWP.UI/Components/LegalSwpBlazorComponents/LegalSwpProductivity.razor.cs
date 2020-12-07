@@ -85,6 +85,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
         {
             try
             {
+                //todo: call pdf service as transient here!
                 var legalTimeSheetReport = LegalTimeSheetReport;
 
                 var productivityRecords = new List<TimeRecordViewModel>();

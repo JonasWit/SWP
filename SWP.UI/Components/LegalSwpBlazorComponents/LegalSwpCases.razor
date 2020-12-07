@@ -418,21 +418,25 @@ else
                                         </EditTemplate>
                                     </RadzenGridColumn>
 
-                                    <RadzenGridColumn TItem="ContactPersonViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="80px">
+                                    <RadzenGridColumn TItem="ContactPersonViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="100px">
                                         <Template Context="c">
                                             <RadzenButton Icon="edit" Size="ButtonSize.Small" Click="@(args => EditContactRow(c))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Edytuj", Style = Gvm.ToolTipStyle }))">
+                                                Edytuj
                                             </RadzenButton>
                                         </Template>
                                         <EditTemplate Context="c">
                                             <RadzenButton Icon="save" Size="ButtonSize.Small" Click="@((args) => SaveContactRow(c))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Zapisz", Style = Gvm.ToolTipStyle }))">
+                                                Zapisz
                                             </RadzenButton>
                                             <RadzenButton Icon="cancel" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Success" Click="@((args) => CancelContactEdit(c))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Anuluj", Style = Gvm.ToolTipStyle }))">
+                                                Anuluj
                                             </RadzenButton>
                                         </EditTemplate>
                                     </RadzenGridColumn>
                                     <RadzenGridColumn TItem="ContactPersonViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="45px">
                                         <Template Context="c">
-                                            <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@((args) => DeleteContactRow(c))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Zamknij", Style = Gvm.ToolTipStyle }))">
+                                            <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@((args) => DeleteContactRow(c))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Usuń", Style = Gvm.ToolTipStyle }))">
+                                                Usuń
                                             </RadzenButton>
                                         </Template>
                                         <EditTemplate Context="client">

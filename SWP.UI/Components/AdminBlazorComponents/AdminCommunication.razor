@@ -4,7 +4,53 @@
             <h2>Recipients</h2>
         </div>
 
+        <div class="columns is-vcentered is-centered">
+            <div class="column is-half">
+                <div class="columns is-0 is-centered">
+                    <RadzenListBox AllowFiltering="true" 
+                                   FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" 
+                                   @bind-Value=@Store.GetState().SelectedRecipients 
+                                   Multiple="true" 
+                                   Data=@Store.GetState().Recipients
+                                   TextProperty="DisplayName" 
+                                   ValueProperty="Id" 
+                                   Style="height:200px" />
+                </div>
+            </div>
+            <div class="column is-half">
+                <div class="columns is-vcentered is-centered">
+                    <div class="rows">
+                        <div class="row is-full mb-6">
+                            <h3>User Type</h3>
+                            <RadzenSelectBar @bind-Value=@Store.GetState().UserTypes TValue="IEnumerable<int>" Multiple="true">
+                                <Items>
+                                    @foreach (UserStatus item in Enum.GetValues(typeof(UserStatus)))
+                                    {
+                                        <RadzenSelectBarItem Text="@item.ToString()" Value="(int)item" />
+                                    }
+                                </Items>
+                            </RadzenSelectBar>
+                        </div>
+                        <div class="row is-full mb-6">
+                            <h3>Application Users</h3>
+                            <RadzenSelectBar @bind-Value=@Store.GetState().ApplicationTypes TValue="IEnumerable<int>" Multiple="true">
+                                <Items>
+                                    @foreach (ApplicationType item in Enum.GetValues(typeof(ApplicationType)))
+                                    {
+                                        <RadzenSelectBarItem Text="@item.ToString()" Value="(int)item" />
+                                    }
+                                </Items>
+                            </RadzenSelectBar>
+                        </div>
+                        <div class="row is-full">
+                            <RadzenButton Text="Filter" Click="FilterRecipients" ButtonStyle="ButtonStyle.Secondary" />
+                            <RadzenButton Text="Clear Selection" Click="ClearSelection" ButtonStyle="ButtonStyle.Warning" />
+                        </div>
+                    </div>
 
+                </div>
+            </div>
+        </div>
     </RadzenCard>
 </div>
 
@@ -14,7 +60,7 @@
             <h2>Title</h2>
         </div>
         <div class="columns is-0 is-centered mb-6">
-            <RadzenTextBox style="width: 100%;" @bind-Value=@Store.GetState().Title/>
+            <RadzenTextBox style="width: 100%;" @bind-Value=@Store.GetState().Title />
         </div>
         <div class="columns is-0 is-centered">
             <h2>Body</h2>

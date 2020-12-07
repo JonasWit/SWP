@@ -1,3 +1,4 @@
-﻿body {
-
+﻿.rows {
+    display: flex;
+    flex-direction: column;
 }

@@ -20,18 +20,26 @@ namespace SWP.UI.Components.AdminBlazorComponents
             Store.RemoveStateChangeListener(UpdateView);
         }
 
-        private void UpdateView() => StateHasChanged();
+        private async void UpdateView()
+        {
+            await Store.GetRecipients();
+            StateHasChanged();
+        }
 
-        protected override void OnInitialized()
+        protected override async Task OnInitializedAsync()
         {
             Store.AddStateChangeListener(UpdateView);
+            await Store.GetRecipients();
         }
 
         #region Actions
 
         private void Send() => ActionDispatcher.Dispatch(new SendAction());
 
-        #endregion
+        private void FilterRecipients() => ActionDispatcher.Dispatch(new FilterAction());
 
+        private void ClearSelection() => ActionDispatcher.Dispatch(new ClearSelectionAction());
+
+        #endregion
     }
 }

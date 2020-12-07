@@ -73,7 +73,7 @@ namespace SWP.UI
                 options.MinimumSameSitePolicy = SameSiteMode.Lax;
             });
 
-            services.AddRazorPages();
+            services.AddRazorPages().AddRazorRuntimeCompilation();
             services.AddApplicationServices();
             services.AddDatabaseDeveloperPageExceptionFilter();
         }

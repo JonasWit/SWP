@@ -11,7 +11,9 @@ namespace SWP.Domain.Enums
 
     public enum UserStatus
     { 
-        RootClient = 0
+        RootClient = 0,
+        Default = 1,
+        Undefined = -1
     }
 
     public enum RoleType

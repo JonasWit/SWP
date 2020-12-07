@@ -43,7 +43,6 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Productivity
         }
     }
 
-
     [UIScopedService]
     public class ProductivityStore : StoreBase<ProductivityState>
     {

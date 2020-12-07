@@ -12,7 +12,7 @@
 
 
 #My ignorables
-wwwroot/DownloadableFiles/
+wwwroot/DownloadableFiles/*.*
 wwwroot/portal-content/news-images/*.*
 *.exe
 appsettings.json

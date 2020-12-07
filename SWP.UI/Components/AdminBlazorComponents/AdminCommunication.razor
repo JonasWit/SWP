@@ -20,17 +20,31 @@
             <div class="column is-half">
                 <div class="columns is-vcentered is-centered">
                     <div class="rows">
-                        <div class="row is-full">
-                            <h3>Only Main Users</h3>
-                            <RadzenSwitch @bind-Value=@Store.GetState().MainUsersOnly Style="margin-bottom: 10px" Change="RecipientsSwitchChange"/>
+                        <div class="row is-full mb-6">
+                            <h3>User Type</h3>
+                            <RadzenSelectBar @bind-Value=@Store.GetState().UserTypes TValue="IEnumerable<int>" Multiple="true">
+                                <Items>
+                                    @foreach (UserStatus item in Enum.GetValues(typeof(UserStatus)))
+                                    {
+                                        <RadzenSelectBarItem Text="@item.ToString()" Value="(int)item" />
+                                    }
+                                </Items>
+                            </RadzenSelectBar>
+                        </div>
+                        <div class="row is-full mb-6">
+                            <h3>Application Users</h3>
+                            <RadzenSelectBar @bind-Value=@Store.GetState().ApplicationTypes TValue="IEnumerable<int>" Multiple="true">
+                                <Items>
+                                    @foreach (ApplicationType item in Enum.GetValues(typeof(ApplicationType)))
+                                    {
+                                        <RadzenSelectBarItem Text="@item.ToString()" Value="(int)item" />
+                                    }
+                                </Items>
+                            </RadzenSelectBar>
                         </div>
                         <div class="row is-full">
-                            <h3>Only Related Users</h3>
-                            <RadzenSwitch @bind-Value=@Store.GetState().RelatedUsersOnly Style="margin-bottom: 10px" Change="RecipientsSwitchChange" />
-                        </div>
-                        <div class="row is-full">
-                            <h3>Only Legal App Users</h3>
-                            <RadzenSwitch @bind-Value=@Store.GetState().LegalAppUsersOnly Style="margin-bottom: 10px" Change="RecipientsSwitchChange" />
+                            <RadzenButton Text="Filter" Click="FilterRecipients" ButtonStyle="ButtonStyle.Secondary" />
+                            <RadzenButton Text="Clear Selection" Click="ClearSelection" ButtonStyle="ButtonStyle.Warning" />
                         </div>
                     </div>
 

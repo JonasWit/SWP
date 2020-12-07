@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Radzen;
 using SWP.Domain.Enums;
 using SWP.UI.BlazorApp.AdminApp.Stores.Application;
@@ -20,10 +21,8 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Communication
 
         public List<Recipient> Recipients { get; set; } = new List<Recipient>();
         public IEnumerable<string> SelectedRecipients { get; set; }
-
-        public bool MainUsersOnly { get; set; } = false;
-        public bool RelatedUsersOnly { get; set; } = false;
-        public bool LegalAppUsersOnly { get; set; } = false;
+        public IEnumerable<int> UserTypes { get; set; }
+        public IEnumerable<int> ApplicationTypes { get; set; }
     }
 
     public class Recipient
@@ -36,21 +35,23 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Communication
         public List<ApplicationType> AppClaims { get; set; } = new List<ApplicationType>();
 
         public string ListApps => AppClaims.Count != 0 ? string.Join(", ", AppClaims.Select(x => x.ToString())) : "No Apps";
-
         public string DisplayName => $"{UserName} [Status: {Status}] [Apps: {ListApps}]"; 
     }
 
     [UIScopedService]
     public class CommunicationStore : StoreBase<CommunicationState>
     {
+        private readonly ILogger<CommunicationStore> _logger;
+
         StatusBarStore StatusBarStore => _serviceProvider.GetRequiredService<StatusBarStore>();
         UserManager<IdentityUser> UserManager => _serviceProvider.GetService<UserManager<IdentityUser>>();
         ApplicationStore AppStore => _serviceProvider.GetRequiredService<ApplicationStore>();
 
-        public CommunicationStore(IServiceProvider serviceProvider, IActionDispatcher actionDispatcher, NotificationService notificationService)
+        public CommunicationStore(IServiceProvider serviceProvider, IActionDispatcher actionDispatcher, NotificationService notificationService, ILogger<CommunicationStore> logger)
             : base(serviceProvider, actionDispatcher, notificationService) 
         {
             RefreshSore();
+            _logger = logger;
         }
 
         protected override async void HandleActions(IAction action)
@@ -60,8 +61,11 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Communication
                 case SendAction.Send:
                     await Send();
                     break;
-                case RecipientsSwitchChangeAction.RecipientsSwitchChange:
-                    RecipientsSwitchChange();
+                case FilterAction.Filter:
+                    Filter();
+                    break;
+                case ClearSelectionAction.ClearSelection:
+                    ClearSelection();
                     break;
                 default:
                     break;
@@ -110,29 +114,25 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Communication
             }
         }
 
-        public void RecipientsSwitchChange()
+        public void Filter()
         {
-            bool mainUsers = _state.MainUsersOnly;
-            bool relatedUsers = _state.RelatedUsersOnly;
-
-            if (_state.MainUsersOnly) relatedUsers = false;
-            if (_state.RelatedUsersOnly) mainUsers = false;
-
-            _state.MainUsersOnly = mainUsers;
-            _state.RelatedUsersOnly = relatedUsers;
-
-            if (_state.MainUsersOnly)
-            {
-
-            }
+    
 
 
 
+               
+            BroadcastStateChange();
+        }
+
+        public void ClearSelection()
+        {
 
 
 
             BroadcastStateChange();
         }
+
+        private Recipient FindRecipient(string id) => _state.Recipients.FirstOrDefault(x => x.Id == id);
 
         public async Task Send()
         {
@@ -150,10 +150,13 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Communication
                     try
                     {
                         await emailSender.SendEmailAsync(recipient.Email, _state.Title, _state.Body);
+
+                        _logger.LogInformation("Seccess: Email sent to {email}", recipient.Email);
                         StatusBarStore.UpdateLogWindow($"Seccess: Email sent to {recipient.Email}");
                     }
                     catch (Exception ex)
                     {
+                        _logger.LogInformation("Exception: Failed to send email to {email}", recipient.Email);
                         StatusBarStore.UpdateLogWindow($"Exception: Failed to send email to {recipient.Email}");
                     }
                 }

@@ -24,7 +24,7 @@ namespace SWP.UI.Components.AdminBlazorComponents
         {
             await Store.GetRecipients();
             StateHasChanged();
-        }    
+        }
 
         protected override async Task OnInitializedAsync()
         {
@@ -36,9 +36,10 @@ namespace SWP.UI.Components.AdminBlazorComponents
 
         private void Send() => ActionDispatcher.Dispatch(new SendAction());
 
-        private void RecipientsSwitchChange() => ActionDispatcher.Dispatch(new RecipientsSwitchChangeAction());
+        private void FilterRecipients() => ActionDispatcher.Dispatch(new FilterAction());
+
+        private void ClearSelection() => ActionDispatcher.Dispatch(new ClearSelectionAction());
 
         #endregion
-
     }
 }

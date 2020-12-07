@@ -5,6 +5,7 @@ using SWP.Application.Logs;
 using SWP.Domain.Models.Portal;
 using SWP.UI.BlazorApp.AdminApp.Stores.AdminLog.Actions;
 using SWP.UI.BlazorApp.AdminApp.Stores.Application;
+using SWP.UI.BlazorApp.AdminApp.Stores.StatusLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,6 +39,8 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.AdminLog
     public class LogStore : StoreBase<ApplicationOptionsState>
     {
         ApplicationStore AppStore => _serviceProvider.GetRequiredService<ApplicationStore>();
+
+        StatusBarStore StatusBarStore => _serviceProvider.GetRequiredService<StatusBarStore>();
 
         public LogStore(IServiceProvider serviceProvider, IActionDispatcher actionDispatcher, NotificationService notificationService)
             : base(serviceProvider, actionDispatcher, notificationService)
@@ -115,6 +118,7 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.AdminLog
             }
             catch (Exception ex)
             {
+                StatusBarStore.UpdateLogWindow($"Exception: {ex.Message} - logged.");
                 ShowErrorPage(ex);
             }
             finally
@@ -144,6 +148,7 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.AdminLog
             }
             catch (Exception ex)
             {
+                StatusBarStore.UpdateLogWindow($"Exception: {ex.Message} - logged.");
                 ShowErrorPage(ex);
             }
         }

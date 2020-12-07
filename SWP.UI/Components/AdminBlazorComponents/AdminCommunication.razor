@@ -1,2 +1,60 @@
-﻿
-<h1>Communication</h1>
+﻿<div class="section">
+    <RadzenCard>
+        <div class="columns is-0 is-centered">
+            <h2>Recipients</h2>
+        </div>
+
+
+    </RadzenCard>
+</div>
+
+<div class="section">
+    <RadzenCard>
+        <div class="columns is-0 is-centered">
+            <h2>Title</h2>
+        </div>
+        <div class="columns is-0 is-centered mb-6">
+            <RadzenTextBox style="width: 100%;" @bind-Value=@Store.GetState().Title/>
+        </div>
+        <div class="columns is-0 is-centered">
+            <h2>Body</h2>
+        </div>
+        <div class="columns is-0 is-centered">
+            <RadzenHtmlEditor @bind-Value=@Store.GetState().Body style="height: 500px; margin-bottom: 1rem;" UploadUrl="upload/image">
+                <RadzenHtmlEditorUndo />
+                <RadzenHtmlEditorRedo />
+                <RadzenHtmlEditorSeparator />
+                <RadzenHtmlEditorBold />
+                <RadzenHtmlEditorItalic />
+                <RadzenHtmlEditorUnderline />
+                <RadzenHtmlEditorStrikeThrough />
+                <RadzenHtmlEditorSeparator />
+                <RadzenHtmlEditorAlignLeft />
+                <RadzenHtmlEditorAlignCenter />
+                <RadzenHtmlEditorAlignRight />
+                <RadzenHtmlEditorJustify />
+                <RadzenHtmlEditorSeparator />
+                <RadzenHtmlEditorIndent />
+                <RadzenHtmlEditorOutdent />
+                <RadzenHtmlEditorUnorderedList />
+                <RadzenHtmlEditorOrderedList />
+                <RadzenHtmlEditorSeparator />
+                <RadzenHtmlEditorColor />
+                <RadzenHtmlEditorBackground />
+                <RadzenHtmlEditorRemoveFormat />
+                <RadzenHtmlEditorSeparator />
+                <RadzenHtmlEditorSubscript />
+                <RadzenHtmlEditorSuperscript />
+                <RadzenHtmlEditorSeparator />
+                <RadzenHtmlEditorLink />
+                <RadzenHtmlEditorUnlink />
+                <RadzenHtmlEditorFontName />
+                <RadzenHtmlEditorFontSize />
+                <RadzenHtmlEditorFormatBlock />
+            </RadzenHtmlEditor>
+        </div>
+        <div class="columns is-0 is-centered">
+            <RadzenButton Click="Send">Send</RadzenButton>
+        </div>
+    </RadzenCard>
+</div>

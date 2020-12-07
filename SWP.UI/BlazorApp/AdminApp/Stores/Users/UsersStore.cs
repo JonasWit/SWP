@@ -4,6 +4,7 @@ using Radzen;
 using Radzen.Blazor;
 using SWP.Domain.Enums;
 using SWP.UI.BlazorApp.AdminApp.Stores.Application;
+using SWP.UI.BlazorApp.AdminApp.Stores.StatusLog;
 using SWP.UI.BlazorApp.AdminApp.Stores.Users.Actions;
 using System;
 using System.Collections.Generic;
@@ -65,7 +66,10 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Users
     public class UsersStore : StoreBase<UserState>
     {
         public UserManager<IdentityUser> UserManager => _serviceProvider.GetService<UserManager<IdentityUser>>();
+
         ApplicationStore AppStore => _serviceProvider.GetRequiredService<ApplicationStore>();
+
+        StatusBarStore StatusBarStore => _serviceProvider.GetRequiredService<StatusBarStore>();
 
         public UsersStore(IServiceProvider serviceProvider, IActionDispatcher actionDispatcher, NotificationService notificationService)
             : base(serviceProvider, actionDispatcher, notificationService) { }
@@ -197,6 +201,7 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Users
             _state.SelectedUser = (UserModel)args;
             _state.SelectedRole = _state.SelectedUser.UserRoleInt;
             _state.Lock = _state.SelectedUser.LockoutEnd != null ? true : false;
+            StatusBarStore.UpdateLogWindow($"User {_state.SelectedUser.Name} selected.");
         }
 
         private async Task RoleChanged(int input)
@@ -231,6 +236,7 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Users
             }
             catch (Exception ex)
             {
+                StatusBarStore.UpdateLogWindow($"Exception: {ex.Message} - logged.");
                 ShowErrorPage(ex);
             }
         }
@@ -259,6 +265,7 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Users
                 }
                 catch (Exception ex)
                 {
+                    StatusBarStore.UpdateLogWindow($"Exception: {ex.Message} - logged.");
                     ShowErrorPage(ex);
                 }
             }
@@ -298,6 +305,7 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Users
                 }
                 catch (Exception ex)
                 {
+                    StatusBarStore.UpdateLogWindow($"Exception: {ex.Message} - logged.");
                     ShowErrorPage(ex);
                 }
             }
@@ -338,6 +346,7 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Users
                 }
                 catch (Exception ex)
                 {
+                    StatusBarStore.UpdateLogWindow($"Exception: {ex.Message} - logged.");
                     ShowErrorPage(ex);
                 }
             }
@@ -379,6 +388,7 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Users
                 }
                 catch (Exception ex)
                 {
+                    StatusBarStore.UpdateLogWindow($"Exception: {ex.Message} - logged.");
                     ShowErrorPage(ex);
                 }
             }
@@ -433,6 +443,7 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Users
             }
             catch (Exception ex)
             {
+                StatusBarStore.UpdateLogWindow($"Exception: {ex.Message} - logged.");
                 ShowErrorPage(ex);
             }
         }
@@ -459,6 +470,7 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Users
             }
             catch (Exception ex)
             {
+                StatusBarStore.UpdateLogWindow($"Exception: {ex.Message} - logged.");
                 ShowErrorPage(ex);
             }
         }

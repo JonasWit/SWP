@@ -50,7 +50,7 @@ body {
     background: #1a447a;
     width: 7rem;
     z-index: 999;
-    transition: all 0.5s ;
+    transition: all 0.5s;
 }
 
 
@@ -118,8 +118,6 @@ ul, li {
     display: block;
     margin-left: 1rem;
     color: rgb(255,255,255);
-    
-   
 }
 
 .text-hidden {
@@ -175,23 +173,24 @@ ul, li {
         }
 
 
-        .number {
-            display: inline-flex;
-            border: 1px solid #ff0000;
-            background-color: #ff0000;
-            border-radius: 5px;
-            padding: 1px 5px;
-            margin-left: 3px;
-            font-weight: bold;
-        }
+.number {
+    display: inline-flex;
+    border: 1px solid #ff0000;
+    background-color: #ff0000;
+    border-radius: 5px;
+    padding: 1px 5px;
+    margin-left: 3px;
+    font-weight: bold;
+}
 
-        .profile {
-            cursor: auto;
-        }
+.profile {
+    cursor: auto;
+}
 
-        .drop-list {
-            margin-top: 0.5rem;
-        }
+.drop-list {
+    margin-top: 0.5rem;
+}
+
 .refresher {
     background-color: transparent !important;
     border: none;
@@ -202,6 +201,85 @@ ul, li {
     animation: spin 1s ease-in-out infinite;
     -webkit-animation: spin 1s ease-in-out infinite;
 }
+
+.reminder-bell {
+    animation: reminder 5000ms infinite;
+}
+
+@keyframes reminder {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    8.0% {
+        transform: rotate(0deg);
+    }
+
+    12.0% {
+        transform: rotate(52deg);
+    }
+
+    16.0% {
+        transform: rotate(-48deg);
+    }
+
+    20.0% {
+        transform: rotate(0deg);
+    }
+
+    23.0% {
+        transform: rotate(42deg);
+    }
+
+    26.0% {
+        transform: rotate(-30deg);
+    }
+
+    29.0% {
+        transform: rotate(0deg);
+    }
+
+    31.0% {
+        transform: rotate(26deg);
+    }
+
+    33.0% {
+        transform: rotate(-18deg);
+    }
+
+    35.0% {
+        transform: rotate(0deg);
+    }
+
+    37.0% {
+        transform: rotate(-12deg);
+    }
+
+    40.0% {
+        transform: rotate(6deg);
+    }
+
+    44.0% {
+        transform: rotate(-3deg);
+    }
+
+    49.0% {
+        transform: rotate(2deg);
+    }
+
+    55.0% {
+        transform: rotate(0deg);
+    }
+
+    62.0% {
+        transform: rotate(1deg);
+    }
+
+    70.0% {
+        transform: rotate(0deg);
+    }
+}
+
 
 @keyframes spin {
     to {
@@ -214,6 +292,12 @@ ul, li {
         -webkit-transform: rotate(360deg);
     }
 }
+
+
+.btn-arch {
+    padding: 0px 5px 5px 0px;
+}
+
 
 
 @media screen and (min-width: 768px) {
@@ -295,7 +379,7 @@ ul, li {
         margin-bottom: 10rem;
     }
 
- 
+
     .top-menu {
         height: 100%;
     }
@@ -339,15 +423,15 @@ ul, li {
         margin: auto;
     }
 
-    .top-items li{
-        padding: 0;
+        .top-items li {
+            padding: 0;
+        }
 
-    }
     .nav-item-hidden {
         display: none;
     }
 
-    .drop-list p{
+    .drop-list p {
         text-align: center;
         padding: 0;
     }
@@ -358,6 +442,15 @@ ul, li {
     }
 }
 
+
+
+.list-row {
+    display: flex;
+    flex-direction: column;
+    justify-content:;
+    padding-bottom: 2rem;
+    padding-top: 2rem;
+}
 
 /*Clients Page*/
 
@@ -403,7 +496,7 @@ ul, li {
     background: #b3e0ff;
     border: none;
     text-align: center;
-    font-weight: bold;
+    font-weight: 500;
     display: inline-block;
     outline: none !important;
     padding: 5px 15px;
@@ -450,6 +543,7 @@ ul, li {
 .tab-section {
     border-bottom: 2px solid var(--headers-border-color);
     margin-bottom: 20px;
+    padding-top: 2rem;
 }
 
 
@@ -685,6 +779,8 @@ ul, li {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    padding-bottom: 2rem;
+    padding-top: 2rem;
 }
 
 .rz-event {
@@ -700,6 +796,25 @@ ul, li {
 
 .flex-archive {
     display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    padding-top: 2rem;
+}
+
+.archive {
+    display: flex;
     flex-direction: row;
     justify-content: space-evenly;
 }
+
+.arch-details {
+    padding: 0px 8px;
+}
+
+    .arch-details p {
+        padding: 0px 5px 10px 0px;
+    }
+    .filter-box {
+        padding-right: 20px;
+        
+    }

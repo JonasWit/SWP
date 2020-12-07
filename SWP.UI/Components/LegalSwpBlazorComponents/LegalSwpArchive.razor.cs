@@ -45,8 +45,11 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
             ArchiveStore.Initialize();
         }
 
-        public bool addClientformVisible = false;
+        
+        public bool clientListInfoVisible = false;
+        public void ShowHideClientI() => clientListInfoVisible = !clientListInfoVisible;
 
+        public bool addClientformVisible = false;
         public void ShowHideClientFormI() => addClientformVisible = !addClientformVisible;
 
         #region Actions

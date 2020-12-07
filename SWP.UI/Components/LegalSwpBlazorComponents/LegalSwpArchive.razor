@@ -5,48 +5,99 @@
 }
 else
 {
-    <h1 class="testclass">TEST</h1>
+    <h1>Archiwum Klientów i Spraw</h1>
+    <div class="flex-container-main">
 
-    <div class="flex-archive">
-        <div>
-            <RadzenListBox AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" @bind-Value="ArchvizedClientsFilterValue" Data="@ArchiveStore.GetState().ArchivizedClients" TextProperty="Name" ValueProperty="IdString" Change="@(args => SelectedArchivizedClientChange(args))"
-                           Style="margin-bottom: 20px; height:100px;" />
-        </div>
-        <div>
-            @if (ArchiveStore.GetState().SelectedArchivizedClient != null)
-            {
-                <RadzenCard Style="width:600px; margin-bottom: 20px; height:100px;">
-                    <div>Wybrany Klient:</div>
-                    <b>@ArchiveStore.GetState().SelectedArchivizedClient.Name</b>
-                    <RadzenButton Click="RecoverSelectedClient">Odzyskaj Klienta</RadzenButton>
-                    <RadzenButton Click="DeleteSelectedClient">Usuń Klienta</RadzenButton>
-
-                </RadzenCard>
-
-            }
-        </div>
-
-        <div>
-            @if (MainStore.GetState().ActiveClient != null)
-            {<div>
-                    <RadzenListBox AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" @bind-Value="ArchvizedClientsFilterValue" Data="@ArchiveStore.GetState().ArchivizedCases" TextProperty="Name" ValueProperty="IdString" Change="@(args => SelectedArchivizedCaseChange(args))"
-                                   Style="margin-bottom: 20px; height:100px;" />
-                </div>
-
-                @if (ArchiveStore.GetState().SelectedArchivizedCase != null)
-                {<div>
-                        <RadzenCard Style="width:600px; margin-bottom: 20px; height:100px;">
-
-                            <div>Wybrana Sprawa:</div>
-                            <b>@ArchiveStore.GetState().SelectedArchivizedCase.Name</b>
-                            <RadzenButton Click="RecoverSelectedCase">Odzyskaj Sprawę</RadzenButton>
-                            <RadzenButton Click="DeleteSelectedCase">Usuń Sprawę</RadzenButton>
-
-                        </RadzenCard>
+        <div class="show-hide tab-section"><button class="show-hide-btn show-hide-btn-1"><span>Klienci</span></button></div>
+        <div class="row-section second">
+            <div class="help-box">
+                <i class="user-icon"><img src="/Images/icons8-reception-36.png" /></i>
+                @if (clientListInfoVisible)
+                {
+                    <div class="info-text">
+                        <p>Zarządzaj listą swoich klientów. Użyj guzika "Dodaj Nowego Klienta",aby uzupełnić listę kontaktów.</p>
+                        <p>Edytuj oraz usuwaj Klientów z głównej listy. Tekst do zupełnienia.</p>
                     </div>
                 }
-            }
+                <button class="info" @onclick="ShowHideClientI"></button>
+            </div>
+
+            <div class="list-row">
+                <div class="archive">
+                    <div class="filter-box">
+                        <RadzenListBox AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" @bind-Value="ArchvizedClientsFilterValue" Data="@ArchiveStore.GetState().ArchivizedClients" TextProperty="Name" ValueProperty="IdString" Change="@(args => SelectedArchivizedClientChange(args))"
+                                       Style="height:100px; width: 250px; outline: none;"  />
+                    </div>
+
+                    @if (ArchiveStore.GetState().SelectedArchivizedClient != null)
+                    {
+
+                        <div class="arch-details">
+                            <p><strong>Wybrany Klient:</strong> @ArchiveStore.GetState().SelectedArchivizedClient.Name</p>
+                            <p><strong>Adres: </strong>@ArchiveStore.GetState().SelectedArchivizedClient.Address</p>
+                        </div>
+                        <div class="arch-details">
+                            <p><strong>Email: </strong>@ArchiveStore.GetState().SelectedArchivizedClient.Email</p>
+                            <p><strong>Dodany przez: </strong>@ArchiveStore.GetState().SelectedArchivizedClient.CreatedBy</p>
+                        </div>
+                        <div class="arch-details">
+                            <div class="btn-arch"><RadzenButton Click="RecoverSelectedClient" Style="width: 150px;">Odzyskaj Klienta</RadzenButton></div>
+                            <div class="btn-arch"> <RadzenButton Click="DeleteSelectedClient" Style="width: 150px;">Usuń Klienta</RadzenButton></div>
+                        </div>
+
+
+                    }
+
+                </div>
+            </div>
+        </div>
+        <div class="show-hide tab-section"><button class="show-hide-btn show-hide-btn-1"><span>Sprawy</span></button></div>
+        <div class="row-section second">
+            <div class="help-box">
+                <i class="user-icon"><img src="/Images/icons8-documents-36.png" /></i>
+
+                @if (addClientformVisible)
+                {
+                    <div class="info-text">
+                        <p>Zarządzaj listą swoich klientów. Użyj guzika "Dodaj Nowego Klienta",aby uzupełnić listę kontaktów.</p>
+                        <p>Edytuj oraz usuwaj Klientów z głównej listy. Tekst do zupełnienia.</p>
+                    </div>
+                }
+                <button class="info" @onclick="ShowHideClientFormI"></button>
+            </div>
+            <div class="list-row">
+
+                @if (MainStore.GetState().ActiveClient != null)
+                {
+                    <div class="archive">
+                        <div class="filter-box">
+                            <RadzenListBox AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" @bind-Value="ArchvizedClientsFilterValue" Data="@ArchiveStore.GetState().ArchivizedCases" TextProperty="Name" ValueProperty="IdString" Change="@(args => SelectedArchivizedCaseChange(args))"
+                                           Style="height:100px; width: 250px; outline: none;" />
+                        </div>
+
+                        @if (ArchiveStore.GetState().SelectedArchivizedCase != null)
+                        {
+                            <div class="arch-details">
+                                <p><strong>Wybrana Sprawa: </strong>@ArchiveStore.GetState().SelectedArchivizedCase.Name</p>
+                                <p><strong>Opis: </strong>@ArchiveStore.GetState().SelectedArchivizedCase.Description</p>
+                            </div>
+                            <div class="arch-details">
+                                <p><strong>Sygnatura: </strong>@ArchiveStore.GetState().SelectedArchivizedCase.Signature</p>
+                                <p><strong>Dodane przez: </strong>@ArchiveStore.GetState().SelectedArchivizedCase.CreatedBy</p>
+                            </div>
+                            <div class="arch-details">
+                                <div class="btn-arch"><RadzenButton Click="RecoverSelectedCase" Style="width: 150px;">Odzyskaj Sprawę</RadzenButton></div>
+                                <div class="btn-arch"><RadzenButton Click="DeleteSelectedCase" Style="width: 150px;">Usuń Sprawę</RadzenButton></div>
+                            </div>
+
+                        }
+                    </div>
+                }
+
+            </div>
+
         </div>
     </div>
-}
 
+
+}

@@ -65,7 +65,7 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Users
     [UIScopedService]
     public class UsersStore : StoreBase<UserState>
     {
-        public UserManager<IdentityUser> UserManager => _serviceProvider.GetService<UserManager<IdentityUser>>();
+        UserManager<IdentityUser> UserManager => _serviceProvider.GetService<UserManager<IdentityUser>>();
 
         ApplicationStore AppStore => _serviceProvider.GetRequiredService<ApplicationStore>();
 

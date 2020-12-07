@@ -7,8 +7,14 @@
         <div class="columns is-vcentered is-centered">
             <div class="column is-half">
                 <div class="columns is-0 is-centered">
-
-
+                    <RadzenListBox AllowFiltering="true" 
+                                   FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" 
+                                   @bind-Value=@Store.GetState().SelectedRecipients 
+                                   Multiple="true" 
+                                   Data=@Store.GetState().Recipients
+                                   TextProperty="DisplayName" 
+                                   ValueProperty="Id" 
+                                   Style="height:200px" />
                 </div>
             </div>
             <div class="column is-half">

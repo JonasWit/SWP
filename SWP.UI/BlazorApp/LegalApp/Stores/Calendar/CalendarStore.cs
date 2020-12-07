@@ -201,6 +201,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Calendar
         {
             _state.SelectedReminder = null;
             RefreshCalendarData();
+            base.RefreshSore();
         }
 
         #endregion

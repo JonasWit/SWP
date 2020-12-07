@@ -1,9 +1,12 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Radzen;
+using SWP.Application.LegalSwp.TimeRecords;
+using SWP.UI.BlazorApp;
 using SWP.UI.BlazorApp.LegalApp.Services.Reporting;
 using SWP.UI.BlazorApp.LegalApp.Stores.Enums;
 using SWP.UI.BlazorApp.LegalApp.Stores.Main;
 using SWP.UI.BlazorApp.LegalApp.Stores.Productivity;
+using SWP.UI.BlazorApp.LegalApp.Stores.Productivity.Actions;
 using SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data;
 using System;
 using System.Collections.Generic;
@@ -24,6 +27,8 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
         public TooltipService TooltipService { get; set; }
         [Inject]
         public LegalTimeSheetReport LegalTimeSheetReport { get; set; }
+        [Inject]
+        public IActionDispatcher ActionDispatcher { get; set; }
 
         public string ArchvizedClientsFilterValue;
 
@@ -134,5 +139,29 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
                 MainStore.ShowErrorPage(ex);
             }
         }
+
+        #region Actions
+
+        private void EditTimeRecordRow(TimeRecordViewModel arg) => ActionDispatcher.Dispatch(new EditTimeRecordRowAction { Arg = arg });
+
+        private void AddRecordRowToCashMovements(TimeRecordViewModel arg) => ActionDispatcher.Dispatch(new AddRecordRowToCashMovementsAction { Arg = arg });
+
+        private void OnUpdateTimeRecordRow(TimeRecordViewModel arg) => ActionDispatcher.Dispatch(new OnUpdateTimeRecordRowAction { Arg = arg });
+
+        private void SaveTimeRecordRow(TimeRecordViewModel arg) => ActionDispatcher.Dispatch(new SaveTimeRecordRowAction { Arg = arg });
+
+        private void CancelTimeRecordEdit(TimeRecordViewModel arg) => ActionDispatcher.Dispatch(new CancelTimeRecordEditAction { Arg = arg });
+
+        private void DeleteTimeRecordRow(TimeRecordViewModel arg) => ActionDispatcher.Dispatch(new DeleteTimeRecordRowAction { Arg = arg });
+
+        private void SubmitNewTimeRecord(CreateTimeRecord.Request arg) => ActionDispatcher.Dispatch(new SubmitNewTimeRecordAction { Arg = arg });
+
+        private void ActiveTimeRecordChange(object arg) => ActionDispatcher.Dispatch(new ActiveTimeRecordChangeAction { Arg = arg });
+
+        private void SelectedMonthChange(object arg) => ActionDispatcher.Dispatch(new SelectedMonthChangeAction { Arg = arg });
+
+        private void SelectedFontChange(object arg) => ActionDispatcher.Dispatch(new SelectedFontChangeAction { Arg = arg });
+        
+        #endregion
     }
 }

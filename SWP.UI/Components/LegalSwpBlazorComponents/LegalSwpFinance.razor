@@ -9,7 +9,7 @@ else
 
         <div class="show-hide tab-section"><button class="show-hide-btn show-hide-btn-1"><span>Dodaj Pozycję</span></button></div>
         <div class="row-section">
-            <RadzenTemplateForm Data="@FinanceStore.GetState().NewCashMovement" Submit="@(async (CreateCashMovement.Request args) => { await FinanceStore.SubmitNewCashMovement(args); })">
+            <RadzenTemplateForm Data="@FinanceStore.GetState().NewCashMovement" Submit="@((CreateCashMovement.Request args) => SubmitNewCashMovement(args))">
 
                 <RadzenFieldset Text="Nowa pozycja">
                     <div class="help-box">
@@ -81,7 +81,7 @@ else
 
         <div class="show-hide tab-section"><button class="show-hide-btn show-hide-btn-1"><span>Transakcje</span></button></div>
         <div class="row-section">
-            <RadzenGrid @ref="FinanceStore.GetState().CashMovementGrid" AllowFiltering="true" AllowPaging="true" PageSize="10" AllowSorting="true" RowSelect="@(args => FinanceStore.ActiveCashMovementChange(args))"
+            <RadzenGrid @ref="FinanceStore.GetState().CashMovementGrid" AllowFiltering="true" AllowPaging="true" PageSize="10" AllowSorting="true" RowSelect="@(args => ActiveCashMovementChange(args))"
                         Data="@(FinanceStore.GetState().SelectedMonth == null ? FinanceStore.GetState().CashMovements : FinanceStore.GetState().CashMovements.Where(x => x.EventDate.Month == FinanceStore.GetState().SelectedMonth.Month && x.EventDate.Year == FinanceStore.GetState().SelectedMonth.Year))" TItem="CashMovementViewModel" RowUpdate="@OnUpdateCashMovementRow">
                 <Columns>
                     <RadzenGridColumn TItem="CashMovementViewModel" Property="Name" Title="Nazwa">
@@ -127,7 +127,7 @@ else
                         <FilterTemplate>
                             <RadzenDropDown AllowClear="true" TValue="int"
                                             FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" FilterOperator="StringFilterOperator.StartsWith" AllowFiltering="true"
-                                            Data="@FinanceStore.GetState().MonthsFilterData" TextProperty="DisplayText" ValueProperty="Id" Change="@(args => FinanceStore.SelectedMonthChange(args))" />
+                                            Data="@FinanceStore.GetState().MonthsFilterData" TextProperty="DisplayText" ValueProperty="Id" Change="@(args => SelectedMonthChange(args))" />
                         </FilterTemplate>
                     </RadzenGridColumn>
 
@@ -137,15 +137,15 @@ else
                             </RadzenButton>
                         </Template>
                         <EditTemplate Context="c">
-                            <RadzenButton Icon="save" Size="ButtonSize.Small" Click="@((args) => FinanceStore.SaveCashMovementRow(c))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Zapisz", Style = Gvm.ToolTipStyle }))">
+                            <RadzenButton Icon="save" Size="ButtonSize.Small" Click="@((args) => SaveCashMovementRow(c))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Zapisz", Style = Gvm.ToolTipStyle }))">
                             </RadzenButton>
-                            <RadzenButton Icon="cancel" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Success" Click="@((args) => FinanceStore.CancelCashMovementEdit(c))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Anuluj", Style = Gvm.ToolTipStyle }))">
+                            <RadzenButton Icon="cancel" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Success" Click="@((args) => CancelCashMovementEdit(c))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Anuluj", Style = Gvm.ToolTipStyle }))">
                             </RadzenButton>
                         </EditTemplate>
                     </RadzenGridColumn>
                     <RadzenGridColumn TItem="CashMovementViewModel" Context="order" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="50px">
                         <Template Context="c">
-                            <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@(async (args) => await FinanceStore.DeleteCashMovementRow(c))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Zamknij", Style = Gvm.ToolTipStyle }))">
+                            <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@((args) => DeleteCashMovementRow(c))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Zamknij", Style = Gvm.ToolTipStyle }))">
                             </RadzenButton>
                         </Template>
                         <EditTemplate Context="c">

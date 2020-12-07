@@ -3,6 +3,7 @@ using Radzen;
 using Radzen.Blazor;
 using SWP.Application.Logs;
 using SWP.Domain.Models.Portal;
+using SWP.UI.BlazorApp.AdminApp.Stores.AdminLog.Actions;
 using SWP.UI.BlazorApp.AdminApp.Stores.Application;
 using System;
 using System.Collections.Generic;
@@ -44,17 +45,37 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.AdminLog
 
         }
 
-        public void Initialize()
+        protected override async void HandleActions(IAction action)
         {
-
+            switch (action.Name)
+            {
+                case RefreshLogsAction.RefreshLogs:
+                    RefreshLogs();
+                    break;
+                case DeleteLogRecordAction.DeleteLogRecord:
+                    var deleteLogRecordAction = (DeleteLogRecordAction)action;
+                    await DeleteLogRecord(deleteLogRecordAction.Arg);
+                    break;
+                case RowSelectedAction.RowSelected:
+                    var rowSelectedAction = (RowSelectedAction)action;
+                    RowSelected(rowSelectedAction.Arg);
+                    break;
+                case SelectedLogTypesChangeAction.SelectedLogTypesChange:
+                    var selectedLogTypesChangeAction = (SelectedLogTypesChangeAction)action;
+                    SelectedLogTypesChange(selectedLogTypesChangeAction.Arg);
+                    break;
+                case LogStartDateChangeAction.LogStartDateChange:
+                    var logStartDateChangeAction = (LogStartDateChangeAction)action;
+                    LogStartDateChange(logStartDateChangeAction.Arg);
+                    break;
+                default:
+                    break;
+            }
         }
 
-        protected override void HandleActions(IAction action)
-        {
+        #region Actions
 
-        }
-
-        public void RefreshLogs()
+        private void RefreshLogs()
         {
             try
             {
@@ -102,19 +123,7 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.AdminLog
             }
         }
 
-        public void ActivateLoading(string message)
-        {
-            _state.LoadingMessage = message;
-            _state.Loading = true;
-        }
-
-        public void DeactivateLoading()
-        {
-            _state.LoadingMessage = "";
-            _state.Loading = false;
-        }
-
-        public async Task DeleteLogRecord(Log logRecord)
+        private async Task DeleteLogRecord(Log logRecord)
         {
             try
             {
@@ -139,7 +148,7 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.AdminLog
             }
         }
 
-        public void RowSelected(object value)
+        private void RowSelected(object value)
         {
             var input = (Log)value;
             if (value != null)
@@ -152,14 +161,16 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.AdminLog
             }
         }
 
-        public void SelectedLogTypesChange(object value)
+        private void SelectedLogTypesChange(object value)
         {
             _state.SelectedLogRecordTypes = value as IEnumerable<int>;
         }
 
-        public void LogStartDateChange(object value) => _state.LogStartDate = (DateTime?)value;
+        private void LogStartDateChange(object value) => _state.LogStartDate = (DateTime?)value;
 
         public void LogEndDateChange(object value) => _state.LogEndDate = (DateTime?)value;
+
+        #endregion
 
         private void ShowErrorPage(Exception ex) => AppStore.ShowErrorPage(ex);
 

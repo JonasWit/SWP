@@ -5,7 +5,7 @@
             <h3>Choose Log Levels</h3>
         </div>
         <div class="columns is-0 is-centered mb-6">
-            <RadzenSelectBar @bind-Value="Store.GetState().SelectedLogRecordTypes" TValue="IEnumerable<int>" Change="@((args) => Store.SelectedLogTypesChange(args))" Multiple="true">
+            <RadzenSelectBar @bind-Value="Store.GetState().SelectedLogRecordTypes" TValue="IEnumerable<int>" Change="@((args) => SelectedLogTypesChange(args))" Multiple="true">
                 <Items>
                     @foreach (var level in LogLevels)
                     {
@@ -21,7 +21,7 @@
                         <h3>Start Date</h3>
                     </div>
                     <div class="columns is-0 is-centered">
-                        <RadzenDatePicker TValue="DateTime?" ShowTime="true" ShowSeconds="true" HoursStep="1" MinutesStep="5" SecondsStep="10" DateFormat="MM/dd/yyyy HH:mm" Change=@((args) => Store.LogStartDateChange(args)) />
+                        <RadzenDatePicker TValue="DateTime?" ShowTime="true" ShowSeconds="true" HoursStep="1" MinutesStep="5" SecondsStep="10" DateFormat="MM/dd/yyyy HH:mm" Change=@((args) => LogStartDateChange(args)) />
                     </div>
                 </div>
             </div>
@@ -37,7 +37,7 @@
             </div>
         </div>
         <div class="columns is-0 is-centered">
-            <RadzenButton ButtonStyle="ButtonStyle.Secondary" Click="@Store.RefreshLogs">Refresh Log Data</RadzenButton>
+            <RadzenButton ButtonStyle="ButtonStyle.Secondary" Click="@RefreshLogs">Refresh Log Data</RadzenButton>
         </div>
     </RadzenCard>
 </div>
@@ -58,7 +58,7 @@
                             Data="@Store.GetState().LogRecords"
                             TItem="@Log"
                             Value="@Store.GetState().SelectedLogRecord"
-                            RowSelect="@(args => Store.RowSelected(args))">
+                            RowSelect="@(args => RowSelected(args))">
                     <Columns>
                         <RadzenGridColumn TItem="Log" Property="Id" Title="Id" Width="50px" />
                         <RadzenGridColumn TItem="Log" Property="Message" Title="Message" Width="200px"/>
@@ -70,7 +70,7 @@
                         <RadzenGridColumn TItem="Log" Property="LogEvent" Title="Log Event" />
                         <RadzenGridColumn TItem="Log" Context="um" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="50px">
                             <Template Context="lr">
-                                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@(async () => await Store.DeleteLogRecord(lr))">
+                                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@(() => DeleteLogRecord(lr))">
                                 </RadzenButton>
                             </Template>
                         </RadzenGridColumn>

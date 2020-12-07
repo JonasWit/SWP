@@ -4,6 +4,7 @@ using Radzen;
 using Radzen.Blazor;
 using SWP.Domain.Enums;
 using SWP.UI.BlazorApp.AdminApp.Stores.Application;
+using SWP.UI.BlazorApp.AdminApp.Stores.Users.Actions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -77,10 +78,39 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Users
             BroadcastStateChange();
         }
 
-        protected override void HandleActions(IAction action)
+        protected override async void HandleActions(IAction action)
         {
             switch (action.Name)
             {
+                case RowSelectedAction.RowSelected:
+                    var rowSelectedAction = (RowSelectedAction)action;
+                    RowSelected(rowSelectedAction.Arg);
+                    break;
+                case RoleChangedAction.RoleChanged:
+                    var roleChangedAction = (RoleChangedAction)action;
+                    await RoleChanged(roleChangedAction.Arg);
+                    break;
+                case DeleteClaimRowAction.DeleteClaimRow:
+                    var deleteClaimRowAction = (DeleteClaimRowAction)action;
+                    await DeleteClaimRow(deleteClaimRowAction.Arg);
+                    break;
+                case AddApplicationClaimAction.AddApplicationClaim:
+                    await AddApplicationClaim();
+                    break;
+                case AddStatusClaimAction.AddStatusClaim:
+                    await AddStatusClaim();
+                    break;
+                case AddProfileClaimAction.AddProfileClaim:
+                    await AddProfileClaim();
+                    break;
+                case LockUserAction.LockUser:
+                    var lockUserAction = (LockUserAction)action;
+                    await LockUser(lockUserAction.Arg);
+                    break;
+                case DeleteUserAction.DeleteUser:
+                    var deleteUserAction = (DeleteUserAction)action;
+                    await DeleteUser(deleteUserAction.Arg);
+                    break;
                 default:
                     break;
             }
@@ -158,9 +188,18 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Users
             };
         }
 
+        private void ShowErrorPage(Exception ex) => AppStore.ShowErrorPage(ex);
 
+        #region Actions
 
-        public async Task RoleChanged(int input)
+        private void RowSelected(object args)
+        {
+            _state.SelectedUser = (UserModel)args;
+            _state.SelectedRole = _state.SelectedUser.UserRoleInt;
+            _state.Lock = _state.SelectedUser.LockoutEnd != null ? true : false;
+        }
+
+        private async Task RoleChanged(int input)
         {
             if (_state.SelectedUser.Claims.Any(x => x.Type == "Root" && x.Value == "Creator"))
             {
@@ -196,9 +235,7 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Users
             }
         }
 
-        private void ShowErrorPage(Exception ex) => AppStore.ShowErrorPage(ex);
-
-        public async Task DeleteClaimRow(Claim claim)
+        private async Task DeleteClaimRow(Claim claim)
         {
             if (claim.Type == "Root") return;
 
@@ -229,7 +266,7 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Users
             await _state.ClaimsGrid.Reload();
         }
 
-        public async Task AddApplicationClaim()
+        private async Task AddApplicationClaim()
         {
             if (_state.SelectedUser.Claims.Any(x => x.Value == _state.SelectedApplicationClaim))
             {
@@ -270,7 +307,7 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Users
             }
         }
 
-        public async Task AddStatusClaim()
+        private async Task AddStatusClaim()
         {
             if (_state.SelectedUser.Claims.Any(x => x.Value == _state.SelectedStatusClaim))
             {
@@ -310,7 +347,7 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Users
             }
         }
 
-        public async Task AddProfileClaim()
+        private async Task AddProfileClaim()
         {
             if (_state.SelectedUser.Claims.Any(x => x.Type == ClaimType.Profile.ToString()))
             {
@@ -351,7 +388,7 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Users
             }
         }
 
-        public async Task LockUser(bool input)
+        private async Task LockUser(bool input)
         {
             try
             {
@@ -400,7 +437,7 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Users
             }
         }
 
-        public async Task DeleteUser(UserModel user)
+        private async Task DeleteUser(UserModel user)
         {
             if (_state.SelectedUser.Claims.Any(x => x.Type == "Root" && x.Value == "Creator"))
             {
@@ -425,22 +462,6 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Users
                 ShowErrorPage(ex);
             }
         }
-
-        #region Actions
-        public void RowSelected(object args)
-        {
-            _state.SelectedUser = (UserModel)args;
-            _state.SelectedRole = _state.SelectedUser.UserRoleInt;
-            _state.Lock = _state.SelectedUser.LockoutEnd != null ? true : false;
-        }
-
-
-
-
-
-
-
-
 
         #endregion
 

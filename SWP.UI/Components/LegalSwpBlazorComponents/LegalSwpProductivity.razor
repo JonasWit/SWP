@@ -8,7 +8,7 @@ else
 
         <div class="show-hide tab-section"><button class="show-hide-btn show-hide-btn-1"><span>Dodaj nową czynność</span></button></div>
         <div class="row-section">
-            <RadzenTemplateForm Data="@ProductivityStore.GetState().NewTimeRecord" Submit="@(async (CreateTimeRecord.Request args) => { await ProductivityStore.SubmitNewTimeRecord(args); })">
+            <RadzenTemplateForm Data="@ProductivityStore.GetState().NewTimeRecord" Submit="@((CreateTimeRecord.Request args) => SubmitNewTimeRecord(args))">
                 <RadzenFieldset Text="Wprowadź nową czynność i czas">
                     <div class="help-box">
                         <i class="user-icon"><img src="/Images/icons8-reception-36.png" /></i>
@@ -89,7 +89,7 @@ else
         <div class="show-hide tab-section"><button class="show-hide-btn show-hide-btn-1"><span>Rozliczenie godzinowe</span></button></div>
         <div class="row-section">
             <RadzenGrid @ref="ProductivityStore.GetState().TimeRecordsGrid" AllowFiltering="true" AllowPaging="true" PageSize="10" AllowSorting="true"
-                        Data="@(ProductivityStore.GetState().SelectedMonth == null ? ProductivityStore.GetState().TimeRecords : ProductivityStore.GetState().TimeRecords.Where(x => x.EventDate.Month == ProductivityStore.GetState().SelectedMonth.Month && x.EventDate.Year == ProductivityStore.GetState().SelectedMonth.Year))" TItem="TimeRecordViewModel" RowUpdate="@ProductivityStore.OnUpdateTimeRecordRow" RowSelect="@(args => ProductivityStore.ActiveTimeRecordChange(args))">
+                        Data="@(ProductivityStore.GetState().SelectedMonth == null ? ProductivityStore.GetState().TimeRecords : ProductivityStore.GetState().TimeRecords.Where(x => x.EventDate.Month == ProductivityStore.GetState().SelectedMonth.Month && x.EventDate.Year == ProductivityStore.GetState().SelectedMonth.Year))" TItem="TimeRecordViewModel" RowUpdate="@OnUpdateTimeRecordRow" RowSelect="@(args => ActiveTimeRecordChange(args))">
                 <Columns>
                     <RadzenGridColumn TItem="TimeRecordViewModel" Property="Name" Title="Nazwa">
                         <Template Context="r">
@@ -168,31 +168,31 @@ else
                         <FilterTemplate>
                             <RadzenDropDown AllowClear="true" TValue="int"
                                             FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" FilterOperator="StringFilterOperator.StartsWith" AllowFiltering="true"
-                                            Data="@ProductivityStore.GetState().MonthsFilterData" TextProperty="DisplayText" ValueProperty="Id" Change="@(args => ProductivityStore.SelectedMonthChange(args))" />
+                                            Data="@ProductivityStore.GetState().MonthsFilterData" TextProperty="DisplayText" ValueProperty="Id" Change="@(args => SelectedMonthChange(args))" />
                         </FilterTemplate>
                     </RadzenGridColumn>
 
                     <RadzenGridColumn TItem="TimeRecordViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="100px">
                         <Template Context="r">
-                            <RadzenButton Icon="edit" Size="ButtonSize.Small" Click="@(args => ProductivityStore.EditTimeRecordRow(r))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Edytuj", Style = Gvm.ToolTipStyle }))">
+                            <RadzenButton Icon="edit" Size="ButtonSize.Small" Click="@(args => EditTimeRecordRow(r))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Edytuj", Style = Gvm.ToolTipStyle }))">
                             </RadzenButton>
                         </Template>
                         <EditTemplate Context="r">
-                            <RadzenButton Icon="save" Size="ButtonSize.Small" Click="@((args) => ProductivityStore.SaveTimeRecordRow(r))">
+                            <RadzenButton Icon="save" Size="ButtonSize.Small" Click="@((args) => SaveTimeRecordRow(r))">
                             </RadzenButton>
-                            <RadzenButton Icon="cancel" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Success" Click="@((args) => ProductivityStore.CancelTimeRecordEdit(r))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Anuluj", Style = Gvm.ToolTipStyle }))">
+                            <RadzenButton Icon="cancel" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Success" Click="@((args) => CancelTimeRecordEdit(r))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Anuluj", Style = Gvm.ToolTipStyle }))">
                             </RadzenButton>
                         </EditTemplate>
                     </RadzenGridColumn>
                     <RadzenGridColumn TItem="TimeRecordViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="50px">
                         <Template Context="r">
-                            <RadzenButton ButtonStyle="ButtonStyle.Success" Icon="monetization_on" Size="ButtonSize.Small" Click="@(async (args) => await ProductivityStore.AddRecordRowToCashMovements(r))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Dodaj do rozliczenia", Style = Gvm.ToolTipStyle }))">
+                            <RadzenButton ButtonStyle="ButtonStyle.Success" Icon="monetization_on" Size="ButtonSize.Small" Click="@((args) => AddRecordRowToCashMovements(r))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Dodaj do rozliczenia", Style = Gvm.ToolTipStyle }))">
                             </RadzenButton>
                         </Template>
                     </RadzenGridColumn>
                     <RadzenGridColumn TItem="TimeRecordViewModel" Context="order" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="50px">
                         <Template Context="r">
-                            <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@(async (args) => await ProductivityStore.DeleteTimeRecordRow(r))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Zanknij", Style = Gvm.ToolTipStyle }))">
+                            <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@((args) => DeleteTimeRecordRow(r))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Zanknij", Style = Gvm.ToolTipStyle }))">
                             </RadzenButton>
                         </Template>
                         <EditTemplate Context="r">
@@ -280,7 +280,7 @@ else
                             </div>
                             <RadzenDropDown AllowClear="true" TValue="int"
                                             FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" FilterOperator="StringFilterOperator.StartsWith" AllowFiltering="true" Name="FontBox"
-                                            Data="@ProductivityStore.GetState().FontsFilterData" TextProperty="DisplayText" ValueProperty="Id" Change="@(args => ProductivityStore.SelectedFontChange(args))" />
+                                            Data="@ProductivityStore.GetState().FontsFilterData" TextProperty="DisplayText" ValueProperty="Id" Change="@(args => SelectedFontChange(args))" />
                         </div>
                     </div>
                     <div class="form-btn">

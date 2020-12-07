@@ -57,18 +57,6 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Application
 
         }
 
-        public void ActivateLoading(string message)
-        {
-            _state.LoadingMessage = message;
-            _state.Loading = true;
-        }
-
-        public void DeactivateLoading()
-        {
-            _state.LoadingMessage = "";
-            _state.Loading = false;
-        }
-
         public void ShowErrorPage(Exception ex)
         {
             _errorStore.SetException(ex, _state.ActiveUserId, _state.User.UserName);

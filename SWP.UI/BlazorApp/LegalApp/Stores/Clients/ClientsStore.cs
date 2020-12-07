@@ -111,7 +111,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Clients
 
                 if (MainStore.GetState().ActiveClient != null && MainStore.GetState().ActiveClient.Id == result.Id)
                 {
-                    await MainStore.ActiveClientChange(result.Id);
+                    MainStore.ActiveClientChange(result.Id);
                 }
                 else
                 {
@@ -184,7 +184,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Clients
 
                 if (MainStore.GetState().ActiveClient != null && MainStore.GetState().ActiveClient.Id == client.Id)
                 {
-                    await MainStore.ActiveClientChange(null);
+                    MainStore.ActiveClientChange(null);
                 }
                 else
                 {

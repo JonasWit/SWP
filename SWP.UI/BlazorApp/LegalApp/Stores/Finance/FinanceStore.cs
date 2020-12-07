@@ -2,7 +2,7 @@
 using Radzen;
 using Radzen.Blazor;
 using SWP.Application.LegalSwp.CashMovements;
-using SWP.UI.BlazorApp.LegalApp.Stores.Finance.Action;
+using SWP.UI.BlazorApp.LegalApp.Stores.Finance.Actions;
 using SWP.UI.BlazorApp.LegalApp.Stores.Main;
 using SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data;
 using System;
@@ -60,6 +60,30 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Finance
                     var onUpdateCashMovementRowAction = (OnUpdateCashMovementRowAction)action;
                     await OnUpdateCashMovementRow(onUpdateCashMovementRowAction.Arg);
                     break;
+                case SaveCashMovementRowAction.SaveCashMovementRow:
+                    var saveCashMovementRowAction = (SaveCashMovementRowAction)action;
+                    SaveCashMovementRow(saveCashMovementRowAction.Arg);
+                    break;
+                case CancelCashMovementEditAction.CancelCashMovementEdit:
+                    var cancelCashMovementEditAction = (CancelCashMovementEditAction)action;
+                    CancelCashMovementEdit(cancelCashMovementEditAction.Arg);
+                    break;
+                case DeleteCashMovementRowAction.DeleteCashMovementRow:
+                    var deleteCashMovementRowAction = (DeleteCashMovementRowAction)action;
+                    await DeleteCashMovementRow(deleteCashMovementRowAction.Arg);
+                    break;
+                case SubmitNewCashMovementAction.SubmitNewCashMovement:
+                    var submitNewCashMovementAction = (SubmitNewCashMovementAction)action;
+                    await SubmitNewCashMovement(submitNewCashMovementAction.Arg);
+                    break;
+                case ActiveCashMovementChangeAction.ActiveCashMovementChange:
+                    var activeCashMovementChangeAction = (ActiveCashMovementChangeAction)action;
+                    ActiveCashMovementChange(activeCashMovementChangeAction.Arg);
+                    break;
+                case SelectedMonthChangeAction.SelectedMonthChange:
+                    var selectedMonthChangeAction = (SelectedMonthChangeAction)action;
+                    SelectedMonthChange(selectedMonthChangeAction.Arg);
+                    break;
                 default:
                     break;
             }
@@ -103,6 +127,8 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Finance
             }
         }
 
+        #region Actions
+
         private void SetSelectedCashMovement(CashMovementViewModel entity) => _state.SelectedCashMovement = entity;
 
         private void EditCashMovementRow(CashMovementViewModel cash) => _state.CashMovementGrid.EditRow(cash);
@@ -145,16 +171,16 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Finance
             }
         }
 
-        public void SaveCashMovementRow(CashMovementViewModel cash) => _state.CashMovementGrid.UpdateRow(cash);
+        private void SaveCashMovementRow(CashMovementViewModel cash) => _state.CashMovementGrid.UpdateRow(cash);
 
-        public void CancelCashMovementEdit(CashMovementViewModel cash)
+        private void CancelCashMovementEdit(CashMovementViewModel cash)
         {
             _state.CashMovementGrid.CancelEditRow(cash);
             GetCashMovements(_mainStore.GetState().ActiveClient.Id);
             BroadcastStateChange();
         }
 
-        public async Task DeleteCashMovementRow(CashMovementViewModel cash)
+        private async Task DeleteCashMovementRow(CashMovementViewModel cash)
         {
             try
             {
@@ -175,7 +201,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Finance
             }
         }
 
-        public async Task SubmitNewCashMovement(CreateCashMovement.Request request)
+        private async Task SubmitNewCashMovement(CreateCashMovement.Request request)
         {
             try
             {
@@ -210,7 +236,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Finance
             }
         }
 
-        public void ActiveCashMovementChange(object value)
+        private void ActiveCashMovementChange(object value)
         {
             var input = (CashMovementViewModel)value;
             if (input != null)
@@ -223,7 +249,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Finance
             }
         }
 
-        public void SelectedMonthChange(object value)
+        private void SelectedMonthChange(object value)
         {
             var input = (int?)value;
             if (input != null)
@@ -234,7 +260,9 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Finance
             {
                 _state.SelectedMonth = null;
             }
-        }
+        } 
+
+        #endregion
 
         public override void CleanUpStore()
         {

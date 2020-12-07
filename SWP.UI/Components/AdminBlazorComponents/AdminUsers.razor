@@ -23,7 +23,7 @@
                         Data="@UsersStore.GetState().Users"
                         TItem="UserModel"
                         Value="@UsersStore.GetState().SelectedUser"
-                        RowSelect="@(args => UsersStore.RowSelected(args))">
+                        RowSelect="@(args => RowSelected(args))">
                 <Columns>
                     <RadzenGridColumn TItem="UserModel" Property="Name" Title="User Name" />
                     <RadzenGridColumn TItem="UserModel" Property="Email" Title="Email" />
@@ -33,7 +33,7 @@
                     <RadzenGridColumn TItem="UserModel" Property="LockoutEnd" Title="Lockout End Date" />
                     <RadzenGridColumn TItem="UserModel" Context="um" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="50px">
                         <Template Context="um">
-                            <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@(async args => await UsersStore.DeleteUser(um))">
+                            <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@(args => DeleteUser(um))">
                             </RadzenButton>
                         </Template>
                     </RadzenGridColumn>
@@ -55,7 +55,7 @@
                 <h3>Current Role</h3>
             </div>
             <div class="columns is-0 is-centered mb-6">
-                <RadzenSelectBar @bind-Value="UsersStore.GetState().SelectedRole" TValue="int" Change="@((args) => UsersStore.RoleChanged(args))">
+                <RadzenSelectBar @bind-Value="UsersStore.GetState().SelectedRole" TValue="int" Change="@((args) => RoleChanged(args))">
                     <Items>
                         <RadzenSelectBarItem Text="Administrators" Value="0" />
                         <RadzenSelectBarItem Text="Users" Value="1" />
@@ -67,7 +67,7 @@
                 <h3>Lock User</h3>
             </div>
             <div class="columns is-0 is-centered mb-6">
-                <RadzenSelectBar @bind-Value="UsersStore.GetState().Lock" TValue="bool" Change="@((args) => UsersStore.LockUser(args))">
+                <RadzenSelectBar @bind-Value="UsersStore.GetState().Lock" TValue="bool" Change="@((args) => LockUser(args))">
                     <Items>
                         <RadzenSelectBarItem Text="Locked" Value="true" />
                         <RadzenSelectBarItem Text="Unlocked" Value="false" />
@@ -93,7 +93,7 @@
 
                         <RadzenGridColumn TItem="Claim" Context="claim" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="50px">
                             <Template Context="claim">
-                                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@(async args => await UsersStore.DeleteClaimRow(claim))">
+                                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@(args => DeleteClaimRow(claim))">
                                 </RadzenButton>
                             </Template>
                         </RadzenGridColumn>
@@ -111,7 +111,7 @@
                                         Data="@UsersStore.GetState().Claims" @bind-Value="UsersStore.GetState().SelectedApplicationClaim" Style="width: 250px;" />
                     </div>
                     <div class="columns is-0 is-centered">
-                        <RadzenButton Click="@(async () => await UsersStore.AddApplicationClaim())" Text="Add Application Claim" Style="width: 250px;" />
+                        <RadzenButton Click="@(() => AddApplicationClaim())" Text="Add Application Claim" Style="width: 250px;" />
                     </div>
                 </div>
                 <div class="column is-one-third">
@@ -124,7 +124,7 @@
                                         Data="@UsersStore.GetState().StatusClaims" @bind-Value="UsersStore.GetState().SelectedStatusClaim" Style="width: 250px;" />
                     </div>
                     <div class="columns is-0 is-centered">
-                        <RadzenButton Click="@(async () => await UsersStore.AddStatusClaim())" Text="Add Status Claim" Style="width: 250px;" />
+                        <RadzenButton Click="@(() => AddStatusClaim())" Text="Add Status Claim" Style="width: 250px;" />
                     </div>
                 </div>
                 <div class="column is-one-third">
@@ -135,22 +135,11 @@
                         <RadzenTextBox @bind-Value="@UsersStore.GetState().ProfileClaimName" MaxLength="50" Style="width: 250px;" />
                     </div>
                     <div class="columns is-0 is-centered">
-                        <RadzenButton Click="@(async () => await UsersStore.AddProfileClaim())" Text="Add Profile Claim" Style="width: 250px;" />
+                        <RadzenButton Click="@(() => AddProfileClaim())" Text="Add Profile Claim" Style="width: 250px;" />
                     </div>
                 </div>
             </div>
         </RadzenCard>
-    </div>
-
-
-
-    <div class="section">
-
-
-
-
-
-
     </div>
 }
 

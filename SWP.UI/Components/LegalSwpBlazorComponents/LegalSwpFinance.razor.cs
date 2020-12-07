@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Radzen;
+using SWP.Application.LegalSwp.CashMovements;
 using SWP.UI.BlazorApp;
 using SWP.UI.BlazorApp.LegalApp.Stores.Enums;
 using SWP.UI.BlazorApp.LegalApp.Stores.Finance;
-using SWP.UI.BlazorApp.LegalApp.Stores.Finance.Action;
+using SWP.UI.BlazorApp.LegalApp.Stores.Finance.Actions;
 using SWP.UI.BlazorApp.LegalApp.Stores.Main;
 using SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data;
 using System;
@@ -76,6 +77,18 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
         private void EditCashMovementRow(CashMovementViewModel arg) => ActionDispatcher.Dispatch(new EditCashMovementRowAction { Arg = arg });
 
         private void OnUpdateCashMovementRow(CashMovementViewModel arg) => ActionDispatcher.Dispatch(new OnUpdateCashMovementRowAction { Arg = arg });
+
+        private void SaveCashMovementRow(CashMovementViewModel arg) => ActionDispatcher.Dispatch(new SaveCashMovementRowAction { Arg = arg });
+
+        private void CancelCashMovementEdit(CashMovementViewModel arg) => ActionDispatcher.Dispatch(new CancelCashMovementEditAction { Arg = arg });
+
+        private void DeleteCashMovementRow(CashMovementViewModel arg) => ActionDispatcher.Dispatch(new DeleteCashMovementRowAction { Arg = arg });
+
+        private void SubmitNewCashMovement(CreateCashMovement.Request arg) => ActionDispatcher.Dispatch(new SubmitNewCashMovementAction { Arg = arg });
+
+        private void ActiveCashMovementChange(object arg) => ActionDispatcher.Dispatch(new ActiveCashMovementChangeAction { Arg = arg });
+
+        private void SelectedMonthChange(object arg) => ActionDispatcher.Dispatch(new SelectedMonthChangeAction { Arg = arg });
 
         #endregion
     }

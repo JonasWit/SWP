@@ -1,4 +1,4 @@
 ﻿<h3>AdminStatusBar</h3>
 <RadzenCard>
-    <RadzenTextArea></RadzenTextArea>
+    <RadzenTextArea ReadOnly="true" @bind-Value=@Store.GetState().LogwindowContent></RadzenTextArea>
 </RadzenCard>

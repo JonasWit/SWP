@@ -4,12 +4,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SWP.UI.BlazorApp.LegalApp.Stores.Finance.Action
+namespace SWP.UI.BlazorApp.LegalApp.Stores.Finance.Actions
 {
-    public class EditCashMovementRowAction : IAction
+    public class SaveCashMovementRowAction : IAction
     {
-        public const string EditCashMovementRow = "EDIT_CASH_MOVEMENT_ROW";
-        public string Name => EditCashMovementRow;
+        public const string SaveCashMovementRow = "SAVE_CASH_MOVEMENT_ROW";
+        public string Name => SaveCashMovementRow;
 
         public CashMovementViewModel Arg { get; set; }
     }

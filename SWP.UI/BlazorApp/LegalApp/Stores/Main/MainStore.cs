@@ -88,7 +88,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
 
         public void SetActivePanel(LegalAppPanels panel) => _state.ActivePanel = panel;
 
-        public async Task ActiveClientChange(object value)
+        public void ActiveClientChange(object value)
         {
             try
             {
@@ -115,32 +115,6 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
             finally
             {
                 BroadcastStateChange();
-            }
-        }
-
-        public async Task ReloadActiveClient()
-        {
-            EnableLoading("Wczytywanie Klienta...");
-
-            if (_state.ActiveClient == null)
-            {
-                return;
-            }
-
-            try
-            {
-                using var scope = _serviceProvider.CreateScope();
-                var getClient = scope.ServiceProvider.GetRequiredService<GetClient>();
-
-                _state.ActiveClient = getClient.Get(_state.ActiveClient.Id);
-            }
-            catch (Exception ex)
-            {
-                ShowErrorPage(ex);
-            }
-            finally
-            {
-                DisableLoading();
             }
         }
 

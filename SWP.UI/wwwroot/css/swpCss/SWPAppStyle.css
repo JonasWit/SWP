@@ -526,6 +526,15 @@ ul, li {
     animation: fadeInAnimation ease 1s;
     animation-iteration-count: 1;
     animation-fill-mode: forwards;
+    
+}
+
+    .row-section > div {
+        caret-color: transparent;
+    }
+
+button {
+    caret-color: transparent;
 }
 
 @keyframes fadeInAnimation {
@@ -664,6 +673,10 @@ ul, li {
     animation-iteration-count: 1;
     animation-fill-mode: forwards;
 }
+
+    .details p {
+        caret-color: transparent;
+    }
 /*Any popu box on the app*/
 .popup-box {
     margin: auto;

@@ -13,7 +13,7 @@ else
 
                 <RadzenFieldset Text="Nowa Sprawa">
                     <div class="help-box">
-                        <i class="user-icon"><img src="/Images/icons8-reception-36.png" /></i>
+                        <i class="user-icon"><img src="/Images/icons8-documents-36.png" /></i>
 
                         @if (infoBoxVisibleI)
                         {
@@ -71,7 +71,7 @@ else
         <div class="show-hide tab-section"><button class="show-hide-btn show-hide-btn-1"><span>Lista Spraw</span></button></div>
         <div class="row-section second">
             <div class="help-box">
-                <i class="user-icon"><img src="/Images/icons8-reception-36.png" /></i>
+                <i class="user-icon"><img src="/Images/icons8-documents-36.png" /></i>
 
                 @if (infoBoxVisibleII)
                 {
@@ -122,27 +122,32 @@ else
                             </EditTemplate>
                         </RadzenGridColumn>
 
-                        <RadzenGridColumn TItem="CaseViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="80px">
+                        <RadzenGridColumn TItem="CaseViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="100px">
                             <Template Context="cs">
                                 <RadzenButton Icon="edit" Size="ButtonSize.Small" Click="@((args) => EditCaseRow(cs))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Edytuj", Style = Gvm.ToolTipStyle }))">
+                                    Edytuj
                                 </RadzenButton>
                             </Template>
                             <EditTemplate Context="cs">
                                 <RadzenButton Icon="save" Size="ButtonSize.Small" Click="@((args) => SaveCaseRow(cs))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Zapisz", Style = Gvm.ToolTipStyle }))">
+                                    Zapisz
                                 </RadzenButton>
                                 <RadzenButton Icon="cancel" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Success" Click="@((args) => CancelEditCaseRow(cs))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Anuluj", Style = Gvm.ToolTipStyle }))">
+                                    Anuluj
                                 </RadzenButton>
                             </EditTemplate>
                         </RadzenGridColumn>
-                        <RadzenGridColumn TItem="CaseViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="45px">
+                        <RadzenGridColumn TItem="CaseViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="65px">
                             <Template Context="cs">
                                 <RadzenButton ButtonStyle="ButtonStyle.Warning" Icon="archive" Size="ButtonSize.Small" Click="@((args) => ArchivizeCase(cs))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Archiwizuj", Style = Gvm.ToolTipStyle }))">
+                                    Archiwizuj
                                 </RadzenButton>
                             </Template>
                         </RadzenGridColumn>
                         <RadzenGridColumn TItem="CaseViewModel" Context="order" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="45px">
                             <Template Context="cs">
-                                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@((args) => DeleteCaseRow(cs))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Zamknij", Style = Gvm.ToolTipStyle }))">
+                                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@((args) => DeleteCaseRow(cs))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Usuń", Style = Gvm.ToolTipStyle }))">
+                                    Usuń
                                 </RadzenButton>
                             </Template>
                             <EditTemplate Context="cs">

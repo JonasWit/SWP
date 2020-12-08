@@ -10,10 +10,10 @@ else
 {
     <div class="list-row">
         <div class="list-row">
-            <h1>Kalendarz </h1>
+            <i><img src="/Images/icons8-calendar-12-36.png" /></i>
         </div>
         <div class="list-row">
-            <button @onclick="RefreshCalendarData" class="refresher spin"><img src="Images/icons8-synchronize-40.png" /></button>
+            <button @onclick="RefreshCalendarData" class="refresher @(CalendarStore.Loading ? "spin" : "")"><img src="Images/icons8-synchronize-40.png" /></button>
 
         </div>
     </div>

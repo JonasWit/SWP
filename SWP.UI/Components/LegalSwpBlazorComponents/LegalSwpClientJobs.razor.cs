@@ -70,6 +70,10 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
         public bool showSecondSection = false;
         public void ShowHideSecondSection() => showSecondSection = !showSecondSection;
 
+        public bool clientListInfoVisible = false;
+        public void ShowHideClientI() => clientListInfoVisible = !clientListInfoVisible;
+
+
         #region Actions
 
         private void SubmitNewClientJob(CreateClientJob.Request arg) => ActionDispatcher.Dispatch(new SubmitNewClientJobAction { Arg = arg });

@@ -40,6 +40,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
 
         #region Actions
 
+
         private void OnAppointmentSelect(SchedulerAppointmentSelectEventArgs<ReminderViewModel> args) => ActionDispatcher.Dispatch(new OnAppointmentSelectAction { Args = args });
 
         private void ActiveReminderChange(object args) => ActionDispatcher.Dispatch(new ActiveReminderChangeAction { Reminder = args });

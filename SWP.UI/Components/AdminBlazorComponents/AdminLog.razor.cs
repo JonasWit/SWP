@@ -40,14 +40,15 @@ namespace SWP.UI.Components.AdminBlazorComponents
 
         private void RefreshLogs(object arg) => ActionDispatcher.Dispatch(new RefreshLogsAction());
 
+        private void RefreshLogsForLastWeek(object arg) => ActionDispatcher.Dispatch(new RefreshLogsForLastWeekAction());
+
         private void DeleteLogRecord(Log arg) => ActionDispatcher.Dispatch(new DeleteLogRecordAction { Arg = arg });
 
-        private void RowSelected(object arg) => ActionDispatcher.Dispatch(new RowSelectedAction { Arg = arg });
+        private void RowSelected(object arg) => ActionDispatcher.Dispatch(new LogRowSelectedAction { Arg = arg });
 
         private void SelectedLogTypesChange(object arg) => ActionDispatcher.Dispatch(new SelectedLogTypesChangeAction { Arg = arg });
 
         private void LogStartDateChange(object arg) => ActionDispatcher.Dispatch(new LogStartDateChangeAction { Arg = arg });
-
 
         #endregion
     }

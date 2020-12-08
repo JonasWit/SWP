@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.DependencyInjection;
 using Radzen;
 using SWP.Application.LegalSwp.TimeRecords;
 using SWP.UI.BlazorApp;
@@ -26,9 +27,9 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
         [Inject]
         public TooltipService TooltipService { get; set; }
         [Inject]
-        public LegalTimeSheetReport LegalTimeSheetReport { get; set; }
-        [Inject]
         public IActionDispatcher ActionDispatcher { get; set; }
+        [Inject]
+        public IServiceProvider ServiceProvider { get; set; }
 
         public string ArchvizedClientsFilterValue;
 
@@ -85,8 +86,8 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
         {
             try
             {
-                //todo: call pdf service as transient here!
-                var legalTimeSheetReport = LegalTimeSheetReport;
+                using var scope = ServiceProvider.CreateScope();
+                var legalTimeSheetReport = scope.ServiceProvider.GetRequiredService<LegalTimeSheetReport>();
 
                 var productivityRecords = new List<TimeRecordViewModel>();
 

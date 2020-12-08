@@ -86,8 +86,8 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Users
         {
             switch (action.Name)
             {
-                case RowSelectedAction.RowSelected:
-                    var rowSelectedAction = (RowSelectedAction)action;
+                case UserRowSelectedAction.UserRowSelected:
+                    var rowSelectedAction = (UserRowSelectedAction)action;
                     RowSelected(rowSelectedAction.Arg);
                     break;
                 case RoleChangedAction.RoleChanged:

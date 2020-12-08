@@ -13,7 +13,7 @@ namespace SWP.Domain.Enums
     { 
         RootClient = 0,
         Default = 1,
-        Undefined = -1
+        Undefined = 2
     }
 
     public enum RoleType

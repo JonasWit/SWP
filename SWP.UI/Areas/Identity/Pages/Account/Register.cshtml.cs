@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using SWP.Domain.Enums;
+using SWP.UI.Utilities;
 
 namespace SWP.UI.Areas.Identity.Pages.Account
 {
@@ -88,7 +89,7 @@ namespace SWP.UI.Areas.Identity.Pages.Account
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation("User created a new account with password.");
+                    _logger.LogInformation(LogTags.PortalIdentityLogPrefix + "User created a new account with password - {serName}", user.UserName);
                     await _userManager.AddToRoleAsync(user, RoleType.Users.ToString());
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);

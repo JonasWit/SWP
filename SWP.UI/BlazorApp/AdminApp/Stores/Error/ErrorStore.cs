@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using SWP.UI.Utilities;
 using System;
 using System.Threading.Tasks;
 
@@ -25,7 +26,7 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Error
         public void SetException(Exception ex, string userId, string userName)
         {
             _state.Exception = ex;
-            _logger.LogError(ex, "Exception In Admin Panel for user {UserId} - {UserName}", userId, userName);
+            _logger.LogError(ex, LogTags.AdminAppErrorLogPrefix + "Exception for user {userId} - {userName}", userId, userName);
         }
 
         protected override void HandleActions(IAction action)

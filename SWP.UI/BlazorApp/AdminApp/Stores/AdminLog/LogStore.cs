@@ -59,8 +59,8 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.AdminLog
                     var deleteLogRecordAction = (DeleteLogRecordAction)action;
                     await DeleteLogRecord(deleteLogRecordAction.Arg);
                     break;
-                case RowSelectedAction.RowSelected:
-                    var rowSelectedAction = (RowSelectedAction)action;
+                case LogRowSelectedAction.LogRowSelected:
+                    var rowSelectedAction = (LogRowSelectedAction)action;
                     RowSelected(rowSelectedAction.Arg);
                     break;
                 case SelectedLogTypesChangeAction.SelectedLogTypesChange:
@@ -70,6 +70,9 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.AdminLog
                 case LogStartDateChangeAction.LogStartDateChange:
                     var logStartDateChangeAction = (LogStartDateChangeAction)action;
                     LogStartDateChange(logStartDateChangeAction.Arg);
+                    break;
+                case RefreshLogsForLastWeekAction.RefreshLogsForLastWeek:
+                    RefreshLogsLastWeek();
                     break;
                 default:
                     break;
@@ -112,6 +115,42 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.AdminLog
                     .ToList();
 
                 _state.LogRecords = getLogs.GetLogs(selectedTypes, (DateTime)_state.LogStartDate, (DateTime)_state.LogEndDate);
+
+                ShowNotification(NotificationSeverity.Success, "Success!", $"{_state.LogRecords.Count} Records downloaded", 2000);
+                BroadcastStateChange();
+            }
+            catch (Exception ex)
+            {
+                StatusBarStore.UpdateLogWindow($"Exception: {ex.Message} - logged.");
+                ShowErrorPage(ex);
+            }
+            finally
+            {
+                Loading = false;
+            }
+        }
+
+        private void RefreshLogsLastWeek()
+        {
+            try
+            {
+                Loading = true;
+
+                if (_state.SelectedLogRecordTypes == null || _state.SelectedLogRecordTypes.Count() == 0)
+                {
+                    ShowNotification(NotificationSeverity.Error, "Aborted!", $"Select Record Types!", 2000);
+                    return;
+                }
+
+                using var scope = _serviceProvider.CreateScope();
+                var getLogs = _serviceProvider.GetRequiredService<GetLogRecords>();
+
+                var selectedTypes = Enum.GetValues(typeof(LogRecordType)).Cast<LogRecordType>()
+                    .Where(x => _state.SelectedLogRecordTypes.Contains((int)x))
+                    .Select(x => x.ToString())
+                    .ToList();
+
+                _state.LogRecords = getLogs.GetLogs(selectedTypes, DateTime.Now.AddDays(-7), DateTime.Now);
 
                 ShowNotification(NotificationSeverity.Success, "Success!", $"{_state.LogRecords.Count} Records downloaded", 2000);
                 BroadcastStateChange();

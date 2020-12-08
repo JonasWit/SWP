@@ -5,6 +5,7 @@ using Radzen;
 using SWP.UI.BlazorApp.AdminApp.Stores.Enums;
 using SWP.UI.BlazorApp.AdminApp.Stores.Error;
 using SWP.UI.Models;
+using SWP.UI.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Security.Claims;
@@ -49,7 +50,7 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Application
             _state.User.Claims = await userManager.GetClaimsAsync(_state.User.User) as List<Claim>;
             _state.User.Roles = await userManager.GetRolesAsync(_state.User.User) as List<string>;
 
-            _logger.LogWarning("Admin Panel accessed by {userName}", _state.User.User.UserName);
+            _logger.LogInformation(LogTags.AdminAppLogPrefix + "Admin Application accessed by user {userName}", _state.User.User.UserName);
         }
 
         protected override void HandleActions(IAction action)

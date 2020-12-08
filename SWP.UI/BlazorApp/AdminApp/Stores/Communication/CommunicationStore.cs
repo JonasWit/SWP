@@ -48,7 +48,7 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Communication
         ApplicationStore AppStore => _serviceProvider.GetRequiredService<ApplicationStore>();
 
         public CommunicationStore(IServiceProvider serviceProvider, IActionDispatcher actionDispatcher, NotificationService notificationService, ILogger<CommunicationStore> logger)
-            : base(serviceProvider, actionDispatcher, notificationService) 
+            : base(serviceProvider, actionDispatcher, notificationService)
         {
             RefreshSore();
             _logger = logger;
@@ -116,19 +116,39 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Communication
 
         public void Filter()
         {
-    
+            var selectedRecipients = new List<string>();
 
+            if (_state.UserTypes != null)
+            {
+                var selectedUserTypes = _state.UserTypes.ToList();
 
+                foreach (var userTypeNo in selectedUserTypes)
+                {
+                    var enumt = (UserStatus)Enum.GetValues(typeof(UserStatus)).GetValue(userTypeNo);
+                    selectedRecipients.AddRange(_state.Recipients.Where(x => x.Status == enumt).Select(x => x.Id).ToList());
+                }
+            }
 
-               
+            if (_state.ApplicationTypes != null)
+            {
+                var selectedApplicationTypes = _state.ApplicationTypes.ToList();
+
+                foreach (var userTypeNo in selectedApplicationTypes)
+                {
+                    var enumt = (ApplicationType)Enum.GetValues(typeof(ApplicationType)).GetValue(userTypeNo);
+                    selectedRecipients.AddRange(_state.Recipients.Where(x => x.AppClaims.Contains(enumt)).Select(x => x.Id).ToList());
+                }
+            }
+
+            _state.SelectedRecipients = selectedRecipients;
             BroadcastStateChange();
         }
 
         public void ClearSelection()
         {
-
-
-
+            _state.UserTypes = null;
+            _state.ApplicationTypes = null;
+            _state.SelectedRecipients = new List<string>();
             BroadcastStateChange();
         }
 

@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 
 namespace SWP.UI.BlazorApp.AdminApp.Stores.AdminLog.Actions
 {
-    public class RowSelectedAction : IAction
+    public class LogRowSelectedAction : IAction
     {
-        public const string RowSelected = "ROW_SELECTED";
-        public string Name => RowSelected;
+        public const string LogRowSelected = "LOG_ROW_SELECTED";
+        public string Name => LogRowSelected;
 
         public object Arg { get; set; }
     }

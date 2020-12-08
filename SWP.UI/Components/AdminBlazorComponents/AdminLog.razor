@@ -36,8 +36,9 @@
                 </div>
             </div>
         </div>
-        <div class="columns is-0 is-centered">
-            <RadzenButton ButtonStyle="ButtonStyle.Secondary" Click="@RefreshLogs">Refresh Log Data</RadzenButton>
+        <div class="columns is-0 is-centered mb-6">
+            <RadzenButton ButtonStyle="ButtonStyle.Secondary" Click="@RefreshLogsForLastWeek">Get Data (last week)</RadzenButton>
+            <RadzenButton ButtonStyle="ButtonStyle.Secondary" Click="@RefreshLogs">Get Data</RadzenButton>
         </div>
     </RadzenCard>
 </div>
@@ -61,13 +62,10 @@
                             RowSelect="@(args => RowSelected(args))">
                     <Columns>
                         <RadzenGridColumn TItem="Log" Property="Id" Title="Id" Width="50px" />
-                        <RadzenGridColumn TItem="Log" Property="Message" Title="Message" Width="200px"/>
-                        <RadzenGridColumn TItem="Log" Property="MessageTemplate" Title="Message Template" />
-                        <RadzenGridColumn TItem="Log" Property="Level" Title="Level" />
-                        <RadzenGridColumn TItem="Log" Property="TimeStamp" Title="TimeStamp" />
-                        <RadzenGridColumn TItem="Log" Property="Exception" Title="Exception" />
-                        <RadzenGridColumn TItem="Log" Property="Properties" Title="Properties" />
-                        <RadzenGridColumn TItem="Log" Property="LogEvent" Title="Log Event" />
+                        <RadzenGridColumn TItem="Log" Property="Message" Title="Message" />
+                        <RadzenGridColumn TItem="Log" Property="Level" Title="Level" Width="150px"/>
+                        <RadzenGridColumn TItem="Log" Property="TimeStamp" Title="TimeStamp" Width="150px"/>
+                        <RadzenGridColumn TItem="Log" Property="Exception" Title="Exception" Width="150px"/>
                         <RadzenGridColumn TItem="Log" Context="um" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="50px">
                             <Template Context="lr">
                                 <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@(() => DeleteLogRecord(lr))">
@@ -92,7 +90,6 @@
     <div class="section">
         <RadzenCard>
             <div class="columns is-vcentered is-centered">
-
                 <div class="column is-half">
                     <div class="columns is-0 is-centered">
                         <h2>Time Stamp</h2>
@@ -109,7 +106,6 @@
                         <p>@Store.GetState().SelectedLogRecord.Level</p>
                     </div>
                 </div>
-
             </div>
         </RadzenCard>
     </div>

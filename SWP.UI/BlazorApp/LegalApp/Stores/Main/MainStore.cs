@@ -1,11 +1,13 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Radzen;
 using SWP.Application.LegalSwp.Clients;
 using SWP.UI.BlazorApp.LegalApp.Stores.Enums;
 using SWP.UI.BlazorApp.LegalApp.Stores.Error;
 using SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data;
 using SWP.UI.Models;
+using SWP.UI.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,11 +30,13 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
     public class MainStore : StoreBase<MainState>
     {
         private readonly ErrorStore _errorStore;
+        private readonly ILogger<MainStore> _logger;
 
-        public MainStore(IServiceProvider serviceProvider, IActionDispatcher actionDispatcher, NotificationService notificationService, ErrorStore errorStore)
+        public MainStore(IServiceProvider serviceProvider, IActionDispatcher actionDispatcher, NotificationService notificationService, ErrorStore errorStore, ILogger<MainStore> logger)
             : base(serviceProvider, actionDispatcher, notificationService)
         {
             _errorStore = errorStore;
+            _logger = logger;
         }
 
         public async Task Initialize(string userId)
@@ -43,20 +47,12 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
 
                 await RealodUserData();
                 ReloadClientsDrop();
+
+                _logger.LogInformation(LogTags.LegalAppLogPrefix + "Legal Application accessed by user {userName}, with Profile {userProfile}", _state.ActiveUserId, _state.User.Profile);
             }
             catch (Exception ex)
             {
-                using var scope = _serviceProvider.CreateScope();
-                //var portalLogger = scope.ServiceProvider.GetRequiredService<PortalLogger>();
-
-                //todo:add logging!
-
-                //await portalLogger.CreateLogRecord(new CreateLogRecord.Request
-                //{
-                //    Message = ex.Message,
-                //    UserId = _state.ActiveUserId,
-                //    StackTrace = ex.StackTrace
-                //});
+                _logger.LogError(ex, LogTags.LegalAppErrorLogPrefix + "Legal Application thrown an exception during launch for user {userName}, with Profile {userProfile}", _state.ActiveUserId, _state.User.Profile);
             }
         }
 

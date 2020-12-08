@@ -38,7 +38,7 @@ namespace SWP.UI.Components.AdminBlazorComponents
 
         #region Actions
 
-        private void RowSelected(object arg) => ActionDispatcher.Dispatch(new RowSelectedAction { Arg = arg });
+        private void RowSelected(object arg) => ActionDispatcher.Dispatch(new UserRowSelectedAction { Arg = arg });
 
         private void RoleChanged(int arg) => ActionDispatcher.Dispatch(new RoleChangedAction { Arg = arg });
 

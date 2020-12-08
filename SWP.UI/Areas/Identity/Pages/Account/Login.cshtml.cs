@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using SWP.UI.Utilities;
 
 namespace SWP.UI.Areas.Identity.Pages.Account
 {
@@ -83,7 +84,7 @@ namespace SWP.UI.Areas.Identity.Pages.Account
 
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation("User {UserName} logged in.", Input.Email);
+                    _logger.LogInformation(LogTags.PortalIdentityLogPrefix + "User {UserName} logged in.", Input.Email);
                     return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)
@@ -92,12 +93,12 @@ namespace SWP.UI.Areas.Identity.Pages.Account
                 }
                 if (result.IsLockedOut)
                 {
-                    _logger.LogWarning("User {UserName} account locked out.", Input.Email);
+                    _logger.LogWarning(LogTags.PortalIdentityLogPrefix + "User {UserName} account locked out.", Input.Email);
                     return RedirectToPage("./Lockout");
                 }
                 else
                 {
-                    _logger.LogWarning("User {UserName} invalid login attmept.", Input.Email);
+                    _logger.LogWarning(LogTags.PortalIdentityLogPrefix + "User {UserName} invalid login attmept.", Input.Email);
                     ModelState.AddModelError(string.Empty, "Invalid login attempt.");
                     return Page();
                 }

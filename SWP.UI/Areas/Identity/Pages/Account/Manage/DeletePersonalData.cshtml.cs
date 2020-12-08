@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using SWP.Application.LegalSwp.Clients;
 using SWP.Application.PortalCustomers;
 using SWP.Domain.Enums;
+using SWP.UI.Utilities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -86,9 +87,16 @@ namespace SWP.UI.Areas.Identity.Pages.Account.Manage
             }
 
             var profileClaim = claims.FirstOrDefault(x => x.Type == ClaimType.Profile.ToString());
-            var applicationClaim = claims.FirstOrDefault(x => x.Type == ClaimType.Application.ToString());
+            var applicationClaims = claims.Where(x => x.Type == ClaimType.Application.ToString());
             var rootClientClaim = claims.FirstOrDefault(x => x.Type == ClaimType.Status.ToString() && x.Value == UserStatus.RootClient.ToString());
             var usersWithTheSameProfile = await _userManager.GetUsersForClaimAsync(profileClaim);
+
+            var claimsToRemove = new List<Claim>
+            {
+                profileClaim
+            };
+
+            claimsToRemove.AddRange(applicationClaims);
 
             try
             {
@@ -104,25 +112,15 @@ namespace SWP.UI.Areas.Identity.Pages.Account.Manage
                     {
                         if (userWithTheSameProfile.Id != user.Id)
                         {
-                            var actionResult = await _userManager.RemoveClaimsAsync(userWithTheSameProfile, new List<Claim> { profileClaim, applicationClaim });
+                            var actionResult = await _userManager.RemoveClaimsAsync(userWithTheSameProfile, claimsToRemove);
 
                             if (actionResult.Succeeded)
                             {
-                                //todo:add logging!
-
-                                //await _portalLogger.CreateLogRecord(new CreateLogRecord.Request
-                                //{
-                                //    Message = $"Success! Profile {profileClaim.Value} for User {userWithTheSameProfile.UserName} Deleted!",
-                                //    UserId = user.Id,
-                                //});
+                                _logger.LogInformation(LogTags.PortalIdentityLogPrefix + "Profile removed for user {userName} clean up initiated by {rootUserName}", userWithTheSameProfile.UserName, user.UserName);
                             }
                             else
                             {
-                                //await _portalLogger.CreateLogRecord(new CreateLogRecord.Request
-                                //{
-                                //    Message = $"Issue! Profile {profileClaim.Value} for User {userWithTheSameProfile.UserName} Not Deleted!",
-                                //    UserId = user.Id,
-                                //});
+                                _logger.LogInformation(LogTags.PortalIdentityLogPrefix + "Failed to remove profile for user {userName}", userWithTheSameProfile.UserName, user.UserName);
                             }
                         }
                     }
@@ -130,14 +128,7 @@ namespace SWP.UI.Areas.Identity.Pages.Account.Manage
             }
             catch (Exception ex)
             {
-                //todo:add logging!
-
-                //await _portalLogger.CreateLogRecord(new CreateLogRecord.Request
-                //{
-                //    Message = $"Issue during Delete Data Request from User! - {ex.Message}",
-                //    UserId = user.Id,
-                //    StackTrace = ex.StackTrace
-                //});
+                _logger.LogError(ex, LogTags.PortalIdentityLogPrefix + "Error when cleaning up data for Root user {userName}", user.UserName);
             }
 
             var result = await _userManager.DeleteAsync(user);
@@ -145,20 +136,13 @@ namespace SWP.UI.Areas.Identity.Pages.Account.Manage
 
             if (!result.Succeeded)
             {
-                //todo:add logging!
-
-                //await _portalLogger.CreateLogRecord(new CreateLogRecord.Request
-                //{
-                //    Message = $"Unexpected error occurred deleting user with ID '{userId}'",
-                //    UserId = user.Id,
-                //});
-
+                _logger.LogError(LogTags.PortalIdentityLogPrefix + "Error when deleting Root user {userName}", user.UserName);
                 throw new InvalidOperationException($"Unexpected error occurred deleting user with ID '{userId}'.");
             }
 
             await _signInManager.SignOutAsync();
 
-            _logger.LogInformation("User with ID '{UserId}' deleted themselves.", userId);
+            _logger.LogInformation(LogTags.PortalIdentityLogPrefix + "User with ID '{UserId}' deleted themselves.", userId);
 
             return Redirect("~/");
         }

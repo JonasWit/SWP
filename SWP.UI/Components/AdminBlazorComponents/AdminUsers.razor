@@ -107,15 +107,19 @@
                             </div>
                         </div>
                         <div class="column">
-                            <div class="columns is-0 is-centered">
-                                <h3>Profile Claim Name</h3>
-                            </div>
-                            <div class="columns is-0 is-centered">
-                                <RadzenTextBox @bind-Value="@UsersStore.GetState().ProfileClaimName" MaxLength="50" Style="width: 250px;" />
-                            </div>
-                            <div class="columns is-0 is-centered mb-6">
-                                <RadzenButton Click="@(() => AddProfileClaim())" Text="Add Profile" Style="width: 250px;" />
-                            </div>
+                            <RadzenTemplateForm TItem="string" Data=@UsersStore.GetState().ProfileClaimName Submit=@AddProfileClaim>
+                                <div class="columns is-0 is-centered">
+                                    <h3>Profile Claim Name</h3>
+                                </div>
+                                <div class="columns is-0 is-centered">
+                                    <RadzenTextBox style="width: 250px; display: block" Name="ProfileName" @bind-Value=@UsersStore.GetState().ProfileClaimName />
+                                    <RadzenRequiredValidator Component="ProfileName" Text="Profile Name is required" Popup=false Style="position: absolute" />
+                                    <RadzenRegexValidator Component="ProfileName" Text="Profile Name is incorrect!" Pattern="^[a-zA-Z0-9''-'\s]{5,20}$" Popup=false Style="position: absolute" />
+                                </div>
+                                <div class="columns is-0 is-centered mb-6">
+                                    <RadzenButton ButtonType="ButtonType.Submit" Style="width: 250px;" Text="Submit"></RadzenButton>
+                                </div>
+                            </RadzenTemplateForm>
                         </div>
                     </div>
                 </div>

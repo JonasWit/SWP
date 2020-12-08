@@ -81,7 +81,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
 
         private void SelectedUserChange(object arg) => ActionDispatcher.Dispatch(new SelectedUserChangeAction { Arg = arg });
 
-        private void RemoveRelation() => ActionDispatcher.Dispatch(new SelectedUserChangeAction());
+        private void RemoveRelation() => ActionDispatcher.Dispatch(new RemoveRelationAction());
 
         private void ConfirmRemoveAllData() => ActionDispatcher.Dispatch(new ConfirmRemoveAllDataAction());
 

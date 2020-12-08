@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using SWP.Application.PortalCustomers;
 using SWP.Domain.Models.Portal;
+using SWP.UI.Utilities;
 
 namespace SWP.UI.Areas.Identity.Pages.Account.Manage
 {
@@ -38,7 +39,7 @@ namespace SWP.UI.Areas.Identity.Pages.Account.Manage
             }
 
             //todo: add activity
-            _logger.LogInformation("User with ID '{UserId}' asked for their personal data.", _userManager.GetUserId(User));
+            _logger.LogInformation(LogTags.PortalIdentityLogPrefix + "User with ID '{UserId}' asked for their personal data.", _userManager.GetUserId(User));
 
             var billingData = _getBillingRecord.GetDetails(user.Id);
 

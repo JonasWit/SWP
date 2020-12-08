@@ -14,16 +14,14 @@ else
                                                                                Data="@MainStore.GetState().User.RelatedUsers" TextProperty="UserName" ValueProperty="Id" Style="width: 200px; padding: 0" Change="@(args => SelectedUserChange(args))" />
             </div>
             <div class="list-row">
-                <button @onclick="MyAppStore.RefreshSore" class="refresher @(MyAppStore.Loading ? "spin" : "")" ><img src="Images/icons8-synchronize-40.png"/></button>
-                
+                <button @onclick="MyAppStore.RefreshSore" class="refresher @(MyAppStore.Loading ? "spin" : "")"><img src="Images/icons8-synchronize-40.png" /></button>
+
             </div>
         </div>
 
         <RadzenButton Text="TEST!" Click="MainStore.ThrowTestException"></RadzenButton>
 
-        @if (MyAppStore.GetState().SelectedUser != null &&
-  MainStore.GetState().User.RootClient &&
-  MainStore.GetState().ActiveUserId != MyAppStore.GetState().SelectedUser.Id)
+        @if (MyAppStore.GetState().SelectedUser != null && MainStore.GetState().User.RootClient && MainStore.GetState().ActiveUserId != MyAppStore.GetState().SelectedUser.Id)
         {
             <h1>Mozna skasowac</h1>
             <RadzenButton Text="Usuń powiązanie!" Click="RemoveRelation"></RadzenButton>

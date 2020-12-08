@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Radzen;
 using Radzen.Blazor;
 using SWP.Domain.Enums;
+using SWP.Domain.Infrastructure.Portal;
 using SWP.UI.BlazorApp.AdminApp.Stores.Application;
 using SWP.UI.BlazorApp.AdminApp.Stores.StatusLog;
 using SWP.UI.BlazorApp.AdminApp.Stores.Users.Actions;
@@ -65,18 +66,23 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Users
     [UIScopedService]
     public class UsersStore : StoreBase<UserState>
     {
+        private readonly IIdentityExtendedManager _identityExtendedManager;
+
         UserManager<IdentityUser> UserManager => _serviceProvider.GetService<UserManager<IdentityUser>>();
-
         ApplicationStore AppStore => _serviceProvider.GetRequiredService<ApplicationStore>();
-
         StatusBarStore StatusBarStore => _serviceProvider.GetRequiredService<StatusBarStore>();
 
-        public UsersStore(IServiceProvider serviceProvider, IActionDispatcher actionDispatcher, NotificationService notificationService)
-            : base(serviceProvider, actionDispatcher, notificationService) { }
+        public UsersStore(IServiceProvider serviceProvider, IActionDispatcher actionDispatcher, NotificationService notificationService, IIdentityExtendedManager identityExtendedManager)
+            : base(serviceProvider, actionDispatcher, notificationService) 
+        {
+            _identityExtendedManager = identityExtendedManager;
+        }
 
         public async Task Initialize()
         {
-            _state.AllProfiles = await GetActiveProfiles();
+            var profiles = _identityExtendedManager.GetAllProfiles();
+            _state.AllProfiles = profiles.Select(x => new ProfileModel { Id = profiles.IndexOf(x), ProfileName = x }).ToList();
+
             await GetUsers();
             _state.SelectedRole = _state.SelectedUser.UserRoleInt;
             BroadcastStateChange();
@@ -118,33 +124,6 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Users
                 default:
                     break;
             }
-        }
-
-        private async Task<List<ProfileModel>> GetActiveProfiles()
-        {
-            var results = new List<ProfileModel>();
-            var users = UserManager.Users.ToList();
-
-            var id = 0;
-
-            foreach (var user in users)
-            {
-                var claims = await UserManager.GetClaimsAsync(user);
-
-                foreach (var claim in claims)
-                {
-                    if (claim.Type == ClaimType.Profile.ToString())
-                    {
-                        if (!results.Any(x => x.ProfileName == claim.Value))
-                        {
-                            results.Add(new ProfileModel { Id = id, ProfileName = claim.Value });
-                            id++;
-                        }
-                    }
-                }
-            }
-
-            return results;
         }
 
         private async Task GetUsers()
@@ -463,9 +442,10 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Users
                 _state.Users.RemoveAll(x => x.Id == user.Id);
 
                 await _state.UsersGrid.Reload();
+                var name = _state.SelectedUser.Name;
                 _state.SelectedUser = null;
 
-                ShowNotification(NotificationSeverity.Warning, "Done!", $"User: {_state.SelectedUser.Name} has been deleted!", 5000);
+                ShowNotification(NotificationSeverity.Warning, "Done!", $"User: {name} has been deleted!", 5000);
                 BroadcastStateChange();
             }
             catch (Exception ex)

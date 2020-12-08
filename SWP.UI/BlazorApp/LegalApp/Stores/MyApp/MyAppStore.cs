@@ -196,7 +196,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.MyApp
             {
                 using var scope = _serviceProvider.CreateScope();
                 var deleteClient = scope.ServiceProvider.GetRequiredService<DeleteClient>();
-
+                //todo: uncomment this and test
                 //await deleteClient.Delete(MainStore.GetState().User.Profile);
 
                 ShowNotification(NotificationSeverity.Success, "Sukces!", $"Usunięto wszystkie dane powiązane z profilem: {MainStore.GetState().User.Profile}", GeneralViewModel.NotificationDuration);

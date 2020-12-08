@@ -2,6 +2,7 @@
 using SWP.Domain.Enums;
 using SWP.Domain.Infrastructure.Portal;
 using SWP.Domain.Utilities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
@@ -48,26 +49,12 @@ namespace SWP.DataBase.Managers
 
                         if (!addResult.Succeeded)
                         {
-                            //_context.LogRecords.Add(new LogRecord
-                            //{
-                            //    Created = DateTime.Now,
-                            //    Message = "Add new profile Issue",
-                            //    UserId = user.Id,
-                            //    StackTrace = $"Change from {oldProfile.Value} to {newProfile}"
-                            //});
+                            throw new Exception($"Error when adding new Profile for user {user.UserName}, Issues: {string.Join("; ", addResult.Errors.Select(x => x.Description).ToList())}");
                         }
                     }
                     else
                     {
-                        //todo:add logging!
-
-                        //_context.LogRecords.Add(new LogRecord
-                        //{
-                        //    Created = DateTime.Now,
-                        //    Message = "Remove old profile Issue",
-                        //    UserId = user.Id,
-                        //    StackTrace = $"Change from {oldProfile.Value} to {newProfile}"
-                        //});
+                        throw new Exception($"Error when removing old Profile for user {user.UserName}, Issues: { string.Join("; ", removeResult.Errors.Select(x => x.Description).ToList()) }");
                     }
                 }
 

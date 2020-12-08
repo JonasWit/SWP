@@ -34,8 +34,6 @@ namespace SWP.UI.Components.AdminBlazorComponents
             await UsersStore.Initialize();
         }
 
-        public string ProfilesFilterValue = "";
-
         #region Actions
 
         private void RowSelected(object arg) => ActionDispatcher.Dispatch(new UserRowSelectedAction { Arg = arg });

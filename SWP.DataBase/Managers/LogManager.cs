@@ -20,5 +20,7 @@ namespace SWP.DataBase.Managers
 
         public List<TResult> GetLogRecords<TResult>(Func<Log, TResult> selector, Func<Log, bool> predicate) =>
             _context.Logs.Where(predicate).Select(selector).ToList();
+
+
     }
 }

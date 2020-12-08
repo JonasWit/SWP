@@ -1,8 +1,12 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Logging;
 using SWP.Application.PortalCustomers;
 using SWP.Domain.Enums;
+using SWP.Domain.Infrastructure.Portal;
+using SWP.UI.Utilities;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -24,11 +28,19 @@ namespace SWP.UI.Areas.Identity.Pages.Account.Manage
 
         private readonly UserManager<IdentityUser> _userManager;
         private readonly ChangeProfileName _changeProfileName;
+        private readonly ILogger<ApplicationsProfileModel> _logger;
+        private readonly IIdentityExtendedManager _identityExtendedManager;
 
-        public ApplicationsProfileModel(UserManager<IdentityUser> userManager, ChangeProfileName changeProfileName)
+        public ApplicationsProfileModel(
+            UserManager<IdentityUser> userManager, 
+            ChangeProfileName changeProfileName,
+            ILogger<ApplicationsProfileModel> logger,
+            IIdentityExtendedManager identityExtendedManager)
         {
             _userManager = userManager;
             _changeProfileName = changeProfileName;
+            _logger = logger;
+            _identityExtendedManager = identityExtendedManager;
         }
 
         public async Task<IActionResult> OnGetAsync()
@@ -53,23 +65,29 @@ namespace SWP.UI.Areas.Identity.Pages.Account.Manage
                 return Page();
             }
 
+            if (_identityExtendedManager.ClaimExists(ClaimType.Profile.ToString(), ProfileName))
+            {       
+                StatusMessage = $"Profil: {ProfileName} ju¿ istanienie, wybierz inn¹ nazwê.";
+                return RedirectToPage();
+            }
+
             var user = await _userManager.GetUserAsync(User);
             var claims = await _userManager.GetClaimsAsync(user) as List<Claim>;
             var oldProfileClaim = claims.FirstOrDefault(x => x.Type == ClaimType.Profile.ToString());
 
-            var result = await _changeProfileName.Change(oldProfileClaim, ProfileName);
-
-            if (result == null)
+            try
             {
+                var result = await _changeProfileName.Change(oldProfileClaim, ProfileName);
                 StatusMessage = "Nazwa Profilu zosta³a zmieniona.";
+                _logger.LogInformation(LogTags.PortalIdentityLogPrefix + "Profile name changed for {userName}, from {oldName} to {newName}", user.UserName, oldProfileClaim.Value, ProfileName);
             }
-            else
+            catch (Exception ex)
             {
                 StatusMessage = "Wyst¹pi³ b³¹d przy zmianie nazwy profilu, spróbuj jeszcze raz.";
+                _logger.LogError(ex, LogTags.PortalIdentityLogPrefix + "Error when changing profile name by {userName}", user.UserName);
             }
 
             return RedirectToPage();
         }
-
     }
 }

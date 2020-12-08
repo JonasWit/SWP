@@ -22,6 +22,7 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Users
         public string SelectedApplicationClaim { get; set; } = "";
         public string SelectedStatusClaim { get; set; } = "";
         public string ProfileClaimName { get; set; } = "";
+        public string ProfileClaimNameFromList { get; set; } = "";
         public RadzenGrid<Claim> ClaimsGrid { get; set; }
         public RadzenGrid<UserModel> UsersGrid { get; set; }
         public List<string> StatusClaims => Enum.GetNames(typeof(UserStatus)).ToList();
@@ -59,7 +60,7 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Users
 
     public class ProfileModel
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
         public string ProfileName { get; set; }
     }
 
@@ -80,11 +81,10 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Users
 
         public async Task Initialize()
         {
-            var profiles = _identityExtendedManager.GetAllProfiles();
-            _state.AllProfiles = profiles.Select(x => new ProfileModel { Id = profiles.IndexOf(x), ProfileName = x }).ToList();
-
             await GetUsers();
             _state.SelectedRole = _state.SelectedUser.UserRoleInt;
+            RefreshSore();
+
             BroadcastStateChange();
         }
 
@@ -113,6 +113,13 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Users
                 case AddProfileClaimAction.AddProfileClaim:
                     await AddProfileClaim();
                     break;
+                case AddProfileClaimFromListAction.AddProfileClaimFromList:
+                    await AddProfileClaimFromList();
+                    break;
+                case SelectedProfileChangeAction.SelectedProfileChange:
+                    var selectedProfileChangeAction = (SelectedProfileChangeAction)action;
+                    SelectedProfileChange(selectedProfileChangeAction.Arg);
+                    break;
                 case LockUserAction.LockUser:
                     var lockUserAction = (LockUserAction)action;
                     await LockUser(lockUserAction.Arg);
@@ -125,6 +132,8 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Users
                     break;
             }
         }
+
+        private void SelectedProfileChange(object c) => _state.ProfileClaimNameFromList = _state.AllProfiles.Where(x => x.Id == c.ToString()).Select(x => x.ProfileName).FirstOrDefault();
 
         private async Task GetUsers()
         {
@@ -377,6 +386,48 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Users
             }
         }
 
+        private async Task AddProfileClaimFromList()
+        {
+            if (_state.SelectedUser.Claims.Any(x => x.Type == ClaimType.Profile.ToString()))
+            {
+                ShowNotification(NotificationSeverity.Error, "Remember!", $"User can have only one profile!", 5000);
+                return;
+            }
+
+            if (!string.IsNullOrEmpty(_state.ProfileClaimNameFromList.Trim()))
+            {
+                try
+                {
+                    var userIdentity = await UserManager.FindByIdAsync(_state.SelectedUser.Id);
+                    var newClaim = new Claim(ClaimType.Profile.ToString(), _state.ProfileClaimNameFromList.Trim());
+                    var result = await UserManager.AddClaimAsync(userIdentity, newClaim);
+
+                    if (result.Succeeded)
+                    {
+                        await GetUsers();
+                        _state.SelectedUser = await GetUser(_state.SelectedUser.Id);
+
+                        await _state.UsersGrid.Reload();
+                        ShowNotification(NotificationSeverity.Success, "Done!", $"Claim: {newClaim.Value} has been added!", 5000);
+                        BroadcastStateChange();
+                    }
+                    else
+                    {
+                        throw new Exception("Issue when adding claim!");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    StatusBarStore.UpdateLogWindow($"Exception: {ex.Message} - logged.");
+                    ShowErrorPage(ex);
+                }
+            }
+            else
+            {
+                ShowNotification(NotificationSeverity.Error, "Error!", $"No claim was chosen!", 5000);
+            }
+        }
+
         private async Task LockUser(bool input)
         {
             try
@@ -464,7 +515,8 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Users
 
         public override void RefreshSore()
         {
-
+            var profiles = _identityExtendedManager.GetAllProfiles();
+            _state.AllProfiles = profiles.Select(x => new ProfileModel { Id = profiles.IndexOf(x).ToString(), ProfileName = x }).ToList();
         }
     }
 }

@@ -67,7 +67,7 @@
             <div class="columns is-0 is-centered">
                 <h2>Current Claims</h2>
             </div>
-            <div class="columns is-0 is-centered">
+            <div class="columns is-0 is-centered mb-6">
                 <RadzenGrid @ref="UsersStore.GetState().ClaimsGrid"
                             AllowFiltering="true"
                             AllowPaging="true"
@@ -89,42 +89,72 @@
                     </Columns>
                 </RadzenGrid>
             </div>
-            <div class="columns is-vcentered is-centered">
-                <div class="column is-one-third">
-                    <div class="columns is-0 is-centered">
-                        <h3>Application Claims</h3>
-                    </div>
-                    <div class="columns is-0 is-centered">
-                        <RadzenDropDown AllowClear="true" TValue="string"
-                                        FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" FilterOperator="StringFilterOperator.StartsWith" AllowFiltering="true"
-                                        Data="@UsersStore.GetState().Claims" @bind-Value="UsersStore.GetState().SelectedApplicationClaim" Style="width: 250px;" />
-                    </div>
-                    <div class="columns is-0 is-centered">
-                        <RadzenButton Click="@(() => AddApplicationClaim())" Text="Add Application Claim" Style="width: 250px;" />
+
+            <div class="rows">
+                <div class="row is-full mb-6">
+                    <div class="columns">
+                        <div class="column">
+                            <div class="columns is-0 is-centered">
+                                <h3>Application Claims</h3>
+                            </div>
+                            <div class="columns is-0 is-centered">
+                                <RadzenDropDown AllowClear="true" TValue="string"
+                                                FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" FilterOperator="StringFilterOperator.StartsWith" AllowFiltering="true"
+                                                Data="@UsersStore.GetState().Claims" @bind-Value="UsersStore.GetState().SelectedApplicationClaim" Style="width: 250px;" />
+                            </div>
+                            <div class="columns is-0 is-centered">
+                                <RadzenButton Click="@(() => AddApplicationClaim())" Text="Add Application Claim" Style="width: 250px;" />
+                            </div>
+                        </div>
+                        <div class="column">
+                            <div class="columns is-0 is-centered">
+                                <h3>Profile Claim Name</h3>
+                            </div>
+                            <div class="columns is-0 is-centered">
+                                <RadzenTextBox @bind-Value="@UsersStore.GetState().ProfileClaimName" MaxLength="50" Style="width: 250px;" />
+                            </div>
+                            <div class="columns is-0 is-centered mb-6">
+                                <RadzenButton Click="@(() => AddProfileClaim())" Text="Add Profile" Style="width: 250px;" />
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="column is-one-third">
-                    <div class="columns is-0 is-centered">
-                        <h3>User Status Claims</h3>
-                    </div>
-                    <div class="columns is-0 is-centered">
-                        <RadzenDropDown AllowClear="true" TValue="string"
-                                        FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" FilterOperator="StringFilterOperator.StartsWith" AllowFiltering="true"
-                                        Data="@UsersStore.GetState().StatusClaims" @bind-Value="UsersStore.GetState().SelectedStatusClaim" Style="width: 250px;" />
-                    </div>
-                    <div class="columns is-0 is-centered">
-                        <RadzenButton Click="@(() => AddStatusClaim())" Text="Add Status Claim" Style="width: 250px;" />
-                    </div>
-                </div>
-                <div class="column is-one-third">
-                    <div class="columns is-0 is-centered">
-                        <h3>Profile Claim Name</h3>
-                    </div>
-                    <div class="columns is-0 is-centered">
-                        <RadzenTextBox @bind-Value="@UsersStore.GetState().ProfileClaimName" MaxLength="50" Style="width: 250px;" />
-                    </div>
-                    <div class="columns is-0 is-centered">
-                        <RadzenButton Click="@(() => AddProfileClaim())" Text="Add Profile Claim" Style="width: 250px;" />
+            </div>
+
+            <div class="rows">
+                <div class="row is-full mb-6">
+                    <div class="columns">
+                        <div class="column">
+                            <div class="columns is-0 is-centered">
+                                <h3>User Status Claims</h3>
+                            </div>
+                            <div class="columns is-0 is-centered">
+                                <RadzenDropDown AllowClear="true" TValue="string"
+                                                FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" FilterOperator="StringFilterOperator.StartsWith" AllowFiltering="true"
+                                                Data="@UsersStore.GetState().StatusClaims" @bind-Value="UsersStore.GetState().SelectedStatusClaim" Style="width: 250px;" />
+                            </div>
+                            <div class="columns is-0 is-centered">
+                                <RadzenButton Click="@(() => AddStatusClaim())" Text="Add Status Claim" Style="width: 250px;" />
+                            </div>
+                        </div>
+                        <div class="column">
+                            <div class="columns is-0 is-centered">
+                                <h3>Profile Claim Name</h3>
+                            </div>
+                            <div class="columns is-0 is-centered">
+                                <RadzenListBox AllowFiltering="true"
+                                               FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
+                                               @bind-Value="SelectedClaim"
+                                               Data="@UsersStore.GetState().AllProfiles"
+                                               TextProperty="ProfileName"
+                                               ValueProperty="Id"
+                                               Change="@(args => SelectedProfileChange(args))"
+                                               Style="height: 250px; outline: none; width: 250px;" />
+                            </div>
+                            <div class="columns is-0 is-centered">
+                                <RadzenButton Click="@AddProfileClaimFromList" Text="Add Profile From List" Style="width: 250px;" />
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

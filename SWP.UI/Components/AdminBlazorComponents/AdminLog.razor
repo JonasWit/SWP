@@ -90,7 +90,15 @@
     <div class="section">
         <RadzenCard>
             <div class="columns is-vcentered is-centered">
-                <div class="column is-half">
+                <div class="column">
+                    <div class="columns is-0 is-centered">
+                        <h2>Id</h2>
+                    </div>
+                    <div class="columns is-0 is-centered mb-4">
+                        <p>@Store.GetState().SelectedLogRecord.Id</p>
+                    </div>
+                </div>
+                <div class="column">
                     <div class="columns is-0 is-centered">
                         <h2>Time Stamp</h2>
                     </div>
@@ -98,7 +106,7 @@
                         <p>@Store.GetState().SelectedLogRecord.TimeStamp</p>
                     </div>
                 </div>
-                <div class="column is-half">
+                <div class="column">
                     <div class="columns is-0 is-centered">
                         <h2>Level</h2>
                     </div>

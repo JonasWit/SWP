@@ -24,7 +24,11 @@ namespace SWP.UI.Components.AdminBlazorComponents
             UsersStore.RemoveStateChangeListener(UpdateView);
         }
 
-        private void UpdateView() => StateHasChanged();
+        private void UpdateView()
+        {
+            UsersStore.RefreshSore();
+            StateHasChanged();
+        }
 
         protected override async Task OnInitializedAsync()
         {
@@ -33,6 +37,8 @@ namespace SWP.UI.Components.AdminBlazorComponents
             UsersStore.AddStateChangeListener(UpdateView);
             await UsersStore.Initialize();
         }
+
+        public string SelectedClaim;
 
         #region Actions
 
@@ -47,6 +53,10 @@ namespace SWP.UI.Components.AdminBlazorComponents
         private void AddStatusClaim() => ActionDispatcher.Dispatch(new AddStatusClaimAction());
 
         private void AddProfileClaim() => ActionDispatcher.Dispatch(new AddProfileClaimAction());
+
+        private void AddProfileClaimFromList() => ActionDispatcher.Dispatch(new AddProfileClaimFromListAction());
+
+        private void SelectedProfileChange(object arg) => ActionDispatcher.Dispatch(new SelectedProfileChangeAction { Arg = arg });
 
         private void LockUser(bool arg) => ActionDispatcher.Dispatch(new LockUserAction { Arg = arg });
 

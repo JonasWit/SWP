@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SWP.UI.BlazorApp.AdminApp.Stores.Database
 {
-    public class DatabaseState
+    public class PortalState
     {
 
 
@@ -14,9 +14,9 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Database
     }
 
     [UIScopedService]
-    public class DatabaseStore : StoreBase<DatabaseState>
+    public class PortalStore : StoreBase<PortalState>
     {
-        public DatabaseStore(IServiceProvider serviceProvider, IActionDispatcher actionDispatcher, NotificationService notificationService)
+        public PortalStore(IServiceProvider serviceProvider, IActionDispatcher actionDispatcher, NotificationService notificationService)
             : base(serviceProvider, actionDispatcher, notificationService) { }
 
         protected override void HandleActions(IAction action)

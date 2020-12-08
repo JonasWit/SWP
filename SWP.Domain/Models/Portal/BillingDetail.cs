@@ -38,6 +38,7 @@ namespace SWP.Domain.Models.Portal
         [PersonalData]
         public string KRS { get; set; }
 
+        //todo: remove this relation
         public List<UserLicense> UserLicenses { get; set; }
     }
 }

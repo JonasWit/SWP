@@ -18,8 +18,8 @@
     @*<li class="nav-item"><a class="nav-link @ManageNavPages.TwoFactorAuthenticationNavClass(ViewContext)" id="two-factor" asp-page="./TwoFactorAuthentication">Two-factor authentication</a></li>*@
     <li class="nav-item"><a class="nav-link @ManageNavPages.PersonalDataNavClass(ViewContext)" id="personal-data" asp-page="./PersonalData">Dane osobowe</a></li>
 
-    @if ((await authService.AuthorizeAsync(User, "RootClient")).Succeeded)
+    @*@if ((await authService.AuthorizeAsync(User, "RootClient")).Succeeded)
     {
         <li class="nav-item"><a class="nav-link @ManageNavPages.ProfileNavClass(ViewContext)" id="profile-data" asp-page="./ApplicationsProfile">Profil dla Aplikacji</a></li>
-    }
+    }*@
 </ul>

@@ -14,8 +14,9 @@ namespace SWP.Domain.Models.Portal
         public string Product { get; set; }
         public DateTime ValidTo { get; set; }
 
+
+        //todo: remove this relation
         public int BillingDetailId { get; set; }
         public BillingDetail BillingDetail { get; set; }
-
     }
 }

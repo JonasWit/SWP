@@ -102,6 +102,7 @@ namespace SWP.UI.Areas.Identity.Pages.Account.Manage
             {
                 if (rootClientClaim != null)
                 {
+                    //todo: delete also related accounts!
                     await _clearCustomerRelatedData.CleanUp(user.Id);
 
                     //Delete all clients data connected to profile

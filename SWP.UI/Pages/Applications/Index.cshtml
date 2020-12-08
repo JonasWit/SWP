@@ -2,8 +2,6 @@
 @model SWP.UI.Pages.Applications.IndexModel
 @inject IAuthorizationService authService
 
-<h2 class="mb-3">Informacje o aktywnych licencjach</h2>
-
 <h2>Witaj!</h2>
 <h4 class="mt-3 mb-5">Zalogowano jako <span class="user-name">@Model.User.Identity.Name</span>.</h4>
 
@@ -18,18 +16,15 @@
                     <p><strong>Użytkownik:</strong> </p>
                     <p><strong>Liczba powiązanych użytkowników:</strong></p>
                     <p><strong>Ważność licencji:</strong></p>
-
+                    <p><strong>Profil:</strong></p>
                 </div>
                 <div class="col-4 text-left">
-
                     <div>
                         <p>@Model.User.Identity.Name</p>
-
                     </div>
-
                     <p>7</p>
                     <p>01/10/2022</p>
-
+                    <p>@Model.UserData.Profile</p>
                 </div>
                 <div class="col-4">
                     @if (Model.UserData.IsLocked)
@@ -39,9 +34,10 @@
                     else
                     {
                         <p class="text-center"><a class="btn-2" asp-page="/Applications/LegalApplication/Index">Przejdź do aplikacji</a></p>
+                        <p class="text-center"><a class="btn-2" asp-page="/Communication/Request" asp-route-requestedAction="@RequestPreset.ExtendLicense">Przedłuż Licencję</a></p>
                     }
 
-                    <p class="text-center"><a data-toggle="tooltip" data-placement="bottom" title="Przejdź do pomocy" asp-page="/Applications/Help"><img src="/Images/icons8-get-help-96.png" /></a>@Model.UserData.Profile</p>
+                    <p class="text-center"><a data-toggle="tooltip" data-placement="bottom" title="Przejdź do pomocy" asp-page="/Applications/Help"><img src="/Images/icons8-get-help-96.png" /></a></p>
                 </div>
             </div>
         </div>

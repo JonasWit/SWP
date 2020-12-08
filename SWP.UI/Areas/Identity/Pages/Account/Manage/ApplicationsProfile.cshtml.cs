@@ -58,6 +58,7 @@ namespace SWP.UI.Areas.Identity.Pages.Account.Manage
             return Page();
         }
 
+        //todo: move this all to request
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)

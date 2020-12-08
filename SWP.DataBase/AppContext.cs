@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using SWP.Domain.Models.LegalApp;
 using SWP.Domain.Models.News;
 using SWP.Domain.Models.Portal;
+using SWP.Domain.Models.Portal.Communication;
 
 namespace SWP.DataBase
 {
@@ -83,10 +84,17 @@ namespace SWP.DataBase
 
             #region Portal
 
+            //todo: remove this relation
             modelBuilder.Entity<BillingDetail>()
                 .HasMany(c => c.UserLicenses)
                 .WithOne(e => e.BillingDetail)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            //todo:add this
+            //modelBuilder.Entity<ClientRequest>()
+            //    .HasMany(c => c.Messages)
+            //    .WithOne(e => e.ClientRequest)
+            //    .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Log>().ToTable("Log");
 

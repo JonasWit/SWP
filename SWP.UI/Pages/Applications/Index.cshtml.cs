@@ -45,6 +45,10 @@ namespace SWP.UI.Pages.Applications
                 }
             }
 
+            //todo: get licenses entities, sprawdzic i claim i czy jest faktycznie licencja
+            //todo: zliczyæ powi¹zanych u¿ytkowników
+            //todo: sprawdzic waznosc licencji po dacie Valid To
+
             return Page();
         }
     }

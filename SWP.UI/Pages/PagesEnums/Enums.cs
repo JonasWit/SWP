@@ -11,6 +11,7 @@ namespace SWP.UI.Pages.PagesEnums
         PurchaseLicense = 1,
         ReportIssue = 2,
         RequestUpgrade = 3,
-        ModifyLicense = 4
+        ModifyLicense = 4,
+        CreateProfile = 5
     }
 }

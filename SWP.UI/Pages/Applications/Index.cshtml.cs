@@ -17,20 +17,35 @@ namespace SWP.UI.Pages.Applications
     [Authorize(Roles = "Users, Administrators")]
     public class IndexModel : PageModel
     {
-        public string ActiveUserId { get; set; }
-        public UserModel UserData { get; set; } = new UserModel();
-        public List<LicenseViewModel> Licenses { get; set; } = new List<LicenseViewModel>();
-        public LicenseViewModel LegalLicense => Licenses.FirstOrDefault(x => x.Application == ApplicationType.LegalSwp);
-        public string Profile => UserData.Claims.FirstOrDefault(x => x.Type == ClaimType.Profile.ToString())?.Value;
+        public UserAccessModel AccessModel { get; set; } = new UserAccessModel();
+
+        public class UserAccessModel
+        {
+            public string ActiveUserId { get; set; }
+            public UserModel UserData { get; set; } = new UserModel();
+            public List<LicenseViewModel> Licenses { get; set; } = new List<LicenseViewModel>();
+            public LicenseViewModel LegalLicense => Licenses.FirstOrDefault(x => x.Application == ApplicationType.LegalSwp);
+        }
 
         public IndexModel([FromServices] IHttpContextAccessor httpContextAccessor) =>
-            ActiveUserId = httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            AccessModel.ActiveUserId = httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
         public async Task<IActionResult> OnGet([FromServices] UserManager<IdentityUser> userManager, [FromServices] GetLicense getLicense)
         {
-            UserData.User = await userManager.FindByIdAsync(ActiveUserId);
-            UserData.Claims = await userManager.GetClaimsAsync(UserData.User) as List<Claim>;
-            Licenses = getLicense.GetAll(ActiveUserId).Select(x => (LicenseViewModel)x).ToList();
+            AccessModel.UserData.User = await userManager.FindByIdAsync(AccessModel.ActiveUserId);
+            AccessModel.UserData.Claims = await userManager.GetClaimsAsync(AccessModel.UserData.User) as List<Claim>;
+            AccessModel.Licenses = getLicense.GetAll(AccessModel.ActiveUserId).Select(x => (LicenseViewModel)x).ToList();
+
+            //todo: ogranac te licencje!
+
+            if (AccessModel.UserData.RootClient)
+            {
+                AccessModel.Licenses = getLicense.GetAll(AccessModel.ActiveUserId).Select(x => (LicenseViewModel)x).ToList();
+            }
+            else
+            { 
+                
+            }
 
             return Page();
         }

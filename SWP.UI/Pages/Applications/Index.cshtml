@@ -22,44 +22,45 @@
                     <div>
                         <p>@Model.User.Identity.Name</p>
                     </div>
-                    @if (Model.LegalLicense != null)
+                    @if (Model.AccessModel.LegalLicense != null)
                     {
-                        <p>@Model.LegalLicense.RelatedUsers</p>
-                        <p>@Model.LegalLicense.ValidTo.ToShortDateString()</p>
-                        <p>@(Model.Profile == null ? "Brak Profilu" : Model.Profile)</p>
+                        <p>@Model.AccessModel.LegalLicense.RelatedUsers</p>
+                        <p>@Model.AccessModel.LegalLicense.ValidTo.ToShortDateString()</p>
+                        <p>@(Model.AccessModel.UserData.Profile == null ? "Brak Profilu" : Model.AccessModel.UserData.Profile)</p>
                     }
-                    else if (Model.LegalLicense == null && Model.Profile == null)
+                    else if (Model.AccessModel.LegalLicense == null)
                     {
                         <p>Brak Licencji</p>
                         <p>Brak Licencji</p>
                         <p>Brak Licencji</p>
-                    }
-                    else if (Model.LegalLicense == null && Model.Profile != null)
-                    {
-                        <p>Użytkownik Powiązany</p>
-                        <p>Użytkownik Powiązany</p>
-                        <p>@Model.Profile</p>
                     }
                 </div>
                 <div class="col-4">
-                    @if (Model.LegalLicense != null && Model.Profile != null)
+                    @if (Model.AccessModel.LegalLicense == null)
                     {
-                        @if (Model.UserData.IsLocked)
-                        {
-                            <p class="text-center">Użytkownik został zablokowany!</p>
-                        }
-                        else if (Model.LegalLicense.ValidTo <= DateTime.Now)
-                        {
-                            <p class="text-center"><a class="btn-2" asp-page="/Communication/Request" asp-route-requestedAction="@RequestPreset.ExtendLicense">Przedłuż Licencję</a></p>
-                        }
-                        else
-                        {
-                            <p class="text-center"><a class="btn-2" asp-page="/Applications/LegalApplication/Index">Przejdź do aplikacji</a></p>
-                        }
+                        <p class="text-center"><a class="btn-2" asp-page="/Communication/Request" asp-route-requestedAction="@RequestPreset.PurchaseLicense">Kup Licencję</a></p>
                     }
                     else
                     {
-                        <p class="text-center"><a class="btn-2" asp-page="/Communication/Request" asp-route-requestedAction="@RequestPreset.PurchaseLicense">Kup Licencję</a></p>
+                        @if (Model.AccessModel.UserData.Profile == null)
+                        {
+                            <p class="text-center"><a class="btn-2" asp-page="/Communication/Request" asp-route-requestedAction="@RequestPreset.CreateProfile">Stwórz Profil</a></p>
+                        }
+                        else
+                        {
+                            @if (Model.AccessModel.UserData.IsLocked)
+                            {
+                                <p class="text-center">Użytkownik został zablokowany!</p>
+                            }
+                            else if (Model.AccessModel.LegalLicense.ValidTo <= DateTime.Now)
+                            {
+                                <p class="text-center"><a class="btn-2" asp-page="/Communication/Request" asp-route-requestedAction="@RequestPreset.ExtendLicense">Przedłuż Licencję</a></p>
+                            }
+                            else
+                            {
+                                <p class="text-center"><a class="btn-2" asp-page="/Applications/LegalApplication/Index">Przejdź do aplikacji</a></p>
+                            }
+                        }
                     }
 
                     <p class="text-center"><a data-toggle="tooltip" data-placement="bottom" title="Przejdź do pomocy" asp-page="/Applications/Help"><img src="/Images/icons8-get-help-96.png" /></a></p>

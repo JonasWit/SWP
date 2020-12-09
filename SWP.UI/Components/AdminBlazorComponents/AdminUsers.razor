@@ -1,10 +1,4 @@
-﻿
-
-<div class="section">
-    <h2>Dodac zliczanie ilosci userow w profilach</h2>
-</div>
-
-<div class="section">
+﻿<div class="section">
     <RadzenCard>
         <div class="columns is-0 is-centered">
             <h2>Users</h2>
@@ -46,54 +40,37 @@
                 <h3 class="my-0 mx-0"><b>Selected User: @Store.GetState().SelectedUser?.Name</b></h3>
             </div>
 
-            <div class="columns is-0 is-centered">
-                <h3>Current Role</h3>
-            </div>
-            <div class="columns is-0 is-centered mb-6">
-                <RadzenSelectBar @bind-Value="Store.GetState().SelectedRole" TValue="int" Change="@((args) => RoleChanged(args))">
-                    <Items>
-                        <RadzenSelectBarItem Text="Administrators" Value="0" />
-                        <RadzenSelectBarItem Text="Users" Value="1" />
-                    </Items>
-                </RadzenSelectBar>
-            </div>
-
-            <div class="columns is-0 is-centered">
-                <h3>Lock User</h3>
-            </div>
-            <div class="columns is-0 is-centered mb-6">
-                <RadzenSelectBar @bind-Value="Store.GetState().Lock" TValue="bool" Change="@((args) => LockUser(args))">
-                    <Items>
-                        <RadzenSelectBarItem Text="Locked" Value="true" />
-                        <RadzenSelectBarItem Text="Unlocked" Value="false" />
-                    </Items>
-                </RadzenSelectBar>
-            </div>
-
-            <div class="columns is-0 is-centered">
-                <h2>Current Claims</h2>
-            </div>
-            <div class="columns is-0 is-centered mb-6">
-                <RadzenGrid @ref="Store.GetState().ClaimsGrid"
-                            AllowFiltering="true"
-                            AllowPaging="true"
-                            PageSize="5"
-                            AllowSorting="true"
-                            EditMode="DataGridEditMode.Single"
-                            Data="@Store.GetState().SelectedUser.Claims"
-                            TItem="Claim">
-                    <Columns>
-                        <RadzenGridColumn TItem="Claim" Property="Type" Title="Type" />
-                        <RadzenGridColumn TItem="Claim" Property="Value" Title="Value" />
-
-                        <RadzenGridColumn TItem="Claim" Context="claim" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="50px">
-                            <Template Context="claim">
-                                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@(args => DeleteClaimRow(claim))">
-                                </RadzenButton>
-                            </Template>
-                        </RadzenGridColumn>
-                    </Columns>
-                </RadzenGrid>
+            <div class="rows">
+                <div class="row is-full mb-6">
+                    <div class="columns">
+                        <div class="column">
+                            <div class="columns is-0 is-centered">
+                                <h3>Current Role</h3>
+                            </div>
+                            <div class="columns is-0 is-centered mb-6">
+                                <RadzenSelectBar @bind-Value="Store.GetState().SelectedRole" TValue="int" Change="@((args) => RoleChanged(args))">
+                                    <Items>
+                                        <RadzenSelectBarItem Text="Administrators" Value="0" />
+                                        <RadzenSelectBarItem Text="Users" Value="1" />
+                                    </Items>
+                                </RadzenSelectBar>
+                            </div>
+                        </div>
+                        <div class="column">
+                            <div class="columns is-0 is-centered">
+                                <h3>Lock User</h3>
+                            </div>
+                            <div class="columns is-0 is-centered mb-6">
+                                <RadzenSelectBar @bind-Value="Store.GetState().Lock" TValue="bool" Change="@((args) => LockUser(args))">
+                                    <Items>
+                                        <RadzenSelectBarItem Text="Locked" Value="true" />
+                                        <RadzenSelectBarItem Text="Unlocked" Value="false" />
+                                    </Items>
+                                </RadzenSelectBar>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="rows">
@@ -167,6 +144,32 @@
                         </div>
                     </div>
                 </div>
+            </div>
+
+            <div class="columns is-0 is-centered">
+                <h2>Current Claims</h2>
+            </div>
+            <div class="columns is-0 is-centered mb-6">
+                <RadzenGrid @ref="Store.GetState().ClaimsGrid"
+                            AllowFiltering="true"
+                            AllowPaging="true"
+                            PageSize="5"
+                            AllowSorting="true"
+                            EditMode="DataGridEditMode.Single"
+                            Data="@Store.GetState().SelectedUser.Claims"
+                            TItem="Claim">
+                    <Columns>
+                        <RadzenGridColumn TItem="Claim" Property="Type" Title="Type" />
+                        <RadzenGridColumn TItem="Claim" Property="Value" Title="Value" />
+
+                        <RadzenGridColumn TItem="Claim" Context="claim" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="50px">
+                            <Template Context="claim">
+                                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@(args => DeleteClaimRow(claim))">
+                                </RadzenButton>
+                            </Template>
+                        </RadzenGridColumn>
+                    </Columns>
+                </RadzenGrid>
             </div>
         </RadzenCard>
     </div>

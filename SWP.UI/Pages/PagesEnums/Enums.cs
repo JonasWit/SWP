@@ -8,6 +8,9 @@ namespace SWP.UI.Pages.PagesEnums
     public enum RequestPreset
     {
         ExtendLicense = 0,
-        PurchaseLicense = 1
+        PurchaseLicense = 1,
+        ReportIssue = 2,
+        RequestUpgrade = 3,
+        ModifyLicense = 4
     }
 }

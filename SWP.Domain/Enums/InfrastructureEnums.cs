@@ -7,6 +7,7 @@ namespace SWP.Domain.Enums
     public enum ApplicationType
     { 
         LegalSwp = 0,
+        NoApp = 1,
     }
 
     public enum UserStatus

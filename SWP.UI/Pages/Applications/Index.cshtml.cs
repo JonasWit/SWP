@@ -1,14 +1,16 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using SWP.Application.PortalCustomers.LicenseManagement;
+using SWP.Domain.Enums;
 using SWP.UI.Models;
+using SWP.UI.Pages.Applications.ViewModels;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace SWP.UI.Pages.Applications
 {
@@ -17,37 +19,18 @@ namespace SWP.UI.Pages.Applications
     {
         public string ActiveUserId { get; set; }
         public UserModel UserData { get; set; } = new UserModel();
-        public List<string> Licenses { get; set; } = new List<string>();
+        public List<LicenseViewModel> Licenses { get; set; } = new List<LicenseViewModel>();
+        public LicenseViewModel LegalLicense => Licenses.FirstOrDefault(x => x.Application == ApplicationType.LegalSwp);
+        public string Profile => UserData.Claims.FirstOrDefault(x => x.Type == ClaimType.Profile.ToString())?.Value;
 
         public IndexModel([FromServices] IHttpContextAccessor httpContextAccessor) =>
             ActiveUserId = httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-        public async Task<IActionResult> OnGet([FromServices] UserManager<IdentityUser> userManager)
+        public async Task<IActionResult> OnGet([FromServices] UserManager<IdentityUser> userManager, [FromServices] GetLicense getLicense)
         {
             UserData.User = await userManager.FindByIdAsync(ActiveUserId);
-            UserData.Claims = await userManager.GetClaimsAsync(UserData.User) as List<Claim>; 
-
-            foreach (var appClaim in UserData.Claims)
-            {
-                if (appClaim.Type == "Application")
-                {
-                    switch (appClaim.Value)
-                    {
-                        case "LegalSwp":
-                            Licenses.Add("Aplikacja Kancelaria");
-                            break;
-                        case "MedicalSwp":
-                            Licenses.Add("Aplikacja Gabinet");
-                            break;
-                        default:
-                            break;
-                    }
-                }
-            }
-
-            //todo: get licenses entities, sprawdzic i claim i czy jest faktycznie licencja
-            //todo: zliczyæ powi¹zanych u¿ytkowników
-            //todo: sprawdzic waznosc licencji po dacie Valid To
+            UserData.Claims = await userManager.GetClaimsAsync(UserData.User) as List<Claim>;
+            Licenses = getLicense.GetAll(ActiveUserId).Select(x => (LicenseViewModel)x).ToList();
 
             return Page();
         }

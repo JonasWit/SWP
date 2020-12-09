@@ -84,6 +84,7 @@ namespace SWP.DataBase.Managers
                 record.ValidTo = updatedEntity.ValidTo;
                 record.Type = updatedEntity.Type;
                 record.Application = updatedEntity.Application;
+                record.RelatedUsers = updatedEntity.RelatedUsers;
 
                 record.Updated = DateTime.Now;
                 record.UpdatedBy = updatedEntity.UpdatedBy;

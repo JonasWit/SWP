@@ -34,7 +34,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Finance
     [UIScopedService]
     public class FinanceStore : StoreBase<FinanceState>
     {
-        private MainStore _mainStore => _serviceProvider.GetRequiredService<MainStore>();
+        private MainStore MainStore => _serviceProvider.GetRequiredService<MainStore>();
 
         public FinanceStore(IServiceProvider serviceProvider, IActionDispatcher actionDispatcher, NotificationService notificationService, DialogService dialogService)
             : base(serviceProvider, actionDispatcher, notificationService, dialogService)
@@ -45,7 +45,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Finance
         public void Initialize()
         {
             GetDataForMonthFilter();
-            GetCashMovements(_mainStore.GetState().ActiveClient.Id);
+            GetCashMovements(MainStore.GetState().ActiveClient.Id);
         }
 
         protected override async void HandleActions(IAction action)
@@ -100,7 +100,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Finance
             }
             catch (Exception ex)
             {
-                _mainStore.ShowErrorPage(ex);
+                MainStore.ShowErrorPage(ex);
             }
         }
 
@@ -154,7 +154,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Finance
                     Name = cash.Name,
                     Expense = cash.Expense,
                     Updated = DateTime.Now,
-                    UpdatedBy = _mainStore.GetState().User.UserName,
+                    UpdatedBy = MainStore.GetState().User.UserName,
                     EventDate = cash.EventDate
                 });
 
@@ -167,7 +167,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Finance
             }
             catch (Exception ex)
             {
-                _mainStore.ShowErrorPage(ex);
+                MainStore.ShowErrorPage(ex);
             }
         }
 
@@ -176,7 +176,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Finance
         private void CancelCashMovementEdit(CashMovementViewModel cash)
         {
             _state.CashMovementGrid.CancelEditRow(cash);
-            GetCashMovements(_mainStore.GetState().ActiveClient.Id);
+            GetCashMovements(MainStore.GetState().ActiveClient.Id);
             BroadcastStateChange();
         }
 
@@ -197,7 +197,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Finance
             }
             catch (Exception ex)
             {
-                _mainStore.ShowErrorPage(ex);
+                MainStore.ShowErrorPage(ex);
             }
         }
 
@@ -214,9 +214,9 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Finance
                 using var scope = _serviceProvider.CreateScope();
                 var createCashMovement = scope.ServiceProvider.GetRequiredService<CreateCashMovement>();
 
-                request.UpdatedBy = _mainStore.GetState().User.UserName;
+                request.UpdatedBy = MainStore.GetState().User.UserName;
 
-                var result = await createCashMovement.Create(_mainStore.GetState().ActiveClient.Id, _mainStore.GetState().User.Profile, request);
+                var result = await createCashMovement.Create(MainStore.GetState().ActiveClient.Id, MainStore.GetState().User.Profile, request);
 
                 _state.NewCashMovement = new CreateCashMovement.Request();
                 _state.CashMovements.Add(result);
@@ -232,7 +232,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Finance
             }
             catch (Exception ex)
             {
-                _mainStore.ShowErrorPage(ex);
+                MainStore.ShowErrorPage(ex);
             }
         }
 
@@ -273,7 +273,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Finance
         public override void RefreshSore()
         {
             GetDataForMonthFilter();
-            GetCashMovements(_mainStore.GetState().ActiveClient.Id);
+            GetCashMovements(MainStore.GetState().ActiveClient.Id);
         }
     }
 }

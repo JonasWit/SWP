@@ -25,7 +25,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.ClientJobs
     [UIScopedService]
     public class ClientJobsStore : StoreBase<ClientJobsState>
     {
-        public MainStore _mainStore => _serviceProvider.GetRequiredService<MainStore>();
+        public MainStore MainStore => _serviceProvider.GetRequiredService<MainStore>();
 
         public ClientJobsStore(IServiceProvider serviceProvider, IActionDispatcher actionDispatcher, NotificationService notificationService, DialogService dialogService)
             : base(serviceProvider, actionDispatcher, notificationService, dialogService)
@@ -35,7 +35,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.ClientJobs
 
         public void Initialize()
         {
-            GetClientJobs(_mainStore.GetState().ActiveClient.Id);
+            GetClientJobs(MainStore.GetState().ActiveClient.Id);
         }
 
         protected override async void HandleActions(IAction action)
@@ -100,7 +100,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.ClientJobs
             }
             catch (Exception ex)
             {
-                _mainStore.ShowErrorPage(ex);
+                MainStore.ShowErrorPage(ex);
             }
         }
 
@@ -113,8 +113,8 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.ClientJobs
                 using var scope = _serviceProvider.CreateScope();
                 var createClientJob = scope.ServiceProvider.GetRequiredService<CreateClientJob>();
 
-                request.ClientId = _mainStore.GetState().ActiveClient.Id;
-                request.UpdatedBy = _mainStore.GetState().User.UserName;
+                request.ClientId = MainStore.GetState().ActiveClient.Id;
+                request.UpdatedBy = MainStore.GetState().User.UserName;
 
                 var result = await createClientJob.Create(request);
                 _state.NewClientJob = new CreateClientJob.Request();
@@ -122,12 +122,12 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.ClientJobs
                 _state.Jobs.Add(result);
 
                 await _state.ClientsJobsGrid.Reload();
-                ShowNotification(NotificationSeverity.Success, "Sukces!", $"Zadanie: {result.Name}, dla Klineta: {_mainStore.GetState().ActiveClient.Name} zostało stworzone.", GeneralViewModel.NotificationDuration);
+                ShowNotification(NotificationSeverity.Success, "Sukces!", $"Zadanie: {result.Name}, dla Klineta: {MainStore.GetState().ActiveClient.Name} zostało stworzone.", GeneralViewModel.NotificationDuration);
                 BroadcastStateChange();
             }
             catch (Exception ex)
             {
-                _mainStore.ShowErrorPage(ex);
+                MainStore.ShowErrorPage(ex);
             }
         }
 
@@ -148,17 +148,17 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.ClientJobs
                     Name = clientJob.Name,
                     Priority = clientJob.Priority,
                     Updated = DateTime.Now,
-                    UpdatedBy = _mainStore.GetState().User.UserName
+                    UpdatedBy = MainStore.GetState().User.UserName
                 });
 
                 _state.Jobs[_state.Jobs.FindIndex(x => x.Id == result.Id)] = result;
                 await _state.ClientsJobsGrid.Reload();
-                ShowNotification(NotificationSeverity.Success, "Sukces!", $"Zadanie: {result.Name}, dla Klineta: {_mainStore.GetState().ActiveClient.Name} zostało zmienione.", GeneralViewModel.NotificationDuration);
+                ShowNotification(NotificationSeverity.Success, "Sukces!", $"Zadanie: {result.Name}, dla Klineta: {MainStore.GetState().ActiveClient.Name} zostało zmienione.", GeneralViewModel.NotificationDuration);
                 BroadcastStateChange();
             }
             catch (Exception ex)
             {
-                _mainStore.ShowErrorPage(ex);
+                MainStore.ShowErrorPage(ex);
             }
         }
 
@@ -167,7 +167,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.ClientJobs
         private void CancelClientJobEdit(ClientJobViewModel clientJob)
         {
             _state.ClientsJobsGrid.CancelEditRow(clientJob);
-            _mainStore.RefreshActiveClientData();
+            MainStore.RefreshMainComponent();
             BroadcastStateChange();
         }
 
@@ -183,12 +183,12 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.ClientJobs
                 _state.Jobs.RemoveAll(x => x.Id == clientJob.Id);
 
                 await _state.ClientsJobsGrid.Reload();
-                ShowNotification(NotificationSeverity.Warning, "Sukces!", $"Zadanie: {clientJob.Name}, dla Klineta: {_mainStore.GetState().ActiveClient.Name} zostało usunięte.", GeneralViewModel.NotificationDuration);
+                ShowNotification(NotificationSeverity.Warning, "Sukces!", $"Zadanie: {clientJob.Name}, dla Klineta: {MainStore.GetState().ActiveClient.Name} zostało usunięte.", GeneralViewModel.NotificationDuration);
                 BroadcastStateChange();
             }
             catch (Exception ex)
             {
-                _mainStore.ShowErrorPage(ex);
+                MainStore.ShowErrorPage(ex);
             }
         }
 
@@ -212,7 +212,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.ClientJobs
                 using var scope = _serviceProvider.CreateScope();
                 var archiveJob = scope.ServiceProvider.GetRequiredService<ArchiveJob>();
 
-                var result = await archiveJob.ArchivizeClientJob(clientJob.Id, _mainStore.GetState().User.UserName);
+                var result = await archiveJob.ArchivizeClientJob(clientJob.Id, MainStore.GetState().User.UserName);
 
                 _state.Jobs.RemoveAll(x => x.Id == clientJob.Id);
                 _state.ArchivedJobs.Add(result);
@@ -223,7 +223,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.ClientJobs
             }
             catch (Exception ex)
             {
-                _mainStore.ShowErrorPage(ex);
+                MainStore.ShowErrorPage(ex);
             }
         }
 
@@ -238,7 +238,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.ClientJobs
                     using var scope = _serviceProvider.CreateScope();
                     var archiveJob = scope.ServiceProvider.GetRequiredService<ArchiveJob>();
 
-                    var result = await archiveJob.RecoverClientJob(_state.SelectedArchivizedClientJob.Id, _mainStore.GetState().User.UserName);
+                    var result = await archiveJob.RecoverClientJob(_state.SelectedArchivizedClientJob.Id, MainStore.GetState().User.UserName);
 
                     _state.ArchivedJobs.RemoveAll(x => x.Id == _state.SelectedArchivizedClientJob.Id);
                     _state.Jobs.Add(result);
@@ -256,7 +256,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.ClientJobs
             }
             catch (Exception ex)
             {
-                _mainStore.ShowErrorPage(ex);
+                MainStore.ShowErrorPage(ex);
             }
         }
 
@@ -270,7 +270,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.ClientJobs
 
         public override void RefreshSore()
         {
-            GetClientJobs(_mainStore.GetState().ActiveClient.Id);
+            GetClientJobs(MainStore.GetState().ActiveClient.Id);
         }
     }
 }

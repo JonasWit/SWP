@@ -67,15 +67,15 @@ namespace SWP.UI.Components.AdminBlazorComponents
 
         private void SubmitNewLicense(CreateLicense.Request arg) => ActionDispatcher.Dispatch(new SubmitNewLicenseAction { Arg = arg });
 
-        private void OnUpdateLicenseRow(UserLicense arg) { }
+        private void OnUpdateLicenseRow(UserLicense arg) => ActionDispatcher.Dispatch(new OnUpdateLicenseRowAction { Arg = arg });
 
-        private void EditLicenseRow(UserLicense arg) { }
+        private void EditLicenseRow(UserLicense arg) => ActionDispatcher.Dispatch(new EditLicenseRowAction { Arg = arg });
 
-        private void SaveLicenseRow(UserLicense arg) { }
+        private void SaveLicenseRow(UserLicense arg) => ActionDispatcher.Dispatch(new SaveLicenseRowAction { Arg = arg });
 
-        private void CancelLicenseEdit(UserLicense arg) { }
+        private void CancelLicenseEdit(UserLicense arg) => ActionDispatcher.Dispatch(new CancelLicenseEditAction { Arg = arg });
 
-        private void DeleteLicenseRow(UserLicense arg) { }
+        private void DeleteLicenseRow(UserLicense arg) => ActionDispatcher.Dispatch(new DeleteLicenseRowAction { Arg = arg });
 
 
         #endregion

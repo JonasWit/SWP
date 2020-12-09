@@ -122,6 +122,10 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Users
                 case AddProfileClaimFromListAction.AddProfileClaimFromList:
                     await AddProfileClaimFromList();
                     break;
+                case OnUpdateLicenseRowAction.OnUpdateLicenseRow:
+                    var onUpdateLicenseRowAction = (OnUpdateLicenseRowAction)action;
+                    await OnUpdateLicenseRow(onUpdateLicenseRowAction.Arg);
+                    break;
                 case SelectedProfileChangeAction.SelectedProfileChange:
                     var selectedProfileChangeAction = (SelectedProfileChangeAction)action;
                     SelectedProfileChange(selectedProfileChangeAction.Arg);
@@ -134,9 +138,25 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Users
                     var deleteUserAction = (DeleteUserAction)action;
                     await DeleteUser(deleteUserAction.Arg);
                     break;
+                case DeleteLicenseRowAction.DeleteLicenseRow:
+                    var deleteLicenseRowAction = (DeleteLicenseRowAction)action;
+                    await DeleteLicenseRow(deleteLicenseRowAction.Arg);
+                    break;
                 case SubmitNewLicenseAction.SubmitNewLicense:
                     var submitNewLicenseAction = (SubmitNewLicenseAction)action;
                     await SubmitNewLicense(submitNewLicenseAction.Arg);
+                    break;
+                case EditLicenseRowAction.EditLicenseRow:
+                    var editLicenseRowAction = (EditLicenseRowAction)action;
+                    EditLicenseRow(editLicenseRowAction.Arg);
+                    break;
+                case SaveLicenseRowAction.SaveLicenseRow:
+                    var saveLicenseRowAction = (SaveLicenseRowAction)action;
+                    SaveLicenseRow(saveLicenseRowAction.Arg);
+                    break;
+                case CancelLicenseEditAction.CancelLicenseEdit:
+                    var cancelLicenseEditAction = (CancelLicenseEditAction)action;
+                    CancelLicenseEdit(cancelLicenseEditAction.Arg);
                     break;
                 default:
                     break;
@@ -174,13 +194,9 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Users
 
         private async Task<UserModel> GetUser(string Id)
         {
-            using var scope = _serviceProvider.CreateScope();
-            var getLicense = scope.ServiceProvider.GetRequiredService<GetLicense>();
-
             var user = await UserManager.FindByIdAsync(Id);
             var claims = await UserManager.GetClaimsAsync(user) as List<Claim>;
             var role = await UserManager.GetRolesAsync(user) as List<string>;
-            var licenses = getLicense.GetAll(user.Id);
 
             return new UserModel
             {
@@ -191,8 +207,16 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Users
                 UserRole = (RoleType)Enum.Parse(typeof(RoleType), role.First(), true),
                 LockoutEnd = user.LockoutEnd,
                 LockoutEnabled = user.LockoutEnabled,
-                Licenses = licenses
+                Licenses = GetUserLicenses(user.Id)
             };
+        }
+
+        private List<UserLicense> GetUserLicenses(string userId)
+        {
+            using var scope = _serviceProvider.CreateScope();
+            var getLicense = scope.ServiceProvider.GetRequiredService<GetLicense>();
+
+            return getLicense.GetAll(userId);
         }
 
         private void ShowErrorPage(Exception ex) => AppStore.ShowErrorPage(ex);
@@ -557,6 +581,62 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Users
             catch (Exception ex)
             {
                 StatusBarStore.UpdateLogWindow($"Exception: {ex.Message} - logged.");
+                ShowErrorPage(ex);
+            }
+        }
+
+        private void EditLicenseRow(UserLicense userLicense) => _state.LicensesGrid.EditRow(userLicense);
+
+        private void SaveLicenseRow(UserLicense userLicense) => _state.LicensesGrid.UpdateRow(userLicense);
+
+        private void CancelLicenseEdit(UserLicense userLicense)
+        {
+            _state.LicensesGrid.CancelEditRow(userLicense);
+            _state.SelectedUser.Licenses = GetUserLicenses(_state.SelectedUser.Id);
+            BroadcastStateChange();
+        }
+
+        private async Task OnUpdateLicenseRow(UserLicense userLicense)
+        {
+            try
+            {
+                using var scope = _serviceProvider.CreateScope();
+                var updateLicense = scope.ServiceProvider.GetRequiredService<UpdateLicense>();
+
+                userLicense.Updated = DateTime.Now;
+                userLicense.UpdatedBy = AppStore.GetState().User.UserName;
+
+                var result = await updateLicense.Update(userLicense);
+
+                _state.SelectedUser.Licenses[_state.SelectedUser.Licenses.FindIndex(x => x.Id == result.Id)] = result;
+                await _state.LicensesGrid.Reload();
+
+                ShowNotification(NotificationSeverity.Success, "Success!", $"License: {result.Application}, for User: {_state.SelectedUser.Name} has been changed.", 2000);
+                BroadcastStateChange();
+            }
+            catch (Exception ex)
+            {
+                ShowErrorPage(ex);
+            }
+        }
+
+        private async Task DeleteLicenseRow(UserLicense userLicense)
+        {
+            try
+            {
+                using var scope = _serviceProvider.CreateScope();
+                var deleteLicense = scope.ServiceProvider.GetRequiredService<DeleteLicense>();
+
+                await deleteLicense.Delete(userLicense.Id);
+
+                _state.SelectedUser.Licenses.RemoveAll(x => x.Id == userLicense.Id);
+                await _state.LicensesGrid.Reload();
+
+                ShowNotification(NotificationSeverity.Warning, "Success!", $"License: {userLicense.Application} - {userLicense.Type} has been removed.", 2000);
+                BroadcastStateChange();
+            }
+            catch (Exception ex)
+            {
                 ShowErrorPage(ex);
             }
         }

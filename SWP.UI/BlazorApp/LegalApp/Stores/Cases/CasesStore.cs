@@ -36,7 +36,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
     {
         private readonly GeneralViewModel _generalViewModel;
 
-        private MainStore _mainStore => _serviceProvider.GetRequiredService<MainStore>();
+        private MainStore MainStore => _serviceProvider.GetRequiredService<MainStore>();
 
         public CasesStore(IServiceProvider serviceProvider, IActionDispatcher actionDispatcher, NotificationService notificationService, DialogService dialogService, GeneralViewModel generalViewModel)
             : base(serviceProvider, actionDispatcher, notificationService, dialogService)
@@ -46,7 +46,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
 
         public void Initialize()
         {
-            GetCases(_mainStore.GetState().ActiveClient.Id);
+            GetCases(MainStore.GetState().ActiveClient.Id);
         }
 
         protected override async void HandleActions(IAction action)
@@ -171,7 +171,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
             }
             catch (Exception ex)
             {
-                _mainStore.ShowErrorPage(ex);
+                MainStore.ShowErrorPage(ex);
             }
         }
 
@@ -208,8 +208,8 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
                 using var scope = _serviceProvider.CreateScope();
                 var createCase = scope.ServiceProvider.GetRequiredService<CreateCase>();
 
-                request.UpdatedBy = _mainStore.GetState().User.UserName;
-                var result = await createCase.Create(_mainStore.GetState().ActiveClient.Id, _mainStore.GetState().User.Profile, request);
+                request.UpdatedBy = MainStore.GetState().User.UserName;
+                var result = await createCase.Create(MainStore.GetState().ActiveClient.Id, MainStore.GetState().User.Profile, request);
                 _state.NewCase = new CreateCase.Request();
 
                 AddCaseToActiveClient(result);
@@ -220,7 +220,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
             }
             catch (Exception ex)
             {
-                _mainStore.ShowErrorPage(ex);
+                MainStore.ShowErrorPage(ex);
             }
         }
 
@@ -240,7 +240,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
                     Description = c.Description,
                     Name = c.Name,
                     Signature = c.Signature,
-                    UpdatedBy = _mainStore.GetState().User.UserName
+                    UpdatedBy = MainStore.GetState().User.UserName
                 });
 
                 ReplaceCaseFromActiveClient(result);
@@ -256,7 +256,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
             }
             catch (Exception ex)
             {
-                _mainStore.ShowErrorPage(ex);
+                MainStore.ShowErrorPage(ex);
             }
         }
 
@@ -265,7 +265,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
         private void CancelEditCaseRow(CaseViewModel c)
         {
             _state.CasesGrid.CancelEditRow(c);
-            _mainStore.RefreshActiveClientData();
+            MainStore.RefreshMainComponent();
             BroadcastStateChange();
         }
 
@@ -292,7 +292,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
             }
             catch (Exception ex)
             {
-                _mainStore.ShowErrorPage(ex);
+                MainStore.ShowErrorPage(ex);
             }
         }
 
@@ -319,7 +319,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
                 var archiveCase = scope.ServiceProvider.GetRequiredService<ArchiveCases>();
 
                 _state.Cases.RemoveAll(x => x.Id == c.Id);
-                await archiveCase.ArchivizeCase(c.Id, _mainStore.GetState().User.UserName);
+                await archiveCase.ArchivizeCase(c.Id, MainStore.GetState().User.UserName);
 
                 await _state.CasesGrid.Reload();
                 ShowNotification(NotificationSeverity.Success, "Sukces!", $"Sprawa: {c.Name} została zarchwizowana", GeneralViewModel.NotificationDuration);
@@ -327,7 +327,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
             }
             catch (Exception ex)
             {
-                _mainStore.ShowErrorPage(ex);
+                MainStore.ShowErrorPage(ex);
             }
         }
 
@@ -373,7 +373,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
                 using var scope = _serviceProvider.CreateScope();
                 var createNote = scope.ServiceProvider.GetRequiredService<CreateNote>();
 
-                request.UpdatedBy = _mainStore.GetState().User.UserName;
+                request.UpdatedBy = MainStore.GetState().User.UserName;
                 var result = await createNote.Create(_state.SelectedCase.Id, request);
 
                 _state.NewNote = new CreateNote.Request();
@@ -386,7 +386,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
             }
             catch (Exception ex)
             {
-                _mainStore.ShowErrorPage(ex);
+                MainStore.ShowErrorPage(ex);
             }
         }
 
@@ -405,7 +405,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
                     Message = note.Message,
                     Name = note.Name,
                     Priority = note.Priority,
-                    UpdatedBy = _mainStore.GetState().User.UserName
+                    UpdatedBy = MainStore.GetState().User.UserName
                 });
 
                 ReplaceNoteFromActiveCase(result);
@@ -416,7 +416,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
             }
             catch (Exception ex)
             {
-                _mainStore.ShowErrorPage(ex);
+                MainStore.ShowErrorPage(ex);
             }
         }
 
@@ -446,7 +446,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
             }
             catch (Exception ex)
             {
-                _mainStore.ShowErrorPage(ex);
+                MainStore.ShowErrorPage(ex);
             }
         }
 
@@ -467,7 +467,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
 
                 if (result != null)
                 {
-                    result.UpdatedBy = _mainStore.GetState().User.UserName;
+                    result.UpdatedBy = MainStore.GetState().User.UserName;
 
                     var newReminder = await createReminder.Create(_state.SelectedCase.Id, new CreateReminder.Request
                     {
@@ -489,7 +489,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
             }
             catch (Exception ex)
             {
-                _mainStore.ShowErrorPage(ex);
+                MainStore.ShowErrorPage(ex);
             }
         }
 
@@ -528,7 +528,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
                             Start = result.Start,
                             End = result.End < result.Start ? result.Start : result.End,
                             Updated = DateTime.Now,
-                            UpdatedBy = _mainStore.GetState().User.UserName
+                            UpdatedBy = MainStore.GetState().User.UserName
                         });
 
                         RemoveReminderFromActiveCase(updatedReminder.Id);
@@ -542,7 +542,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
             }
             catch (Exception ex)
             {
-                _mainStore.ShowErrorPage(ex);
+                MainStore.ShowErrorPage(ex);
             }
         }
 
@@ -584,7 +584,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
                     PhoneNumber = contact.PhoneNumber,
                     AlternativePhoneNumber = contact.AlternativePhoneNumber,
                     Updated = DateTime.Now,
-                    UpdatedBy = _mainStore.GetState().User.UserName
+                    UpdatedBy = MainStore.GetState().User.UserName
                 });
 
                 ReplaceContactFromActiveCase(result);
@@ -595,7 +595,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
             }
             catch (Exception ex)
             {
-                _mainStore.ShowErrorPage(ex);
+                MainStore.ShowErrorPage(ex);
             }
         }
 
@@ -604,7 +604,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
         private void CancelContactEdit(ContactPersonViewModel contact)
         {
             _state.ContactsGrid.CancelEditRow(contact);
-            _mainStore.RefreshActiveClientData();
+            MainStore.RefreshMainComponent();
             BroadcastStateChange();
         }
 
@@ -624,13 +624,13 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
             }
             catch (Exception ex)
             {
-                _mainStore.ShowErrorPage(ex);
+                MainStore.ShowErrorPage(ex);
             }
         }
 
         private async Task SubmitNewContact(CreateContactPerson.Request request)
         {
-            request.UpdatedBy = _mainStore.GetState().User.UserName;
+            request.UpdatedBy = MainStore.GetState().User.UserName;
 
             try
             {
@@ -648,7 +648,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
             }
             catch (Exception ex)
             {
-                _mainStore.ShowErrorPage(ex);
+                MainStore.ShowErrorPage(ex);
             }
         }
 
@@ -676,7 +676,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
 
         public override void RefreshSore()
         {
-            GetCases(_mainStore.GetState().ActiveClient.Id);
+            GetCases(MainStore.GetState().ActiveClient.Id);
         }
 
 

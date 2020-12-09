@@ -197,6 +197,8 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
 
         public UserModel GetApplicationUser() => _state.User;
 
+        public void RefreshMainComponent() => BroadcastStateChange();
+
         public void RefreshActiveClientData()
         {
             try

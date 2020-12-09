@@ -46,7 +46,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Productivity
     [UIScopedService]
     public class ProductivityStore : StoreBase<ProductivityState>
     {
-        private MainStore _mainStore => _serviceProvider.GetRequiredService<MainStore>();
+        private MainStore MainStore => _serviceProvider.GetRequiredService<MainStore>();
 
         public ProductivityStore(IServiceProvider serviceProvider, IActionDispatcher actionDispatcher, NotificationService notificationService, DialogService dialogService)
             : base(serviceProvider, actionDispatcher, notificationService, dialogService)
@@ -58,7 +58,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Productivity
         {
             GetDataForMonthFilter();
             GetDataForFontFilter();
-            GetTimeRecords(_mainStore.GetState().ActiveClient.Id);
+            GetTimeRecords(MainStore.GetState().ActiveClient.Id);
         }
 
         protected override async void HandleActions(IAction action)
@@ -121,7 +121,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Productivity
             }
             catch (Exception ex)
             {
-                _mainStore.ShowErrorPage(ex);
+                MainStore.ShowErrorPage(ex);
             }
         }
 
@@ -202,17 +202,17 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Productivity
                     EventDate = time.EventDate,
                     Expense = false,
                     Name = time.Name,
-                    UpdatedBy = _mainStore.GetState().User.UserName
+                    UpdatedBy = MainStore.GetState().User.UserName
                 };
 
-                var result = await createCashMovement.Create(_mainStore.GetState().ActiveClient.Id, _mainStore.GetState().User.Profile, request);
+                var result = await createCashMovement.Create(MainStore.GetState().ActiveClient.Id, MainStore.GetState().User.Profile, request);
 
                 ShowNotification(NotificationSeverity.Success, "Sukces!", $"Kwota: {result.Amount} zł, została dodana do Panelu Finanse", GeneralViewModel.NotificationDuration);
                 BroadcastStateChange();
             }
             catch (Exception ex)
             {
-                _mainStore.ShowErrorPage(ex);
+                MainStore.ShowErrorPage(ex);
             }
         }
 
@@ -234,7 +234,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Productivity
                     RecordedHours = time.RecordedHours,
                     RecordedMinutes = time.RecordedMinutes,
                     Updated = DateTime.Now,
-                    UpdatedBy = _mainStore.GetState().User.UserName
+                    UpdatedBy = MainStore.GetState().User.UserName
                 });
 
                 ReplaceTimeRecord(result);
@@ -246,7 +246,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Productivity
             }
             catch (Exception ex)
             {
-                _mainStore.ShowErrorPage(ex);
+                MainStore.ShowErrorPage(ex);
             }
         }
 
@@ -254,8 +254,9 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Productivity
 
         private void CancelTimeRecordEdit(TimeRecordViewModel time)
         {
+            //todo: sprawdzic te cancele pozniej dla gridow
             _state.TimeRecordsGrid.CancelEditRow(time);
-            _mainStore.RefreshActiveClientData();
+            MainStore.RefreshMainComponent();
             BroadcastStateChange();
         }
 
@@ -278,7 +279,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Productivity
             }
             catch (Exception ex)
             {
-                _mainStore.ShowErrorPage(ex);
+                MainStore.ShowErrorPage(ex);
             }
         }
 
@@ -301,9 +302,9 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Productivity
                 using var scope = _serviceProvider.CreateScope();
                 var createTimeRecord = scope.ServiceProvider.GetRequiredService<CreateTimeRecord>();
 
-                request.UpdatedBy = _mainStore.GetState().User.UserName;
+                request.UpdatedBy = MainStore.GetState().User.UserName;
 
-                var result = await createTimeRecord.Create(_mainStore.GetState().ActiveClient.Id, _mainStore.GetState().User.Profile, request);
+                var result = await createTimeRecord.Create(MainStore.GetState().ActiveClient.Id, MainStore.GetState().User.Profile, request);
                 _state.NewTimeRecord = new CreateTimeRecord.Request();
 
                 AddTimeRecord(result);
@@ -316,7 +317,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Productivity
             }
             catch (Exception ex)
             {
-                _mainStore.ShowErrorPage(ex);
+                MainStore.ShowErrorPage(ex);
             }
         }
 
@@ -371,7 +372,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Productivity
         {
             GetDataForMonthFilter();
             GetDataForFontFilter();
-            GetTimeRecords(_mainStore.GetState().ActiveClient.Id);
+            GetTimeRecords(MainStore.GetState().ActiveClient.Id);
         }
     }
 }

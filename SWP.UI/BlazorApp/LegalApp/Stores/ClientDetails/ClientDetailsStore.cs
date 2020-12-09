@@ -24,7 +24,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.ClientDetails
     [UIScopedService]
     public class ClientDetailsStore : StoreBase<ClientDetailsState>
     {
-        public MainStore _mainStore => _serviceProvider.GetRequiredService<MainStore>();
+        public MainStore MainStore => _serviceProvider.GetRequiredService<MainStore>();
 
         public ClientDetailsStore(IServiceProvider serviceProvider, IActionDispatcher actionDispatcher, NotificationService notificationService, DialogService dialogService)
             : base(serviceProvider, actionDispatcher, notificationService, dialogService)
@@ -34,7 +34,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.ClientDetails
 
         public void Initialize()
         {
-            GetContactPeople(_mainStore.GetState().ActiveClient.Id);
+            GetContactPeople(MainStore.GetState().ActiveClient.Id);
         }
 
         protected override async void HandleActions(IAction action)
@@ -85,7 +85,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.ClientDetails
             }
             catch (Exception ex)
             {
-                _mainStore.ShowErrorPage(ex);
+                MainStore.ShowErrorPage(ex);
             }
         }
 
@@ -141,7 +141,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.ClientDetails
                     PhoneNumber = contact.PhoneNumber,
                     AlternativePhoneNumber = contact.AlternativePhoneNumber,
                     Updated = DateTime.Now,
-                    UpdatedBy = _mainStore.GetState().User.UserName
+                    UpdatedBy = MainStore.GetState().User.UserName
                 });
 
                 UpdateClientContactPerson(result);
@@ -151,7 +151,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.ClientDetails
             }
             catch (Exception ex)
             {
-                _mainStore.ShowErrorPage(ex);
+                MainStore.ShowErrorPage(ex);
             }
         }
 
@@ -160,7 +160,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.ClientDetails
         private void CancelContactEdit(ContactPersonViewModel contact)
         {
             _state.ContactsGrid.CancelEditRow(contact);
-            _mainStore.RefreshActiveClientData();
+            MainStore.RefreshMainComponent();
             RefreshSelectedContact();
             BroadcastStateChange();
         }
@@ -181,20 +181,20 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.ClientDetails
             }
             catch (Exception ex)
             {
-                _mainStore.ShowErrorPage(ex);
+                MainStore.ShowErrorPage(ex);
             }
         }
 
         private async Task SubmitNewContact(CreateContactPerson.Request request)
         {
-            request.UpdatedBy = _mainStore.GetState().User.UserName;
+            request.UpdatedBy = MainStore.GetState().User.UserName;
 
             try
             {
                 using var scope = _serviceProvider.CreateScope();
                 var createContactPerson = scope.ServiceProvider.GetRequiredService<CreateContactPerson>();
 
-                var result = await createContactPerson.CreateContactPersonForClient(_mainStore.GetState().ActiveClient.Id, request);
+                var result = await createContactPerson.CreateContactPersonForClient(MainStore.GetState().ActiveClient.Id, request);
                 _state.NewContact = new CreateContactPerson.Request();
                 AddClientContactPerson(result);
 
@@ -204,7 +204,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.ClientDetails
             }
             catch (Exception ex)
             {
-                _mainStore.ShowErrorPage(ex);
+                MainStore.ShowErrorPage(ex);
             }
         }
 
@@ -217,7 +217,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.ClientDetails
 
         public override void RefreshSore()
         {
-            GetContactPeople(_mainStore.GetState().ActiveClient.Id);
+            GetContactPeople(MainStore.GetState().ActiveClient.Id);
         }
     }
 }

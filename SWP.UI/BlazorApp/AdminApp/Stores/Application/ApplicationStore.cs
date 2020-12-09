@@ -92,5 +92,7 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Application
         {
     
         }
+
+        public void RefreshMainComponent() => BroadcastStateChange();
     }
 }

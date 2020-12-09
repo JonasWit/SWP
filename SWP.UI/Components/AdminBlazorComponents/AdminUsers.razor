@@ -1,4 +1,10 @@
-﻿<div class="section">
+﻿
+
+<div class="section">
+    <h2>Dodac zliczanie ilosci userow w profilach</h2>
+</div>
+
+<div class="section">
     <RadzenCard>
         <div class="columns is-0 is-centered">
             <h2>Users</h2>
@@ -190,7 +196,7 @@
                                         <RadzenDropDown AllowClear="true" TValue="string" Name="AppTypeDropDown"
                                                         FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" FilterOperator="StringFilterOperator.StartsWith" AllowFiltering="true"
                                                         Data="@Store.GetState().ApplicationClaims" @bind-Value="Store.GetState().NewLicense.Product" />
-                                        <RadzenRequiredValidator Component="AppTypeDropDown" Text="Application Type is required" Popup=false Style="position: absolute" />
+                                        <div><RadzenRequiredValidator Component="AppTypeDropDown" Text="Application Type is required" Popup=false Style="position: absolute" /></div>
                                     </div>
                                 </div>
                                 <div class="columns">
@@ -201,7 +207,7 @@
                                         <RadzenDropDown AllowClear="true" TValue="string" Name="Type"
                                                         FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" FilterOperator="StringFilterOperator.StartsWith" AllowFiltering="true"
                                                         Data="@Store.GetState().LicenseTypeClaims" @bind-Value="Store.GetState().NewLicense.Type" />
-                                        <RadzenRequiredValidator Component="Type" Text="Type is required" Popup=false Style="position: absolute" />
+                                        <div><RadzenRequiredValidator Component="Type" Text="Type is required" Popup=false Style="position: absolute" /></div>
                                     </div>
                                 </div>
                                 <div class="columns">
@@ -218,7 +224,7 @@
                                     </div>
                                     <div class="column">
                                         <RadzenDatePicker @bind-Value=@Store.GetState().NewLicense.ValidTo DateFormat="d" Name="ValidTo" />
-                                        <RadzenRequiredValidator Component="ValidTo" Text="Date is required" Popup=false Style="position: absolute" />
+                                        <div><RadzenRequiredValidator Component="ValidTo" Text="Date is required" Popup=false Style="position: absolute" /></div>
                                     </div>
                                 </div>
                             </div>
@@ -240,7 +246,9 @@
                                 <RadzenDropDown AllowClear="true" TValue="string" Name="AppTypeDropDown"
                                                 FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" FilterOperator="StringFilterOperator.StartsWith" AllowFiltering="true"
                                                 Data="@Store.GetState().ApplicationClaims" @bind-Value="license.Application" />
-                                <RadzenRequiredValidator Component="AppTypeDropDown" Text="Application Type is required" Popup=false Style="position: absolute" />
+                                <div>
+                                    <RadzenRequiredValidator Component="AppTypeDropDown" Text="Application Type is required" Popup=false Style="position: absolute" />
+                                </div>
                             </EditTemplate>
                         </RadzenGridColumn>
                         <RadzenGridColumn TItem="UserLicense" Property="Type" Title="Type">
@@ -251,7 +259,9 @@
                                 <RadzenDropDown AllowClear="true" TValue="string" Name="Type"
                                                 FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" FilterOperator="StringFilterOperator.StartsWith" AllowFiltering="true"
                                                 Data="@Store.GetState().LicenseTypeClaims" @bind-Value="license.Type" />
-                                <RadzenRequiredValidator Component="Type" Text="Type is required" Popup=false Style="position: absolute" />
+                                <div>
+                                    <RadzenRequiredValidator Component="Type" Text="Type is required" Popup=false Style="position: absolute" />
+                                </div>
                             </EditTemplate>
                         </RadzenGridColumn>
                         <RadzenGridColumn TItem="UserLicense" Property="RelatedUsers" Title="Related Users">
@@ -272,7 +282,7 @@
                             </EditTemplate>
                         </RadzenGridColumn>
 
-                        <RadzenGridColumn TItem="UserLicense" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="100px">
+                        <RadzenGridColumn TItem="UserLicense" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="150px">
                             <Template Context="license">
                                 <RadzenButton Icon="edit" Size="ButtonSize.Small" Click="@(args => EditLicenseRow(license))">
                                     Edytuj
@@ -287,7 +297,7 @@
                                 </RadzenButton>
                             </EditTemplate>
                         </RadzenGridColumn>
-                        <RadzenGridColumn TItem="UserLicense" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="50px">
+                        <RadzenGridColumn TItem="UserLicense" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="75px">
                             <Template Context="license">
                                 <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@((args) => DeleteLicenseRow(license))">
                                     Usuń

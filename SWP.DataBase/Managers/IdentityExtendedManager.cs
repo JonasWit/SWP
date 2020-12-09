@@ -1,9 +1,11 @@
-﻿using SWP.Domain.Enums;
+﻿using Microsoft.AspNetCore.Identity;
+using SWP.Domain.Enums;
 using SWP.Domain.Infrastructure.Portal;
 using SWP.Domain.Models.Portal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -11,7 +13,12 @@ namespace SWP.DataBase.Managers
 {
     public class IdentityExtendedManager : DataManagerBase, IIdentityExtendedManager
     {
-        public IdentityExtendedManager(AppContext context) : base(context) { }
+        private readonly UserManager<IdentityUser> _userManager;
+
+        public IdentityExtendedManager(AppContext context, UserManager<IdentityUser> userManager) : base(context) 
+        {
+            _userManager = userManager;
+        }
 
         public bool ClaimExists(string claimType, string claimValue)
         {
@@ -33,9 +40,20 @@ namespace SWP.DataBase.Managers
             throw new NotImplementedException();
         }
 
-        public string GetParentAccountId(string relaredId)
+        public async Task<string> GetParentAccountId(IdentityUser relatedUser, Claim profileClaim)
         {
-            throw new NotImplementedException();
+            var profileUsers = await _userManager.GetUsersForClaimAsync(profileClaim) as List<IdentityUser>;
+
+            foreach (var profileUser in profileUsers)
+            {
+                var claims = await _userManager.GetClaimsAsync(profileUser) as List<Claim>;
+                if (claims.Any(x => x.Type == ClaimType.Status.ToString() && x.Value == UserStatus.RootClient.ToString()))
+                {
+                    return profileUser.Id;
+                }
+            }
+
+            return null;
         }
 
         public List<string> GetRelatedUsers(string profile)

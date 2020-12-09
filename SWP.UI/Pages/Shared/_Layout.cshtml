@@ -51,6 +51,13 @@
                         </li>
                     }
 
+                    @if (((await authService.AuthorizeAsync(User, "RootClient")).Succeeded))
+                    {
+                        <li class="nav-item">
+                            <a asp-page="/MainAccountManagement/Index">Zarządzanie Kontem Głównym</a>
+                        </li>
+                    }
+
                     @if (User.Identity.IsAuthenticated && User.IsInRole("Administrators"))
                     {
                         <li class="nav-item">

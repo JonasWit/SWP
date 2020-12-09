@@ -24,11 +24,7 @@ namespace SWP.UI.Areas.Identity.Pages.Account.Manage
 
         public static string TwoFactorAuthentication => "TwoFactorAuthentication";
 
-        public static string ApplicationsProfile => "ApplicationsProfile";
-
         public static string IndexNavClass(ViewContext viewContext) => PageNavClass(viewContext, Index);
-
-        public static string ProfileNavClass(ViewContext viewContext) => PageNavClass(viewContext, ApplicationsProfile);
 
         public static string EmailNavClass(ViewContext viewContext) => PageNavClass(viewContext, Email);
 

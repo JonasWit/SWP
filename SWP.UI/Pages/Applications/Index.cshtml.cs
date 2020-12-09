@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using SWP.Application.PortalCustomers.LicenseManagement;
 using SWP.Domain.Enums;
+using SWP.Domain.Infrastructure.Portal;
 using SWP.UI.Models;
 using SWP.UI.Pages.Applications.ViewModels;
 using System.Collections.Generic;
@@ -30,21 +31,24 @@ namespace SWP.UI.Pages.Applications
         public IndexModel([FromServices] IHttpContextAccessor httpContextAccessor) =>
             AccessModel.ActiveUserId = httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-        public async Task<IActionResult> OnGet([FromServices] UserManager<IdentityUser> userManager, [FromServices] GetLicense getLicense)
+        public async Task<IActionResult> OnGet(
+            [FromServices] UserManager<IdentityUser> userManager, 
+            [FromServices] GetLicense getLicense, 
+            [FromServices] IIdentityExtendedManager identityExtendedManager)
         {
             AccessModel.UserData.User = await userManager.FindByIdAsync(AccessModel.ActiveUserId);
             AccessModel.UserData.Claims = await userManager.GetClaimsAsync(AccessModel.UserData.User) as List<Claim>;
             AccessModel.Licenses = getLicense.GetAll(AccessModel.ActiveUserId).Select(x => (LicenseViewModel)x).ToList();
 
-            //todo: ogranac te licencje!
-
             if (AccessModel.UserData.RootClient)
             {
-                AccessModel.Licenses = getLicense.GetAll(AccessModel.ActiveUserId).Select(x => (LicenseViewModel)x).ToList();
+                AccessModel.Licenses = getLicense.GetAll(AccessModel.ActiveUserId)
+                    .Select(x => (LicenseViewModel)x).ToList();
             }
             else
-            { 
-                
+            {
+                AccessModel.Licenses = getLicense.GetAll(await identityExtendedManager.GetParentAccountId(AccessModel.UserData.User, AccessModel.UserData.ProfileClaim))
+                    .Select(x => (LicenseViewModel)x).ToList();
             }
 
             return Page();

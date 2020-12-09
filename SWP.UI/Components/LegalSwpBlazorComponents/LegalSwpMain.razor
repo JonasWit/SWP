@@ -28,7 +28,6 @@
                         </a>
                     </li>
 
-
                     @if (MainStore.GetState().ActiveClient != null)
                     {
                         <li class="nav-item @(MainStore.GetState().ActivePanel == LegalAppPanels.ClientDetails ? "active" : "")" @onclick="@(() => MainStore.SetActivePanel(LegalAppPanels.ClientDetails))">

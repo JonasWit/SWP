@@ -11,5 +11,7 @@ namespace SWP.Domain.Infrastructure.Portal
         bool ClaimExists(string claimType, string claimValue);
 
         List<string> GetAllProfiles();
+
+        List<string> GetRelatedUsers(string rootClientUserId);
     }
 }

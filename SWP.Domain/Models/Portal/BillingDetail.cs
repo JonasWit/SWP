@@ -37,8 +37,5 @@ namespace SWP.Domain.Models.Portal
         public string REGON { get; set; }
         [PersonalData]
         public string KRS { get; set; }
-
-        //todo: remove this relation
-        public List<UserLicense> UserLicenses { get; set; }
     }
 }

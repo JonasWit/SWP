@@ -12,6 +12,6 @@ namespace SWP.Application.PortalCustomers
     {
         public ClearCustomerRelatedData(IPortalManager portalManager) : base(portalManager) { }
 
-        public Task<int> CleanUp(string userId) => _portalManager.ClearCustomerData(userId);
+
     }
 }

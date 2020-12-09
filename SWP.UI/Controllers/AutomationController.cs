@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using SWP.UI.Utilities;
 using System.Threading.Tasks;
 
@@ -10,13 +11,10 @@ namespace SWP.UI.Controllers
     public class AutomationController : ControllerBase
     {
         [HttpGet("WakeUpCall")]
-        public async Task<int> WakeUpCheck()
+        public IActionResult WakeUpCheck([FromServices] ILogger<AutomationController> logger)
         {
-            //todo:add logging!
-
-            //var request = new CreateLogRecord.AutomationRequest { Action = "Wake Up Call", TimeStamp = DateTime.Now };
-            //await portalLogger.CreateLogRecord(request);
-            return 1;
+            logger.LogInformation($"{LogTags.AutomationLogPrefix} Wake Up Call.");
+            return Ok(true);
         }
     }
 }

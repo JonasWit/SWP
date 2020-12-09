@@ -10,13 +10,12 @@ namespace SWP.Domain.Models.Portal
 {
     public class UserLicense : BaseModel
     {
-        [MaxLength(50)]
-        public string Product { get; set; }
+        public string UserId { get; set; }
+        [MaxLength(100)]
+        public string Application { get; set; }
+        [MaxLength(100)]
+        public string Type { get; set; }
+        public int RelatedUsers { get; set; }
         public DateTime ValidTo { get; set; }
-
-
-        //todo: remove this relation
-        public int BillingDetailId { get; set; }
-        public BillingDetail BillingDetail { get; set; }
     }
 }

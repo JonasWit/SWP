@@ -27,5 +27,9 @@ namespace SWP.DataBase.Managers
         public List<string> GetAllProfiles() => 
             _context.UserClaims.Where(x => x.ClaimType == ClaimType.Profile.ToString()).Select(x => x.ClaimValue).Distinct().ToList();
 
+        public List<string> GetRelatedUsers(string rootClientUserId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

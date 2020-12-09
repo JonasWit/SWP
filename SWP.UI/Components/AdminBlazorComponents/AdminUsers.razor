@@ -4,14 +4,14 @@
             <h2>Users</h2>
         </div>
         <div class="columns is-0 is-centered">
-            <RadzenGrid @ref="UsersStore.GetState().UsersGrid"
+            <RadzenGrid @ref="Store.GetState().UsersGrid"
                         AllowFiltering="true"
                         AllowPaging="true"
                         PageSize="5"
                         AllowSorting="true"
-                        Data="@UsersStore.GetState().Users"
+                        Data="@Store.GetState().Users"
                         TItem="UserModel"
-                        Value="@UsersStore.GetState().SelectedUser"
+                        Value="@Store.GetState().SelectedUser"
                         RowSelect="@(args => RowSelected(args))">
                 <Columns>
                     <RadzenGridColumn TItem="UserModel" Property="Name" Title="User Name" />
@@ -32,19 +32,19 @@
     </RadzenCard>
 </div>
 
-@if (UsersStore.GetState().SelectedUser != null)
+@if (Store.GetState().SelectedUser != null)
 {
     <div class="section">
         <RadzenCard>
             <div class="columns is-0 is-centered mx-0 mb-6">
-                <h3 class="my-0 mx-0"><b>Selected User: @UsersStore.GetState().SelectedUser?.Name</b></h3>
+                <h3 class="my-0 mx-0"><b>Selected User: @Store.GetState().SelectedUser?.Name</b></h3>
             </div>
 
             <div class="columns is-0 is-centered">
                 <h3>Current Role</h3>
             </div>
             <div class="columns is-0 is-centered mb-6">
-                <RadzenSelectBar @bind-Value="UsersStore.GetState().SelectedRole" TValue="int" Change="@((args) => RoleChanged(args))">
+                <RadzenSelectBar @bind-Value="Store.GetState().SelectedRole" TValue="int" Change="@((args) => RoleChanged(args))">
                     <Items>
                         <RadzenSelectBarItem Text="Administrators" Value="0" />
                         <RadzenSelectBarItem Text="Users" Value="1" />
@@ -56,7 +56,7 @@
                 <h3>Lock User</h3>
             </div>
             <div class="columns is-0 is-centered mb-6">
-                <RadzenSelectBar @bind-Value="UsersStore.GetState().Lock" TValue="bool" Change="@((args) => LockUser(args))">
+                <RadzenSelectBar @bind-Value="Store.GetState().Lock" TValue="bool" Change="@((args) => LockUser(args))">
                     <Items>
                         <RadzenSelectBarItem Text="Locked" Value="true" />
                         <RadzenSelectBarItem Text="Unlocked" Value="false" />
@@ -68,13 +68,13 @@
                 <h2>Current Claims</h2>
             </div>
             <div class="columns is-0 is-centered mb-6">
-                <RadzenGrid @ref="UsersStore.GetState().ClaimsGrid"
+                <RadzenGrid @ref="Store.GetState().ClaimsGrid"
                             AllowFiltering="true"
                             AllowPaging="true"
                             PageSize="5"
                             AllowSorting="true"
                             EditMode="DataGridEditMode.Single"
-                            Data="@UsersStore.GetState().SelectedUser.Claims"
+                            Data="@Store.GetState().SelectedUser.Claims"
                             TItem="Claim">
                     <Columns>
                         <RadzenGridColumn TItem="Claim" Property="Type" Title="Type" />
@@ -100,19 +100,19 @@
                             <div class="columns is-0 is-centered">
                                 <RadzenDropDown AllowClear="true" TValue="string"
                                                 FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" FilterOperator="StringFilterOperator.StartsWith" AllowFiltering="true"
-                                                Data="@UsersStore.GetState().Claims" @bind-Value="UsersStore.GetState().SelectedApplicationClaim" Style="width: 250px;" />
+                                                Data="@Store.GetState().ApplicationClaims" @bind-Value="Store.GetState().SelectedApplicationClaim" Style="width: 250px;" />
                             </div>
                             <div class="columns is-0 is-centered">
                                 <RadzenButton Click="@(() => AddApplicationClaim())" Text="Add Application Claim" Style="width: 250px;" />
                             </div>
                         </div>
                         <div class="column">
-                            <RadzenTemplateForm TItem="string" Data=@UsersStore.GetState().ProfileClaimName Submit=@AddProfileClaim>
+                            <RadzenTemplateForm TItem="string" Data=@Store.GetState().ProfileClaimName Submit=@AddProfileClaim>
                                 <div class="columns is-0 is-centered">
                                     <h3>Profile Claim Name</h3>
                                 </div>
                                 <div class="columns is-0 is-centered">
-                                    <RadzenTextBox style="width: 250px; display: block" Name="ProfileName" @bind-Value=@UsersStore.GetState().ProfileClaimName />
+                                    <RadzenTextBox style="width: 250px; display: block" Name="ProfileName" @bind-Value=@Store.GetState().ProfileClaimName />
                                     <RadzenRequiredValidator Component="ProfileName" Text="Profile Name is required" Popup=false Style="position: absolute" />
                                     <RadzenRegexValidator Component="ProfileName" Text="Profile Name is incorrect!" Pattern="^[a-zA-Z0-9''-'\s]{5,20}$" Popup=false Style="position: absolute" />
                                 </div>
@@ -135,7 +135,7 @@
                             <div class="columns is-0 is-centered">
                                 <RadzenDropDown AllowClear="true" TValue="string"
                                                 FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" FilterOperator="StringFilterOperator.StartsWith" AllowFiltering="true"
-                                                Data="@UsersStore.GetState().StatusClaims" @bind-Value="UsersStore.GetState().SelectedStatusClaim" Style="width: 250px;" />
+                                                Data="@Store.GetState().StatusClaims" @bind-Value="Store.GetState().SelectedStatusClaim" Style="width: 250px;" />
                             </div>
                             <div class="columns is-0 is-centered">
                                 <RadzenButton Click="@(() => AddStatusClaim())" Text="Add Status Claim" Style="width: 250px;" />
@@ -149,7 +149,7 @@
                                 <RadzenListBox AllowFiltering="true"
                                                FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
                                                @bind-Value="SelectedClaim"
-                                               Data="@UsersStore.GetState().AllProfiles"
+                                               Data="@Store.GetState().AllProfiles"
                                                TextProperty="ProfileName"
                                                ValueProperty="Id"
                                                Change="@(args => SelectedProfileChange(args))"
@@ -165,15 +165,145 @@
         </RadzenCard>
     </div>
 
-    @if (UsersStore.GetState().SelectedUser.RootClient)
+    @if (Store.GetState().SelectedUser.RootClient)
     {
         //todo: add license management here!!!
         //todo: licencje powiazane sa osobnymi licencjami, trwaja tyle co licencja glowna
         //todo: oplaty miesiecznie albo do wyboru
 
         //todo: forma na dodanie licencji + datagrid na edycje itp
+
+        <div class="section">
+            <RadzenCard>
+                <div class="columns is-0 is-centered">
+                    <h2>Licenses</h2>
+                </div>
+                <RadzenTemplateForm Data="@Store.GetState().NewLicense" Submit="@((CreateLicense.Request args) => SubmitNewLicense(args))">
+                    <RadzenFieldset Text="New License">
+                        <div class="rows">
+                            <div class="row is-full mb-6">
+                                <div class="columns">
+                                    <div class="column">
+                                        <RadzenLabel Text="Application" />
+                                    </div>
+                                    <div class="column">
+                                        <RadzenDropDown AllowClear="true" TValue="string" Name="AppTypeDropDown"
+                                                        FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" FilterOperator="StringFilterOperator.StartsWith" AllowFiltering="true"
+                                                        Data="@Store.GetState().ApplicationClaims" @bind-Value="Store.GetState().NewLicense.Product" />
+                                        <RadzenRequiredValidator Component="AppTypeDropDown" Text="Application Type is required" Popup=false Style="position: absolute" />
+                                    </div>
+                                </div>
+                                <div class="columns">
+                                    <div class="column">
+                                        <RadzenLabel Text="Type" />
+                                    </div>
+                                    <div class="column">
+                                        <RadzenDropDown AllowClear="true" TValue="string" Name="Type"
+                                                        FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" FilterOperator="StringFilterOperator.StartsWith" AllowFiltering="true"
+                                                        Data="@Store.GetState().LicenseTypeClaims" @bind-Value="Store.GetState().NewLicense.Type" />
+                                        <RadzenRequiredValidator Component="Type" Text="Type is required" Popup=false Style="position: absolute" />
+                                    </div>
+                                </div>
+                                <div class="columns">
+                                    <div class="column">
+                                        <RadzenLabel Text="Related Users" />
+                                    </div>
+                                    <div class="column">
+                                        <RadzenNumeric TValue="int" @bind-Value="Store.GetState().NewLicense.RelatedUsers" Name="RelatedUsers" Placeholder="0" />
+                                    </div>
+                                </div>
+                                <div class="columns">
+                                    <div class="column">
+                                        <RadzenLabel Text="Valid To" />
+                                    </div>
+                                    <div class="column">
+                                        <RadzenDatePicker @bind-Value=@Store.GetState().NewLicense.ValidTo DateFormat="d" Name="ValidTo" />
+                                        <RadzenRequiredValidator Component="ValidTo" Text="Date is required" Popup=false Style="position: absolute" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="columns is-0 is-centered">
+                            <RadzenButton ButtonType="ButtonType.Submit" Icon="save" Text="Add" ButtonStyle="ButtonStyle.Secondary" />
+                        </div>
+                    </RadzenFieldset>
+                </RadzenTemplateForm>
+
+                <RadzenGrid @ref="Store.GetState().LicensesGrid" AllowFiltering="true" AllowPaging="true" PageSize="10" AllowSorting="true"
+                            Data="@Store.GetState().SelectedUser.Licenses" TItem="UserLicense" RowUpdate="@OnUpdateLicenseRow">
+                    <Columns>
+                        <RadzenGridColumn TItem="UserLicense" Property="Application" Title="Application">
+                            <Template Context="license">
+                                <span>@license.Application</span>
+                            </Template>
+                            <EditTemplate Context="license">
+                                <RadzenDropDown AllowClear="true" TValue="string" Name="AppTypeDropDown"
+                                                FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" FilterOperator="StringFilterOperator.StartsWith" AllowFiltering="true"
+                                                Data="@Store.GetState().ApplicationClaims" @bind-Value="license.Application" />
+                                <RadzenRequiredValidator Component="AppTypeDropDown" Text="Application Type is required" Popup=false Style="position: absolute" />
+                            </EditTemplate>
+                        </RadzenGridColumn>
+                        <RadzenGridColumn TItem="UserLicense" Property="Type" Title="Type">
+                            <Template Context="license">
+                                <span>@license.Type</span>
+                            </Template>
+                            <EditTemplate Context="license">
+                                <RadzenDropDown AllowClear="true" TValue="string" Name="Type"
+                                                FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" FilterOperator="StringFilterOperator.StartsWith" AllowFiltering="true"
+                                                Data="@Store.GetState().LicenseTypeClaims" @bind-Value="license.Type" />
+                                <RadzenRequiredValidator Component="Type" Text="Type is required" Popup=false Style="position: absolute" />
+                            </EditTemplate>
+                        </RadzenGridColumn>
+                        <RadzenGridColumn TItem="UserLicense" Property="RelatedUsers" Title="Related Users">
+                            <Template Context="license">
+                                <span>@license.RelatedUsers</span>
+                            </Template>
+                            <EditTemplate Context="license">
+                                <RadzenNumeric TValue="int" @bind-Value="license.RelatedUsers" Name="RelatedUsers" Placeholder="0" />
+                            </EditTemplate>
+                        </RadzenGridColumn>
+                        <RadzenGridColumn TItem="UserLicense" Property="ValidTo" Title="Valid To">
+                            <Template Context="license">
+                                <span>@license.ValidTo.ToShortDateString()</span>
+                            </Template>
+                            <EditTemplate Context="license">
+                                <RadzenDatePicker @bind-Value=@license.ValidTo DateFormat="d" Name="ValidTo" />
+                                <RadzenRequiredValidator Component="ValidTo" Text="Date is required" Popup=false Style="position: absolute" />
+                            </EditTemplate>
+                        </RadzenGridColumn>
+
+                        <RadzenGridColumn TItem="UserLicense" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="100px">
+                            <Template Context="license">
+                                <RadzenButton Icon="edit" Size="ButtonSize.Small" Click="@(args => EditLicenseRow(license))">
+                                    Edytuj
+                                </RadzenButton>
+                            </Template>
+                            <EditTemplate Context="license">
+                                <RadzenButton Icon="save" Size="ButtonSize.Small" Click="@((args) => SaveLicenseRow(license))">
+                                    Zapisz
+                                </RadzenButton>
+                                <RadzenButton Icon="cancel" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Success" Click="@((args) => CancelLicenseEdit(license))">
+                                    Anuluj
+                                </RadzenButton>
+                            </EditTemplate>
+                        </RadzenGridColumn>
+                        <RadzenGridColumn TItem="UserLicense" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="50px">
+                            <Template Context="license">
+                                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@((args) => DeleteLicenseRow(license))">
+                                    Usuń
+                                </RadzenButton>
+                            </Template>
+                            <EditTemplate Context="job">
+                            </EditTemplate>
+                        </RadzenGridColumn>
+                    </Columns>
+                </RadzenGrid>
+            </RadzenCard>
+        </div>
     }
 }
+
+
 
 
 

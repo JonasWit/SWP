@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 
 namespace SWP.Domain.Models.Portal.Communication
 {
-    //todo:update DB
     public class ClientRequest : BaseModel
     {
         public string Subject { get; set; }

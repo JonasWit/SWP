@@ -5,11 +5,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\SWP.Domain\SWP.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="PortalCustomers\RequestsManagement\" />
   </ItemGroup>
 
 </Project>

@@ -1,6 +1,7 @@
 ﻿using SWP.Domain.Infrastructure.Portal;
 using SWP.Domain.Models.Portal;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -15,41 +16,45 @@ namespace SWP.DataBase.Managers
             _appUserManager = appUserManager;
         }
 
-        public Task<int> ClearCustomerData(string userId)
-        {
-            var details = _context.BillingDetails.FirstOrDefault(x => x.UserId == userId);
-            _context.BillingDetails.Remove(details);
-            return _context.SaveChangesAsync();
-        }
-
         public Task<int> DeleteBillingDetail(string userId)
         {
-            throw new NotImplementedException();
+            var entity = _context.BillingDetails.FirstOrDefault(x => x.UserId == userId);
+            _context.BillingDetails.Remove(entity);
+            return _context.SaveChangesAsync();
         }
 
         public BillingDetail GetBillingDetail(string userId) => _context.BillingDetails.FirstOrDefault(x => x.UserId == userId);
 
-        public async Task<BillingDetail> UpdateBillingDetail(BillingDetail details)
+        public Task<int> DeleteLicense(int id)
         {
-            if (_context.BillingDetails.Any(x => x.UserId == details.UserId))
-            {
-                var record = _context.BillingDetails.FirstOrDefault(x => x.UserId == details.UserId);
+            var entity = _context.UserLicenses.FirstOrDefault(x => x.Id == id);
+            _context.UserLicenses.Remove(entity);
+            return _context.SaveChangesAsync();
+        }
 
-                record.Address = details.Address;
-                record.AddressCorrespondence = details.AddressCorrespondence;
-                record.City = details.City;
-                record.CompanyFullName = details.CompanyFullName;
-                record.Country = details.Country;
-                record.KRS = details.KRS;
-                record.Name = details.Name;
-                record.NIP = details.NIP;
-                record.PhoneNumber = details.PhoneNumber;
-                record.PostCode = details.PostCode;
-                record.REGON = details.REGON;
-                record.Surname = details.Surname;
-                record.Vivodership = details.Vivodership;
+        public List<UserLicense> GetLicenses(string userId) => _context.UserLicenses.Where(x => x.UserId == userId).ToList();
+
+        public async Task<BillingDetail> UpdateBillingDetail(BillingDetail updatedEntity)
+        {
+            if (_context.BillingDetails.Any(x => x.UserId == updatedEntity.UserId))
+            {
+                var record = _context.BillingDetails.FirstOrDefault(x => x.UserId == updatedEntity.UserId);
+
+                record.Address = updatedEntity.Address;
+                record.AddressCorrespondence = updatedEntity.AddressCorrespondence;
+                record.City = updatedEntity.City;
+                record.CompanyFullName = updatedEntity.CompanyFullName;
+                record.Country = updatedEntity.Country;
+                record.KRS = updatedEntity.KRS;
+                record.Name = updatedEntity.Name;
+                record.NIP = updatedEntity.NIP;
+                record.PhoneNumber = updatedEntity.PhoneNumber;
+                record.PostCode = updatedEntity.PostCode;
+                record.REGON = updatedEntity.REGON;
+                record.Surname = updatedEntity.Surname;
+                record.Vivodership = updatedEntity.Vivodership;
                 record.Updated = DateTime.Now;
-                record.UpdatedBy = details.UserId;
+                record.UpdatedBy = updatedEntity.UserId;
 
                 _context.BillingDetails.Update(record);
                 await _context.SaveChangesAsync();
@@ -58,16 +63,54 @@ namespace SWP.DataBase.Managers
             }
             else
             {
-                details.Created = DateTime.Now;
-                details.CreatedBy = details.UserId;
-                details.Updated = DateTime.Now;
-                details.UpdatedBy = details.UserId;
+                updatedEntity.Created = DateTime.Now;
+                updatedEntity.CreatedBy = updatedEntity.UserId;
+                updatedEntity.Updated = DateTime.Now;
+                updatedEntity.UpdatedBy = updatedEntity.UserId;
 
-                _context.BillingDetails.Add(details);
+                _context.BillingDetails.Add(updatedEntity);
                 await _context.SaveChangesAsync();
 
-                return details;
+                return updatedEntity;
             }
+        }
+
+        public async Task<UserLicense> UpdateLicense(UserLicense updatedEntity)
+        {
+            if (_context.UserLicenses.Any(x => x.Id == updatedEntity.Id))
+            {
+                var record = _context.UserLicenses.FirstOrDefault(x => x.Id == updatedEntity.Id);
+
+                record.ValidTo = updatedEntity.ValidTo;
+                record.Type = updatedEntity.Type;
+                record.Application = updatedEntity.Application;
+
+                record.Updated = DateTime.Now;
+                record.UpdatedBy = updatedEntity.UpdatedBy;
+
+                _context.UserLicenses.Update(record);
+                await _context.SaveChangesAsync();
+
+                return record;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public async Task<UserLicense> CreateLicense(UserLicense license)
+        {
+            _context.UserLicenses.Add(license);
+            await _context.SaveChangesAsync();
+            return license;
+        }
+
+        public Task<int> DeleteLicense(string userId)
+        {
+            var entity = _context.UserLicenses.FirstOrDefault(x => x.UserId == userId);
+            _context.UserLicenses.Remove(entity);
+            return _context.SaveChangesAsync();
         }
     }
 }

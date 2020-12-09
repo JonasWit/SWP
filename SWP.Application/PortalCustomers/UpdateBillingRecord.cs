@@ -11,9 +11,7 @@ namespace SWP.Application.PortalCustomers
     [TransientService]
     public class UpdateBillingRecord : PortalCustomersBase
     {
-        public UpdateBillingRecord(IPortalManager portalManager) : base(portalManager)
-        {
-        }
+        public UpdateBillingRecord(IPortalManager portalManager) : base(portalManager) { }
 
         public Task<BillingDetail> Update(BillingDetail billingDetail) => _portalManager.UpdateBillingDetail(billingDetail);
 

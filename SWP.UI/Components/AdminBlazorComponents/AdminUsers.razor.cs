@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
+using SWP.Application.PortalCustomers.LicenseManagement;
+using SWP.Domain.Models.Portal;
 using SWP.UI.BlazorApp;
 using SWP.UI.BlazorApp.AdminApp.Stores.Application;
 using SWP.UI.BlazorApp.AdminApp.Stores.Users;
@@ -14,19 +16,19 @@ namespace SWP.UI.Components.AdminBlazorComponents
         [Inject]
         public ApplicationStore ApplicationStore { get; set; }
         [Inject]
-        public UsersStore UsersStore { get; set; }
+        public UsersStore Store { get; set; }
         [Inject]
         public IActionDispatcher ActionDispatcher { get; set; }
 
         public void Dispose()
         {
             ApplicationStore.RemoveStateChangeListener(UpdateView);
-            UsersStore.RemoveStateChangeListener(UpdateView);
+            Store.RemoveStateChangeListener(UpdateView);
         }
 
         private void UpdateView()
         {
-            UsersStore.RefreshSore();
+            Store.RefreshSore();
             StateHasChanged();
         }
 
@@ -34,8 +36,8 @@ namespace SWP.UI.Components.AdminBlazorComponents
         {
             base.OnInitialized();
             ApplicationStore.AddStateChangeListener(UpdateView);
-            UsersStore.AddStateChangeListener(UpdateView);
-            await UsersStore.Initialize();
+            Store.AddStateChangeListener(UpdateView);
+            await Store.Initialize();
         }
 
         public string SelectedClaim;
@@ -61,6 +63,20 @@ namespace SWP.UI.Components.AdminBlazorComponents
         private void LockUser(bool arg) => ActionDispatcher.Dispatch(new LockUserAction { Arg = arg });
 
         private void DeleteUser(UserModel arg) => ActionDispatcher.Dispatch(new DeleteUserAction { Arg = arg });
+
+
+        private void SubmitNewLicense(CreateLicense.Request arg) => ActionDispatcher.Dispatch(new SubmitNewLicenseAction { Arg = arg });
+
+        private void OnUpdateLicenseRow(UserLicense arg) { }
+
+        private void EditLicenseRow(UserLicense arg) { }
+
+        private void SaveLicenseRow(UserLicense arg) { }
+
+        private void CancelLicenseEdit(UserLicense arg) { }
+
+        private void DeleteLicenseRow(UserLicense arg) { }
+
 
         #endregion
     }

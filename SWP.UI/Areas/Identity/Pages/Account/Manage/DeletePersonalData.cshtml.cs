@@ -20,21 +20,21 @@ namespace SWP.UI.Areas.Identity.Pages.Account.Manage
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly DeleteClient _deleteClient;
-        private readonly ClearCustomerRelatedData _clearCustomerRelatedData;
         private readonly ILogger<DeletePersonalDataModel> _logger;
+        private readonly DeleteBillingRecord _deleteBillingRecord;
 
         public DeletePersonalDataModel(
             UserManager<IdentityUser> userManager,
             SignInManager<IdentityUser> signInManager,
             DeleteClient deleteClient,
             ILogger<DeletePersonalDataModel> logger,
-            ClearCustomerRelatedData clearCustomerRelatedData)
+            DeleteBillingRecord deleteBillingRecord)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _deleteClient = deleteClient;
-            _clearCustomerRelatedData = clearCustomerRelatedData;
             _logger = logger;
+            _deleteBillingRecord = deleteBillingRecord;
         }
 
         [BindProperty]
@@ -102,8 +102,8 @@ namespace SWP.UI.Areas.Identity.Pages.Account.Manage
             {
                 if (rootClientClaim != null)
                 {
-                    //todo: delete also related accounts!
-                    await _clearCustomerRelatedData.CleanUp(user.Id);
+                    //todo: delete also related accounts! - przemyslec to
+                    await _deleteBillingRecord.DeleteBillingDetail(user.Id);
 
                     //Delete all clients data connected to profile
                     await _deleteClient.Delete(profileClaim.Value);

@@ -2,8 +2,10 @@
 using Microsoft.Extensions.DependencyInjection;
 using Radzen;
 using Radzen.Blazor;
+using SWP.Application.PortalCustomers.LicenseManagement;
 using SWP.Domain.Enums;
 using SWP.Domain.Infrastructure.Portal;
+using SWP.Domain.Models.Portal;
 using SWP.UI.BlazorApp.AdminApp.Stores.Application;
 using SWP.UI.BlazorApp.AdminApp.Stores.StatusLog;
 using SWP.UI.BlazorApp.AdminApp.Stores.Users.Actions;
@@ -25,13 +27,16 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Users
         public string ProfileClaimNameFromList { get; set; } = "";
         public RadzenGrid<Claim> ClaimsGrid { get; set; }
         public RadzenGrid<UserModel> UsersGrid { get; set; }
+        public RadzenGrid<UserLicense> LicensesGrid { get; set; }
         public List<string> StatusClaims => Enum.GetNames(typeof(UserStatus)).ToList();
-        public List<string> Claims => Enum.GetNames(typeof(ApplicationType)).ToList();
+        public List<string> ApplicationClaims => Enum.GetNames(typeof(ApplicationType)).ToList();
+        public List<string> LicenseTypeClaims => Enum.GetNames(typeof(LicenseType)).ToList();
         public List<string> Roles => Enum.GetNames(typeof(RoleType)).ToList();
         public bool Loading { get; set; }
         public UserModel SelectedUser { get; set; }
         public List<UserModel> Users { get; set; } = new List<UserModel>();
         public List<ProfileModel> AllProfiles { get; set; } = new List<ProfileModel>();
+        public CreateLicense.Request NewLicense { get; set; } = new CreateLicense.Request();
     }
 
     public class UserModel
@@ -56,6 +61,7 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Users
         public string ProfileClaim => Claims.FirstOrDefault(x => x.Type == ClaimType.Profile.ToString())?.Value;
         public List<Claim> Claims { get; set; } = new List<Claim>();
         public bool RootClient => Claims.Any(x => x.Value == UserStatus.RootClient.ToString());
+        public List<UserLicense> Licenses { get; set; }
     }
 
     public class ProfileModel
@@ -74,7 +80,7 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Users
         StatusBarStore StatusBarStore => _serviceProvider.GetRequiredService<StatusBarStore>();
 
         public UsersStore(IServiceProvider serviceProvider, IActionDispatcher actionDispatcher, NotificationService notificationService, IIdentityExtendedManager identityExtendedManager)
-            : base(serviceProvider, actionDispatcher, notificationService) 
+            : base(serviceProvider, actionDispatcher, notificationService)
         {
             _identityExtendedManager = identityExtendedManager;
         }
@@ -128,6 +134,10 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Users
                     var deleteUserAction = (DeleteUserAction)action;
                     await DeleteUser(deleteUserAction.Arg);
                     break;
+                case SubmitNewLicenseAction.SubmitNewLicense:
+                    var submitNewLicenseAction = (SubmitNewLicenseAction)action;
+                    await SubmitNewLicense(submitNewLicenseAction.Arg);
+                    break;
                 default:
                     break;
             }
@@ -164,9 +174,13 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Users
 
         private async Task<UserModel> GetUser(string Id)
         {
+            using var scope = _serviceProvider.CreateScope();
+            var getLicense = scope.ServiceProvider.GetRequiredService<GetLicense>();
+
             var user = await UserManager.FindByIdAsync(Id);
             var claims = await UserManager.GetClaimsAsync(user) as List<Claim>;
             var role = await UserManager.GetRolesAsync(user) as List<string>;
+            var licenses = getLicense.GetAll(user.Id);
 
             return new UserModel
             {
@@ -176,7 +190,8 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Users
                 Claims = claims,
                 UserRole = (RoleType)Enum.Parse(typeof(RoleType), role.First(), true),
                 LockoutEnd = user.LockoutEnd,
-                LockoutEnabled = user.LockoutEnabled
+                LockoutEnabled = user.LockoutEnabled,
+                Licenses = licenses
             };
         }
 
@@ -498,6 +513,46 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Users
 
                 ShowNotification(NotificationSeverity.Warning, "Done!", $"User: {name} has been deleted!", 5000);
                 BroadcastStateChange();
+            }
+            catch (Exception ex)
+            {
+                StatusBarStore.UpdateLogWindow($"Exception: {ex.Message} - logged.");
+                ShowErrorPage(ex);
+            }
+        }
+
+
+        private async Task SubmitNewLicense(CreateLicense.Request request)
+        {
+            if (_state.SelectedUser.Licenses.Any(x => x.Application == request.Product))
+            {
+                ShowNotification(NotificationSeverity.Error, "Error!", $"User already have this License!", 2000);
+                return;
+            }
+
+            if (!_state.SelectedUser.RootClient)
+            {
+                ShowNotification(NotificationSeverity.Error, "Error!", $"Only Root Clients can have licenses!", 2000);
+                return;
+            }
+
+            try
+            {
+                using var scope = _serviceProvider.CreateScope();
+                var createLicense = scope.ServiceProvider.GetRequiredService<CreateLicense>();
+
+                request.UserId = _state.SelectedUser.Id;
+                request.CreatedBy = AppStore.GetState().User.UserName;
+
+                var result = await createLicense.Create(request);
+                _state.NewLicense = new CreateLicense.Request();
+
+                _state.SelectedUser.Licenses.Add(result);
+                await _state.LicensesGrid.Reload();
+
+                ShowNotification(NotificationSeverity.Success, "Done!", $"Status Claim: {_state.SelectedStatusClaim} has been added!", 2000);
+                BroadcastStateChange();
+
             }
             catch (Exception ex)
             {

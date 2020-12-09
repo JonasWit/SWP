@@ -29,6 +29,8 @@ namespace SWP.DataBase
         public DbSet<Log> Logs { get; set; }
         public DbSet<BillingDetail> BillingDetails { get; set; }
         public DbSet<UserLicense> UserLicenses { get; set; }
+        public DbSet<ClientRequest> ClientRequests { get; set; }
+        public DbSet<ClientRequestMessage> ClientRequestMessages { get; set; }
 
         #endregion
 
@@ -84,17 +86,10 @@ namespace SWP.DataBase
 
             #region Portal
 
-            //todo: remove this relation
-            modelBuilder.Entity<BillingDetail>()
-                .HasMany(c => c.UserLicenses)
-                .WithOne(e => e.BillingDetail)
+            modelBuilder.Entity<ClientRequest>()
+                .HasMany(c => c.Messages)
+                .WithOne(e => e.ClientRequest)
                 .OnDelete(DeleteBehavior.Cascade);
-
-            //todo:add this
-            //modelBuilder.Entity<ClientRequest>()
-            //    .HasMany(c => c.Messages)
-            //    .WithOne(e => e.ClientRequest)
-            //    .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Log>().ToTable("Log");
 

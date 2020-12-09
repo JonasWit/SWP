@@ -13,7 +13,14 @@ namespace SWP.Domain.Enums
     { 
         RootClient = 0,
         Default = 1,
-        Undefined = 2
+        Undefined = 2,
+        RelatedUser = 3
+    }
+
+    public enum LicenseType
+    {
+        Trial = 0,
+        Regular = 1
     }
 
     public enum RoleType

@@ -12,5 +12,6 @@ namespace SWP.UI.Utilities
         public const string LegalAppErrorLogPrefix = "[Exception From Legal App] ";
         public const string AdminAppLogPrefix = "[From Admin App] ";
         public const string AdminAppErrorLogPrefix = "[Exception From Admin App] ";
+        public const string AutomationLogPrefix = "[Log From Automation] ";
     }
 }

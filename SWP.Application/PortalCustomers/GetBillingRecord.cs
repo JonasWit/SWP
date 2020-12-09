@@ -11,9 +11,7 @@ namespace SWP.Application.PortalCustomers
     [TransientService]
     public class GetBillingRecord : PortalCustomersBase
     {
-        public GetBillingRecord(IPortalManager portalManager) : base(portalManager)
-        {
-        }
+        public GetBillingRecord(IPortalManager portalManager) : base(portalManager) { }
 
         public BillingDetail GetDetails(string userId) => _portalManager.GetBillingDetail(userId);
     }

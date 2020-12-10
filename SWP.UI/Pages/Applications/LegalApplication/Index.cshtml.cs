@@ -6,7 +6,7 @@ using System.Security.Claims;
 
 namespace SWP.UI.Pages.LegalSwp
 {
-    [Authorize(Policy = "LegalApplication")]
+    [Authorize(Policy = "LegalApplication", Roles = "Users, Administrators")]
     public class IndexModel : PageModel
     {
         public string ActiveUserId { get; set; }

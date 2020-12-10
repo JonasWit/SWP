@@ -9,6 +9,7 @@ namespace SWP.Domain.Models.Portal.Communication
 {
     public class ClientRequest : BaseModel
     {
+        public string RequestorId { get; set; }
         public string Subject { get; set; }
         public List<ClientRequestMessage> Messages { get; set; }
     }

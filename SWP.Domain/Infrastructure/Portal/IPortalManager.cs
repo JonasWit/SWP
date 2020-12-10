@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using SWP.Domain.Models.Portal;
+using SWP.Domain.Models.Portal.Communication;
 using SWP.Domain.Utilities;
 using System.Collections.Generic;
 using System.Security.Claims;
@@ -30,5 +31,14 @@ namespace SWP.Domain.Infrastructure.Portal
         Task<IdentityUser> GetUserByName(string name);
         Task<string> GetUserProfileByID(string id);
         Task<IList<IdentityUser>> GetUsersForProfile(Claim claim);
+
+        Task<ClientRequest> GetRequestWithMessages(int requestId);
+        Task<List<ClientRequest>> GetRequestsForClient(string userId);
+        Task<ClientRequest> CreateRequest(ClientRequest clientRequest);
+        Task<ClientRequestMessage> CreateRequestMessage(ClientRequestMessage clientRequestMessage, int reuqestId);
+        Task<int> DeleteRequest(int id);
+        Task<int> DeleteRequestsForClient(string userId);
+
+
     }
 }

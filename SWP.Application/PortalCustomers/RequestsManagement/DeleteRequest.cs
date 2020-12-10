@@ -8,12 +8,10 @@ using System.Threading.Tasks;
 namespace SWP.Application.PortalCustomers.RequestsManagement
 {
     [TransientService]
-    public class CreateRequest : PortalManagerBase
+    public class DeleteRequest : PortalManagerBase
     {
-        public CreateRequest(IPortalManager portalManager) : base(portalManager)
+        public DeleteRequest(IPortalManager portalManager) : base(portalManager)
         {
         }
-
-
     }
 }

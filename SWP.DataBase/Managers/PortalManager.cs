@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using SWP.Domain.Enums;
 using SWP.Domain.Infrastructure.Portal;
 using SWP.Domain.Models.Portal;
+using SWP.Domain.Models.Portal.Communication;
 using SWP.Domain.Utilities;
 using System;
 using System.Collections.Generic;
@@ -164,7 +166,6 @@ namespace SWP.DataBase.Managers
             throw new NotImplementedException();
         }
 
-
         public Task<IList<IdentityUser>> GetUsersForProfile(Claim claim) => _userManager.GetUsersForClaimAsync(claim);
 
         public Task<IdentityUser> GetUserByID(string id) => _userManager.FindByIdAsync(id);
@@ -225,5 +226,44 @@ namespace SWP.DataBase.Managers
                 //todo: check and cleanup all root profiles or incorrect profiles
             }
         }
+
+        #region Requests Management
+
+        public Task<ClientRequest> GetRequestWithMessages(int requestId) =>
+            _context.ClientRequests.Include(x => x.Messages).FirstOrDefaultAsync(x => x.Id == requestId);
+ 
+        public Task<List<ClientRequest>> GetRequestsForClient(string userId) => 
+            _context.ClientRequests.Where(x => x.RequestorId == userId).ToListAsync();
+
+        public async Task<ClientRequest> CreateRequest(ClientRequest clientRequest)
+        {
+            _context.ClientRequests.Add(clientRequest);
+            await _context.SaveChangesAsync();
+            return clientRequest;
+        }
+
+        public async Task<ClientRequestMessage> CreateRequestMessage(ClientRequestMessage message, int reuqestId)
+        {
+            var parent = _context.ClientRequests.FirstOrDefault(x => x.Id == reuqestId);
+            parent.Messages.Add(message);
+            await _context.SaveChangesAsync();
+            return message;
+        }
+
+        public Task<int> DeleteRequest(int id)
+        {
+            var entity = _context.ClientRequests.FirstOrDefault(x => x.Id == id);
+            _context.ClientRequests.Remove(entity);
+            return _context.SaveChangesAsync();
+        }
+
+        public Task<int> DeleteRequestsForClient(string userId)
+        {
+            var entity = _context.ClientRequests.Where(x => x.RequestorId == userId);
+            _context.ClientRequests.RemoveRange(entity);
+            return _context.SaveChangesAsync();
+        } 
+
+        #endregion
     }
 }

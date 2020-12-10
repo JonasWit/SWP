@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace SWP.Application.PortalCustomers
 {
-    public abstract class PortalCustomersBase
+    public abstract class PortalManagerBase
     {
         protected readonly IPortalManager _portalManager;
-        protected PortalCustomersBase(IPortalManager portalManager) => _portalManager = portalManager;
+        protected PortalManagerBase(IPortalManager portalManager) => _portalManager = portalManager;
     }
 }

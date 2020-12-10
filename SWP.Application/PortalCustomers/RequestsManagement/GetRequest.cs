@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SWP.Domain.Infrastructure.Portal;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,11 @@ using System.Threading.Tasks;
 
 namespace SWP.Application.PortalCustomers.RequestsManagement
 {
-    class GetRequest
+    [TransientService]
+    public class GetRequest : PortalManagerBase
     {
+        public GetRequest(IPortalManager portalManager) : base(portalManager)
+        {
+        }
     }
 }

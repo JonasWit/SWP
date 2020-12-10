@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace SWP.Application.PortalCustomers
 {
     [TransientService]
-    public class DeleteBillingRecord : PortalCustomersBase
+    public class DeleteBillingRecord : PortalManagerBase
     {
         public DeleteBillingRecord(IPortalManager portalManager) : base(portalManager) { }
 

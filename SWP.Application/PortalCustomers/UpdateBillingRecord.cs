@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace SWP.Application.PortalCustomers
 {
     [TransientService]
-    public class UpdateBillingRecord : PortalCustomersBase
+    public class UpdateBillingRecord : PortalManagerBase
     {
         public UpdateBillingRecord(IPortalManager portalManager) : base(portalManager) { }
 

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace SWP.Application.PortalCustomers.LicenseManagement
 {
     [TransientService]
-    public class UpdateLicense : PortalCustomersBase
+    public class UpdateLicense : PortalManagerBase
     {
         public UpdateLicense(IPortalManager portalManager) : base(portalManager) { }
 

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace SWP.Application.PortalCustomers.LicenseManagement
 {
     [TransientService]
-    public class DeleteLicense : PortalCustomersBase
+    public class DeleteLicense : PortalManagerBase
     {
         public DeleteLicense(IPortalManager portalManager) : base(portalManager) { }
 

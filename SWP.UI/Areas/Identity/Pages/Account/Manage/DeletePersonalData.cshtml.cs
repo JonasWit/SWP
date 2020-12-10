@@ -103,6 +103,7 @@ namespace SWP.UI.Areas.Identity.Pages.Account.Manage
                 if (rootClientClaim != null)
                 {
                     //todo: delete also related accounts! - przemyslec to
+                    //todo: skasowac też wszystkie requesty tego usera
                     await _deleteBillingRecord.DeleteBillingDetail(user.Id);
 
                     //Delete all clients data connected to profile

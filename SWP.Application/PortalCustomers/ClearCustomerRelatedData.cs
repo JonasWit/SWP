@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace SWP.Application.PortalCustomers
 {
     [TransientService]
-    public class ClearCustomerRelatedData : PortalCustomersBase
+    public class ClearCustomerRelatedData : PortalManagerBase
     {
         public ClearCustomerRelatedData(IPortalManager portalManager) : base(portalManager) { }
 

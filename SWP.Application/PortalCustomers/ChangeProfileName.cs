@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 namespace SWP.Application.PortalCustomers
 {
     [TransientService]
-    public class ChangeProfileName : PortalCustomersBase
+    public class ChangeProfileName : PortalManagerBase
     {
         private readonly IPortalManager _portalManager;
 

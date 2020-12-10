@@ -73,6 +73,9 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
         public bool clientListInfoVisible = false;
         public void ShowHideClientI() => clientListInfoVisible = !clientListInfoVisible;
 
+        public bool InfoVisible = false;
+        public void ShowHideInfo() => InfoVisible = !InfoVisible;
+
 
         #region Actions
 
@@ -94,7 +97,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
         
         private void SelectedArchivizedClientJobChange(object arg) => ActionDispatcher.Dispatch(new SelectedArchivizedClientJobChangeAction { Arg = arg });
 
-        private void RecoverSelectedJob() => ActionDispatcher.Dispatch(new SelectedArchivizedClientJobChangeAction());
+        private void RecoverSelectedJob() => ActionDispatcher.Dispatch(new RecoverSelectedJobAction());
 
 
         #endregion

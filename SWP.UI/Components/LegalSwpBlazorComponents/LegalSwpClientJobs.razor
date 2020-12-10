@@ -121,8 +121,8 @@ else
                         </RadzenGridColumn>
                         <RadzenGridColumn TItem="ClientJobViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="100px">
                             <Template Context="job">
-                                <RadzenButton ButtonStyle="ButtonStyle.Warning" Icon="archive" Size="ButtonSize.Small" Click="@((args) => ArchivizeClientJob(job))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Archiwizuj", Style = Gvm.ToolTipStyle }))">
-                                    Archiwizuj
+                                <RadzenButton ButtonStyle="ButtonStyle.Warning" Icon="archive" Size="ButtonSize.Small" Click="@((args) => ArchivizeClientJob(job))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Zakończono", Style = Gvm.ToolTipStyle }))">
+                                    Zakończono
                                 </RadzenButton>
                             </Template>
                             <EditTemplate Context="job">
@@ -149,8 +149,22 @@ else
                 }
             </div>
         </div>
-        <div class="row-section">
+        <div class="show-hide tab-section"><button class="show-hide-btn show-hide-btn-1"><span>Zakończone</span></button></div>
+        <div class="row-section second">
+            <div class="help-box">
+                <i class="user-icon"><img src="/Images/icons8-checked-checkbox-36.png" /></i>
+
+                @if (InfoVisible)
+                {
+                    <div class="info-text">
+                        <p>Zarządzaj listą swoich klientów. Użyj guzika "Dodaj Nowego Klienta",aby uzupełnić listę kontaktów.</p>
+                        <p>Edytuj oraz usuwaj Klientów z głównej listy. Tekst do zupełnienia.</p>
+                    </div>
+                }
+                <button class="info" @onclick="ShowHideInfo"></button>
+            </div>
             <div class="details">
+
                 <RadzenListBox AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" @bind-Value="ArchvizedJobsFilterValue" Data="@ClientJobsStore.GetState().ArchivedJobs" TextProperty="Name" ValueProperty="IdString" Change="@(args => SelectedArchivizedClientJobChange(args))" />
 
 
@@ -166,5 +180,6 @@ else
                 }
             </div>
         </div>
+        
     }
 }

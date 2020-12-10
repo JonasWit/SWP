@@ -42,6 +42,11 @@ namespace SWP.DataBase.Managers
 
         public async Task<string> GetParentAccountId(IdentityUser relatedUser, Claim profileClaim)
         {
+            if (relatedUser == null || profileClaim == null)
+            {
+                return null;
+            }
+
             var profileUsers = await _userManager.GetUsersForClaimAsync(profileClaim) as List<IdentityUser>;
 
             foreach (var profileUser in profileUsers)

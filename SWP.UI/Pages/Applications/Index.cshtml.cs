@@ -47,8 +47,12 @@ namespace SWP.UI.Pages.Applications
             }
             else
             {
-                AccessModel.Licenses = getLicense.GetAll(await identityExtendedManager.GetParentAccountId(AccessModel.UserData.User, AccessModel.UserData.ProfileClaim))
-                    .Select(x => (LicenseViewModel)x).ToList();
+                var parentId = await identityExtendedManager.GetParentAccountId(AccessModel.UserData.User, AccessModel.UserData.ProfileClaim);
+
+                if (!string.IsNullOrEmpty(parentId))
+                {
+                    AccessModel.Licenses = getLicense.GetAll(parentId).Select(x => (LicenseViewModel)x)?.ToList();
+                }
             }
 
             return Page();

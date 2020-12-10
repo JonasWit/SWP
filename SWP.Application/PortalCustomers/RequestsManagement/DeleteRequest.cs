@@ -13,5 +13,9 @@ namespace SWP.Application.PortalCustomers.RequestsManagement
         public DeleteRequest(IPortalManager portalManager) : base(portalManager)
         {
         }
+
+        public Task<int> Delete(int id) => _portalManager.DeleteRequest(id);
+
+        public Task<int> Delete(string userId) => _portalManager.DeleteRequest(userId);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using SWP.Domain.Infrastructure.Portal;
+using SWP.Domain.Models.Portal.Communication;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,10 @@ namespace SWP.Application.PortalCustomers.RequestsManagement
         {
         }
 
+        public Task<ClientRequest> Create(ClientRequest clientRequest) => 
+            _portalManager.CreateRequest(clientRequest);
 
+        public Task<ClientRequestMessage> Create(ClientRequestMessage clientRequestMessage, int reuqestId) => 
+            _portalManager.CreateRequestMessage(clientRequestMessage, reuqestId);
     }
 }

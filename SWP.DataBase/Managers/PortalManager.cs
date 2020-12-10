@@ -257,7 +257,7 @@ namespace SWP.DataBase.Managers
             return _context.SaveChangesAsync();
         }
 
-        public Task<int> DeleteRequestsForClient(string userId)
+        public Task<int> DeleteRequest(string userId)
         {
             var entity = _context.ClientRequests.Where(x => x.RequestorId == userId);
             _context.ClientRequests.RemoveRange(entity);

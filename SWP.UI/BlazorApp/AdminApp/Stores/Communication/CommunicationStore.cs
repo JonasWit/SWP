@@ -171,13 +171,13 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Communication
                     {
                         await emailSender.SendEmailAsync(recipient.Email, _state.Title, _state.Body);
 
-                        _logger.LogInformation("Seccess: Email sent to {email}", recipient.Email);
-                        StatusBarStore.UpdateLogWindow($"Seccess: Email sent to {recipient.Email}");
+                        _logger.LogInformation("Seccess: Email {emailTitle} sent to {email}", _state.Title, recipient.Email);
+                        StatusBarStore.UpdateLogWindow($"Seccess: Email {_state.Title} sent to {recipient.Email}");
                     }
                     catch (Exception ex)
                     {
-                        _logger.LogInformation("Exception: Failed to send email to {email}", recipient.Email);
-                        StatusBarStore.UpdateLogWindow($"Exception: Failed to send email to {recipient.Email}");
+                        _logger.LogError(ex, "Exception: Failed to send email {emailTitle} to {email}", _state.Title, recipient.Email);
+                        StatusBarStore.UpdateLogWindow($"Exception: Failed to send email {_state.Title} to {recipient.Email}");
                     }
                 }
             }

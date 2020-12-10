@@ -4,36 +4,39 @@
 <p>UID: @ActiveUserId</p>
 <p>Preset: @Preset</p>
 
-<h3>Tytuł</h3>
-<p>Tytuł sa sie wybiera na podtawie Presetu</p>
 
 
-<h3>Wiadomość</h3>
-<RadzenTextArea />
 
-@switch (Preset)
-{
-    case Pages.PagesEnums.RequestPreset.ExtendLicense:
+<div>
+    <RadzenSteps Change=@OnChange>
+        <Steps>
+            <RadzenStepsItem Text="Rodzaj Zgłoszenia">
+                <p>sie wybiera na podtawie Presetu</p>
 
-        break;
-    case Pages.PagesEnums.RequestPreset.PurchaseLicense:
+            </RadzenStepsItem>
+            <RadzenStepsItem Text="Szczegóły Zgłoszenia" Disabled="@(customer == null)">
+                <h3>Select Order</h3>
 
-        break;
-    case Pages.PagesEnums.RequestPreset.ReportIssue:
 
-        break;
-    case Pages.PagesEnums.RequestPreset.RequestUpgrade:
 
-        break;
-    case Pages.PagesEnums.RequestPreset.ModifyLicense:
+            </RadzenStepsItem>
+            <RadzenStepsItem Text="Dodatkowy Komentarz" Disabled="@(order == null)">
+                <h3>Wiadomość</h3>
+                <RadzenTextArea />
 
-        break;
-    case Pages.PagesEnums.RequestPreset.CreateProfile:
+            </RadzenStepsItem>
+        </Steps>
+    </RadzenSteps>
+</div>
 
-        break;
-    case Pages.PagesEnums.RequestPreset.Blank:
 
-        break;
-    default:
-        break;
+@code{
+    string customer;
+    string order;
+
+    void OnChange(int index)
+    {
+       
+    }
+
 }

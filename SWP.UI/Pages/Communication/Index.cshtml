@@ -3,14 +3,29 @@
 @{
 }
 
-<p>Tylko zarejestrowane użytkownik może wysyłać komunikację!</p>
-
-<p>Zgłoszenie problemu</p>
-
-<a asp-page="/Communication/Request" asp-route-requestedAction="@RequestPreset.PurchaseLicense">Kup Licencję</a>
+@if (User.Identity.IsAuthenticated)
+{
 
 
-<p>Informacji co trzeba zrobic zeby moc zlozyc zgloszenie o zakup aplikacji</p>
+    <p>Zgłoszenie problemu</p>
 
-<a asp-page="/Communication/Request">Wyślij zgłoszenie</a>
+    <a asp-page="/Communication/Request" asp-route-requestedAction="@RequestPreset.PurchaseLicense">Kup Licencję</a>
+
+
+    <p>Informacji co trzeba zrobic zeby moc zlozyc zgloszenie o zakup aplikacji</p>
+
+    <a asp-page="/Communication/Request">Wyślij zgłoszenie</a>
+
+
+}
+else
+{
+
+    <p>Tylko zarejestrowane użytkownik może wysyłać komunikację!</p>
+
+
+
+
+}
+
 

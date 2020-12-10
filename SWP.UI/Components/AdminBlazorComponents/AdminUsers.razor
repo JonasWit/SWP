@@ -176,10 +176,6 @@
 
     @if (Store.GetState().SelectedUser.RootClient)
     {
-        //todo: oplaty miesiecznie albo do wyboru
-
-        //todo: forma na dodanie licencji + datagrid na edycje itp
-
         <div class="section">
             <RadzenCard>
                 <div class="columns is-0 is-centered">
@@ -197,7 +193,9 @@
                                         <RadzenDropDown AllowClear="true" TValue="string" Name="AppTypeDropDown"
                                                         FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" FilterOperator="StringFilterOperator.StartsWith" AllowFiltering="true"
                                                         Data="@Store.GetState().ApplicationClaims" @bind-Value="Store.GetState().NewLicense.Product" />
-                                        <div><RadzenRequiredValidator Component="AppTypeDropDown" Text="Application Type is required" Popup=false Style="position: absolute" /></div>
+                                        <div>
+                                            <RadzenRequiredValidator Component="AppTypeDropDown" Text="Application Type is required" Popup=false Style="position: absolute" />
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="columns">
@@ -208,7 +206,9 @@
                                         <RadzenDropDown AllowClear="true" TValue="string" Name="Type"
                                                         FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" FilterOperator="StringFilterOperator.StartsWith" AllowFiltering="true"
                                                         Data="@Store.GetState().LicenseTypeClaims" @bind-Value="Store.GetState().NewLicense.Type" />
-                                        <div><RadzenRequiredValidator Component="Type" Text="Type is required" Popup=false Style="position: absolute" /></div>
+                                        <div>
+                                            <RadzenRequiredValidator Component="Type" Text="Type is required" Popup=false Style="position: absolute" />
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="columns">
@@ -225,13 +225,15 @@
                                     </div>
                                     <div class="column">
                                         <RadzenDatePicker @bind-Value=@Store.GetState().NewLicense.ValidTo DateFormat="d" Name="ValidTo" />
-                                        <div><RadzenRequiredValidator Component="ValidTo" Text="Date is required" Popup=false Style="position: absolute" /></div>
+                                        <div>
+                                            <RadzenRequiredValidator Component="ValidTo" Text="Date is required" Popup=false Style="position: absolute" />
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="columns is-0 is-centered">
-                            <RadzenButton ButtonType="ButtonType.Submit" Icon="save" Text="Add" ButtonStyle="ButtonStyle.Secondary" />
+                            <RadzenButton ButtonType="ButtonType.Submit" Text="Add License" ButtonStyle="ButtonStyle.Primary" />
                         </div>
                     </RadzenFieldset>
                 </RadzenTemplateForm>

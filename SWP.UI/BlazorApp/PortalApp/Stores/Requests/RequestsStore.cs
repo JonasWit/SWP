@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using SWP.UI.Pages.PagesEnums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,17 @@ namespace SWP.UI.BlazorApp.PortalApp.Stores.Requests
     public class ProductivityState
     {
         public string TestMessage { get; set; } = "TEST";
+
+
+
+
+        public class PresetTitle
+        {
+            public int MyProperty { get; set; }
+
+        }
+
+
     }
 
     [UIScopedService]
@@ -23,6 +35,12 @@ namespace SWP.UI.BlazorApp.PortalApp.Stores.Requests
             : base(serviceProvider, actionDispatcher)
         {
             _logger = logger;
+        }
+
+        public void Initialize(string userId, RequestPreset preset)
+        { 
+            
+        
         }
 
         protected override void HandleActions(IAction action)

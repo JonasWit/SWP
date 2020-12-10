@@ -73,16 +73,16 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Users
     [UIScopedService]
     public class UsersStore : StoreBase<UserState>
     {
-        private readonly IIdentityExtendedManager _identityExtendedManager;
+        private readonly IPortalManager _portalManager;
 
         UserManager<IdentityUser> UserManager => _serviceProvider.GetService<UserManager<IdentityUser>>();
         ApplicationStore AppStore => _serviceProvider.GetRequiredService<ApplicationStore>();
         StatusBarStore StatusBarStore => _serviceProvider.GetRequiredService<StatusBarStore>();
 
-        public UsersStore(IServiceProvider serviceProvider, IActionDispatcher actionDispatcher, NotificationService notificationService, IIdentityExtendedManager identityExtendedManager)
+        public UsersStore(IServiceProvider serviceProvider, IActionDispatcher actionDispatcher, NotificationService notificationService, IPortalManager portalManager)
             : base(serviceProvider, actionDispatcher, notificationService)
         {
-            _identityExtendedManager = identityExtendedManager;
+            _portalManager = portalManager;
         }
 
         public async Task Initialize()
@@ -650,7 +650,7 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Users
 
         public override void RefreshSore()
         {
-            var profiles = _identityExtendedManager.GetAllProfiles();
+            var profiles = _portalManager.GetAllProfiles();
             _state.AllProfiles = profiles.Select(x => new ProfileModel { Id = profiles.IndexOf(x).ToString(), ProfileName = x }).ToList();
         }
     }

@@ -34,7 +34,7 @@ namespace SWP.UI.Pages.Applications
         public async Task<IActionResult> OnGet(
             [FromServices] UserManager<IdentityUser> userManager, 
             [FromServices] GetLicense getLicense, 
-            [FromServices] IIdentityExtendedManager identityExtendedManager)
+            [FromServices] IPortalManager portalManager)
         {
             AccessModel.UserData.User = await userManager.FindByIdAsync(AccessModel.ActiveUserId);
             AccessModel.UserData.Claims = await userManager.GetClaimsAsync(AccessModel.UserData.User) as List<Claim>;
@@ -47,7 +47,7 @@ namespace SWP.UI.Pages.Applications
             }
             else
             {
-                var parentId = await identityExtendedManager.GetParentAccountId(AccessModel.UserData.User, AccessModel.UserData.ProfileClaim);
+                var parentId = await portalManager.GetParentAccountId(AccessModel.UserData.User, AccessModel.UserData.ProfileClaim);
 
                 if (!string.IsNullOrEmpty(parentId))
                 {

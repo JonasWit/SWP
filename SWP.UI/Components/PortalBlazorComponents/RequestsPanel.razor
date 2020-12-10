@@ -4,9 +4,36 @@
 <p>UID: @ActiveUserId</p>
 <p>Preset: @Preset</p>
 
+<h3>Tytuł</h3>
+<p>Tytuł sa sie wybiera na podtawie Presetu</p>
 
 
+<h3>Wiadomość</h3>
+<RadzenTextArea />
 
+@switch (Preset)
+{
+    case Pages.PagesEnums.RequestPreset.ExtendLicense:
 
+        break;
+    case Pages.PagesEnums.RequestPreset.PurchaseLicense:
 
+        break;
+    case Pages.PagesEnums.RequestPreset.ReportIssue:
 
+        break;
+    case Pages.PagesEnums.RequestPreset.RequestUpgrade:
+
+        break;
+    case Pages.PagesEnums.RequestPreset.ModifyLicense:
+
+        break;
+    case Pages.PagesEnums.RequestPreset.CreateProfile:
+
+        break;
+    case Pages.PagesEnums.RequestPreset.Blank:
+
+        break;
+    default:
+        break;
+}

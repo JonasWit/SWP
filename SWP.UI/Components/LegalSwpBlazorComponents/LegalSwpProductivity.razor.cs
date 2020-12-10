@@ -36,7 +36,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
         public void Dispose()
         {
             MainStore.RemoveStateChangeListener(RefreshView);
-            ProductivityStore.RemoveStateChangeListener(UpdateView);
+            ProductivityStore.RemoveStateChangeListener(RefreshView);
             ProductivityStore.CleanUpStore();
         }
 
@@ -58,7 +58,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
         protected override void OnInitialized()
         {
             MainStore.AddStateChangeListener(RefreshView);
-            ProductivityStore.AddStateChangeListener(UpdateView);
+            ProductivityStore.AddStateChangeListener(RefreshView);
             ProductivityStore.Initialize();
         }
 

@@ -12,6 +12,7 @@ namespace SWP.UI.Pages.PagesEnums
         ReportIssue = 2,
         RequestUpgrade = 3,
         ModifyLicense = 4,
-        CreateProfile = 5
+        CreateProfile = 5,
+        Blank =6
     }
 }

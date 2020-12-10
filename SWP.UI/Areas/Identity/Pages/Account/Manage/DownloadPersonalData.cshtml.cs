@@ -38,7 +38,6 @@ namespace SWP.UI.Areas.Identity.Pages.Account.Manage
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
-            //todo: add activity
             _logger.LogInformation(LogTags.PortalIdentityLogPrefix + "User with ID '{UserId}' asked for their personal data.", _userManager.GetUserId(User));
 
             var billingData = _getBillingRecord.GetDetails(user.Id);

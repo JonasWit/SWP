@@ -7,5 +7,6 @@ namespace SWP.UI.BlazorApp.PortalApp.Stores.News
 {
     public class NewsStore
     {
+        //todo: na przyszlosc zeby skasowac Trumbowygy
     }
 }

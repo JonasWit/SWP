@@ -6,7 +6,7 @@ namespace SWP.Domain.Enums
 {
     #region Requests
 
-    public enum RequesType
+    public enum RequestReason
     {
         Query = 0,
         PurchaseLicense = 1,
@@ -15,11 +15,18 @@ namespace SWP.Domain.Enums
         RequestDemo = 4,
     }
 
-    public enum HelpType
+    public enum RequestType
     { 
         Technical = 0,
         Other = 1,
         Administration = 2
+    }
+
+    public enum RequestStatus
+    {
+        WaitingForAnswer = 0,
+        Answered = 1,
+        Solved = 2
     }
 
     #endregion

@@ -17,6 +17,8 @@ namespace SWP.Domain.Models.Portal.Communication
         public string HelpType { get; set; }
         [MaxLength(100)]
         public string RelatedApp { get; set; }
+        [MaxLength(50)]
+        public string Status { get; set; }
         public DateTime DateParam { get; set; }
         public int RelatedUsers { get; set; }
         public List<ClientRequestMessage> Messages { get; set; }

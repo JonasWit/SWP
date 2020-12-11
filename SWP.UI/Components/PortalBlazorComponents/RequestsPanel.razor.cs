@@ -1,10 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using SWP.UI.BlazorApp;
 using SWP.UI.BlazorApp.PortalApp.Stores.Requests;
-using SWP.UI.Pages.PagesEnums;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace SWP.UI.Components.PortalBlazorComponents
@@ -13,8 +10,6 @@ namespace SWP.UI.Components.PortalBlazorComponents
     {
         [Parameter]
         public string ActiveUserId { get; set; }
-        [Parameter]
-        public RequestPreset Preset { get; set; }
         [Inject]
         public RequestsStore Store { get; set; }
         [Inject]

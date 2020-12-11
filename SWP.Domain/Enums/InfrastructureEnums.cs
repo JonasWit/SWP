@@ -4,6 +4,26 @@ using System.Text;
 
 namespace SWP.Domain.Enums
 {
+    #region Requests
+
+    public enum RequesType
+    {
+        Query = 0,
+        PurchaseLicense = 1,
+        ModifyLicense = 2,
+        ExtendLicense = 3,
+        RequestDemo = 4,
+    }
+
+    public enum HelpType
+    { 
+        Technical = 0,
+        Other = 1,
+        Administration = 2
+    }
+
+    #endregion
+
     public enum ApplicationType
     { 
         LegalSwp = 0,

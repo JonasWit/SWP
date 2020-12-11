@@ -38,13 +38,13 @@
                 <div class="col-4">
                     @if (Model.AccessModel.LegalLicense == null)
                     {
-                        <p class="text-center"><a class="btn-2" asp-page="/Communication/Request" asp-route-requestedAction="@RequestPreset.PurchaseLicense">Kup Licencję</a></p>
+                        <p class="text-center"><a class="btn-2" asp-page="/Communication/Request">Kup Licencję</a></p>
                     }
                     else
                     {
                         @if (Model.AccessModel.UserData.Profile == null)
                         {
-                            <p class="text-center"><a class="btn-2" asp-page="/Communication/Request" asp-route-requestedAction="@RequestPreset.CreateProfile">Stwórz Profil</a></p>
+                            <p class="text-center"><a class="btn-2" asp-page="/Communication/Request">Stwórz Profil</a></p>
                         }
                         else
                         {
@@ -54,7 +54,7 @@
                             }
                             else if (Model.AccessModel.LegalLicense.ValidTo <= DateTime.Now)
                             {
-                                <p class="text-center"><a class="btn-2" asp-page="/Communication/Request" asp-route-requestedAction="@RequestPreset.ExtendLicense">Przedłuż Licencję</a></p>
+                                <p class="text-center"><a class="btn-2" asp-page="/Communication/Request">Przedłuż Licencję</a></p>
                             }
                             else
                             {

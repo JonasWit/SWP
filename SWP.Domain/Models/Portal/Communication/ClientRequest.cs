@@ -12,7 +12,13 @@ namespace SWP.Domain.Models.Portal.Communication
     {
         public string RequestorId { get; set; }
         [MaxLength(100)]
-        public string Subject { get; set; }
+        public string RequestType { get; set; }
+        [MaxLength(100)]
+        public string HelpType { get; set; }
+        [MaxLength(100)]
+        public string RelatedApp { get; set; }
+        public DateTime DateParam { get; set; }
+        public int RelatedUsers { get; set; }
         public List<ClientRequestMessage> Messages { get; set; }
     }
 }

@@ -11,7 +11,7 @@ namespace SWP.UI.Components.PortalBlazorComponents.Requests
         [Parameter]
         public string ActiveUserId { get; set; }
         [Inject]
-        public RequestsStore Store { get; set; }
+        public RequestsPanelStore Store { get; set; }
         [Inject]
         public IActionDispatcher ActionDispatcher { get; set; }
 

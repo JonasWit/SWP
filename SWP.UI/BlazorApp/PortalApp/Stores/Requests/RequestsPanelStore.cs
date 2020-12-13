@@ -20,11 +20,11 @@ namespace SWP.UI.BlazorApp.PortalApp.Stores.Requests
     }
 
     [UIScopedService]
-    public class RequestsStore : StoreBase<ProductivityState>
+    public class RequestsPanelStore : StoreBase<ProductivityState>
     {
         private readonly ILogger<ProductivityState> _logger;
 
-        public RequestsStore(
+        public RequestsPanelStore(
             IServiceProvider serviceProvider,
             IActionDispatcher actionDispatcher,
             ILogger<ProductivityState> logger)

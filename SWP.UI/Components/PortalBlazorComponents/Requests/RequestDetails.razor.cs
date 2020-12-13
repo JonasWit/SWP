@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using SWP.UI.BlazorApp;
+using SWP.UI.BlazorApp.PortalApp.Stores.Requests;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,8 +12,8 @@ namespace SWP.UI.Components.PortalBlazorComponents.Requests
     {
         [Parameter]
         public string RequestId { get; set; }
-        //[Inject]
-        //public RequestsStore Store { get; set; }
+        [Inject]
+        public RequestsPanelDetailsStore Store { get; set; }
         [Inject]
         public IActionDispatcher ActionDispatcher { get; set; }
 

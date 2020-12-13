@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace SWP.UI.BlazorApp.PortalApp.Stores.Requests.Actions
 {
-    public class SendMessageAction : IAction
+    public class RequestsPanelSendMessageAction : IAction
     {
-        public const string SendMessage = "SEND_MESSAGE";
+        public const string SendMessage = "REQUEST_PANEL_SEND_MESSAGE";
         public string Name => SendMessage;
     }
 }

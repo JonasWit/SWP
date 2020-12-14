@@ -1,9 +1,6 @@
 ﻿using SWP.Domain.Infrastructure.Portal;
 using SWP.Domain.Models.Portal.Communication;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace SWP.Application.PortalCustomers.RequestsManagement
@@ -11,14 +8,70 @@ namespace SWP.Application.PortalCustomers.RequestsManagement
     [TransientService]
     public class CreateRequest : PortalManagerBase
     {
-        public CreateRequest(IPortalManager portalManager) : base(portalManager)
+        public CreateRequest(IPortalManager portalManager) : base(portalManager) { }
+
+        public async Task<int> Create(Request request)
         {
+            var changes = 0;
+
+            var newRequestEntity = new ClientRequest
+            {
+                Application = request.Application,
+                Created = request.Created,
+                CreatedBy = request.CreatedBy,
+                Updated = request.Created,
+                UpdatedBy = request.CreatedBy,
+                RequestorId = request.RequestorId,
+                Reason = request.Reason,
+                StartDate = request.StartDate,
+                EndDate = request.EndDate,
+                RelatedUsers = request.RelatedUsers,
+                Status = request.Status,
+            };
+
+            changes += await _portalManager.CreateRequest(newRequestEntity);
+
+            var newRequesrMessageEntity = new ClientRequestMessage
+            {
+                AuthorId = request.RequestMessage.AuthorId,
+                Created = request.RequestMessage.Created,
+                CreatedBy = request.RequestMessage.CreatedBy,
+                Updated = request.RequestMessage.Created,
+                UpdatedBy = request.RequestMessage.CreatedBy,
+                Message = request.RequestMessage.Message
+            };
+
+            changes += await _portalManager.CreateRequestMessage(newRequesrMessageEntity, newRequestEntity.Id);
+
+            return changes;
+        } 
+
+        public Task<int> Create(ClientRequestMessage clientRequestMessage, int reuqestId) =>
+            _portalManager.CreateRequestMessage(clientRequestMessage, reuqestId);
+
+        public class Request
+        {
+            public string RequestorId { get; set; }
+            public int Reason { get; set; }
+            public int Application { get; set; }
+            public int Status { get; set; }
+            public DateTime StartDate { get; set; }
+            public DateTime EndDate { get; set; }
+            public int RelatedUsers { get; set; }
+
+            public DateTime Created { get; set; }
+            public string CreatedBy { get; set; }
+
+            public RequestMessage RequestMessage { get; set; } = new RequestMessage();
         }
 
-        public Task<ClientRequest> Create(ClientRequest clientRequest) => 
-            _portalManager.CreateRequest(clientRequest);
+        public class RequestMessage
+        {
+            public string AuthorId { get; set; }
+            public string Message { get; set; }
 
-        public Task<ClientRequestMessage> Create(ClientRequestMessage clientRequestMessage, int reuqestId) => 
-            _portalManager.CreateRequestMessage(clientRequestMessage, reuqestId);
+            public DateTime Created { get; set; }
+            public string CreatedBy { get; set; }
+        }
     }
 }

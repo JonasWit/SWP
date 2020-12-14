@@ -13,13 +13,7 @@ namespace SWP.Domain.Enums
         ModifyLicense = 2,
         ExtendLicense = 3,
         RequestDemo = 4,
-    }
-
-    public enum RequestType
-    { 
-        Technical = 0,
-        Other = 1,
-        Administration = 2
+        TechnicalIssue = 5
     }
 
     public enum RequestStatus

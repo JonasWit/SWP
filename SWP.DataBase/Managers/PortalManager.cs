@@ -235,19 +235,17 @@ namespace SWP.DataBase.Managers
         public Task<List<ClientRequest>> GetRequestsForClient(string userId) => 
             _context.ClientRequests.Where(x => x.RequestorId == userId).ToListAsync();
 
-        public async Task<ClientRequest> CreateRequest(ClientRequest clientRequest)
+        public Task<int> CreateRequest(ClientRequest clientRequest)
         {
             _context.ClientRequests.Add(clientRequest);
-            await _context.SaveChangesAsync();
-            return clientRequest;
+            return _context.SaveChangesAsync();
         }
 
-        public async Task<ClientRequestMessage> CreateRequestMessage(ClientRequestMessage message, int reuqestId)
+        public Task<int> CreateRequestMessage(ClientRequestMessage message, int reuqestId)
         {
             var parent = _context.ClientRequests.FirstOrDefault(x => x.Id == reuqestId);
             parent.Messages.Add(message);
-            await _context.SaveChangesAsync();
-            return message;
+            return _context.SaveChangesAsync();
         }
 
         public Task<int> DeleteRequest(int id)

@@ -89,7 +89,17 @@ namespace SWP.UI.Areas.Identity.Pages.Account.Manage
             var profileClaim = claims.FirstOrDefault(x => x.Type == ClaimType.Profile.ToString());
             var applicationClaims = claims.Where(x => x.Type == ClaimType.Application.ToString());
             var rootClientClaim = claims.FirstOrDefault(x => x.Type == ClaimType.Status.ToString() && x.Value == UserStatus.RootClient.ToString());
-            var usersWithTheSameProfile = await _userManager.GetUsersForClaimAsync(profileClaim);
+            var usersWithTheSameProfile = await _userManager.GetUsersForClaimAsync(profileClaim) as List<IdentityUser>;
+
+            int rootClients = 0;
+            foreach (var userWithTheSameProfile in usersWithTheSameProfile)
+            {
+                var userClaims = await _userManager.GetClaimsAsync(userWithTheSameProfile) as List<Claim>;
+                if (userClaims.Any(y => y.Type == ClaimType.Status.ToString() && y.Value == UserStatus.RootClient.ToString()))
+                {
+                    rootClients++;
+                }
+            }
 
             var claimsToRemove = new List<Claim>
             {
@@ -98,31 +108,35 @@ namespace SWP.UI.Areas.Identity.Pages.Account.Manage
 
             claimsToRemove.AddRange(applicationClaims);
 
+            //todo: sign out all related users
             try
             {
                 if (rootClientClaim != null)
                 {
-                    //todo: delete also related accounts! - przemyslec to
                     //todo: skasowac też wszystkie requesty tego usera
                     await _deleteBillingRecord.DeleteBillingDetail(user.Id);
 
-                    //Delete all clients data connected to profile
-                    await _deleteClient.Delete(profileClaim.Value);
-
-                    //Remove Profile form all related non-Root users
-                    foreach (var userWithTheSameProfile in usersWithTheSameProfile)
+                    //Delete Profile if this is the only Root Client for this Profile
+                    if (rootClients == 1)
                     {
-                        if (userWithTheSameProfile.Id != user.Id)
-                        {
-                            var actionResult = await _userManager.RemoveClaimsAsync(userWithTheSameProfile, claimsToRemove);
+                        //Delete all clients data connected to profile (Legal App)
+                        await _deleteClient.Delete(profileClaim.Value);
 
-                            if (actionResult.Succeeded)
+                        //Remove Profile form all related non-Root users
+                        foreach (var userWithTheSameProfile in usersWithTheSameProfile)
+                        {
+                            if (userWithTheSameProfile.Id != user.Id)
                             {
-                                _logger.LogInformation(LogTags.PortalIdentityLogPrefix + "Profile removed for user {userName} clean up initiated by {rootUserName}", userWithTheSameProfile.UserName, user.UserName);
-                            }
-                            else
-                            {
-                                _logger.LogInformation(LogTags.PortalIdentityLogPrefix + "Failed to remove profile for user {userName}", userWithTheSameProfile.UserName, user.UserName);
+                                var actionResult = await _userManager.RemoveClaimsAsync(userWithTheSameProfile, claimsToRemove);
+
+                                if (actionResult.Succeeded)
+                                {
+                                    _logger.LogInformation(LogTags.PortalIdentityLogPrefix + "Profile removed for user {userName} clean up initiated by {rootUserName}", userWithTheSameProfile.UserName, user.UserName);
+                                }
+                                else
+                                {
+                                    _logger.LogInformation(LogTags.PortalIdentityLogPrefix + "Failed to remove profile for user {userName}", userWithTheSameProfile.UserName, user.UserName);
+                                }
                             }
                         }
                     }

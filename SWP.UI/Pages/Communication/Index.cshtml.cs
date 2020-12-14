@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace SWP.UI.Pages.Communication
 {
-    [Authorize(Roles = "Users, Administrators")]
     public class IndexModel : PageModel
     {
         public void OnGet()

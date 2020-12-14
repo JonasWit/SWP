@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SWP.UI.BlazorApp.PortalApp.Stores.Requests.Actions
+namespace SWP.UI.BlazorApp.PortalApp.Stores.Requests.RequestsPanelDetails.Actions
 {
     public class RequestsPanelSendMessageAction : IAction
     {

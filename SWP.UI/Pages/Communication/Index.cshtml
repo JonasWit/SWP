@@ -5,22 +5,11 @@
 
 @if (User.Identity.IsAuthenticated)
 {
-    <p>Zgłoszenie problemu</p>
-
-    <a asp-page="/Communication/Request">Kup Licencję</a>
-
-
-    <p>Informacji co trzeba zrobic zeby moc zlozyc zgloszenie o zakup aplikacji</p>
-
-    <a asp-page="/Communication/Request">Wyślij zgłoszenie</a>
+    <a asp-page="/Communication/Request">Przejdz do Panelu Kontaktu</a>
 }
 else
 {
     <p>Tylko zarejestrowane użytkownik może wysyłać komunikację!</p>
-
-
-
-
 }
 
 

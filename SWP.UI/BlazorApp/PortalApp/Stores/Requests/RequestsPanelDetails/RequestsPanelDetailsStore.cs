@@ -1,9 +1,13 @@
 ﻿using Microsoft.Extensions.Logging;
+using SWP.UI.BlazorApp.PortalApp.Stores.Requests.RequestsPanel;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace SWP.UI.BlazorApp.PortalApp.Stores.Requests
 {
-    public class ProductivityState
+    public class RequestsPanelDetailsState
     {
         public string TestMessage { get; set; } = "TEST";
 
@@ -20,23 +24,23 @@ namespace SWP.UI.BlazorApp.PortalApp.Stores.Requests
     }
 
     [UIScopedService]
-    public class RequestsPanelStore : StoreBase<ProductivityState>
+    public class RequestsPanelDetailsStore : StoreBase<RequestsPanelDetailsState>
     {
-        private readonly ILogger<ProductivityState> _logger;
+        private readonly ILogger<RequestsPanelDetailsStore> _logger;
 
-        public RequestsPanelStore(
+        public RequestsPanelDetailsStore(
             IServiceProvider serviceProvider,
             IActionDispatcher actionDispatcher,
-            ILogger<ProductivityState> logger)
+            ILogger<RequestsPanelDetailsStore> logger)
             : base(serviceProvider, actionDispatcher)
         {
             _logger = logger;
         }
 
         public void Initialize(string userId)
-        { 
-            
-        
+        {
+
+
         }
 
         protected override void HandleActions(IAction action)

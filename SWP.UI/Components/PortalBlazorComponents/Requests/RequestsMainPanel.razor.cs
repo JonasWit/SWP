@@ -1,17 +1,17 @@
 ﻿using Microsoft.AspNetCore.Components;
 using SWP.UI.BlazorApp;
-using SWP.UI.BlazorApp.PortalApp.Stores.Requests;
+using SWP.UI.BlazorApp.PortalApp.Stores.Requests.RequestsPanel;
 using System;
 using System.Threading.Tasks;
 
 namespace SWP.UI.Components.PortalBlazorComponents.Requests
 {
-    public partial class RequestsPanel : IDisposable
+    public partial class RequestsMainPanel : IDisposable
     {
         [Parameter]
         public string ActiveUserId { get; set; }
         [Inject]
-        public RequestsPanelStore Store { get; set; }
+        public RequestsMainPanelStore Store { get; set; }
         [Inject]
         public IActionDispatcher ActionDispatcher { get; set; }
 
@@ -24,10 +24,14 @@ namespace SWP.UI.Components.PortalBlazorComponents.Requests
 
         protected override async Task OnInitializedAsync()
         {
+            Store.Initialize(ActiveUserId);
             Store.AddStateChangeListener(UpdateView);
         }
 
         #region Actions
+
+
+
 
 
 

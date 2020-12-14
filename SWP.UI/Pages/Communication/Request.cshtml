@@ -1,9 +1,5 @@
 ﻿@page
 @using SWP.UI.Components.PortalBlazorComponents.Requests
 @model SWP.UI.Pages.Communication.RequestModel
-@{
-}
 
-<p>Komponent:</p>
-<component type="typeof(RequestsPanel)" render-mode="Server" param-ActiveUserId="@(Model.ActiveUserId)" />
-
+<component type="typeof(RequestsMainPanel)" render-mode="Server" param-ActiveUserId="@(Model.ActiveUserId)" />

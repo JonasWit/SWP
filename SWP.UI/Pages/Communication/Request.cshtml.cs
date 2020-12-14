@@ -11,7 +11,7 @@ namespace SWP.UI.Pages.Communication
     {
         public string ActiveUserId { get; set; }
 
-        public void OnGet([FromServices] IHttpContextAccessor httpContextAccessor, string requestedAction = null)
+        public void OnGet([FromServices] IHttpContextAccessor httpContextAccessor)
         {
             ActiveUserId = httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
         }

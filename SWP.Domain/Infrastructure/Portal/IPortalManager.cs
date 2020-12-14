@@ -34,8 +34,8 @@ namespace SWP.Domain.Infrastructure.Portal
 
         Task<ClientRequest> GetRequestWithMessages(int requestId);
         Task<List<ClientRequest>> GetRequestsForClient(string userId);
-        Task<ClientRequest> CreateRequest(ClientRequest clientRequest);
-        Task<ClientRequestMessage> CreateRequestMessage(ClientRequestMessage clientRequestMessage, int reuqestId);
+        Task<int> CreateRequest(ClientRequest clientRequest);
+        Task<int> CreateRequestMessage(ClientRequestMessage clientRequestMessage, int reuqestId);
         Task<int> DeleteRequest(int id);
         Task<int> DeleteRequest(string userId);
 

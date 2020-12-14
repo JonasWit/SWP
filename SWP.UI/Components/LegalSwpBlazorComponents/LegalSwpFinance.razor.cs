@@ -57,20 +57,11 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
 
         private void ShowTooltip(ElementReference elementReference, TooltipOptions options = null) => TooltipService.Open(elementReference, options.Text, options);
 
-        public bool showFirstSection = false;
-        public void ShowHideFirstSection() => showFirstSection = !showFirstSection;
-
-        public bool showSecondSection = false;
-        public void ShowHideSecondSection() => showSecondSection = !showSecondSection;
-
         public bool infoBoxVisibleI = false;
         public void ShowHideInfoBoxI() => infoBoxVisibleI = !infoBoxVisibleI;
 
         public bool infoBoxVisibleII = false;
         public void ShowHideInfoBoxII() => infoBoxVisibleII = !infoBoxVisibleII;
-
-        public bool infoBoxVisibleIII = false;
-        public void ShowHideInfoBoxIII() => infoBoxVisibleIII = !infoBoxVisibleIII;
 
         #region Actions
 

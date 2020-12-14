@@ -65,6 +65,9 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
         public bool showContactsListVisible = false;
         public void ShowHideContactsList() => showContactsListVisible = !showContactsListVisible;
 
+        public bool clientListInfoVisible = false;
+        public void ShowHideClientI() => clientListInfoVisible = !clientListInfoVisible;
+
         #region Actions
 
         private void ContactSelected(object arg) => ActionDispatcher.Dispatch(new ContactSelectedAction { Arg = arg });

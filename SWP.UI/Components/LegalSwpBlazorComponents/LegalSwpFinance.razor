@@ -80,7 +80,20 @@ else
         </div>
 
         <div class="show-hide tab-section"><button class="show-hide-btn show-hide-btn-1"><span>Transakcje</span></button></div>
-        <div class="row-section">
+        <div class="row-section second">
+            <div class="help-box">
+                <i class="user-icon"><img src="/Images/icons8-cash-in-hand-36.png" /></i>
+
+                @if (infoBoxVisibleII)
+                {
+                    <div class="info-text">
+                        <p>Zarządzaj listą swoich klientów. Użyj guzika "Dodaj Nowego Klienta",aby uzupełnić listę kontaktów.</p>
+                        <p>Edytuj oraz usuwaj Klientów z głównej listy. Tekst do zupełnienia.</p>
+                    </div>
+                }
+                <button class="info" @onclick="ShowHideInfoBoxII"></button>
+            </div>
+
             <RadzenGrid @ref="FinanceStore.GetState().CashMovementGrid" AllowFiltering="true" AllowPaging="true" PageSize="10" AllowSorting="true" RowSelect="@(args => ActiveCashMovementChange(args))"
                         Data="@(FinanceStore.GetState().SelectedMonth == null ? FinanceStore.GetState().CashMovements : FinanceStore.GetState().CashMovements.Where(x => x.EventDate.Month == FinanceStore.GetState().SelectedMonth.Month && x.EventDate.Year == FinanceStore.GetState().SelectedMonth.Year))" TItem="CashMovementViewModel" RowUpdate="@OnUpdateCashMovementRow">
                 <Columns>
@@ -157,23 +170,22 @@ else
                     </RadzenGridColumn>
                 </Columns>
             </RadzenGrid>
-        </div>
+            <div class="details">
+                @if (FinanceStore.GetState().SelectedCashMovement != null)
+                {
+                    <p><strong>Nazwa: </strong>@FinanceStore.GetState().SelectedCashMovement.Name</p>
+                    <p><strong>Kwota: </strong>@FinanceStore.GetState().SelectedCashMovement.Amount</p>
+                    <p><strong>Stworzono przez: </strong>@FinanceStore.GetState().SelectedCashMovement.CreatedBy</p>
+                    <p><strong>Data utworzenia: </strong>@FinanceStore.GetState().SelectedCashMovement.Created</p>
+                    <p><strong>Zmieniono przez: </strong>@FinanceStore.GetState().SelectedCashMovement.UpdatedBy</p>
+                    <p><strong>Ostatnia zmiana: </strong>@FinanceStore.GetState().SelectedCashMovement.Updated</p>
 
-        <div class="details">
-            @if (FinanceStore.GetState().SelectedCashMovement != null)
-            {
-                <p><strong>Nazwa: </strong>@FinanceStore.GetState().SelectedCashMovement.Name</p>
-                <p><strong>Kwota: </strong>@FinanceStore.GetState().SelectedCashMovement.Amount</p>
-                <p><strong>Stworzono przez: </strong>@FinanceStore.GetState().SelectedCashMovement.CreatedBy</p>
-                <p><strong>Data utworzenia: </strong>@FinanceStore.GetState().SelectedCashMovement.Created</p>
-                <p><strong>Zmieniono przez: </strong>@FinanceStore.GetState().SelectedCashMovement.UpdatedBy</p>
-                <p><strong>Ostatnia zmiana: </strong>@FinanceStore.GetState().SelectedCashMovement.Updated</p>
-
-            }
-            else
-            {
-                <p><strong>Wybierz rozliczenie, żeby poznać detale!</strong></p>
-            }
+                }
+                else
+                {
+                    <p><strong>Wybierz rozliczenie, żeby poznać detale!</strong></p>
+                }
+            </div>
         </div>
     </div>
 }

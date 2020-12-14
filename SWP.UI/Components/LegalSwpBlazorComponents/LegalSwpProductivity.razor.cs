@@ -64,15 +64,6 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
 
         private void ShowTooltip(ElementReference elementReference, TooltipOptions options = null) => TooltipService.Open(elementReference, options.Text, options);
 
-        public bool showFirstSection = false;
-        public void ShowHideFirstSection() => showFirstSection = !showFirstSection;
-
-        public bool showSecondSection = false;
-        public void ShowHideSecondSection() => showSecondSection = !showSecondSection;
-
-        public bool showThirdSection = false;
-        public void ShowHideThirdSection() => showThirdSection = !showThirdSection;
-
         public bool infoBoxVisibleI = false;
         public void ShowHideInfoBoxI() => infoBoxVisibleI = !infoBoxVisibleI;
 
@@ -81,6 +72,8 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
 
         public bool infoBoxVisibleIII = false;
         public void ShowHideInfoBoxIII() => infoBoxVisibleIII = !infoBoxVisibleIII;
+
+
 
         public async Task GenerateTimesheetReport(LegalTimeSheetReport.ReportData reportData)
         {

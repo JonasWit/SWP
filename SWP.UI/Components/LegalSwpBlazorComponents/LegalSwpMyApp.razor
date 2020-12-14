@@ -67,10 +67,43 @@ else
                 </div>
             }
 
+            @if (MyAppStore.GetState().ProductivityData.Count != 0)
+            {<div class="app-chart app-balance ">
+                    <i><img src="/Images/icons8-timesheet-36.png" /></i>
+                    @if (MainStore.GetState().ActiveClient == null)
+                    {
+                        <h3>Czas poświęcony Klientom</h3>
+                        <h5>@MyAppStore.GetState().TotalTimeSpent</h5>
+                    }
+                    else
+                    {
+                        <h3>Całkowity Czas na Kliencie: @MainStore.GetState().ActiveClient.Name</h3>
+                        <h5>@MyAppStore.GetState().TotalTimeSpent</h5>
+                    }
+
+                </div>
+            }
+            @if (MyAppStore.GetState().ProductivityData.Count != 0)
+            {<div class="app-chart app-balance ">
+                    <i><img src="/Images/icons8-paycheque-36.png" /></i>
+                    @if (MainStore.GetState().ActiveClient == null)
+                    {
+                        <h3>Zysk na godzinę</h3>
+                        <h5>@MyAppStore.GetState().TotalTimeSpent</h5>
+                    }
+                    else
+                    {
+                        <h3>Zysk na godzinę: @MainStore.GetState().ActiveClient.Name</h3>
+                        <h5>@MyAppStore.GetState().TotalTimeSpent</h5>
+                    }
+
+                </div>
+            }
+
         </div>
 
         @if (MyAppStore.GetState().ProductivityData.Count != 0)
-        {<div class="flex-my-app">
+        {<div class="flex-app">
                 <div class="app-chart app-line-chart app-line-chart-1 grid">
                     <h3>Bilans w PLN</h3>
                     <RadzenChart ColorScheme="@MyAppStore.GetState().ColorScheme">
@@ -110,7 +143,8 @@ else
                     </RadzenChart>
 
                 </div>
-
+            </div>
+            <div class="flex-app">
                 <div class="app-chart app-line-chart app-line-chart-3 grid">
                     <h3>Czas poświęcony Klientom</h3>
                     <RadzenChart ColorScheme="@MyAppStore.GetState().ColorScheme">

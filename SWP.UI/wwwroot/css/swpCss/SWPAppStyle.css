@@ -298,152 +298,6 @@ ul, li {
     padding: 0px 5px 5px 0px;
 }
 
-
-
-@media screen and (min-width: 768px) {
-    .top-toggle {
-        display: none;
-    }
-
-    #top-menu {
-        display: flex;
-        flex-direction: row;
-        margin-left: 7rem;
-    }
-
-
-
-
-    .logout {
-        margin-top: 20px;
-        padding-left: 140%;
-    }
-}
-
-
-@media screen and (max-width : 768px) {
-    .sidebar {
-        bottom: -1%;
-        width: 100%;
-        height: 5rem;
-        overflow-x: auto;
-        overflow-y: hidden;
-    }
-
-    .logo {
-        display: none;
-    }
-
-    .navigation {
-        padding: 0;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-    }
-
-    .nav-item {
-        padding: 0px;
-    }
-
-        .nav-item:hover {
-            color: var(--active-color);
-            padding: 0px;
-        }
-
-    .nav-link {
-        justify-content: center;
-    }
-
-        .nav-link img {
-            height: 28px;
-        }
-
-    .active {
-        background: #4FAEFC;
-        height: 100%;
-    }
-
-    .text-hidden {
-        display: none;
-    }
-
-    .main-window {
-        margin: 0;
-    }
-
-    #main-window {
-        grid-column: 1/span 3;
-        grid-row: 2 / span 8;
-        padding: 25px;
-        margin-top: 1rem;
-        margin-bottom: 10rem;
-    }
-
-
-    .top-menu {
-        height: 100%;
-    }
-
-    #top-menu {
-        margin-left: 0px;
-        display: flex;
-        flex-direction: column;
-    }
-
-    .user {
-        word-wrap: break-word;
-    }
-
-
-    .top-toggle {
-        display: block;
-        border: none;
-        outline: none !important;
-        width: 100%;
-        height: 2vh;
-        margin-top: 0;
-        background-color: rgba(0,0,0,1);
-    }
-
-    .line {
-        display: block;
-        width: 15px;
-        background-color: rgb(255,255,255);
-        height: 3px;
-        margin: auto;
-    }
-
-    .top-menu-add {
-        height: 100%;
-    }
-
-    .top-items {
-        display: flex;
-        flex-direction: column;
-        margin: auto;
-    }
-
-        .top-items li {
-            padding: 0;
-        }
-
-    .nav-item-hidden {
-        display: none;
-    }
-
-    .drop-list p {
-        text-align: center;
-        padding: 0;
-    }
-
-
-    .input p {
-        text-align: center;
-    }
-}
-
-
-
 .list-row {
     display: flex;
     flex-direction: column;
@@ -705,32 +559,21 @@ button {
 
 .flex-my-app {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     grid-template-rows: repeat(auto);
     column-gap: 20px;
 }
 
-@media only screen and (max-width: 960px) {
-    .flex-my-app {
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-    }
+.flex-app {
+    display: flex;
+    flex-direction: row;
+    
+
 }
 
-
-.app-pie-chart {
-    grid-column: 2;
-    grid-row: 1 /span 2;
-    display: block;
-    background: rgb(255,255,255);
-    border: 1px solid #b3e0ff;
-    margin: 8px;
-    padding: 10px;
-    width: auto;
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+.app-line-chart {
+    width: 520px;
 }
-
 
 .app-balance {
     display: block;
@@ -745,14 +588,14 @@ button {
 .app-chart h3 {
     padding: 5px;
     text-align: center;
-    font-size: 20px;
+    font-size: 15px;
     font-weight: bold;
 }
 
 .app-chart h5 {
     padding: 5px;
     text-align: center;
-    font-size: 20px;
+    font-size: 15px;
     font-weight: bold;
 }
 
@@ -766,26 +609,6 @@ button {
     padding: 10px;
     height: auto;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-}
-
-.app-line-chart-1 {
-    grid-column: 1 / span 2;
-    grid-row: 3;
-}
-
-.app-line-chart-2 {
-    grid-column: 1 /span 2;
-    grid-row: 4;
-}
-
-.app-line-chart-3 {
-    grid-column: 1 / span 2;
-    grid-row: 5;
-}
-
-.app-line-chart-4 {
-    grid-column: 1 / span 2;
-    grid-row: 6;
 }
 
 .list-row {
@@ -831,3 +654,161 @@ button {
         padding-right: 20px;
         
     }
+
+@media screen and (min-width: 768px) {
+    .top-toggle {
+        display: none;
+    }
+
+    #top-menu {
+        display: flex;
+        flex-direction: row;
+        margin-left: 7rem;
+    }
+
+
+
+
+    .logout {
+        margin-top: 20px;
+        padding-left: 140%;
+    }
+}
+
+
+@media screen and (max-width : 768px) {
+    .sidebar {
+        bottom: -1%;
+        width: 100%;
+        height: 5rem;
+        overflow-x: auto;
+        overflow-y: hidden;
+    }
+
+    .logo {
+        display: none;
+    }
+
+    .navigation {
+        padding: 0;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .nav-item {
+        padding: 0px;
+    }
+
+        .nav-item:hover {
+            color: var(--active-color);
+            padding: 0px;
+        }
+
+    .nav-link {
+        justify-content: center;
+    }
+
+        .nav-link img {
+            height: 28px;
+        }
+
+    .active {
+        background: #4FAEFC;
+        height: 100%;
+    }
+
+    .text-hidden {
+        display: none;
+    }
+
+    .main-window {
+        margin: 0;
+    }
+
+    #main-window {
+        grid-column: 1/span 3;
+        grid-row: 2 / span 8;
+        padding: 25px;
+        margin-top: 1rem;
+        margin-bottom: 10rem;
+    }
+
+
+    .top-menu {
+        height: 100%;
+    }
+
+    #top-menu {
+        margin-left: 0px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .user {
+        word-wrap: break-word;
+    }
+
+
+    .top-toggle {
+        display: block;
+        border: none;
+        outline: none !important;
+        width: 100%;
+        height: 2vh;
+        margin-top: 0;
+        background-color: rgba(0,0,0,1);
+    }
+
+    .line {
+        display: block;
+        width: 15px;
+        background-color: rgb(255,255,255);
+        height: 3px;
+        margin: auto;
+    }
+
+    .top-menu-add {
+        height: 100%;
+    }
+
+    .top-items {
+        display: flex;
+        flex-direction: column;
+        margin: auto;
+    }
+
+        .top-items li {
+            padding: 0;
+        }
+
+    .nav-item-hidden {
+        display: none;
+    }
+
+    .drop-list p {
+        text-align: center;
+        padding: 0;
+    }
+
+
+    .input p {
+        text-align: center;
+    }
+
+    .flex-my-app {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+    }
+
+    .flex-app {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+    }
+
+    .app-line-chart {
+        width: auto;
+    }
+}

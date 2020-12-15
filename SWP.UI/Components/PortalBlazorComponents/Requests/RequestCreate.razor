@@ -2,7 +2,7 @@
     <RadzenSteps>
         <Steps>
             <RadzenStepsItem Text="Wybierz Aplikcaję, której dotyczy zgłoszenie">
-                <RadzenRadioButtonList @bind-Value="Store.GetState().StepsConfig.ChosenApplicationReason" TValue="int" Orientation="Orientation.Vertical" Change="((args) => SelectedRequestApplicationChange(args))">
+                <RadzenRadioButtonList @bind-Value="Store.GetState().StepsConfig.ChosenApplication" TValue="int" Orientation="Orientation.Vertical" Change="((args) => SelectedRequestApplicationChange(args))">
                     <Items>
                         @foreach (var item in Enum.GetValues(typeof(ApplicationType)).Cast<ApplicationType>().ToList())
                         {
@@ -14,9 +14,20 @@
             <RadzenStepsItem Text="Wybierz Temat">
                 <RadzenRadioButtonList @bind-Value="Store.GetState().StepsConfig.ChosenRequestReason" TValue="int" Orientation="Orientation.Vertical" Change="((args) => SelectedRequestSubjectChange(args))">
                     <Items>
-                        @foreach (var item in Enum.GetValues(typeof(RequestReason)).Cast<RequestReason>().ToList())
+                        @switch ((ApplicationType)Store.GetState().StepsConfig.ChosenApplication)
                         {
-                            <RadzenRadioButtonListItem Text="@RequestViewModel.RequestReasonsDisplay()[(int)item]" Value="(int)item" />
+                            case ApplicationType.LegalSwp:
+                                @foreach (var item in Enum.GetValues(typeof(RequestReason)).Cast<RequestReason>().ToList())
+                                {
+                                    <RadzenRadioButtonListItem Text="@RequestViewModel.RequestReasonsDisplay()[(int)item]" Value="(int)item" />
+                                }
+                                break;
+                            case ApplicationType.NoApp:
+                                <RadzenRadioButtonListItem Text="@RequestViewModel.RequestReasonsDisplay()[(int)RequestReason.Query]" Value="(int)RequestReason.Query" />
+                                <RadzenRadioButtonListItem Text="@RequestViewModel.RequestReasonsDisplay()[(int)RequestReason.TechnicalIssue]" Value="(int)RequestReason.TechnicalIssue" />
+                                break;
+                            default:
+                                break;
                         }
                     </Items>
                 </RadzenRadioButtonList>
@@ -25,10 +36,10 @@
                 <RadzenTemplateForm Data="@Store.GetState().NewRequest" Submit="@((CreateRequest.Request args) => SubmitNewRequest(args))">
                     <RadzenFieldset Text="Nowe Zgłoszenie">
 
+                        <h2>Aplikacja: @($"{RequestViewModel.ApplicationssDisplay()[Store.GetState().StepsConfig.ChosenApplication]}")</h2>
                         <h2>Temat : @($"{RequestViewModel.RequestReasonsDisplay()[Store.GetState().StepsConfig.ChosenRequestReason]}")</h2>
-                        <h2>Aplikacja: @($"{RequestViewModel.ApplicationssDisplay()[Store.GetState().StepsConfig.ChosenApplicationReason]}")</h2>
 
-                        @if (!Store.GetState().UserLicenses.Any(x => x.Application == ((ApplicationType)Store.GetState().StepsConfig.ChosenApplicationReason).ToString()) && Store.GetState().StepsConfig.NewRequestReason == RequestReason.PurchaseLicense)
+                        @if (!Store.GetState().UserLicenses.Any(x => x.Application == ((ApplicationType)Store.GetState().StepsConfig.ChosenApplication).ToString()) && Store.GetState().StepsConfig.NewRequestReason == RequestReason.PurchaseLicense)
                         {
                             var licenseEnd = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddMonths(2).AddDays(-1);
 
@@ -42,9 +53,9 @@
                             <RadzenCompareValidator Value=@(licenseEnd) Component="LicenseEndDate" Popup=false Style="position: absolute" Operator=@compareOperator Text="@($"Proszę wybrać datę póżniejszą niż {licenseEnd.ToString("dd.MM.yyyy")}")" />
                         }
 
-                        @if (Store.GetState().UserLicenses.Any(x => x.Application == ((ApplicationType)Store.GetState().StepsConfig.ChosenApplicationReason).ToString()) && (Store.GetState().StepsConfig.NewRequestReason == RequestReason.ExtendLicense || Store.GetState().StepsConfig.NewRequestReason == RequestReason.ModifyLicense))
+                        @if (Store.GetState().UserLicenses.Any(x => x.Application == ((ApplicationType)Store.GetState().StepsConfig.ChosenApplication).ToString()) && (Store.GetState().StepsConfig.NewRequestReason == RequestReason.ExtendLicense || Store.GetState().StepsConfig.NewRequestReason == RequestReason.ModifyLicense))
                         {
-                            var license = Store.GetState().UserLicenses.FirstOrDefault(x => x.Application == ((ApplicationType)Store.GetState().StepsConfig.ChosenApplicationReason).ToString());
+                            var license = Store.GetState().UserLicenses.FirstOrDefault(x => x.Application == ((ApplicationType)Store.GetState().StepsConfig.ChosenApplication).ToString());
                             var licenseEnd = license.ValidTo.AddMonths(2).AddDays(-1);
 
                             <p>Przedłużenie Licencji</p>

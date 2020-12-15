@@ -25,7 +25,7 @@ namespace SWP.UI.BlazorApp.PortalApp.Stores.Requests.RequestsPanelCreate
         public class StepsConfiguration
         {
             public int ChosenRequestReason { get; set; } = 0;
-            public int ChosenApplicationReason { get; set; } = 0;
+            public int ChosenApplication { get; set; } = 0;
             public RequestReason NewRequestReason { get; set; } = RequestReason.Query;
             public ApplicationType NewRequestApplication { get; set; } = ApplicationType.NoApp;
             public string Message { get; set; }
@@ -91,7 +91,7 @@ namespace SWP.UI.BlazorApp.PortalApp.Stores.Requests.RequestsPanelCreate
         {
             if (arg is null) return;
 
-            _state.StepsConfig.ChosenApplicationReason = (int)arg;
+            _state.StepsConfig.ChosenApplication = (int)arg;
             _state.StepsConfig.NewRequestApplication = (ApplicationType)(int)arg;
         }
 

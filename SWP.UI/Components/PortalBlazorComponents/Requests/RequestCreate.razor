@@ -17,10 +17,19 @@
                         @switch ((ApplicationType)Store.GetState().StepsConfig.ChosenApplication)
                         {
                             case ApplicationType.LegalSwp:
-                                @foreach (var item in Enum.GetValues(typeof(RequestReason)).Cast<RequestReason>().ToList())
+                                @if (!Store.GetState().UserLicenses.Any(x => x.Application == ((ApplicationType)Store.GetState().StepsConfig.ChosenApplication).ToString()))
                                 {
-                                    <RadzenRadioButtonListItem Text="@RequestViewModel.RequestReasonsDisplay()[(int)item]" Value="(int)item" />
+                                    <RadzenRadioButtonListItem Text="@RequestViewModel.RequestReasonsDisplay()[(int)RequestReason.PurchaseLicense]" Value="(int)RequestReason.PurchaseLicense" />
                                 }
+                                else
+                                {
+                                    <RadzenRadioButtonListItem Text="@RequestViewModel.RequestReasonsDisplay()[(int)RequestReason.ExtendLicense]" Value="(int)RequestReason.ExtendLicense" />
+                                    <RadzenRadioButtonListItem Text="@RequestViewModel.RequestReasonsDisplay()[(int)RequestReason.ModifyLicense]" Value="(int)RequestReason.ModifyLicense" />
+                                }
+
+                                <RadzenRadioButtonListItem Text="@RequestViewModel.RequestReasonsDisplay()[(int)RequestReason.Query]" Value="(int)RequestReason.Query" />
+                                <RadzenRadioButtonListItem Text="@RequestViewModel.RequestReasonsDisplay()[(int)RequestReason.RequestDemo]" Value="(int)RequestReason.RequestDemo" />
+                                <RadzenRadioButtonListItem Text="@RequestViewModel.RequestReasonsDisplay()[(int)RequestReason.TechnicalIssue]" Value="(int)RequestReason.TechnicalIssue" />
                                 break;
                             case ApplicationType.NoApp:
                                 <RadzenRadioButtonListItem Text="@RequestViewModel.RequestReasonsDisplay()[(int)RequestReason.Query]" Value="(int)RequestReason.Query" />

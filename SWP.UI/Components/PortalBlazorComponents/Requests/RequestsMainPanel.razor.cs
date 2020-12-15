@@ -33,7 +33,7 @@ namespace SWP.UI.Components.PortalBlazorComponents.Requests
 
         #region Actions
 
-
+        private void ReuqestSelected(int id) { }
 
 
 

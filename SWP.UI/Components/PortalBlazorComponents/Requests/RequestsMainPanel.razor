@@ -21,19 +21,21 @@
             }
         </div>
         <div class="col-md-3">
-            <p>Lista z boku</p>
-            <RadzenDataList WrapItems="true" AllowPaging="true" Data="@Store.GetState().Requests" TItem="RequestViewModel" Style="height:500px;">
-                <Template Context="request">
-                    <RadzenCard Style="width:300px;">
-                        <div class="row">
-                            <p>@($"Utworzono: {@request.Created.ToString("yyyy.MM.dd HH:mm")}")</p>
-                            <p>@($"Ostatnia zmiana: {@request.Updated.ToString("yyyy.MM.dd HH:mm")}")</p>
-                            <p>@($"Temat: {request.DisplaySubject}")</p>
-                            <p>@($"Status: {request.DisplayStatus}")</p>
-                        </div>
-                    </RadzenCard>
-                </Template>
-            </RadzenDataList>
+            <RadzenCard Style="height:600px;">
+                <p>Lista z boku</p>
+                <RadzenDataList WrapItems="true" AllowPaging="true" Data="@Store.GetState().Requests" TItem="RequestViewModel" PageSize="5">
+                    <Template Context="request">
+                        <RadzenCard Style="width:300px;">
+                            <div class="row">
+                                <p>@($"Utworzono: {@request.Created.ToString("yyyy.MM.dd HH:mm")}")</p>
+                                <p>@($"Ostatnia zmiana: {@request.Updated.ToString("yyyy.MM.dd HH:mm")}")</p>
+                                <p>@($"Temat: {request.DisplaySubject}")</p>
+                                <p>@($"Status: {request.DisplayStatus}")</p>
+                            </div>
+                        </RadzenCard>
+                    </Template>
+                </RadzenDataList>
+            </RadzenCard>
         </div>
     </div>
 </CascadingValue>

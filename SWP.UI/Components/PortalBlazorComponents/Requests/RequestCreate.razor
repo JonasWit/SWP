@@ -1,16 +1,6 @@
 ﻿<div>
     <RadzenSteps>
         <Steps>
-            <RadzenStepsItem Text="Wybierz Temat">
-                <RadzenRadioButtonList @bind-Value="Store.GetState().StepsConfig.ChosenRequestReason" TValue="int" Orientation="Orientation.Vertical" Change="((args) => SelectedRequestSubjectChange(args))">
-                    <Items>
-                        @foreach (var item in Enum.GetValues(typeof(RequestReason)).Cast<RequestReason>().ToList())
-                        {
-                            <RadzenRadioButtonListItem Text="@RequestViewModel.RequestReasonsDisplay()[(int)item]" Value="(int)item" />
-                        }
-                    </Items>
-                </RadzenRadioButtonList>
-            </RadzenStepsItem>
             <RadzenStepsItem Text="Wybierz Aplikcaję, której dotyczy zgłoszenie">
                 <RadzenRadioButtonList @bind-Value="Store.GetState().StepsConfig.ChosenApplicationReason" TValue="int" Orientation="Orientation.Vertical" Change="((args) => SelectedRequestApplicationChange(args))">
                     <Items>
@@ -21,45 +11,66 @@
                     </Items>
                 </RadzenRadioButtonList>
             </RadzenStepsItem>
+            <RadzenStepsItem Text="Wybierz Temat">
+                <RadzenRadioButtonList @bind-Value="Store.GetState().StepsConfig.ChosenRequestReason" TValue="int" Orientation="Orientation.Vertical" Change="((args) => SelectedRequestSubjectChange(args))">
+                    <Items>
+                        @foreach (var item in Enum.GetValues(typeof(RequestReason)).Cast<RequestReason>().ToList())
+                        {
+                            <RadzenRadioButtonListItem Text="@RequestViewModel.RequestReasonsDisplay()[(int)item]" Value="(int)item" />
+                        }
+                    </Items>
+                </RadzenRadioButtonList>
+            </RadzenStepsItem>
             <RadzenStepsItem Text="Szczegóły Zgłoszenia">
                 <RadzenTemplateForm Data="@Store.GetState().NewRequest" Submit="@((CreateRequest.Request args) => SubmitNewRequest(args))">
                     <RadzenFieldset Text="Nowe Zgłoszenie">
 
-                        @if (!Store.GetState().UserLicenses.Any(x => x.Application == ((ApplicationType)Store.GetState().StepsConfig.ChosenApplicationReason).ToString()) &&
-                        Store.GetState().StepsConfig.NewRequestReason == RequestReason.PurchaseLicense)
+                        <h2>Temat : @($"{RequestViewModel.RequestReasonsDisplay()[Store.GetState().StepsConfig.ChosenRequestReason]}")</h2>
+                        <h2>Aplikacja: @($"{RequestViewModel.ApplicationssDisplay()[Store.GetState().StepsConfig.ChosenApplicationReason]}")</h2>
+
+                        @if (!Store.GetState().UserLicenses.Any(x => x.Application == ((ApplicationType)Store.GetState().StepsConfig.ChosenApplicationReason).ToString()) && Store.GetState().StepsConfig.NewRequestReason == RequestReason.PurchaseLicense)
                         {
-                            var licenseEnd = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddMonths(1).AddDays(-1);
+                            var licenseEnd = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddMonths(2).AddDays(-1);
 
                             <p>Minimalny okres ważności licencji to: @licenseEnd.ToString("dd.MM.yyyy")</p>
 
-                            <div class="label"><RadzenLabel Text="Koniec Licencji" /> </div>
+                            <div class="label">
+                                <RadzenLabel Text="Koniec Licencji" />
+                            </div>
                             <RadzenDatePicker @bind-Value="Store.GetState().NewRequest.EndDate" DateFormat="d" Name="LicenseEndDate" />
                             <RadzenRequiredValidator Component="LicenseEndDate" Text="Data nie może być pusta!" Popup="true" />
                             <RadzenCompareValidator Value=@(licenseEnd) Component="LicenseEndDate" Popup=false Style="position: absolute" Operator=@compareOperator Text="@($"Proszę wybrać datę póżniejszą niż {licenseEnd.ToString("dd.MM.yyyy")}")" />
                         }
 
-                        @if (Store.GetState().UserLicenses.Any(x => x.Application == ((ApplicationType)Store.GetState().StepsConfig.ChosenApplicationReason).ToString()) &&
-                        Store.GetState().StepsConfig.NewRequestReason == RequestReason.ModifyLicense)
+                        @if (Store.GetState().UserLicenses.Any(x => x.Application == ((ApplicationType)Store.GetState().StepsConfig.ChosenApplicationReason).ToString()) && (Store.GetState().StepsConfig.NewRequestReason == RequestReason.ExtendLicense || Store.GetState().StepsConfig.NewRequestReason == RequestReason.ModifyLicense))
                         {
-                            <p>Modyfikacja Licencji</p>
+                            var license = Store.GetState().UserLicenses.FirstOrDefault(x => x.Application == ((ApplicationType)Store.GetState().StepsConfig.ChosenApplicationReason).ToString());
+                            var licenseEnd = license.ValidTo.AddMonths(2).AddDays(-1);
 
-
-
-                        }
-
-                        @if (Store.GetState().UserLicenses.Any(x => x.Application == ((ApplicationType)Store.GetState().StepsConfig.ChosenApplicationReason).ToString()) &&
-                        Store.GetState().StepsConfig.NewRequestReason == RequestReason.ExtendLicense)
-                        {
                             <p>Przedłużenie Licencji</p>
+                            <p>Obecja licencja jest ważna do: @($"{license.ValidTo.ToString("dd.MM.yyyy")}")</p>
 
+                            if (license.RelatedUsers > Store.GetState().NewRequest.RelatedUsers)
+                            {
+                                Store.SetRelatedUsersNumber(license.RelatedUsers);
+                            }
 
+                            <div class="label">
+                                <RadzenLabel Text="Koniec Licencji" />
+                            </div>
+                            <RadzenDatePicker @bind-Value="Store.GetState().NewRequest.EndDate" DateFormat="d" Name="LicenseEndDate" />
+                            <RadzenCompareValidator Value=@(licenseEnd) Component="LicenseEndDate" Popup=false Style="position: absolute" Operator=@compareOperator Text="@($"Proszę wybrać datę póżniejszą niż {licenseEnd.ToString("dd.MM.yyyy")}")" />
+
+                            <p>Zmiana liczby powiązanych użytkowników</p>
+                            <RadzenNumeric TValue="int" @bind-Value="Store.GetState().NewRequest.RelatedUsers" Min="@license.RelatedUsers" Name="RelatedUsers" />
+                            <RadzenNumericRangeValidator Component="RelatedUsers" Min="@license.RelatedUsers" Text="Można tylko dodawać użytkowników powiązanych" Popup="false" Style="position: absolute" />
                         }
 
                         <div class="text">
                             <div class="label">
                                 <RadzenLabel Text="Wiadomość" />
                             </div>
-                            <RadzenTextArea Placeholder="Wiadomość - mozna tutaj templaty dac" @bind-Value="Store.GetState().NewRequest.RequestMessage.Message" Name="RequestMessage" />
+                            <RadzenTextArea Placeholder="Wiadomość..." @bind-Value="Store.GetState().NewRequest.RequestMessage.Message" Name="RequestMessage" />
                             <RadzenRequiredValidator Component="RequestMessage" Text="Proszę krótko opisać problem / pytanie." Popup="true" />
                         </div>
                         <RadzenButton ButtonType="ButtonType.Submit" Text="Wyślij" ButtonStyle="ButtonStyle.Secondary" />
@@ -70,12 +81,6 @@
                 {
                     case RequestReason.Query:
                         break;
-                    case RequestReason.PurchaseLicense:
-                        break;
-                    case RequestReason.ModifyLicense:
-                        break;
-                    case RequestReason.ExtendLicense:
-                        break;
                     case RequestReason.RequestDemo:
                         break;
                     case RequestReason.TechnicalIssue:
@@ -83,10 +88,6 @@
                     default:
                         break;
                 }
-
-                <p>Tutaj piszemy wiadomosc</p>
-                <RadzenTextArea @bind-Value="@Store.GetState().StepsConfig.Message" />
-
             </RadzenStepsItem>
         </Steps>
     </RadzenSteps>

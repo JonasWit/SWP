@@ -20,11 +20,14 @@ namespace SWP.UI.Components.PortalBlazorComponents.Requests
             Store.RemoveStateChangeListener(UpdateView);
         }
 
-        private void UpdateView() => StateHasChanged();
+        private void UpdateView()
+        {
+            StateHasChanged();
+        }
 
         protected override async Task OnInitializedAsync()
         {
-            Store.Initialize(ActiveUserId);
+            await Store.Initialize(ActiveUserId);
             Store.AddStateChangeListener(UpdateView);
         }
 

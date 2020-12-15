@@ -1,9 +1,11 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Radzen;
 using SWP.Application.PortalCustomers.LicenseManagement;
 using SWP.Application.PortalCustomers.RequestsManagement;
 using SWP.Domain.Enums;
 using SWP.Domain.Models.Portal;
+using SWP.UI.BlazorApp.PortalApp.Stores.Requests.RequestsPanel;
 using SWP.UI.BlazorApp.PortalApp.Stores.Requests.RequestsPanelCreate.Actions;
 using SWP.UI.Components.PortalBlazorComponents.Requests.ViewModels;
 using System;
@@ -15,6 +17,7 @@ namespace SWP.UI.BlazorApp.PortalApp.Stores.Requests.RequestsPanelCreate
 {
     public class RequestCreateState
     {
+        public string ActiveUserId { get; set; }
         public StepsConfiguration StepsConfig { get; set; } = new StepsConfiguration();
         public CreateRequest.Request NewRequest { get; set; } = new CreateRequest.Request();
         public List<UserLicense> UserLicenses { get; set; } = new List<UserLicense>();
@@ -33,6 +36,7 @@ namespace SWP.UI.BlazorApp.PortalApp.Stores.Requests.RequestsPanelCreate
     public class RequestCreateStore : StoreBase<RequestCreateState>
     {
         private readonly ILogger<RequestCreateStore> _logger;
+        public RequestsMainPanelStore MainStore => _serviceProvider.GetRequiredService<RequestsMainPanelStore>();
 
         public RequestCreateStore(
             IServiceProvider serviceProvider,
@@ -43,28 +47,15 @@ namespace SWP.UI.BlazorApp.PortalApp.Stores.Requests.RequestsPanelCreate
             _logger = logger;
         }
 
+        public void SetRelatedUsersNumber(int number) => _state.NewRequest.RelatedUsers = number;
+
         public async Task Initialize(string userId)
         {
             using var scope = _serviceProvider.CreateScope();
             var getLicense = scope.ServiceProvider.GetRequiredService<GetLicense>();
 
+            _state.ActiveUserId = userId;
             _state.UserLicenses = getLicense.GetAll(userId);
-        } 
-
-        private void SelectedRequestReasonChange(object arg)
-        {
-            if (arg is null) return;
-
-            _state.StepsConfig.ChosenRequestReason = (int)arg;
-            _state.StepsConfig.NewRequestReason = (RequestReason)(int)arg;
-        }
-
-        private void SelectedRequestApplicationChange(object arg)
-        {
-            if (arg is null) return;
-
-            _state.StepsConfig.ChosenApplicationReason = (int)arg;
-            _state.StepsConfig.NewRequestApplication = (ApplicationType)(int)arg;
         }
 
         protected override async void HandleActions(IAction action)
@@ -88,29 +79,56 @@ namespace SWP.UI.BlazorApp.PortalApp.Stores.Requests.RequestsPanelCreate
             }
         }
 
+        private void SelectedRequestReasonChange(object arg)
+        {
+            if (arg is null) return;
+
+            _state.StepsConfig.ChosenRequestReason = (int)arg;
+            _state.StepsConfig.NewRequestReason = (RequestReason)(int)arg;
+        }
+
+        private void SelectedRequestApplicationChange(object arg)
+        {
+            if (arg is null) return;
+
+            _state.StepsConfig.ChosenApplicationReason = (int)arg;
+            _state.StepsConfig.NewRequestApplication = (ApplicationType)(int)arg;
+        }
+
         private async Task CreateNewRequest(CreateRequest.Request request)
         {
-            //try
-            //{
-            //    using var scope = _serviceProvider.CreateScope();
-            //    var createClientJob = scope.ServiceProvider.GetRequiredService<CreateClientJob>();
+            try
+            {
+                using var scope = _serviceProvider.CreateScope();
+                var createRequest = scope.ServiceProvider.GetRequiredService<CreateRequest>();
 
-            //    request.ClientId = MainStore.GetState().ActiveClient.Id;
-            //    request.UpdatedBy = MainStore.GetState().User.UserName;
+                await createRequest.Create(new CreateRequest.Request
+                {
+                    Application = (int)_state.StepsConfig.NewRequestApplication,
+                    Created = DateTime.Now,
+                    CreatedBy = _state.ActiveUserId,
+                    EndDate = request.EndDate,
+                    Reason = (int)_state.StepsConfig.NewRequestReason,
+                    RelatedUsers = request.RelatedUsers,
+                    RequestMessage = new CreateRequest.RequestMessage 
+                    { 
+                        AuthorId = _state.ActiveUserId, 
+                        Created = DateTime.Now, 
+                        CreatedBy = _state.ActiveUserId, 
+                        Message = request.RequestMessage.Message 
+                    },
+                    RequestorId = _state.ActiveUserId,
+                    StartDate = request.StartDate,
+                    Status = (int)RequestStatus.WaitingForAnswer,
+                });
 
-            //    var result = await createClientJob.Create(request);
-            //    _state.NewClientJob = new CreateClientJob.Request();
-
-            //    _state.Jobs.Add(result);
-
-            //    await _state.ClientsJobsGrid.Reload();
-            //    ShowNotification(NotificationSeverity.Success, "Sukces!", $"Zadanie: {result.Name}, dla Klineta: {MainStore.GetState().ActiveClient.Name} zostało stworzone.", GeneralViewModel.NotificationDuration);
-            //    BroadcastStateChange();
-            //}
-            //catch (Exception ex)
-            //{
-            //    MainStore.ShowErrorPage(ex);
-            //}
+                MainStore.RefreshSore();
+                MainStore.SetActiveComponent(RequestsMainPanelState.InnerComponents.Info);
+            }
+            catch (Exception ex)
+            {
+                //MainStore.ShowErrorPage(ex);
+            }
         }
 
         public override void CleanUpStore()

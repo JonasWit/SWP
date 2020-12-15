@@ -243,7 +243,7 @@ namespace SWP.DataBase.Managers
 
         public Task<int> CreateRequestMessage(ClientRequestMessage message, int reuqestId)
         {
-            var parent = _context.ClientRequests.FirstOrDefault(x => x.Id == reuqestId);
+            var parent = _context.ClientRequests.Include(x => x.Messages).FirstOrDefault(x => x.Id == reuqestId);
             parent.Messages.Add(message);
             return _context.SaveChangesAsync();
         }

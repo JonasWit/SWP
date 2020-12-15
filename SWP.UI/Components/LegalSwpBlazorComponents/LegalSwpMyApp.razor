@@ -19,20 +19,6 @@ else
             </div>
         </div>
 
-        <RadzenButton Text="TEST!" Click="MainStore.ThrowTestException"></RadzenButton>
-
-        @if (MyAppStore.GetState().SelectedUser != null && MainStore.GetState().User.RootClient && MainStore.GetState().ActiveUserId != MyAppStore.GetState().SelectedUser.Id)
-        {
-            <h1>Mozna skasowac</h1>
-            <RadzenButton Text="Usuń powiązanie!" Click="RemoveRelation"></RadzenButton>
-        }
-
-        @if (MainStore.GetState().User.RootClient)
-        {
-            <h1>Uwaga!</h1>
-            <RadzenButton Text=@($"Usuń wszystkie dane powiązane z profilem") Click="ConfirmRemoveAllData" />
-        }
-
         <div class="flex-my-app">
             @if (MyAppStore.GetState().ProductivityData.Count != 0)
             {
@@ -200,3 +186,19 @@ else
     }
 }
 
+
+<RadzenButton Text="TEST!" Click="MainStore.ThrowTestException"></RadzenButton>
+
+@if (MyAppStore.GetState().SelectedUser != null && MainStore.GetState().User.RootClient && MainStore.GetState().ActiveUserId != MyAppStore.GetState().SelectedUser.Id)
+{
+    <h1>Mozna skasowac</h1>
+    <RadzenButton Text="Usuń powiązanie!" Click="RemoveRelation"></RadzenButton>
+}
+<div class="app-chart">
+    @if (MainStore.GetState().User.RootClient)
+    {
+        <h1>Uwaga!</h1>
+        <RadzenButton Text=@($"Usuń wszystkie dane powiązane z profilem") Click="ConfirmRemoveAllData" />
+    }
+
+</div>

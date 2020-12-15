@@ -38,6 +38,9 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
             CalendarStore.Initialize();
         }
 
+        public bool addClientformVisible = false;
+        public void ShowHideClientFormI() => addClientformVisible = !addClientformVisible;
+
         #region Actions
 
 

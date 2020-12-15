@@ -8,15 +8,26 @@
 }
 else
 {
-    <div class="list-row">
-        <div class="list-row">
-            <i><img src="/Images/icons8-calendar-12-36.png" /></i>
-        </div>
-        <div class="list-row">
-            <button @onclick="RefreshCalendarData" class="refresher @(CalendarStore.Loading ? "spin" : "")"><img src="Images/icons8-synchronize-40.png" /></button>
-
-        </div>
+<div>
+    @*<div class="list-row">
+        <i><img src="/Images/icons8-calendar-12-36.png" /></i>
+    </div>*@
+    <div class="help-box">
+        <i class="user-icon"><img src="/Images/icons8-calendar-12-36.png" /></i>
+        @if (addClientformVisible)
+        {
+            <div class="info-text">
+                <p>Zarządzaj listą swoich klientów. Użyj guzika "Dodaj Nowego Klienta",aby uzupełnić listę kontaktów.</p>
+                <p>Edytuj oraz usuwaj Klientów z głównej listy. Tekst do zupełnienia.</p>
+            </div>
+        }
+        <button class="info" @onclick="ShowHideClientFormI"></button>
     </div>
+    @*<div class="list-row">
+        <button @onclick="RefreshCalendarData" class="refresher @(CalendarStore.Loading ? "spin" : "")"><img src="Images/icons8-synchronize-40.png" /></button>
+
+    </div>*@
+</div>
     
     <div class="calendar-main">
         <div>

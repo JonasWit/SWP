@@ -15,8 +15,6 @@ namespace SWP.UI.Components.PortalBlazorComponents.Requests
 {
     public partial class RequestCreate : IDisposable
     {
-        [CascadingParameter]
-        public string ActiveUserId { get; set; }
         [Inject]
         public RequestCreateStore Store { get; set; }
         [Inject]
@@ -26,6 +24,7 @@ namespace SWP.UI.Components.PortalBlazorComponents.Requests
 
         public void Dispose()
         {
+            MainStore.RemoveStateChangeListener(UpdateView);
             Store.RemoveStateChangeListener(UpdateView);
         }
 
@@ -34,9 +33,10 @@ namespace SWP.UI.Components.PortalBlazorComponents.Requests
             StateHasChanged();
         }
  
-        protected override async Task OnInitializedAsync()
+        protected override void OnInitialized()
         {
-            await Store.Initialize(ActiveUserId);
+            Store.Initialize();
+            MainStore.AddStateChangeListener(UpdateView);
             Store.AddStateChangeListener(UpdateView);
         }
 
@@ -49,8 +49,6 @@ namespace SWP.UI.Components.PortalBlazorComponents.Requests
         public void SelectedRequestApplicationChange(int? arg) => ActionDispatcher.Dispatch(new SelectedRequestApplicationChangeAction { Arg = arg });
 
         public void SubmitNewRequest(CreateRequest.Request arg) => ActionDispatcher.Dispatch(new CreateNewRequestAction { Arg = arg });
-
-
 
 
 

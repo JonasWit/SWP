@@ -90,7 +90,7 @@ namespace SWP.UI.BlazorApp
 
         public virtual void RefreshSore()
         {
-            ShowNotification(NotificationSeverity.Success, "Sukces!", "Panel Odświeżony", 1500);
+
         }
     }
 }

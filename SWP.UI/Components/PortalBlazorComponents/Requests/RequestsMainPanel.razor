@@ -2,43 +2,45 @@
 
 @* Główny Komponent *@
 
-<CascadingValue Value="@ActiveUserId">
-    <div class="row">
-        <div class="col-md-9">
-            @switch (Store.GetState().CurrentComponent)
-            {
-                case RequestsMainPanelState.InnerComponents.Info:
-                    <Info></Info>
-                    break;
-                case RequestsMainPanelState.InnerComponents.Create:
-                    <RequestCreate></RequestCreate>
-                    break;
-                case RequestsMainPanelState.InnerComponents.Details:
-                    <RequestDetails></RequestDetails>
-                    break;
-                default:
-                    break;
-            }
-        </div>
-        <div class="col-md-3">
-            <RadzenCard Style="height:600px;">
-                <p>Lista z boku</p>
-                    <RadzenDataList WrapItems="true" AllowPaging="true" Data="@Store.GetState().Requests" TItem="RequestViewModel" PageSize="5">
-                        <Template Context="request">
-                            <RadzenCard Style="width:300px;">
-                                <div class="row" @onclick="@(() => ReuqestSelected(request.Id))">
-                                    <p>@($"Utworzono: {@request.Created.ToString("yyyy.MM.dd HH:mm")}")</p>
-                                    <p>@($"Ostatnia zmiana: {@request.Updated.ToString("yyyy.MM.dd HH:mm")}")</p>
-                                    <p>@($"Temat: {request.DisplaySubject}")</p>
-                                    <p>@($"Status: {request.DisplayStatus}")</p>
-                                </div>
-                            </RadzenCard>
-                        </Template>
-                    </RadzenDataList>
-            </RadzenCard>
-        </div>
+<RadzenButton ButtonStyle="ButtonStyle.Secondary" Click="ActivateCreatePanel">Nowe Zgłoszenie</RadzenButton>
+<RadzenButton ButtonStyle="ButtonStyle.Secondary" Click="ActivateHelpPanel">Pomoc</RadzenButton>
+
+<div class="row">
+    <div class="col-md-9">
+        @switch (Store.GetState().CurrentComponent)
+        {
+            case RequestsMainPanelState.InnerComponents.Info:
+                <Info />
+                break;
+            case RequestsMainPanelState.InnerComponents.Create:
+                <RequestCreate />
+                break;
+            case RequestsMainPanelState.InnerComponents.Details:
+                <RequestDetails />
+                break;
+            default:
+                break;
+        }
     </div>
-</CascadingValue>
+    <div class="col-md-3">
+        <RadzenCard Style="height:600px;">
+            <p>Lista z boku</p>
+            <RadzenDataList WrapItems="true" AllowPaging="true" Data="@Store.GetState().Requests" TItem="RequestViewModel" PageSize="5">
+                <Template Context="request">
+                    <RadzenCard Style="width:300px;">
+                        <div class="row" @onclick="@(() => ReuqestSelected(request.Id))">
+                            <p>@($"Utworzono: {@request.Created.ToString("yyyy.MM.dd HH:mm")}")</p>
+                            <p>@($"Ostatnia zmiana: {@request.Updated.ToString("yyyy.MM.dd HH:mm")}")</p>
+                            <p>@($"Temat: {request.DisplaySubject}")</p>
+                            <p>@($"Status: {request.DisplayStatus}")</p>
+                        </div>
+                    </RadzenCard>
+                </Template>
+            </RadzenDataList>
+        </RadzenCard>
+    </div>
+</div>
+
 
 
 

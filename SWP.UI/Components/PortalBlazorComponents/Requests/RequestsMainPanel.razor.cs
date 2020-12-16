@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using SWP.UI.BlazorApp;
+using SWP.UI.BlazorApp.PortalApp.Stores.Requests.RequestsMainPanel.Actions;
 using SWP.UI.BlazorApp.PortalApp.Stores.Requests.RequestsPanel;
 using System;
 using System.Threading.Tasks;
@@ -33,7 +34,11 @@ namespace SWP.UI.Components.PortalBlazorComponents.Requests
 
         #region Actions
 
-        private void ReuqestSelected(int id) { }
+        private void ReuqestSelected(int id) => ActionDispatcher.Dispatch(new RequestSelectedAction { Arg = id });
+
+        private void ActivateCreatePanel() { }
+
+        private void ActivateHelpPanel() { }
 
 
 

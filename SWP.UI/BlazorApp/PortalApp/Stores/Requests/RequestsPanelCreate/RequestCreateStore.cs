@@ -17,7 +17,6 @@ namespace SWP.UI.BlazorApp.PortalApp.Stores.Requests.RequestsPanelCreate
 {
     public class RequestCreateState
     {
-        public string ActiveUserId { get; set; }
         public StepsConfiguration StepsConfig { get; set; } = new StepsConfiguration();
         public CreateRequest.Request NewRequest { get; set; } = new CreateRequest.Request();
         public List<UserLicense> UserLicenses { get; set; } = new List<UserLicense>();
@@ -49,13 +48,12 @@ namespace SWP.UI.BlazorApp.PortalApp.Stores.Requests.RequestsPanelCreate
 
         public void SetRelatedUsersNumber(int number) => _state.NewRequest.RelatedUsers = number;
 
-        public async Task Initialize(string userId)
+        public void Initialize()
         {
             using var scope = _serviceProvider.CreateScope();
             var getLicense = scope.ServiceProvider.GetRequiredService<GetLicense>();
 
-            _state.ActiveUserId = userId;
-            _state.UserLicenses = getLicense.GetAll(userId);
+            _state.UserLicenses = getLicense.GetAll(MainStore.GetState().ActiveUserId);
         }
 
         protected override async void HandleActions(IAction action)
@@ -106,18 +104,18 @@ namespace SWP.UI.BlazorApp.PortalApp.Stores.Requests.RequestsPanelCreate
                 {
                     Application = (int)_state.StepsConfig.NewRequestApplication,
                     Created = DateTime.Now,
-                    CreatedBy = _state.ActiveUserId,
+                    CreatedBy = MainStore.GetState().ActiveUserId,
                     EndDate = request.EndDate,
                     Reason = (int)_state.StepsConfig.NewRequestReason,
                     RelatedUsers = request.RelatedUsers,
                     RequestMessage = new CreateRequest.RequestMessage 
                     { 
-                        AuthorId = _state.ActiveUserId, 
+                        AuthorId = MainStore.GetState().ActiveUserId, 
                         Created = DateTime.Now, 
-                        CreatedBy = _state.ActiveUserId, 
+                        CreatedBy = MainStore.GetState().ActiveUserId, 
                         Message = request.RequestMessage.Message 
                     },
-                    RequestorId = _state.ActiveUserId,
+                    RequestorId = MainStore.GetState().ActiveUserId,
                     StartDate = request.StartDate,
                     Status = (int)RequestStatus.WaitingForAnswer,
                 });

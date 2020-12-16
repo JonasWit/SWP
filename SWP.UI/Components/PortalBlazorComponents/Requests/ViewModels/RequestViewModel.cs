@@ -23,7 +23,7 @@ namespace SWP.UI.Components.PortalBlazorComponents.Requests.ViewModels
         public int RelatedUsers { get; set; }
         public string DisplaySubject { get; set; }
         public string DisplayStatus { get; set; }
-        public List<RequestMessageViewModel> Messages { get; set; }
+        public List<RequestMessageViewModel> Messages { get; set; } = new List<RequestMessageViewModel>();
 
         public static Dictionary<int, string> RequestReasonsDisplay()
         {

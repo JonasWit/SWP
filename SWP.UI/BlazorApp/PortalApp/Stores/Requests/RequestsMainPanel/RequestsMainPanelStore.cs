@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using SWP.Application.PortalCustomers.RequestsManagement;
+using SWP.Domain.Models.Portal.Communication;
 using SWP.UI.BlazorApp.PortalApp.Stores.Requests.RequestsMainPanel.Actions;
 using SWP.UI.Components.PortalBlazorComponents.Requests.ViewModels;
 using System;
@@ -14,20 +15,15 @@ namespace SWP.UI.BlazorApp.PortalApp.Stores.Requests.RequestsPanel
     {
         public InnerComponents CurrentComponent { get; set; } = InnerComponents.Info;
         public string ActiveUserId { get; set; }
+        public int SelectedRequestId { get; set; }
         public List<RequestViewModel> Requests { get; set; } = new List<RequestViewModel>();
-
-
-        public class PresetTitle
-        {
-            public int MyProperty { get; set; }
-
-        }
 
         public enum InnerComponents
         { 
             Info = 0,
             Create = 1,
-            Details = 2   
+            Details = 2,
+            Error = 3
         }
     }
 
@@ -35,7 +31,6 @@ namespace SWP.UI.BlazorApp.PortalApp.Stores.Requests.RequestsPanel
     public class RequestsMainPanelStore : StoreBase<RequestsMainPanelState>
     {
         private readonly ILogger<RequestsMainPanelState> _logger;
-
 
         public RequestsMainPanelStore(
             IServiceProvider serviceProvider,
@@ -49,7 +44,7 @@ namespace SWP.UI.BlazorApp.PortalApp.Stores.Requests.RequestsPanel
         public async Task Initialize(string userId)
         {
             _state.ActiveUserId = userId;
-            await GetRequests();
+            GetRequests();
         }
 
         protected override async void HandleActions(IAction action)
@@ -57,20 +52,31 @@ namespace SWP.UI.BlazorApp.PortalApp.Stores.Requests.RequestsPanel
             switch (action.Name)
             {
                 case GetAllRequestsWithoutDataAction.GetAllRequestsWithoutData:
-                    await GetRequests();
+                    GetRequests();
+                    break;
+                case RequestSelectedAction.RequestSelected:
+                    var requestSelectedAction = (RequestSelectedAction)action;
+                    ShowRequestDetails(requestSelectedAction.Arg);
                     break;
                 default:
                     break;
             }
         }
 
-        private async Task GetRequests()
+        private void GetRequests()
         {
             using var scope = _serviceProvider.CreateScope();
             var getRequest = scope.ServiceProvider.GetRequiredService<GetRequest>();
 
-            var list = await getRequest.GetRequestsForClient(_state.ActiveUserId);
+            var list = getRequest.GetRequestsForClient(_state.ActiveUserId);
             _state.Requests = list.Select(x => (RequestViewModel)x).ToList();
+        }
+
+        private void ShowRequestDetails(int id)
+        {
+            _state.SelectedRequestId = id;
+            _state.CurrentComponent = RequestsMainPanelState.InnerComponents.Details;
+            BroadcastStateChange();
         }
 
         public void SetActiveComponent(RequestsMainPanelState.InnerComponents component)
@@ -85,9 +91,9 @@ namespace SWP.UI.BlazorApp.PortalApp.Stores.Requests.RequestsPanel
 
         }
 
-        public override async void RefreshSore()
+        public override void RefreshSore()
         {
-            await GetRequests();
+            GetRequests();
             BroadcastStateChange();
         }
     }

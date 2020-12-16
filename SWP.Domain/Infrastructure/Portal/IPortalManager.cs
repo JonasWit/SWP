@@ -32,8 +32,8 @@ namespace SWP.Domain.Infrastructure.Portal
         Task<string> GetUserProfileByID(string id);
         Task<IList<IdentityUser>> GetUsersForProfile(Claim claim);
 
-        Task<ClientRequest> GetRequestWithMessages(int requestId);
-        Task<List<ClientRequest>> GetRequestsForClient(string userId);
+        ClientRequest GetRequestWithMessages(int requestId);
+        List<ClientRequest> GetRequestsForClient(string userId);
         Task<int> CreateRequest(ClientRequest clientRequest);
         Task<int> CreateRequestMessage(ClientRequestMessage clientRequestMessage, int reuqestId);
         Task<int> DeleteRequest(int id);

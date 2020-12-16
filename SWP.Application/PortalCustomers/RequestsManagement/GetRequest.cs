@@ -15,10 +15,10 @@ namespace SWP.Application.PortalCustomers.RequestsManagement
         {
         }
 
-        public Task<ClientRequest> GetRequestWithMessages(int requestId) => 
+        public ClientRequest GetRequestWithMessages(int requestId) => 
             _portalManager.GetRequestWithMessages(requestId);
 
-        public Task<List<ClientRequest>> GetRequestsForClient(string userId) => 
+        public List<ClientRequest> GetRequestsForClient(string userId) => 
             _portalManager.GetRequestsForClient(userId);
     }
 }

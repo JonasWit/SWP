@@ -229,11 +229,11 @@ namespace SWP.DataBase.Managers
 
         #region Requests Management
 
-        public Task<ClientRequest> GetRequestWithMessages(int requestId) =>
-            _context.ClientRequests.Include(x => x.Messages).FirstOrDefaultAsync(x => x.Id == requestId);
+        public ClientRequest GetRequestWithMessages(int requestId) =>
+            _context.ClientRequests.Include(x => x.Messages).FirstOrDefault(x => x.Id == requestId);
  
-        public Task<List<ClientRequest>> GetRequestsForClient(string userId) => 
-            _context.ClientRequests.Where(x => x.RequestorId == userId).ToListAsync();
+        public List<ClientRequest> GetRequestsForClient(string userId) => 
+            _context.ClientRequests.Where(x => x.RequestorId == userId).ToList();
 
         public Task<int> CreateRequest(ClientRequest clientRequest)
         {

@@ -36,9 +36,9 @@ namespace SWP.UI.Components.PortalBlazorComponents.Requests
 
         private void ReuqestSelected(int id) => ActionDispatcher.Dispatch(new RequestSelectedAction { Arg = id });
 
-        private void ActivateCreatePanel() { }
+        private void ActivateCreatePanel() => ActionDispatcher.Dispatch(new ActivateNewRequestPanelAction());
 
-        private void ActivateHelpPanel() { }
+        private void ActivateHelpPanel() => ActionDispatcher.Dispatch(new ActivateRequestInfoPanelAction());
 
 
 

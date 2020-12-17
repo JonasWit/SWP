@@ -47,12 +47,18 @@ namespace SWP.UI.BlazorApp.PortalApp.Stores.Requests.RequestsPanel
             GetRequests();
         }
 
-        protected override async void HandleActions(IAction action)
+        protected override void HandleActions(IAction action)
         {
             switch (action.Name)
             {
                 case GetAllRequestsWithoutDataAction.GetAllRequestsWithoutData:
                     GetRequests();
+                    break;
+                case ActivateNewRequestPanelAction.ActivateNewRequestPanel:
+                    SetActiveComponent(RequestsMainPanelState.InnerComponents.Create);
+                    break;
+                case ActivateRequestInfoPanelAction.ActivateRequestInfoPanel:
+                    SetActiveComponent(RequestsMainPanelState.InnerComponents.Info);
                     break;
                 case RequestSelectedAction.RequestSelected:
                     var requestSelectedAction = (RequestSelectedAction)action;

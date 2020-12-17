@@ -3,3 +3,17 @@
 
 <p>Request id: @Store.GetState().ActiveRequest.Id</p>
 
+<RadzenCard Style="height:600px;">
+    <p>Historia Komunikacji</p>
+    <RadzenDataList WrapItems="true" AllowPaging="true" Data="@Store.GetState().ActiveRequest.Messages" TItem="RequestMessageViewModel" PageSize="5">
+        <Template Context="request">
+            <RadzenCard Style="width:300px;">
+                <div class="row">
+                    <p>@($"Data: {@request.Created.ToString("yyyy.MM.dd HH:mm")}")</p>
+                    <p>@($"Wiadomość: {request.Message}")</p>
+                    <p>@($"Autor: {request.AuthorId}")</p>
+                </div>
+            </RadzenCard>
+        </Template>
+    </RadzenDataList>
+</RadzenCard>

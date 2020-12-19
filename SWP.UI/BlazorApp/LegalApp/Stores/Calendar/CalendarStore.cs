@@ -53,8 +53,6 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Calendar
 
         private void RefreshCalendarData()
         {
-            EnableLoading("Wczytywanie...");
-
             try
             {
                 using var scope = _serviceProvider.CreateScope();
@@ -70,11 +68,9 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Calendar
                 }
 
                 UpdateRemindersData();
-                DisableLoading();
             }
             catch (Exception ex)
             {
-                DisableLoading();
                 MainStore.ShowErrorPage(ex);
             }
         }

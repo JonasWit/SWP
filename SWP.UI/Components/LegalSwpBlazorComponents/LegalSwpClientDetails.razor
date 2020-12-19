@@ -16,10 +16,10 @@ else
 
                     @if (contactsListInfoVisible)
                     {
-                        <div class="info-text">
-                            <p>Zarządzaj listą swoich klientów. Użyj guzika "Dodaj Nowego Klienta",aby uzupełnić listę kontaktów.</p>
-                            <p>Edytuj oraz usuwaj Klientów z głównej listy. Tekst do zupełnienia.</p>
-                        </div>
+                <div class="info-text">
+                    <p>Zarządzaj listą swoich kontaktów.</p>
+                    <p>Uzupełnij wymagane pola, a następnie użyj guzika "Zapisz Kontakt", aby dodać Osobę Kontaktową do listy poniżej.</p>
+                </div>
                     }
                     <button class="info" @onclick="ShowHideContactsI"></button>
 
@@ -91,8 +91,10 @@ else
             @if (clientListInfoVisible)
             {
                 <div class="info-text">
-                    <p>Zarządzaj listą swoich klientów. Użyj guzika "Dodaj Nowego Klienta",aby uzupełnić listę kontaktów.</p>
-                    <p>Edytuj oraz usuwaj Klientów z głównej listy. Tekst do zupełnienia.</p>
+                    <p>
+                        Użyj guzika 'Edytuj', aby zmienić lub aktualizować dane kontaktowe.
+                        Możesz również usunąć kontakt całkowicie klikając na guzik 'Usuń'.
+                    </p>
                 </div>
             }
             <button class="info" @onclick="ShowHideClientI"></button>

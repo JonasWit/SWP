@@ -677,7 +677,8 @@ button {
 
 
 @media screen and (max-width : 768px) {
-    .sidebar {
+
+     .sidebar {
         bottom: -1%;
         width: 100%;
         height: 5rem;
@@ -725,7 +726,6 @@ button {
     .main-window {
         margin: 0;
         width: 100%;
-        
     }
 
     #main-window {
@@ -739,10 +739,8 @@ button {
 
 
     .top-menu {
-        
         height: 100%;
         width: 100%;
-
     }
 
     #top-menu {
@@ -784,7 +782,7 @@ button {
     .top-items {
         display: flex;
         flex-direction: column;
-        align-items:flex-start;
+        align-items: flex-start;
         margin: auto;
         padding-bottom: 5px;
     }
@@ -831,6 +829,8 @@ button {
         animation-fill-mode: forwards;
     }
 
+  
+
     @keyframes popUpAnimation {
         0% {
             opacity: 0;
@@ -840,7 +840,5 @@ button {
             opacity: 1;
         }
     }
-
-  
-
 }
+

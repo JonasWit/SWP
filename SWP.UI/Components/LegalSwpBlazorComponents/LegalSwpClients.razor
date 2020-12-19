@@ -7,7 +7,7 @@
 }
 else
 {
-        <div class="flex-container-main">
+    <div class="flex-container-main">
 
         <div class="show-hide tab-section"><button class="show-hide-btn show-hide-btn-1"><span>Dodaj Klienta</span></button></div>
         <div class="row-section">
@@ -18,8 +18,8 @@ else
                         @if (addClientformVisible)
                         {
                             <div class="info-text">
-                                <p>Zarządzaj listą swoich klientów. Użyj guzika "Dodaj Nowego Klienta",aby uzupełnić listę kontaktów.</p>
-                                <p>Edytuj oraz usuwaj Klientów z głównej listy. Tekst do zupełnienia.</p>
+                                <p>Zarządzaj listą swoich klientów.</p>
+                                <p>Uzupełnij wymagane pola, a następnie użyj guzika "Dodaj Nowego Klienta", aby dodać Klienta do listy poniżej.</p>
                             </div>
                         }
                         <button class="info" @onclick="ShowHideClientFormI"></button>
@@ -31,7 +31,7 @@ else
                             </div>
                             <RadzenTextArea Placeholder="Nazwa..." @bind-Value="ClientsStore.GetState().NewClient.Name" style="@Gvm.FormInputBoxWidth" Name="Nazwa" />
                             <RadzenRequiredValidator Component="Nazwa" Text="Nazwa nie może być pusta!" style="@Gvm.FormInputBoxWidth" />
-                            <div><RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Nazwa" Style="position: absolute"/></div>
+                            <div><RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Nazwa" Style="position: absolute" /></div>
                         </div>
                         <div class="text">
                             <div class="label">
@@ -77,8 +77,8 @@ else
                 @if (clientListInfoVisible)
                 {
                     <div class="info-text">
-                        <p>Zarządzaj listą swoich klientów. Użyj guzika "Dodaj Nowego Klienta",aby uzupełnić listę kontaktów.</p>
-                        <p>Edytuj oraz usuwaj Klientów z głównej listy. Tekst do zupełnienia.</p>
+                        <p>Użyj guzika 'Edytuj', aby zmienić lub aktualizować dane klienta.
+                        Możesz również dodać Klienta do Archiwum klikając na guzik 'Archiwizuj'.</p>
                     </div>
                 }
                 <button class="info" @onclick="ShowHideClientI"></button>

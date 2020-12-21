@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using SWP.Application.PortalCustomers.RequestsManagement;
 using SWP.Domain.Models.Portal.Communication;
 using SWP.UI.BlazorApp.PortalApp.Stores.Requests.RequestsPanel;
+using SWP.UI.BlazorApp.PortalApp.Stores.Requests.RequestsPanelDetails.Actions;
 using SWP.UI.Components.PortalBlazorComponents.Requests.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,8 @@ namespace SWP.UI.BlazorApp.PortalApp.Stores.Requests
     public class RequestsPanelDetailsState
     {
         public RequestViewModel ActiveRequest { get; set; } = new RequestViewModel();
+        public RequestMessageViewModel ActiveRequestMessage { get; set; }
+        public CreateRequest.RequestMessage NewRequestMessage { get; set; } = new CreateRequest.RequestMessage();
     }
 
     [UIScopedService]
@@ -44,13 +47,69 @@ namespace SWP.UI.BlazorApp.PortalApp.Stores.Requests
             return getRequest.GetRequestWithMessages(requestId);
         }
 
-        protected override void HandleActions(IAction action)
+        protected override async void HandleActions(IAction action)
         {
-            switch (action)
+            switch (action.Name)
             {
+                case RequestMessageSelectedAction.RequestMessageSelected:
+                    var requestMessageSelectedAction = (RequestMessageSelectedAction)action;
+                    ShowRequestMessageDetails(requestMessageSelectedAction.Arg);
+                    break;
+                case CreateNewRequestMessageAction.CreateNewRequestMessage:
+                    var createNewRequestMessageAction = (CreateNewRequestMessageAction)action;
+                    await CreateNewRequestMessage(createNewRequestMessageAction.Arg);
+                    break;
                 default:
                     break;
             }
+        }
+
+
+        private async Task CreateNewRequestMessage(CreateRequest.RequestMessage request)
+        {
+            try
+            {
+                using var scope = _serviceProvider.CreateScope();
+                var createRequest = scope.ServiceProvider.GetRequiredService<CreateRequest>();
+
+                //await createRequest.Create(new CreateRequest.Request
+                //{
+                //    Application = (int)_state.StepsConfig.NewRequestApplication,
+                //    Created = DateTime.Now,
+                //    CreatedBy = MainStore.GetState().ActiveUserId,
+                //    EndDate = request.EndDate,
+                //    Reason = (int)_state.StepsConfig.NewRequestReason,
+                //    RelatedUsers = request.RelatedUsers,
+                //    RequestMessage = new CreateRequest.RequestMessage
+                //    {
+                //        AuthorId = MainStore.GetState().ActiveUserId,
+                //        Created = DateTime.Now,
+                //        CreatedBy = MainStore.GetState().ActiveUserId,
+                //        Message = request.RequestMessage.Message
+                //    },
+                //    RequestorId = MainStore.GetState().ActiveUserId,
+                //    StartDate = request.StartDate,
+                //    Status = (int)RequestStatus.WaitingForAnswer,
+                //});
+
+                MainStore.RefreshSore();
+                MainStore.SetActiveComponent(RequestsMainPanelState.InnerComponents.Info);
+            }
+            catch (Exception ex)
+            {
+                //MainStore.ShowErrorPage(ex);
+            }
+        }
+
+
+
+
+
+
+        private void ShowRequestMessageDetails(int id)
+        {
+            _state.ActiveRequestMessage = _state.ActiveRequest.Messages.FirstOrDefault(x => x.Id == id);
+            BroadcastStateChange();
         }
 
         public override void CleanUpStore()

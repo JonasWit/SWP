@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Components;
+using SWP.Application.PortalCustomers.RequestsManagement;
 using SWP.UI.BlazorApp;
 using SWP.UI.BlazorApp.PortalApp.Stores.Requests;
 using SWP.UI.BlazorApp.PortalApp.Stores.Requests.RequestsPanel;
+using SWP.UI.BlazorApp.PortalApp.Stores.Requests.RequestsPanelDetails.Actions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,10 +41,9 @@ namespace SWP.UI.Components.PortalBlazorComponents.Requests
 
         #region Actions
 
+        private void MessageSelected(int id) => ActionDispatcher.Dispatch(new RequestMessageSelectedAction { Arg = id });
 
-
-
-
+        public void SubmitNewRequest(CreateRequest.RequestMessage arg) => ActionDispatcher.Dispatch(new CreateNewRequestMessageAction { Arg = arg });
 
 
         #endregion

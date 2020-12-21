@@ -5,11 +5,15 @@
 }
 else
 {
-    <h2>Coś poszło nie tak!</h2>
+    <div class="error-div">
+        <h2>Ooops...Coś poszło nie tak!</h2>
+        <p><i><img src="/Images/icons8-error-80.png" /></i></p>
 
-    <p>Odśwież aplikację klikając guzik poniżej</p>
+        <p>Odśwież aplikację klikając guzik poniżej</p>
 
-    <p>@ErrorStore.GetState().Exception.Message</p>
+        <p>Wystąpił błąd: @ErrorStore.GetState().Exception.Message</p>
 
-    <RadzenButton Click="MainStore.DismissErrorPage">Odśwież</RadzenButton>
+        <p><RadzenButton Click="MainStore.DismissErrorPage" ButtonStyle="ButtonStyle.Secondary" Style="width: 230px;">Odśwież</RadzenButton></p>
+    </div>
+
 }

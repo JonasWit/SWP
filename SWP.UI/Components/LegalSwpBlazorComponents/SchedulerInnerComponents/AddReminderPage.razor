@@ -1,7 +1,7 @@
 ﻿@using SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data
 
 <div class="popup-box">
-    <RadzenTemplateForm TItem="ReminderViewModel" Data="@model" Submit=@OnSubmit>
+    <RadzenTemplateForm TItem="ReminderViewModel" Data="@model" Submit=@OnSubmit Style="width: 100%;">
         <div class="popup">
             <div>
                 <strong> <RadzenLabel Text="Nazwa" Style="width: 100%; margin-bottom: 10px;" /></strong>
@@ -28,7 +28,7 @@
                 <strong> <RadzenLabel Text="Termin procesowy" Style="margin: auto; margin-bottom: 10px; " /></strong>
             </div>
             <div>
-                <RadzenCheckBox @bind-Value="@model.IsDeadline" TValue="bool" Style="margin-bottom: 10px; width: 100%; " />
+                <RadzenCheckBox @bind-Value="@model.IsDeadline" TValue="bool" Style="margin-bottom: 10px; width: 25px; " />
             </div>
             <div>
                 <strong><RadzenLabel Text="Start" Style="margin-bottom: 10px; width: 100%;" /></strong>
@@ -41,7 +41,7 @@
                 <strong><RadzenLabel Text="Koniec" Style="margin-bottom: 10px; width: 100%;" /></strong>
             </div>
             <div>
-                <RadzenDatePicker Name="End" @bind-Value="@model.End" ShowTime="true" Style="margin-bottom: 10px; auto; width: 100%; " />
+                <RadzenDatePicker Name="End" @bind-Value="@model.End" ShowTime="true" Style="margin-bottom: 10px; width: 100%; " />
                 <RadzenRequiredValidator Component="End" Text="End is required" />
             </div>
         </div>

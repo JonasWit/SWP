@@ -13,10 +13,11 @@ else
                                                                                FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" FilterOperator="StringFilterOperator.StartsWith" AllowFiltering="true" @bind-Value="RelatedUsersFilterValue"
                                                                                Data="@MainStore.GetState().User.RelatedUsers" TextProperty="UserName" ValueProperty="Id" Style="width: 200px; padding: 0" Change="@(args => SelectedUserChange(args))" />
             </div>
+
             <div class="list-row">
                 <button @onclick="MyAppStore.RefreshSore" class="refresher @(MyAppStore.Loading ? "spin" : "")"><img src="Images/icons8-synchronize-40.png" /></button>
-
             </div>
+
         </div>
 
         <div class="flex-my-app">
@@ -187,18 +188,20 @@ else
 }
 
 
-<RadzenButton Text="TEST!" Click="MainStore.ThrowTestException"></RadzenButton>
+@*<RadzenButton Text="TEST!" Click="MainStore.ThrowTestException"></RadzenButton>*@
+<div class="list-row">
+    @if (MyAppStore.GetState().SelectedUser != null && MainStore.GetState().User.RootClient && MainStore.GetState().ActiveUserId != MyAppStore.GetState().SelectedUser.Id)
+    {
 
-@if (MyAppStore.GetState().SelectedUser != null && MainStore.GetState().User.RootClient && MainStore.GetState().ActiveUserId != MyAppStore.GetState().SelectedUser.Id)
-{
-    <h1>Mozna skasowac</h1>
-    <RadzenButton Text="Usuń powiązanie!" Click="RemoveRelation"></RadzenButton>
-}
-<div class="app-chart">
+        <h1>Mozna skasowac</h1>
+        <RadzenButton Text="Usuń powiązanie!" Click="RemoveRelation"></RadzenButton>
+    }
+
     @if (MainStore.GetState().User.RootClient)
     {
-        <h1>Uwaga!</h1>
-        <RadzenButton Text=@($"Usuń wszystkie dane powiązane z profilem") Click="ConfirmRemoveAllData" />
+        <p class="label">Usuń wszystkie dane powiązane z wybranym profilem</p>
+        <RadzenButton ButtonStyle="ButtonStyle.Secondary" Text=@($"Usuń") Click="ConfirmRemoveAllData" />
     }
+
 
 </div>

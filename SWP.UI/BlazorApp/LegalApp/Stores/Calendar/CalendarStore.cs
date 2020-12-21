@@ -101,7 +101,9 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Calendar
             using var scope = _serviceProvider.CreateScope();
             var getCase = scope.ServiceProvider.GetRequiredService<GetCase>();
 
-            ReminderViewModel result = await _dialogService.OpenAsync<EditReminderPage>($"Client: {getCase.GetCaseParentName(args.Data.CaseId)} Case: {getCase.GetCaseName(args.Data.CaseId)}", new Dictionary<string, object> { { "Reminder", args.Data } });
+            ReminderViewModel result = await _dialogService.OpenAsync<EditReminderPage>($"Client: " +
+                $"{getCase.GetCaseParentName(args.Data.CaseId)} Case: {getCase.GetCaseName(args.Data.CaseId)}", new Dictionary<string, object> { { "Reminder", args.Data } }, 
+                new DialogOptions() { Width = "450px", Height = "630px", Left = "calc(20%)", Top = "calc(25px)" });
 
             if (result != null)
             {

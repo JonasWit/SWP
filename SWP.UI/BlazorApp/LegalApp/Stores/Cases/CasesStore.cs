@@ -463,7 +463,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
 
                 ReminderViewModel result = await _dialogService.OpenAsync<AddReminderPage>("Dodaj Przypomnienie",
                     new Dictionary<string, object> { { "Start", args.Start }, { "End", args.End } },
-                    new DialogOptions() { Width = "500px", Height = "530px", Left = "calc(50% - 500px)", Top = "calc(50% - 265px)" });
+                    new DialogOptions() { Width = "450px", Height = "630px", Left = "calc(20%)", Top = "calc(25px)" });
 
                 if (result != null)
                 {
@@ -503,7 +503,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
 
                 ReminderViewModel result = await _dialogService.OpenAsync<EditReminderPage>($"Edytuj Przypomnienie dla Sprawy: {args.Data.ParentCaseName}",
                     new Dictionary<string, object> { { "Reminder", args.Data } },
-                    new DialogOptions() { Width = "500px", Height = "630px", Left = "calc(50% - 500px)", Top = "calc(50% - 265px)" });
+                    new DialogOptions() { Width = "450px", Height = "630px", Left = "calc(20%)", Top = "calc(25px)" });
 
                 if (result != null)
                 {

@@ -1,9 +1,9 @@
 ﻿<section>
     <RadzenCard>
-        <RadzenProgressBar Value="100" ShowValue="false" Mode="ProgressBarMode.Indeterminate" Style="margin-bottom: 20px" />
+        <RadzenProgressBar Value="100" ShowValue="false" Mode="ProgressBarMode.Indeterminate" Style="margin-bottom: 20px; width: 360px;" />
         @if (!string.IsNullOrEmpty(Message))
         {
-            <h1>@Message</h1>
+            <h1 style="text-align:center">@Message</h1>
         }
     </RadzenCard>
 </section>

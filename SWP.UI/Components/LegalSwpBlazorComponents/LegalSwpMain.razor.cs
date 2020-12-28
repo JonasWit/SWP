@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection;
 using SWP.UI.BlazorApp.LegalApp.Stores.Main;
 using System;
 using System.Threading.Tasks;
@@ -9,6 +11,10 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
     {
         [Inject]
         public MainStore MainStore { get; set; }
+        [Inject]
+        public IServiceProvider ServiceProvider { get; set; }
+        [Inject]
+        public NavigationManager NavigationManager { get; set; }
         [Parameter]
         public string ActiveUserId { get; set; }
 
@@ -18,8 +24,20 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
             MainStore.CleanUpStore();
         }
 
-        private void UpdateView() => StateHasChanged();
+        private async void UpdateView()
+        {
+            using var scope = ServiceProvider.CreateScope();
+            var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+            var user = await userManager.FindByIdAsync(ActiveUserId);
 
+            if (user.LockoutEnd is not null)
+            {
+                NavigationManager.NavigateTo(NavigationManager.BaseUri, true);
+            }
+
+            StateHasChanged();
+        }
+  
         protected override async Task OnInitializedAsync()
         {
             MainStore.EnableLoading("Wczytywanie...");

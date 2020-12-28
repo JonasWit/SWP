@@ -48,11 +48,11 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
                 await RealodUserData();
                 ReloadClientsDrop();
 
-                _logger.LogInformation(LogTags.LegalAppLogPrefix + "Legal Application accessed by user {userName}, with Profile {userProfile}", _state.ActiveUserId, _state.User.Profile);
+                _logger.LogInformation(LogTags.LegalAppLogPrefix + "Legal Application accessed by user {userName}, with Profile {userProfile}", _state.User.UserName, _state.User.Profile);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, LogTags.LegalAppErrorLogPrefix + "Legal Application thrown an exception during launch for user {userName}, with Profile {userProfile}", _state.ActiveUserId, _state.User.Profile);
+                _logger.LogError(ex, LogTags.LegalAppErrorLogPrefix + "Legal Application thrown an exception during launch for user {userName}, with Profile {userProfile}", _state.User.UserName, _state.User.Profile);
             }
         }
 

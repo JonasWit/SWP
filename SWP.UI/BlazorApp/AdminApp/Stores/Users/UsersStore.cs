@@ -479,16 +479,17 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Users
                     return;
                 }
 
-                var userIdentity = await UserManager.FindByIdAsync(_state.SelectedUser.Id);
+                var identityUser = await UserManager.FindByIdAsync(_state.SelectedUser.Id);
 
                 if (input)
                 {
                     if (_state.SelectedUser.LockoutEnd != null) return;
 
-                    var result = await UserManager.SetLockoutEndDateAsync(userIdentity, DateTime.Now.AddYears(+25));
+                    var result = await UserManager.SetLockoutEndDateAsync(identityUser, DateTime.Now.AddYears(+25));
 
                     if (result.Succeeded)
                     {
+                        await UserManager.UpdateSecurityStampAsync(identityUser);
                         ShowNotification(NotificationSeverity.Warning, "Done!", $"User: {_state.SelectedUser.Name} has been locked!", 5000);
                         await GetUsers();
                         await _state.UsersGrid.Reload();
@@ -498,7 +499,7 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Users
                 {
                     if (_state.SelectedUser.LockoutEnd == null) return;
 
-                    var result = await UserManager.SetLockoutEndDateAsync(userIdentity, null);
+                    var result = await UserManager.SetLockoutEndDateAsync(identityUser, null);
 
                     if (result.Succeeded)
                     {
@@ -544,7 +545,6 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Users
                 ShowErrorPage(ex);
             }
         }
-
 
         private async Task SubmitNewLicense(CreateLicense.Request request)
         {

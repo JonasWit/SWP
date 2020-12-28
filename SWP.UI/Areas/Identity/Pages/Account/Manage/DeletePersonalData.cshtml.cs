@@ -86,60 +86,68 @@ namespace SWP.UI.Areas.Identity.Pages.Account.Manage
                 }
             }
 
-            var profileClaim = claims.FirstOrDefault(x => x.Type == ClaimType.Profile.ToString());
-            var applicationClaims = claims.Where(x => x.Type == ClaimType.Application.ToString());
             var rootClientClaim = claims.FirstOrDefault(x => x.Type == ClaimType.Status.ToString() && x.Value == UserStatus.RootClient.ToString());
-            var usersWithTheSameProfile = await _userManager.GetUsersForClaimAsync(profileClaim) as List<IdentityUser>;
 
-            int rootClients = 0;
-            foreach (var userWithTheSameProfile in usersWithTheSameProfile)
-            {
-                var userClaims = await _userManager.GetClaimsAsync(userWithTheSameProfile) as List<Claim>;
-                if (userClaims.Any(y => y.Type == ClaimType.Status.ToString() && y.Value == UserStatus.RootClient.ToString()))
-                {
-                    rootClients++;
-                }
-            }
-
-            var claimsToRemove = new List<Claim>
-            {
-                profileClaim
-            };
-
-            claimsToRemove.AddRange(applicationClaims);
-
-            //todo: sign out all related users
             try
             {
-                if (rootClientClaim != null)
+                if (rootClientClaim is not null)
                 {
+                    var claimsToRemove = new List<Claim>();
+                    var profileClaim = claims.FirstOrDefault(x => x.Type == ClaimType.Profile.ToString());
+
+                    //Delete all licenses
+                    var applicationClaims = claims.Where(x => x.Type == ClaimType.Application.ToString());
+                    claimsToRemove.AddRange(applicationClaims);
+
                     //todo: skasowac też wszystkie requesty tego usera
+                    //Delete all Personal Data
                     await _deleteBillingRecord.DeleteBillingDetail(user.Id);
 
-                    //Delete Profile if this is the only Root Client for this Profile
-                    if (rootClients == 1)
+                    if (profileClaim is not null)
                     {
-                        //Delete all clients data connected to profile (Legal App)
-                        await _deleteClient.Delete(profileClaim.Value);
+                        var usersWithTheSameProfile = await _userManager.GetUsersForClaimAsync(profileClaim) as List<IdentityUser>;
 
-                        //Remove Profile form all related non-Root users
+                        int rootClients = 0;
                         foreach (var userWithTheSameProfile in usersWithTheSameProfile)
                         {
-                            if (userWithTheSameProfile.Id != user.Id)
+                            var userClaims = await _userManager.GetClaimsAsync(userWithTheSameProfile) as List<Claim>;
+                            if (userClaims.Any(y => y.Type == ClaimType.Status.ToString() && y.Value == UserStatus.RootClient.ToString()))
                             {
-                                var actionResult = await _userManager.RemoveClaimsAsync(userWithTheSameProfile, claimsToRemove);
-
-                                if (actionResult.Succeeded)
-                                {
-                                    _logger.LogInformation(LogTags.PortalIdentityLogPrefix + "Profile removed for user {userName} clean up initiated by {rootUserName}", userWithTheSameProfile.UserName, user.UserName);
-                                }
-                                else
-                                {
-                                    _logger.LogInformation(LogTags.PortalIdentityLogPrefix + "Failed to remove profile for user {userName}", userWithTheSameProfile.UserName, user.UserName);
-                                }
+                                rootClients++;
                             }
                         }
-                    }
+
+                        //Delete Profile if this is the only Root Client for this Profile
+                        if (rootClients == 1)
+                        {
+                            //Remove Profile form all related non-Root users
+                            foreach (var userWithTheSameProfile in usersWithTheSameProfile)
+                            {
+                                //Add Profile to the list of Claims to be removed
+                                claimsToRemove.Add(profileClaim);
+
+                                //Sign out relevent user
+                                await _userManager.UpdateSecurityStampAsync(userWithTheSameProfile);
+
+                                if (userWithTheSameProfile.Id != user.Id)
+                                {
+                                    var actionResult = await _userManager.RemoveClaimsAsync(userWithTheSameProfile, claimsToRemove);
+
+                                    if (actionResult.Succeeded)
+                                    {
+                                        _logger.LogInformation(LogTags.PortalIdentityLogPrefix + "Profile removed for user {userName} clean up initiated by {rootUserName}", userWithTheSameProfile.UserName, user.UserName);
+                                    }
+                                    else
+                                    {
+                                        _logger.LogInformation(LogTags.PortalIdentityLogPrefix + "Failed to remove profile for user {userName}", userWithTheSameProfile.UserName, user.UserName);
+                                    }
+                                }
+                            }
+
+                            //Delete all clients data connected to profile (Legal App)
+                            await _deleteClient.Delete(profileClaim.Value);
+                        }
+                    }              
                 }
             }
             catch (Exception ex)
@@ -158,7 +166,7 @@ namespace SWP.UI.Areas.Identity.Pages.Account.Manage
 
             await _signInManager.SignOutAsync();
 
-            _logger.LogInformation(LogTags.PortalIdentityLogPrefix + "User with ID '{UserId}' deleted themselves.", userId);
+            _logger.LogInformation(LogTags.PortalIdentityLogPrefix + "User '{UserName}' with ID '{UserId}' deleted themselves.", user.UserName, userId);
 
             return Redirect("~/");
         }

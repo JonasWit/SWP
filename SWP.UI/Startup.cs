@@ -48,6 +48,11 @@ namespace SWP.UI
             .AddErrorDescriber<PolishIdentityErrorDescriber>()
             .AddEntityFrameworkStores<DataBase.AppContext>();
 
+            services.Configure<SecurityStampValidatorOptions>(options =>
+            {
+                options.ValidationInterval = TimeSpan.FromSeconds(10);
+            });
+
             services.ConfigureApplicationCookie(options =>
             {
                 options.Cookie.Name = "swp_u_data";

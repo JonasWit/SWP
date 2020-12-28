@@ -31,7 +31,8 @@ ul {
 }
 
 .nav-item {
-    padding: 5px;
+    white-space: nowrap;
+    padding: 1rem;
 }
 
     .nav-item a {
@@ -45,11 +46,11 @@ ul {
             border-bottom: 2px solid;
         }
 
-.reg-item:hover {
-    color: #262626;
-    text-decoration: none;
-    border-bottom: 2px solid;
-}
+    .reg-item:hover {
+        color: #262626;
+        text-decoration: none;
+        border-bottom: 2px solid;
+    }
 
 
 .btn {
@@ -85,6 +86,13 @@ ul {
         color: #fff;
         text-decoration: none;
     }
+
+.right {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    padding-top: 1rem;
+}
 
 /*Showcase*/
 
@@ -139,7 +147,6 @@ ul {
 
 .offer {
     padding: 0.5rem;
-    
 }
 
 img:hover {
@@ -222,7 +229,22 @@ img:hover {
     height: 150px;
 }
 
-@media only screen and (max-width: 600px) {
+
+/*REGISTER*/
+.register {
+    padding-top: 1rem;
+}
+
+.center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+
+
+@media screen and (max-width: 768px) {
     .navigation {
         list-style: none;
         padding-top: 2rem;
@@ -231,26 +253,30 @@ img:hover {
         flex-direction: column;
     }
 
-    .nav-item a {
-        font-size: 0.85rem !important;
+    .nav-item {
+        padding: 0.2rem;
     }
+
+        .nav-item a {
+            font-size: 0.85rem !important;
+        }
 
     .home-cards {
         display: flex;
         flex-direction: column;
     }
+
+    .right {
+        display: flex;
+        flex-direction: column;
+    }
 }
 
-@media only screen and (min-width: 768px) {
+@media screen and (min-width: 768px) {
     .navigation {
         width: 100%;
         justify-content: flex-start;
     }
 
-    .right {
-        display: flex;
-        flex-direction: row;
-        justify-content: flex-end;
-        padding-top: 1rem;
-    }
+   
 }

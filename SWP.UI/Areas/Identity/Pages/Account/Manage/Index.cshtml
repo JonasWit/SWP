@@ -2,90 +2,90 @@
 @model IndexModel
 @inject IAuthorizationService authService
 @{
-    ViewData["Title"] = "Profil Użytkownika";
+    ViewData["Title"] = "";
     ViewData["ActivePage"] = ManageNavPages.Index;
 }
 
 <h4>@ViewData["Title"]</h4>
 <partial name="_StatusMessage" model="Model.StatusMessage" />
 <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-9">
         <form id="profile-form" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Username"></label>
+                <label class="pb-2" asp-for="Username"></label>
                 <input asp-for="Username" class="form-control" disabled />
             </div>
 
             <div class="form-group">
-                <label asp-for="Input.PhoneNumber"></label>
-                <input asp-for="Input.PhoneNumber" class="form-control" />
+                <label class="pb-2" asp-for="Input.PhoneNumber"></label>
+                <input  asp-for="Input.PhoneNumber" class="form-control" />
                 <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
             </div>
 
-            <p>Dane do Faktury</p>
+            <p><strong>Dane do Faktury</strong></p>
 
             <div class="form-group">
-                <label asp-for="Input.Name"></label>
+                <label class="pb-2" asp-for="Input.Name"></label>
                 <input asp-for="Input.Name" class="form-control" />
                 <span asp-validation-for="Input.Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Input.Surname"></label>
+                <label class="pb-2" asp-for="Input.Surname"></label>
                 <input asp-for="Input.Surname" class="form-control" />
                 <span asp-validation-for="Input.Surname" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Input.NIP"></label>
+                <label class="pb-2" asp-for="Input.NIP"></label>
                 <input asp-for="Input.NIP" class="form-control" />
                 <span asp-validation-for="Input.NIP" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Input.REGON"></label>
+                <label class="pb-2" asp-for="Input.REGON"></label>
                 <input asp-for="Input.REGON" class="form-control" />
                 <span asp-validation-for="Input.REGON" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Input.KRS"></label>
+                <label class="pb-2" asp-for="Input.KRS"></label>
                 <input asp-for="Input.KRS" class="form-control" />
                 <span asp-validation-for="Input.KRS" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Input.CompanyFullName"></label>
+                <label class="pb-2" asp-for="Input.CompanyFullName"></label>
                 <input asp-for="Input.CompanyFullName" class="form-control" />
                 <span asp-validation-for="Input.CompanyFullName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Input.Address"></label>
+                <label class="pb-2" asp-for="Input.Address"></label>
                 <input asp-for="Input.Address" class="form-control" />
                 <span asp-validation-for="Input.Address" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Input.PostCode"></label>
+                <label class="pb-2" asp-for="Input.PostCode"></label>
                 <input asp-for="Input.PostCode" class="form-control" />
                 <span asp-validation-for="Input.PostCode" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Input.AddressCorrespondence"></label>
+                <label class="pb-2" asp-for="Input.AddressCorrespondence"></label>
                 <input asp-for="Input.AddressCorrespondence" class="form-control" />
                 <span asp-validation-for="Input.AddressCorrespondence" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Input.City"></label>
+                <label class="pb-2" asp-for="Input.City"></label>
                 <input asp-for="Input.City" class="form-control" />
                 <span asp-validation-for="Input.City" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Input.Vivodership"></label>
+                <label class="pb-2" asp-for="Input.Vivodership"></label>
                 <input asp-for="Input.Vivodership" class="form-control" />
                 <span asp-validation-for="Input.Vivodership" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Input.Country"></label>
+                <label class="pb-2" asp-for="Input.Country"></label>
                 <input asp-for="Input.Country" class="form-control" />
                 <span asp-validation-for="Input.Country" class="text-danger"></span>
             </div>
-            <button id="update-profile-button" type="submit" class="btn btn-primary">Save</button>
+            <button id="update-profile-button" type="submit" class="btn">Zapisz</button>
         </form>
     </div>
 </div>

@@ -11,7 +11,6 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: #fff;
     color: #000;
-    line-height: 1.5;
 }
 
 a {
@@ -32,25 +31,25 @@ ul {
 
 .nav-item {
     white-space: nowrap;
-    padding: 1rem;
+    padding: 0.2rem 0.3rem 0rem 0.3rem;
 }
 
-    .nav-item a {
-        color: #000;
-        font-size: 14px;
-    }
+li {
+    /* color: #000;*/
+    font-size: 14px;
+}
 
-        .nav-item a:hover {
-            color: #262626;
-            text-decoration: none;
-            border-bottom: 2px solid;
-        }
+.nav-item a:hover {
+    color: #262626;
+    text-decoration: none;
+    border-bottom: 2px solid;
+}
 
-    .reg-item:hover {
-        color: #262626;
-        text-decoration: none;
-        border-bottom: 2px solid;
-    }
+.reg-item:hover {
+    color: #262626;
+    text-decoration: none;
+    border-bottom: 2px solid;
+}
 
 
 .btn {
@@ -65,6 +64,7 @@ ul {
 }
 
     .btn:hover {
+        background-color: #007bff;
         opacity: 0.9;
         color: #fff;
     }
@@ -91,11 +91,55 @@ ul {
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
-    padding-top: 1rem;
+    padding-top: 1.5rem;
+    float: right;
 }
 
-/*Showcase*/
+.rodo-links {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-top: 1.5rem;
+}
 
+    .rodo-links button {
+        width: 250px;
+    }
+
+.contact-btn {
+    width: 280px;
+    height: 100%;
+}
+
+.ui-button {
+
+    cursor: pointer;
+    display: inline-block;
+    border-radius: 8px !important;
+    padding: 5px 10px;
+    background: #262626 !important;
+    color: #fff !important;
+    font-size: 12px !important;
+    font-weight: bold;
+    outline: none !important;
+}
+
+    .ui-button:hover {
+        background-color: #007bff !important;
+        opacity: 0.9 !important;
+        color: #fff !important;
+        outline: none !important;
+        border: 0 !important;
+    }
+
+.r-btn {
+    padding-right: 0.6rem;
+
+}
+
+
+
+/*Showcase*/
 .showcase {
     width: 100%;
     height: 400px;
@@ -229,6 +273,14 @@ img:hover {
     height: 150px;
 }
 
+/*Account management*/
+
+.nav-link:hover {
+    color: #fff !important;
+    background-color: #007bff;
+    text-decoration: none;
+    border: none !important;
+}
 
 /*REGISTER*/
 .register {
@@ -269,6 +321,7 @@ img:hover {
     .right {
         display: flex;
         flex-direction: column;
+        float: none;
     }
 }
 
@@ -278,5 +331,7 @@ img:hover {
         justify-content: flex-start;
     }
 
-   
+    .nav-item a {
+        font-size: 0.85rem !important;
+    }
 }

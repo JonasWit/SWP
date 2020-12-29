@@ -16,13 +16,13 @@
 </head>
 <body>
     <div class="container-fluid">
-        <nav class="main-nav navbar navbar-expand-lg navbar-light sticky-top ml-5">
+        <nav class="main-nav navbar navbar-expand-lg navbar-light sticky-top m-auto pb-0">
             <a class="navbar-brand" asp-page="/Index">SWP</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
-                <ul class="navigation @*nav navbar-nav*@">
+                <ul class="navigation">
                     <li class="nav-item">
                         <environment names="Development">
                             <strong>Development Environment</strong>
@@ -48,13 +48,6 @@
                         </li>
                         <li class="nav-item">
                             <a asp-page="/Communication/Index">Kontakt</a>
-                        </li>
-                    }
-
-                    @if (((await authService.AuthorizeAsync(User, "RootClient")).Succeeded))
-                    {
-                        <li class="nav-item">
-                            <a asp-page="/MainAccountManagement/Index">Zarządzanie Kontem Głównym</a>
                         </li>
                     }
 

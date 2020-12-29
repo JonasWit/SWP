@@ -2,10 +2,13 @@
 
 @* Główny Komponent *@
 
-<RadzenButton ButtonStyle="ButtonStyle.Secondary" Click="ActivateHelpPanel">Panel Użytkownika</RadzenButton>
+@if (Store.GetState().CurrentComponent != RequestsMainPanelState.InnerComponents.Info)
+{
+    <RadzenButton ButtonStyle="ButtonStyle.Secondary" Click="ActivateHelpPanel"><img class="r-btn" src="/Images/icons8-double-left-24 (1).png" />Wróć</RadzenButton>
+}
 
-<div class="row">
-    <div class="col-md-9">
+<div class="row pt-4">
+    <div class="col-md-8">
         @switch (Store.GetState().CurrentComponent)
         {
             case RequestsMainPanelState.InnerComponents.Info:
@@ -21,8 +24,8 @@
                 break;
         }
     </div>
-    <div class="col-md-3">
-        <RadzenCard Style="height:600px;">
+    <div class="col-md-4">
+        <RadzenCard>
             <p>Lista z boku</p>
             <RadzenDataList WrapItems="true" AllowPaging="true" Data="@Store.GetState().Requests" TItem="RequestViewModel" PageSize="5">
                 <Template Context="request">

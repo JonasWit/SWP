@@ -54,7 +54,7 @@
 
                             <p>Minimalny okres ważności licencji to: @licenseEnd.ToString("dd.MM.yyyy")</p>
 
-                            <div class="label">
+                            <div class="label pb-2">
                                 <RadzenLabel Text="Koniec Licencji" />
                             </div>
                             <RadzenDatePicker @bind-Value="Store.GetState().NewRequest.EndDate" DateFormat="d" Name="LicenseEndDate" />
@@ -67,30 +67,29 @@
                             var license = Store.GetState().UserLicenses.FirstOrDefault(x => x.Application == ((ApplicationType)Store.GetState().StepsConfig.ChosenApplication).ToString());
                             var licenseEnd = license.ValidTo.AddMonths(2).AddDays(-1);
 
-                            <p>Przedłużenie Licencji</p>
-                            <p>Obecja licencja jest ważna do: @($"{license.ValidTo.ToString("dd.MM.yyyy")}")</p>
+                            <p class="pt-2">Obecna licencja jest ważna do: @($"{license.ValidTo.ToString("dd.MM.yyyy")}")</p>
 
                             if (license.RelatedUsers > Store.GetState().NewRequest.RelatedUsers)
                             {
                                 Store.SetRelatedUsersNumber(license.RelatedUsers);
                             }
 
-                            <div class="label">
-                                <RadzenLabel Text="Koniec Licencji" />
+                            <div class="label pb-2">
+                                <RadzenLabel Text="Przedłuż licencję do dnia" />
                             </div>
                             <RadzenDatePicker @bind-Value="Store.GetState().NewRequest.EndDate" DateFormat="d" Name="LicenseEndDate" />
                             <RadzenCompareValidator Value=@(licenseEnd) Component="LicenseEndDate" Popup=false Style="position: absolute" Operator=@compareOperator Text="@($"Proszę wybrać datę póżniejszą niż {licenseEnd.ToString("dd.MM.yyyy")}")" />
 
-                            <p>Zmiana liczby powiązanych użytkowników</p>
+                            <p class="pt-2">Zmiana liczby powiązanych użytkowników</p>
                             <RadzenNumeric TValue="int" @bind-Value="Store.GetState().NewRequest.RelatedUsers" Min="@license.RelatedUsers" Name="RelatedUsers" />
                             <RadzenNumericRangeValidator Component="RelatedUsers" Min="@license.RelatedUsers" Text="Można tylko dodawać użytkowników powiązanych" Popup="false" Style="position: absolute" />
                         }
 
-                        <div class="text">
-                            <div class="label">
+                        <div class="text pb-4 pt-2">
+                            <div class="label pb-2">
                                 <RadzenLabel Text="Wiadomość" />
                             </div>
-                            <RadzenTextArea Placeholder="Wiadomość..." @bind-Value="Store.GetState().NewRequest.RequestMessage.Message" Name="RequestMessage" />
+                            <RadzenTextArea Placeholder="Wiadomość..." @bind-Value="Store.GetState().NewRequest.RequestMessage.Message" Name="RequestMessage" Style="width: 400px; height: 250px;"/>
                             <RadzenRequiredValidator Component="RequestMessage" Text="Proszę krótko opisać problem / pytanie." Popup="true" />
                         </div>
                         <RadzenButton ButtonType="ButtonType.Submit" Text="Wyślij" ButtonStyle="ButtonStyle.Secondary" />

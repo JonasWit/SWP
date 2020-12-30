@@ -95,7 +95,7 @@ namespace SWP.UI.Areas.Identity.Pages.Account
                 }
                 if (result.IsLockedOut)
                 {
-                    _logger.LogWarning(LogTags.PortalIdentityLogPrefix + "User {UserName} account locked out.", Input.Email);
+                    _logger.LogWarning(LogTags.PortalIdentityLogPrefix + "User {UserName} was trying to log in but account was locked out.", Input.Email);
                     return RedirectToPage("./Lockout");
                 }
                 else

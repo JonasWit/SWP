@@ -51,6 +51,8 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
 
         private void ConfirmRemoveAllData() => ActionDispatcher.Dispatch(new ConfirmRemoveAllDataAction());
 
+        private void UpdateAccess() { }
+
         #endregion
 
     }

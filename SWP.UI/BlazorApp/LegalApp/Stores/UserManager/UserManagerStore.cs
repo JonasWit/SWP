@@ -1,11 +1,13 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Radzen;
 using SWP.Application.LegalSwp.Clients;
 using SWP.UI.BlazorApp.LegalApp.Stores.Main;
 using SWP.UI.BlazorApp.LegalApp.Stores.UserManager.Actions;
 using SWP.UI.Components.LegalSwpBlazorComponents.Dialogs;
 using SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data;
+using SWP.UI.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,12 +25,15 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.UserManager
     public class UserManagerStore : StoreBase<UserManagerState>
     {
         private readonly GeneralViewModel _generalViewModel;
+        private readonly ILogger<UserManagerStore> _logger;
+
         public MainStore MainStore => _serviceProvider.GetRequiredService<MainStore>();
 
-        public UserManagerStore(IServiceProvider serviceProvider, IActionDispatcher actionDispatcher, NotificationService notificationService, DialogService dialogService, GeneralViewModel generalViewModel)
+        public UserManagerStore(IServiceProvider serviceProvider, IActionDispatcher actionDispatcher, NotificationService notificationService, DialogService dialogService, GeneralViewModel generalViewModel, ILogger<UserManagerStore> logger)
             : base(serviceProvider, actionDispatcher, notificationService, dialogService)
         {
             _generalViewModel = generalViewModel;
+            _logger = logger;
         }
 
         public Task Initialize()
@@ -75,12 +80,27 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.UserManager
             {
                 using var scope = _serviceProvider.CreateScope();
                 var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
-
                 var profileClaim = MainStore.GetState().AppActiveUserManager.ProfileClaim;
                 var selectedUser = MainStore.GetState().AppActiveUserManager.RelatedUsers.FirstOrDefault(x => x.Id == _state.SelectedUser.Id);
                 var userToRemove = await userManager.FindByIdAsync(_state.SelectedUser.Id);
 
-                var result = await userManager.RemoveClaimAsync(userToRemove, profileClaim);
+                var lockResult = await userManager.UpdateSecurityStampAsync(userToRemove);
+
+                if (!lockResult.Succeeded)
+                {
+                    var identityErrors = String.Join("; ", lockResult.Errors.Select(x => x.Description).ToList());
+                    _logger.LogError(LogTags.LegalAppLogPrefix + "Issue when Locking User: {lockUser} by User: {rootUser} - Errors:" + identityErrors, userToRemove.UserName, MainStore.GetState().AppActiveUserManager.UserName);
+                    throw new Exception("Exception from Legal User Manager - Logged");  
+                }
+
+                var profileRemoveResult = await userManager.RemoveClaimAsync(userToRemove, profileClaim);
+
+                if (profileRemoveResult.Succeeded)
+                {
+                    var identityErrors = String.Join("; ", lockResult.Errors.Select(x => x.Description).ToList());
+                    _logger.LogError(LogTags.LegalAppLogPrefix + "Issue when removing Profile {profileRemove} from User: {lockUser} by User: {rootUser} - Errors:" + identityErrors, profileClaim.Value, userToRemove.UserName, MainStore.GetState().AppActiveUserManager.UserName);
+                    throw new Exception("Exception from Legal User Manager - Logged");
+                }
 
                 _state.SelectedUser = MainStore.GetState().AppActiveUserManager.User;
                 await MainStore.RefreshRelatedUsers();

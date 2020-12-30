@@ -56,6 +56,7 @@ li {
     cursor: pointer;
     display: inline-block;
     border: 0;
+    border-radius: 0;
     padding: 5px 10px;
     background: #262626;
     color: #fff;
@@ -69,11 +70,11 @@ li {
         color: #fff;
     }
 
+
 .download {
     cursor: pointer;
     display: inline-block;
     border: 0;
-    border-radius: 8px;
     padding: 8px 20px;
     background: #262626;
     color: #fff;
@@ -111,32 +112,34 @@ li {
     height: 100%;
 }
 
-.ui-button {
-
+.ui-button, .btn {
+    position: relative;
     cursor: pointer;
     display: inline-block;
-    border-radius: 8px !important;
     padding: 5px 10px;
-    background: #262626 !important;
+    background: linear-gradient(to right, #262626 50%, #007bff 50%) !important;
     color: #fff !important;
     font-size: 12px !important;
     font-weight: bold;
     outline: none !important;
+    background-size: 200% 100% !important;
+    background-position: left bottom !important;
+    margin-left: 10px;
+    transition: all .4s ease-in-out !important;
 }
 
-    .ui-button:hover {
-        background-color: #007bff !important;
-        opacity: 0.9 !important;
+    .ui-button:hover,
+    .btn:hover{
+        background-position: right bottom !important;
         color: #fff !important;
         outline: none !important;
         border: 0 !important;
     }
 
+
 .r-btn {
     padding-right: 0.6rem;
-
 }
-
 
 
 /*Showcase*/
@@ -202,7 +205,6 @@ img:hover {
     border: 2px solid #000;
     padding: 5px 10px;
     font-weight: bold;
-    border-radius: 8px;
     transition: background-color linear 1s;
 }
 
@@ -242,7 +244,6 @@ img:hover {
     cursor: pointer;
     display: inline-block;
     border: solid;
-    border-radius: 12px;
     padding: 5px 45px;
     background: #0067b8;
     color: #fff;

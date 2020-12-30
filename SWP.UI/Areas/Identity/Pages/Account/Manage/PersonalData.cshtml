@@ -7,18 +7,22 @@
 
 <div class="row">
     <div class="col-md-9">
-        <p>Na tej stronie możesz usunąć lub ściągnąć wszystkie dane którymi się z nami podzieliłeś podczas rejestracji.</p>
-        <p class="pt-3">
-            <strong>Usunięcie tych danych spowoduje nieodwracalne usunięcie konta!</strong>
+        <p>
+            Na tej stronie możesz usunąć lub ściągnąć wszystkie Twoje dane osobowe.
+            W przypadku chęci wglądu w Twoje dane osobowe, które zostały nam powierzone, proszę nacisnąć przycisk "Ściągnij Dane". Dane zostaną pobrane w formie pliku w formacie .json. Plik ten można otworzyć używając dowolnego edytora tekstu.
         </p>
+
+        <p>
+            <strong>W przypadku chęci trwałego usunięcia Twoich danych osobowych, proszę nacisnąć przycisk "Usuń Dane"</strong>
+        </p>
+
         <div class="rodo-links">
             <form id="download-data" asp-page="DownloadPersonalData" method="post" class="form-group">
                 <button class="btn" type="submit">Ściągnij Dane</button>
             </form>
-            <form id="delete" asp-page="DeletePersonalData" method="post" class="form-group">
+            <form id="delete" asp-page="DeletePersonalData" method="get" class="form-group">
                 <button class="btn" type="submit">Usuń Dane</button>
             </form>
-
         </div>
     </div>
 </div>

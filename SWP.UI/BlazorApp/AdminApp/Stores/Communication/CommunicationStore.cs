@@ -72,6 +72,8 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Communication
             }
         }
 
+        #region Communication
+
         public async Task GetRecipients()
         {
             _state.Recipients = UserManager.Users.Select(x => new Recipient
@@ -187,6 +189,8 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Communication
                 ShowErrorPage(ex);
             }
         }
+
+        #endregion
 
         private void ShowErrorPage(Exception ex) => AppStore.ShowErrorPage(ex);
 

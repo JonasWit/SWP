@@ -1,5 +1,5 @@
 ﻿<div>
-    <RadzenSteps>
+    <RadzenSteps NextText="Dalej" PreviousText="Wróć">
         <Steps>
             <RadzenStepsItem Text="Wybierz Aplikcaję, której dotyczy zgłoszenie">
                 <RadzenRadioButtonList @bind-Value="Store.GetState().StepsConfig.ChosenApplication" TValue="int" Orientation="Orientation.Vertical" Change="((args) => SelectedRequestApplicationChange(args))">
@@ -23,7 +23,6 @@
                                 }
                                 else
                                 {
-                                    <RadzenRadioButtonListItem Text="@RequestViewModel.RequestReasonsDisplay()[(int)RequestReason.ExtendLicense]" Value="(int)RequestReason.ExtendLicense" />
                                     <RadzenRadioButtonListItem Text="@RequestViewModel.RequestReasonsDisplay()[(int)RequestReason.ModifyLicense]" Value="(int)RequestReason.ModifyLicense" />
                                 }
 
@@ -62,7 +61,7 @@
                             <RadzenCompareValidator Value=@(licenseEnd) Component="LicenseEndDate" Popup=false Style="position: absolute" Operator=@compareOperator Text="@($"Proszę wybrać datę póżniejszą niż {licenseEnd.ToString("dd.MM.yyyy")}")" />
                         }
 
-                        @if (Store.GetState().UserLicenses.Any(x => x.Application == ((ApplicationType)Store.GetState().StepsConfig.ChosenApplication).ToString()) && (Store.GetState().StepsConfig.NewRequestReason == RequestReason.ExtendLicense || Store.GetState().StepsConfig.NewRequestReason == RequestReason.ModifyLicense))
+                        @if (Store.GetState().UserLicenses.Any(x => x.Application == ((ApplicationType)Store.GetState().StepsConfig.ChosenApplication).ToString()) && Store.GetState().StepsConfig.NewRequestReason == RequestReason.ModifyLicense)
                         {
                             var license = Store.GetState().UserLicenses.FirstOrDefault(x => x.Application == ((ApplicationType)Store.GetState().StepsConfig.ChosenApplication).ToString());
                             var licenseEnd = license.ValidTo.AddMonths(2).AddDays(-1);

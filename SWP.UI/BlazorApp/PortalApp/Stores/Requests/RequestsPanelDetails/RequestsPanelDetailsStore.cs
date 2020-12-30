@@ -6,7 +6,6 @@ using SWP.UI.BlazorApp.PortalApp.Stores.Requests.RequestsPanel;
 using SWP.UI.BlazorApp.PortalApp.Stores.Requests.RequestsPanelDetails.Actions;
 using SWP.UI.Components.PortalBlazorComponents.Requests.ViewModels;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -36,7 +35,11 @@ namespace SWP.UI.BlazorApp.PortalApp.Stores.Requests
 
         public void Initialize()
         {
+            EnableLoading("Wczytywanie historii...");
+
             _state.ActiveRequest = GetRequest(MainStore.GetState().SelectedRequestId);
+
+            DisableLoading();
         }
 
         private ClientRequest GetRequest(int requestId)
@@ -44,7 +47,10 @@ namespace SWP.UI.BlazorApp.PortalApp.Stores.Requests
             using var scope = _serviceProvider.CreateScope();
             var getRequest = scope.ServiceProvider.GetRequiredService<GetRequest>();
 
-            return getRequest.GetRequestWithMessages(requestId);
+            var result = getRequest.GetRequestWithMessages(requestId);
+            result.Messages = result.Messages.OrderByDescending(x => x.Created).ToList();
+
+            return result;
         }
 
         protected override async void HandleActions(IAction action)
@@ -64,7 +70,6 @@ namespace SWP.UI.BlazorApp.PortalApp.Stores.Requests
             }
         }
 
-
         private async Task CreateNewRequestMessage(CreateRequest.RequestMessage request)
         {
             try
@@ -72,39 +77,19 @@ namespace SWP.UI.BlazorApp.PortalApp.Stores.Requests
                 using var scope = _serviceProvider.CreateScope();
                 var createRequest = scope.ServiceProvider.GetRequiredService<CreateRequest>();
 
-                //await createRequest.Create(new CreateRequest.Request
-                //{
-                //    Application = (int)_state.StepsConfig.NewRequestApplication,
-                //    Created = DateTime.Now,
-                //    CreatedBy = MainStore.GetState().ActiveUserId,
-                //    EndDate = request.EndDate,
-                //    Reason = (int)_state.StepsConfig.NewRequestReason,
-                //    RelatedUsers = request.RelatedUsers,
-                //    RequestMessage = new CreateRequest.RequestMessage
-                //    {
-                //        AuthorId = MainStore.GetState().ActiveUserId,
-                //        Created = DateTime.Now,
-                //        CreatedBy = MainStore.GetState().ActiveUserId,
-                //        Message = request.RequestMessage.Message
-                //    },
-                //    RequestorId = MainStore.GetState().ActiveUserId,
-                //    StartDate = request.StartDate,
-                //    Status = (int)RequestStatus.WaitingForAnswer,
-                //});
+                await createRequest.Create(new CreateRequest.RequestMessage
+                {
+                    AuthorId = MainStore.GetState().ActiveUserName,
+                    Message = request.Message
+                }, _state.ActiveRequest.Id);
 
                 MainStore.RefreshSore();
-                MainStore.SetActiveComponent(RequestsMainPanelState.InnerComponents.Info);
             }
             catch (Exception ex)
             {
-                //MainStore.ShowErrorPage(ex);
+                MainStore.HandleError(ex, "Exception in Portal Contact App during Message creation.");
             }
         }
-
-
-
-
-
 
         private void ShowRequestMessageDetails(int id)
         {

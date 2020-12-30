@@ -41,7 +41,7 @@ namespace SWP.UI.Components.PortalBlazorComponents.Requests.ViewModels
                         result.Add((int)RequestReason.PurchaseLicense, "Zakup Licencji");
                         break;
                     case RequestReason.ModifyLicense:
-                        result.Add((int)RequestReason.ModifyLicense, "Zmiana Licencji");
+                        result.Add((int)RequestReason.ModifyLicense, "Zmiana / Modyfikacja Licencji");
                         break;
                     case RequestReason.ExtendLicense:
                         result.Add((int)RequestReason.ExtendLicense, "Przedłużenie Licencji");

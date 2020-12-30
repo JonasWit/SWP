@@ -114,7 +114,7 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.AdminLog
                     .Select(x => x.ToString())
                     .ToList();
 
-                _state.LogRecords = getLogs.GetLogs(selectedTypes, (DateTime)_state.LogStartDate, (DateTime)_state.LogEndDate);
+                _state.LogRecords = getLogs.GetLogs(selectedTypes, (DateTime)_state.LogStartDate, (DateTime)_state.LogEndDate).OrderByDescending(x => x.TimeStamp).ToList();
 
                 ShowNotification(NotificationSeverity.Success, "Success!", $"{_state.LogRecords.Count} Records downloaded", 2000);
                 BroadcastStateChange();
@@ -150,7 +150,7 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.AdminLog
                     .Select(x => x.ToString())
                     .ToList();
 
-                _state.LogRecords = getLogs.GetLogs(selectedTypes, DateTime.Now.AddDays(-7), DateTime.Now);
+                _state.LogRecords = getLogs.GetLogs(selectedTypes, DateTime.Now.AddDays(-7), DateTime.Now).OrderByDescending(x => x.TimeStamp).ToList();
 
                 ShowNotification(NotificationSeverity.Success, "Success!", $"{_state.LogRecords.Count} Records downloaded", 2000);
                 BroadcastStateChange();

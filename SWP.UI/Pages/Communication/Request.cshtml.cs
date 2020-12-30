@@ -10,10 +10,12 @@ namespace SWP.UI.Pages.Communication
     public class RequestModel : PageModel
     {
         public string ActiveUserId { get; set; }
+        public string ActiveUserName { get; set; }
 
         public void OnGet([FromServices] IHttpContextAccessor httpContextAccessor)
         {
             ActiveUserId = httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            ActiveUserName = httpContextAccessor.HttpContext.User.Identity.Name;
         }
     }
 }

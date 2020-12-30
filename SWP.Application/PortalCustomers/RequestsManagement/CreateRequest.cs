@@ -34,20 +34,29 @@ namespace SWP.Application.PortalCustomers.RequestsManagement
             var newRequesrMessageEntity = new ClientRequestMessage
             {
                 AuthorId = request.RequestMessage.AuthorId,
-                Created = request.RequestMessage.Created,
-                CreatedBy = request.RequestMessage.CreatedBy,
-                Updated = request.RequestMessage.Created,
-                UpdatedBy = request.RequestMessage.CreatedBy,
+                Created = request.Created,
+                CreatedBy = request.CreatedBy,
+                Updated = request.Created,
+                UpdatedBy = request.CreatedBy,
                 Message = request.RequestMessage.Message
             };
 
             changes += await _portalManager.CreateRequestMessage(newRequesrMessageEntity, newRequestEntity.Id);
 
             return changes;
-        } 
+        }
 
-        public Task<int> Create(ClientRequestMessage clientRequestMessage, int reuqestId) =>
-            _portalManager.CreateRequestMessage(clientRequestMessage, reuqestId);
+        public Task<int> Create(RequestMessage request, int reuqestId) =>       
+            _portalManager.CreateRequestMessage(new ClientRequestMessage
+            {
+                AuthorId = request.AuthorId,
+                Created = DateTime.Now,
+                CreatedBy = request.AuthorId,
+                Message = request.Message,
+                Updated = DateTime.Now,
+                UpdatedBy = request.AuthorId
+            }, reuqestId);
+        
 
         public class Request
         {
@@ -69,9 +78,6 @@ namespace SWP.Application.PortalCustomers.RequestsManagement
         {
             public string AuthorId { get; set; }
             public string Message { get; set; }
-
-            public DateTime Created { get; set; }
-            public string CreatedBy { get; set; }
         }
     }
 }

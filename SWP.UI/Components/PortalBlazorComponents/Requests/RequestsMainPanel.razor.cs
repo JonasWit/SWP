@@ -11,6 +11,8 @@ namespace SWP.UI.Components.PortalBlazorComponents.Requests
     {
         [Parameter]
         public string ActiveUserId { get; set; }
+        [Parameter]
+        public string ActiveUserName { get; set; }
         [Inject]
         public RequestsMainPanelStore Store { get; set; }
         [Inject]
@@ -26,9 +28,9 @@ namespace SWP.UI.Components.PortalBlazorComponents.Requests
             StateHasChanged();
         }
 
-        protected override async Task OnInitializedAsync()
+        protected override void OnInitialized()
         {
-            await Store.Initialize(ActiveUserId);
+            Store.Initialize(ActiveUserId, ActiveUserName);
             Store.AddStateChangeListener(UpdateView);
         }
 

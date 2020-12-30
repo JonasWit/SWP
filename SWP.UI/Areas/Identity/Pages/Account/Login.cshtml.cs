@@ -101,7 +101,7 @@ namespace SWP.UI.Areas.Identity.Pages.Account
                 else
                 {
                     _logger.LogWarning(LogTags.PortalIdentityLogPrefix + "User {UserName} invalid login attmept.", Input.Email);
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    ModelState.AddModelError(string.Empty, "Nieudana próba logowania");
                     return Page();
                 }
             }

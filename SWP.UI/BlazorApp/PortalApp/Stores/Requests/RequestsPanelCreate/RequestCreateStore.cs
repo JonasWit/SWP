@@ -111,8 +111,6 @@ namespace SWP.UI.BlazorApp.PortalApp.Stores.Requests.RequestsPanelCreate
                     RequestMessage = new CreateRequest.RequestMessage 
                     { 
                         AuthorId = MainStore.GetState().ActiveUserId, 
-                        Created = DateTime.Now, 
-                        CreatedBy = MainStore.GetState().ActiveUserId, 
                         Message = request.RequestMessage.Message 
                     },
                     RequestorId = MainStore.GetState().ActiveUserId,
@@ -125,7 +123,7 @@ namespace SWP.UI.BlazorApp.PortalApp.Stores.Requests.RequestsPanelCreate
             }
             catch (Exception ex)
             {
-                //MainStore.ShowErrorPage(ex);
+                MainStore.HandleError(ex, "Exception in Portal Contact App during Request creation.");
             }
         }
 

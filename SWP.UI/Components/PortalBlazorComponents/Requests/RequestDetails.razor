@@ -1,41 +1,45 @@
-﻿<h3>RequestDetails</h3>
-
-
-<p>Request id: @Store.GetState().ActiveRequest.Id</p>
-
-<RadzenCard Style="height:600px;">
-    <p>Historia Komunikacji</p>
-    <RadzenDataList WrapItems="true" AllowPaging="true" Data="@Store.GetState().ActiveRequest.Messages" TItem="RequestMessageViewModel" PageSize="5">
-        <Template Context="message">
-            <RadzenCard Style="width:300px;">
-                <div class="row" @onclick="@(() => MessageSelected(message.Id))">
-                    <p>@($"Data: {message.Created.ToString("yyyy.MM.dd HH:mm")}")</p>
-                    <p>@($"Autor: {message.AuthorId}")</p>
-                </div>
-            </RadzenCard>
-        </Template>
-    </RadzenDataList>
-</RadzenCard>
-
-@if (Store.GetState().ActiveRequestMessage is not null)
+﻿@if (Store.Loading)
 {
-    <p>@($"Wiadomość: {Store.GetState().ActiveRequestMessage.Message}")</p>
+    <LoaderComponent Message="@Store.LoadingMessage"></LoaderComponent>
 }
 else
 {
-    <p>Wybierz wiadomość żeby zobaczyć szczegóły.</p>
-}
+    <p>Request id: @Store.GetState().ActiveRequest.Id</p>
 
-<h2>Wyślij wiadomość</h2>
-<RadzenTemplateForm Data="@Store.GetState().NewRequestMessage" Submit="@((CreateRequest.RequestMessage args) => SubmitNewRequest(args))">
-    <RadzenFieldset Text="Nowe Zgłoszenie">
-        <div class="text">
-            <div class="label">
-                <RadzenLabel Text="Wiadomość" />
+    <RadzenCard Style="height:600px;">
+        <p>Historia Komunikacji</p>
+        <RadzenDataList WrapItems="true" AllowPaging="true" Data="@Store.GetState().ActiveRequest.Messages" TItem="RequestMessageViewModel" PageSize="5">
+            <Template Context="message">
+                <RadzenCard Style="width:300px;">
+                    <div class="row" @onclick="@(() => MessageSelected(message.Id))">
+                        <p>@($"Data: {message.Created.ToString("yyyy.MM.dd HH:mm:ss")}")</p>
+                        <p>@($"Autor: {message.AuthorId}")</p>
+                    </div>
+                </RadzenCard>
+            </Template>
+        </RadzenDataList>
+    </RadzenCard>
+
+    @if (Store.GetState().ActiveRequestMessage is not null)
+    {
+        <p>@($"Wiadomość: {Store.GetState().ActiveRequestMessage.Message}")</p>
+    }
+    else
+    {
+        <p>Wybierz wiadomość żeby zobaczyć szczegóły.</p>
+    }
+
+    <h2>Wyślij wiadomość</h2>
+    <RadzenTemplateForm Data="@Store.GetState().NewRequestMessage" Submit="@((CreateRequest.RequestMessage args) => SubmitNewRequest(args))">
+        <RadzenFieldset Text="Nowe Zgłoszenie">
+            <div class="text">
+                <div class="label">
+                    <RadzenLabel Text="Wiadomość" />
+                </div>
+                <RadzenTextArea Placeholder="Wiadomość..." @bind-Value="Store.GetState().NewRequestMessage.Message" Name="RequestMessage" />
+                <RadzenRequiredValidator Component="RequestMessage" Text="Wiadomość..." Popup="true" />
             </div>
-            <RadzenTextArea Placeholder="Wiadomość..." @bind-Value="Store.GetState().NewRequestMessage.Message" Name="RequestMessage" />
-            <RadzenRequiredValidator Component="RequestMessage" Text="Wiadomość..." Popup="true" />
-        </div>
-        <RadzenButton ButtonType="ButtonType.Submit" Text="Wyślij" ButtonStyle="ButtonStyle.Secondary" />
-    </RadzenFieldset>
-</RadzenTemplateForm>
+            <RadzenButton ButtonType="ButtonType.Submit" Text="Wyślij" ButtonStyle="ButtonStyle.Secondary" />
+        </RadzenFieldset>
+    </RadzenTemplateForm>
+}

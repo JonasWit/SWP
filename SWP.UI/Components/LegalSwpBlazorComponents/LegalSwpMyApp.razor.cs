@@ -3,10 +3,8 @@ using Radzen;
 using SWP.UI.BlazorApp;
 using SWP.UI.BlazorApp.LegalApp.Stores.Main;
 using SWP.UI.BlazorApp.LegalApp.Stores.MyApp;
-using SWP.UI.BlazorApp.LegalApp.Stores.MyApp.Actions;
 using SWP.UI.Utilities;
 using System;
-using System.Globalization;
 using System.Threading.Tasks;
 
 namespace SWP.UI.Components.LegalSwpBlazorComponents
@@ -16,7 +14,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
         [Inject]
         public MainStore MainStore { get; set; }
         [Inject]
-        public MyAppStore MyAppStore { get; set; }
+        public MyAppStore Store { get; set; }
         [Inject]
         public TooltipService TooltipService { get; set; }
         [Inject]
@@ -25,25 +23,25 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
         public void Dispose()
         {
             MainStore.RemoveStateChangeListener(RefreshView);
-            MyAppStore.RemoveStateChangeListener(RefreshView);
-            MyAppStore.CleanUpStore();
+            Store.RemoveStateChangeListener(RefreshView);
+            Store.CleanUpStore();
         }
 
         private void RefreshView()
         {
-            MyAppStore.RefreshSore();
+            Store.RefreshSore();
             StateHasChanged();
         }
 
         protected override async Task OnInitializedAsync()
         {
-            MyAppStore.EnableLoading(MyAppStore.DataLoadingMessage);
+            Store.EnableLoading(Store.DataLoadingMessage);
 
             MainStore.AddStateChangeListener(RefreshView);
-            MyAppStore.AddStateChangeListener(RefreshView);
-            await MyAppStore.Initialize();
+            Store.AddStateChangeListener(RefreshView);
+            await Store.Initialize();
 
-            MyAppStore.DisableLoading();
+            Store.DisableLoading();
         }
 
         private static string FormatAsPLN(object value)
@@ -76,16 +74,6 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
 
 
         public string RelatedUsersFilterValue = "";
-
-        #region Actions
-
-        private void SelectedUserChange(object arg) => ActionDispatcher.Dispatch(new SelectedUserChangeAction { Arg = arg });
-
-        private void RemoveRelation() => ActionDispatcher.Dispatch(new RemoveRelationAction());
-
-        private void ConfirmRemoveAllData() => ActionDispatcher.Dispatch(new ConfirmRemoveAllDataAction());
-
-        #endregion
 
     }
 }

@@ -1,87 +1,78 @@
 ﻿
-@if (MyAppStore.Loading)
+@if (Store.Loading)
 {
-    <LoaderComponent Message="@MyAppStore.LoadingMessage"></LoaderComponent>
+    <LoaderComponent Message="@Store.LoadingMessage"></LoaderComponent>
 }
 else
 {
+    <div class="list-row">
+        <button @onclick="Store.RefreshSore" class="refresher @(Store.Loading ? "spin" : "")"><img src="Images/icons8-synchronize-40.png" /></button>
+    </div>
+
     @if (MainStore.GetState().Clients.Count != 0)
     {
-        <div class="list-row">
-            <div class="list-row">
-                <strong class="label">Wybierz profil: </strong><RadzenDropDown AllowClear="true"
-                                                                               FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" FilterOperator="StringFilterOperator.StartsWith" AllowFiltering="true" @bind-Value="RelatedUsersFilterValue"
-                                                                               Data="@MainStore.GetState().User.RelatedUsers" TextProperty="UserName" ValueProperty="Id" Style="width: 200px; padding: 0" Change="@(args => SelectedUserChange(args))" />
-            </div>
-
-            <div class="list-row">
-                <button @onclick="MyAppStore.RefreshSore" class="refresher @(MyAppStore.Loading ? "spin" : "")"><img src="Images/icons8-synchronize-40.png" /></button>
-            </div>
-
-        </div>
-
         <div class="flex-my-app">
-            @if (MyAppStore.GetState().ProductivityData.Count != 0)
+            @if (Store.GetState().ProductivityData.Count != 0)
             {
                 <div class="app-chart app-balance ">
                     <i><img src="/Images/icons8-profit-40.png" /></i>
                     @if (MainStore.GetState().ActiveClient == null)
                     {
                         <h3>Całkowity Bilans Kancelarii</h3>
-                        <h5>@MyAppStore.GetState().TotalBalance.FormatPLN()</h5>
+                        <h5>@Store.GetState().TotalBalance.FormatPLN()</h5>
                     }
                     else
                     {
                         <h3>Bilans Klienta: @MainStore.GetState().ActiveClient.Name</h3>
-                        <h5>@MyAppStore.GetState().TotalBalance.FormatPLN()</h5>
+                        <h5>@Store.GetState().TotalBalance.FormatPLN()</h5>
                     }
                 </div>
             }
-            @if (MyAppStore.GetState().ProductivityData.Count != 0)
+            @if (Store.GetState().ProductivityData.Count != 0)
             {<div class="app-chart app-balance ">
                     <i><img src="/Images/icons8-initiate-money-transfer-40.png" /></i>
                     @if (MainStore.GetState().ActiveClient == null)
                     {
                         <h3>Całkowite Koszty Kancelarii</h3>
-                        <h5>@MyAppStore.GetState().TotalExpenses.FormatPLN()</h5>
+                        <h5>@Store.GetState().TotalExpenses.FormatPLN()</h5>
                     }
                     else
                     {
                         <h3>Koszty Klienta: @MainStore.GetState().ActiveClient.Name</h3>
-                        <h5>@MyAppStore.GetState().TotalExpenses.FormatPLN()</h5>
+                        <h5>@Store.GetState().TotalExpenses.FormatPLN()</h5>
                     }
 
                 </div>
             }
 
-            @if (MyAppStore.GetState().ProductivityData.Count != 0)
+            @if (Store.GetState().ProductivityData.Count != 0)
             {<div class="app-chart app-balance ">
                     <i><img src="/Images/icons8-timesheet-36.png" /></i>
                     @if (MainStore.GetState().ActiveClient == null)
                     {
                         <h3>Czas poświęcony Klientom</h3>
-                        <h5>@MyAppStore.GetState().TotalTimeSpent</h5>
+                        <h5>@Store.GetState().TotalTimeSpent</h5>
                     }
                     else
                     {
                         <h3>Całkowity Czas na Kliencie: @MainStore.GetState().ActiveClient.Name</h3>
-                        <h5>@MyAppStore.GetState().TotalTimeSpent</h5>
+                        <h5>@Store.GetState().TotalTimeSpent</h5>
                     }
 
                 </div>
             }
-            @if (MyAppStore.GetState().ProductivityData.Count != 0)
+            @if (Store.GetState().ProductivityData.Count != 0)
             {<div class="app-chart app-balance ">
                     <i><img src="/Images/icons8-paycheque-36.png" /></i>
                     @if (MainStore.GetState().ActiveClient == null)
                     {
                         <h3>Zysk na godzinę</h3>
-                        <h5>@MyAppStore.GetState().TotalTimeSpent</h5>
+                        <h5>@Store.GetState().TotalTimeSpent</h5>
                     }
                     else
                     {
                         <h3>Zysk na godzinę: @MainStore.GetState().ActiveClient.Name</h3>
-                        <h5>@MyAppStore.GetState().TotalTimeSpent</h5>
+                        <h5>@Store.GetState().TotalTimeSpent</h5>
                     }
 
                 </div>
@@ -89,12 +80,12 @@ else
 
         </div>
 
-        @if (MyAppStore.GetState().ProductivityData.Count != 0)
+        @if (Store.GetState().ProductivityData.Count != 0)
         {<div class="flex-app">
                 <div class="app-chart app-line-chart app-line-chart-1 grid">
                     <h3>Bilans w PLN</h3>
-                    <RadzenChart ColorScheme="@MyAppStore.GetState().ColorScheme">
-                        @foreach (var data in MyAppStore.GetState().ProductivityData)
+                    <RadzenChart ColorScheme="@Store.GetState().ColorScheme">
+                        @foreach (var data in Store.GetState().ProductivityData)
                         {
                             <RadzenLineSeries Smooth="true" Data="@data.DataByDate" CategoryProperty="Date" Title="@data.Name" LineType="LineType.Solid" ValueProperty="Number">
                                 <RadzenMarkers MarkerType="MarkerType.Circle" />
@@ -112,8 +103,8 @@ else
 
                 <div class="app-chart app-line-chart app-line-chart-2 grid">
                     <h3>Zestawienie Kosztów</h3>
-                    <RadzenChart ColorScheme="@MyAppStore.GetState().ColorScheme">
-                        @foreach (var data in MyAppStore.GetState().ProductivityData)
+                    <RadzenChart ColorScheme="@Store.GetState().ColorScheme">
+                        @foreach (var data in Store.GetState().ProductivityData)
                         {
                             <RadzenLineSeries Data="@data.DataByDate" CategoryProperty="Date" Title="@data.Name" ValueProperty="Expenses">
                                 <RadzenMarkers MarkerType="MarkerType.Circle" />
@@ -134,8 +125,8 @@ else
             <div class="flex-app">
                 <div class="app-chart app-line-chart app-line-chart-3 grid">
                     <h3>Czas poświęcony Klientom</h3>
-                    <RadzenChart ColorScheme="@MyAppStore.GetState().ColorScheme">
-                        @foreach (var data in MyAppStore.GetState().ProductivityData)
+                    <RadzenChart ColorScheme="@Store.GetState().ColorScheme">
+                        @foreach (var data in Store.GetState().ProductivityData)
                         {
                             <RadzenLineSeries Data="@data.DataByDate" CategoryProperty="Date" Title="@data.Name" LineType="LineType.Solid" ValueProperty="TimeNumber">
                                 <RadzenMarkers MarkerType="MarkerType.Circle" />
@@ -153,8 +144,8 @@ else
                 </div>
                 <div class="app-chart app-line-chart app-line-chart-4 grid">
                     <h3>Zysk na godzinę</h3>
-                    <RadzenChart ColorScheme="@MyAppStore.GetState().ColorScheme">
-                        @foreach (var data in MyAppStore.GetState().ProductivityData)
+                    <RadzenChart ColorScheme="@Store.GetState().ColorScheme">
+                        @foreach (var data in Store.GetState().ProductivityData)
                         {
                             <RadzenLineSeries Smooth="true" Data="@data.DataByDate" CategoryProperty="Date" Title="@data.Name" LineType="LineType.Solid" ValueProperty="ProductivityRatio">
                                 <RadzenMarkers MarkerType="MarkerType.Circle" />
@@ -186,22 +177,3 @@ else
         <h2>Nie masz jeszcze zadnych klientow!</h2>
     }
 }
-
-
-@*<RadzenButton Text="TEST!" Click="MainStore.ThrowTestException"></RadzenButton>*@
-<div class="list-row">
-    @if (MyAppStore.GetState().SelectedUser != null && MainStore.GetState().User.RootClient && MainStore.GetState().ActiveUserId != MyAppStore.GetState().SelectedUser.Id)
-    {
-
-        <h1>Mozna skasowac</h1>
-        <RadzenButton Text="Usuń powiązanie!" Click="RemoveRelation"></RadzenButton>
-    }
-
-    @if (MainStore.GetState().User.RootClient)
-    {
-        <p class="label">Usuń wszystkie dane powiązane z wybranym profilem</p>
-        <RadzenButton ButtonStyle="ButtonStyle.Secondary" Text=@($"Usuń") Click="ConfirmRemoveAllData" />
-    }
-
-
-</div>

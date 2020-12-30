@@ -7,14 +7,15 @@ using System.Threading.Tasks;
 namespace SWP.Application.LegalSwp.Reminders
 {
     [TransientService]
-    public class UpdateReminder
+    public class UpdateReminder : LegalActionsBase
     {
-        private readonly ILegalManager legalSwpManager;
-        public UpdateReminder(ILegalManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
+        public UpdateReminder(ILegalManager legalManager) : base(legalManager)
+        {
+        }
 
         public Task<Reminder> Update(Request request)
         {
-            var reminderEntity = legalSwpManager.GetReminder(request.Id);
+            var reminderEntity = _legalManager.GetReminder(request.Id);
 
             reminderEntity.IsDeadline = request.IsDeadline;
             reminderEntity.Name = request.Name;
@@ -25,7 +26,7 @@ namespace SWP.Application.LegalSwp.Reminders
             reminderEntity.Start = request.Start;
             reminderEntity.End = request.End;
 
-            return legalSwpManager.UpdateReminder(reminderEntity);
+            return _legalManager.UpdateReminder(reminderEntity);
         }
 
         public class Request

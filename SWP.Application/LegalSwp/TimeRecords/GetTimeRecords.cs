@@ -5,11 +5,12 @@ using System.Collections.Generic;
 namespace SWP.Application.LegalSwp.TimeRecords
 {
     [TransientService]
-    public class GetTimeRecords
+    public class GetTimeRecords : LegalActionsBase
     {
-        private readonly ILegalManager legalSwpManager;
-        public GetTimeRecords(ILegalManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
+        public GetTimeRecords(ILegalManager legalManager) : base(legalManager)
+        {
+        }
 
-        public List<TimeRecord> Get(int clientId) => legalSwpManager.GetTimeRecords(clientId);
+        public List<TimeRecord> Get(int clientId) => _legalManager.GetTimeRecords(clientId);
     }
 }

@@ -5,15 +5,16 @@ using System.Collections.Generic;
 namespace SWP.Application.LegalSwp.Cases
 {
     [TransientService]
-    public class GetCases
+    public class GetCases : LegalActionsBase
     {
-        private readonly ILegalManager legalSwpManager;
-        public GetCases(ILegalManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
+        public GetCases(ILegalManager legalManager) : base(legalManager)
+        {
+        }
 
-        public int CountDeadlineRemindersPerCase(int id) => legalSwpManager.CountDeadlineRemindersPerCase(id);
-        public int CountRemindersPerCase(int id) => legalSwpManager.CountRemindersPerCase(id);
-        public int CountNotesPerCase(int id) => legalSwpManager.CountNotesPerCase(id);
-        public List<Case> GetArchivedCases(int clientId) => legalSwpManager.GetArchivedCases(clientId);
-        public List<Case> GetCasesForClient(int clientId) => legalSwpManager.GetCasesForClient(clientId);
+        public int CountDeadlineRemindersPerCase(int id) => _legalManager.CountDeadlineRemindersPerCase(id);
+        public int CountRemindersPerCase(int id) => _legalManager.CountRemindersPerCase(id);
+        public int CountNotesPerCase(int id) => _legalManager.CountNotesPerCase(id);
+        public List<Case> GetArchivedCases(int clientId) => _legalManager.GetArchivedCases(clientId);
+        public List<Case> GetCasesForClient(int clientId) => _legalManager.GetCasesForClient(clientId);
     }
 }

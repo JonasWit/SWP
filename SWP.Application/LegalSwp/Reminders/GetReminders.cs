@@ -1,17 +1,20 @@
 ﻿using SWP.Domain.Infrastructure.LegalApp;
 using SWP.Domain.Models.LegalApp;
+using System;
 using System.Collections.Generic;
 
 namespace SWP.Application.LegalSwp.Reminders
 {
     [TransientService]
-    public class GetReminders
+    public class GetReminders : LegalActionsBase
     {
-        private readonly ILegalManager legalSwpManager;
-        public GetReminders(ILegalManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
+        public GetReminders(ILegalManager legalManager) : base(legalManager)
+        {
+        }
 
-        public List<Reminder> Get(string profileClaim) => legalSwpManager.GetReminders(profileClaim);
-        public List<Reminder> GetUpcoming(string profileClaim) => legalSwpManager.GetUpcomingReminders(profileClaim);
-        public List<Reminder> Get(int clientId) => legalSwpManager.GetRemindersForClient(clientId);
+        public List<Reminder> Get(string profileClaim) => _legalManager.GetReminders(profileClaim);
+        public List<Reminder> GetUpcoming(string profileClaim) => _legalManager.GetUpcomingReminders(profileClaim);
+        public List<Reminder> GetUpcoming(string profileClaim, DateTime date) => _legalManager.GetUpcomingReminders(profileClaim, date);
+        public List<Reminder> Get(int clientId) => _legalManager.GetRemindersForClient(clientId);
     }
 }

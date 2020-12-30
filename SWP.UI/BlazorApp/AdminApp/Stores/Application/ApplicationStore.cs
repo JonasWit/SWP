@@ -19,7 +19,7 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Application
         public bool Loading { get; set; } = false;
         public string ActiveUserId { get; set; }
         public string LoadingMessage { get; set; }
-        public UserModel User { get; set; } = new UserModel();
+        public AppActiveUserManager AppActiveUserManager { get; set; } 
         public AdminAppPanels ActivePanel { get; set; } = AdminAppPanels.Users;
     }
 
@@ -44,13 +44,10 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Application
             var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
 
             _state.NotificationService = scope.ServiceProvider.GetRequiredService<NotificationService>();
-            _state.ActiveUserId = userId;
+            _state.AppActiveUserManager = new AppActiveUserManager(_serviceProvider, userId);
+            await _state.AppActiveUserManager.UpdateUserManager();
 
-            _state.User.User = await userManager.FindByIdAsync(_state.ActiveUserId);
-            _state.User.Claims = await userManager.GetClaimsAsync(_state.User.User) as List<Claim>;
-            _state.User.Roles = await userManager.GetRolesAsync(_state.User.User) as List<string>;
-
-            _logger.LogInformation(LogTags.AdminAppLogPrefix + "Admin Application accessed by user {userName}", _state.User.User.UserName);
+            _logger.LogInformation(LogTags.AdminAppLogPrefix + "Admin Application accessed by user {userName}", _state.AppActiveUserManager.User.UserName);
         }
 
         protected override void HandleActions(IAction action)
@@ -60,7 +57,7 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Application
 
         public void ShowErrorPage(Exception ex)
         {
-            _errorStore.SetException(ex, _state.ActiveUserId, _state.User.UserName);
+            _errorStore.SetException(ex, _state.ActiveUserId, _state.AppActiveUserManager.UserName);
             _state.ActivePanel = AdminAppPanels.Error;
             BroadcastStateChange();
         }

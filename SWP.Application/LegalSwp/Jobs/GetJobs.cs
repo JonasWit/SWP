@@ -9,11 +9,12 @@ using System.Threading.Tasks;
 namespace SWP.Application.LegalSwp.Jobs
 {
     [TransientService]
-    public class GetJobs
+    public class GetJobs : LegalActionsBase
     {
-        private readonly ILegalManager legalSwpManager;
-        public GetJobs(ILegalManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
+        public GetJobs(ILegalManager legalManager) : base(legalManager)
+        {
+        }
 
-        public List<ClientJob> GetClientJobs(int clientId) => legalSwpManager.GetClientJobs(clientId);
+        public List<ClientJob> GetClientJobs(int clientId) => _legalManager.GetClientJobs(clientId);
     }
 }

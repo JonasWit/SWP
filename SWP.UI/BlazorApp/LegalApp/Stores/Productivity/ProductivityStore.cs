@@ -202,10 +202,10 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Productivity
                     EventDate = time.EventDate,
                     Expense = false,
                     Name = time.Name,
-                    UpdatedBy = MainStore.GetState().User.UserName
+                    UpdatedBy = MainStore.GetState().AppActiveUserManager.UserName
                 };
 
-                var result = await createCashMovement.Create(MainStore.GetState().ActiveClient.Id, MainStore.GetState().User.Profile, request);
+                var result = await createCashMovement.Create(MainStore.GetState().ActiveClient.Id, MainStore.GetState().AppActiveUserManager.ProfileName, request);
 
                 ShowNotification(NotificationSeverity.Success, "Sukces!", $"Kwota: {result.Amount} zł, została dodana do Panelu Finanse", GeneralViewModel.NotificationDuration);
                 BroadcastStateChange();
@@ -234,7 +234,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Productivity
                     RecordedHours = time.RecordedHours,
                     RecordedMinutes = time.RecordedMinutes,
                     Updated = DateTime.Now,
-                    UpdatedBy = MainStore.GetState().User.UserName
+                    UpdatedBy = MainStore.GetState().AppActiveUserManager.UserName
                 });
 
                 ReplaceTimeRecord(result);
@@ -301,9 +301,9 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Productivity
                 using var scope = _serviceProvider.CreateScope();
                 var createTimeRecord = scope.ServiceProvider.GetRequiredService<CreateTimeRecord>();
 
-                request.UpdatedBy = MainStore.GetState().User.UserName;
+                request.UpdatedBy = MainStore.GetState().AppActiveUserManager.UserName;
 
-                var result = await createTimeRecord.Create(MainStore.GetState().ActiveClient.Id, MainStore.GetState().User.Profile, request);
+                var result = await createTimeRecord.Create(MainStore.GetState().ActiveClient.Id, MainStore.GetState().AppActiveUserManager.ProfileName, request);
                 _state.NewTimeRecord = new CreateTimeRecord.Request();
 
                 AddTimeRecord(result);

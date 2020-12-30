@@ -4,15 +4,16 @@ using System.Threading.Tasks;
 namespace SWP.Application.LegalSwp.Cases
 {
     [TransientService]
-    public class ArchiveCases
+    public class ArchiveCases : LegalActionsBase
     {
-        private readonly ILegalManager legalSwpManager;
-        public ArchiveCases(ILegalManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
+        public ArchiveCases(ILegalManager legalManager) : base(legalManager)
+        {
+        }
 
-        public int CountAllArchivedCases() => legalSwpManager.CountArchivedCases();
+        public int CountAllArchivedCases() => _legalManager.CountArchivedCases();
 
-        public Task<int> ArchivizeCase(int caseId, string user) => legalSwpManager.ArchivizeCase(caseId, user);
+        public Task<int> ArchivizeCase(int caseId, string user) => _legalManager.ArchivizeCase(caseId, user);
 
-        public Task<int> RecoverCase(int caseId, string user) => legalSwpManager.RecoverCase(caseId, user);
+        public Task<int> RecoverCase(int caseId, string user) => _legalManager.RecoverCase(caseId, user);
     }
 }

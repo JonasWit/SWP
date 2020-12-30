@@ -1,6 +1,6 @@
 ﻿@if (!MainStore.Loading)
 {
-    @if (MainStore.GetState().User.Profile != null)
+    @if (MainStore.GetState().AppActiveUserManager.ProfileName != null)
     {
         <div id="grid-container-2">
             <nav class="sidebar @(!showSidebar ? "" : "sidebar-add")">
@@ -9,9 +9,9 @@
                         <button @onclick="ShowHideSidebar" class="toggle @(showSidebar ? "toggle-rotate" : "") "><img src="Images/icons8-double-right-40.png" /></button>
                     </li>
                 </ul>
-                <ul class="navigation ">
+                <ul class="navigation">
 
-                    @if (MainStore.GetState().User.RootClient)
+                    @if (MainStore.GetState().AppActiveUserManager.IsRoot)
                     {
                         <li class="nav-item @(MainStore.GetState().ActivePanel == LegalAppPanels.UserManager ? "active" : "") " @onclick="@(() => MainStore.SetActivePanel(LegalAppPanels.UserManager))">
                             <a class="nav-link ">
@@ -24,7 +24,7 @@
                     <li class="nav-item @(MainStore.GetState().ActivePanel == LegalAppPanels.MyApp ? "active" : "") " @onclick="@(() => MainStore.SetActivePanel(LegalAppPanels.MyApp))">
                         <a class="nav-link ">
                             <i><img src="/Images/icons8-web-design-36.png" /></i>
-                            <span class="@(showSidebar ? "link-text" : "text-hidden")">Moja Aplikacja</span>
+                            <span class="@(showSidebar ? "link-text" : "text-hidden")">Statystyki</span>
                         </a>
                     </li>
                     <li class="nav-item  @(MainStore.GetState().ActivePanel == LegalAppPanels.Clients ? "active" : "") " @onclick="@(() => MainStore.SetActivePanel(LegalAppPanels.Clients))">
@@ -92,14 +92,14 @@
                     <li class="nav-item @(showTopNav ? "nav-item" : "nav-item-hidden")">
                         <a class="nav-link profile">
                             <i><img src="/Images/icons8-profile-36.png" /></i>
-                            <span class="link-text">@MainStore.GetState().User.UserName</span>
+                            <span class="link-text">@MainStore.GetState().AppActiveUserManager.UserName</span>
                         </a>
                     </li>
 
-                    <li class="nav-item  @(MainStore.GetState().ActivePanel == LegalAppPanels.Calendar ? "" : "") @(showTopNav ? "nav-item" : "nav-item-hidden")">
+                    <li class="nav-item  @(MainStore.GetState().ActivePanel == LegalAppPanels.Calendar ? "" : "") @(showTopNav ? "nav-item" : "nav-item-hidden")" @onclick="@(() => MainStore.SetActivePanel(LegalAppPanels.Calendar))">
                         <a class="nav-link ">
                             @*//todo: make it dynamic*@
-                            <i><img class="reminder-bell" src="/Images/icons8-notification-36.png" /></i> <span class="link-text">Przypomnienia</span><span class="number">2</span>
+                            <i><img class="reminder-bell" src="/Images/icons8-notification-36.png" /></i> <span class="link-text">Przypomnienia</span><span class="number">@MainStore.GetState().UpcomingReminders.ToString()</span>
                         </a>
                     </li>
                     <li class="nav-item @(showTopNav ? "nav-item" : "nav-item-hidden")">

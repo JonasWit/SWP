@@ -4,11 +4,12 @@ using System.Threading.Tasks;
 namespace SWP.Application.LegalSwp.CashMovements
 {
     [TransientService]
-    public class DeleteCashMovement
+    public class DeleteCashMovement : LegalActionsBase
     {
-        private readonly ILegalManager legalSwpManager;
-        public DeleteCashMovement(ILegalManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
+        public DeleteCashMovement(ILegalManager legalManager) : base(legalManager)
+        {
+        }
 
-        public Task<int> Delete(int id) => legalSwpManager.DeleteCashMovement(id);
+        public Task<int> Delete(int id) => _legalManager.DeleteCashMovement(id);
     }
 }

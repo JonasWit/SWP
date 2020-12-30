@@ -42,7 +42,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Archive
             var getClients = scope.ServiceProvider.GetRequiredService<GetClients>();
             var getCases = scope.ServiceProvider.GetRequiredService<GetCases>();
 
-            _state.ArchivizedClients = getClients.GetClientsWithoutData(_mainStore.GetState().User.Profile, false)?.Select(x => (ClientViewModel)x).ToList();
+            _state.ArchivizedClients = getClients.GetClientsWithoutData(_mainStore.GetState().AppActiveUserManager.ProfileName, false)?.Select(x => (ClientViewModel)x).ToList();
 
             if (_mainStore.GetState().ActiveClient != null)
             {
@@ -91,7 +91,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Archive
                     using var scope = _serviceProvider.CreateScope();
                     var archiveClient = scope.ServiceProvider.GetRequiredService<ArchiveClient>();
 
-                    await archiveClient.RecoverClient(_state.SelectedArchivizedClient.Id, _mainStore.GetState().User.UserName);
+                    await archiveClient.RecoverClient(_state.SelectedArchivizedClient.Id, _mainStore.GetState().AppActiveUserManager.UserName);
 
                     ShowNotification(NotificationSeverity.Success, "Sukces!", $"Klient: {_state.SelectedArchivizedClient.Name} został odzyskany.", GeneralViewModel.NotificationDuration);
                     _state.SelectedArchivizedClient = null;
@@ -151,7 +151,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Archive
                     using var scope = _serviceProvider.CreateScope();
                     var archiveCases = scope.ServiceProvider.GetRequiredService<ArchiveCases>();
 
-                    await archiveCases.RecoverCase(_state.SelectedArchivizedCase.Id, _mainStore.GetState().User.UserName);
+                    await archiveCases.RecoverCase(_state.SelectedArchivizedCase.Id, _mainStore.GetState().AppActiveUserManager.UserName);
 
                     ShowNotification(NotificationSeverity.Success, "Sukces!", $"Sprawa: {_state.SelectedArchivizedCase.Name} została odzyskana.", GeneralViewModel.NotificationDuration);
                     _state.SelectedArchivizedClient = null;

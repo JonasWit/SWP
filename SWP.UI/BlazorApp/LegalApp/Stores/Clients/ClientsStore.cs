@@ -106,7 +106,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Clients
                     Email = client.Email,
                     Name = client.Name,
                     PhoneNumber = client.PhoneNumber,
-                    UpdatedBy = MainStore.GetState().User.UserName
+                    UpdatedBy = MainStore.GetState().AppActiveUserManager.UserName
                 });
 
                 if (MainStore.GetState().ActiveClient != null && MainStore.GetState().ActiveClient.Id == result.Id)
@@ -174,7 +174,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Clients
                 using var scope = _serviceProvider.CreateScope();
                 var archiveClient = scope.ServiceProvider.GetRequiredService<ArchiveClient>();
 
-                var result = await archiveClient.ArchivizeClient(client.Id, MainStore.GetState().User.UserName);
+                var result = await archiveClient.ArchivizeClient(client.Id, MainStore.GetState().AppActiveUserManager.UserName);
 
                 if (_state.SelectedClient != null &&
                     _state.SelectedClient.Id == client.Id)
@@ -206,8 +206,8 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Clients
         {
             if (request == null) return;
 
-            request.ProfileClaim = MainStore.GetState().User.Profile;
-            request.UpdatedBy = MainStore.GetState().User.UserName;
+            request.ProfileClaim = MainStore.GetState().AppActiveUserManager.ProfileName;
+            request.UpdatedBy = MainStore.GetState().AppActiveUserManager.UserName;
 
             try
             {

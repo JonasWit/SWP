@@ -7,13 +7,14 @@ using System.Threading.Tasks;
 namespace SWP.Application.LegalSwp.Notes
 {
     [TransientService]
-    public class CreateNote
+    public class CreateNote : LegalActionsBase
     {
-        private readonly ILegalManager legalSwpManager;
-        public CreateNote(ILegalManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
+        public CreateNote(ILegalManager legalManager) : base(legalManager)
+        {
+        }
 
         public Task<Note> Create(int caseId, Request request) =>
-            legalSwpManager.CreateNote(caseId, new Note
+            _legalManager.CreateNote(caseId, new Note
             {
                 Name = request.Name,
                 Message = request.Message,

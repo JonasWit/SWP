@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Radzen;
 using SWP.Application.LegalSwp.Clients;
+using SWP.Application.LegalSwp.Reminders;
 using SWP.UI.BlazorApp.LegalApp.Stores.Enums;
 using SWP.UI.BlazorApp.LegalApp.Stores.Error;
 using SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data;
@@ -18,12 +19,12 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
 {
     public class MainState
     {
-        public string ActiveUserId { get; set; }
-        public UserModel User { get; set; } = new UserModel();
+        public AppActiveUserManager AppActiveUserManager { get; set; }
         public List<ClientViewModel> Clients { get; set; } = new List<ClientViewModel>();
         public ClientViewModel ActiveClient { get; set; }
         public LegalAppPanels ActivePanel { get; set; } = LegalAppPanels.MyApp;
         public string SelectedClientString { get; set; }
+        public int UpcomingReminders { get; set; }
     }
 
     [UIScopedService]
@@ -43,30 +44,22 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
         {
             try
             {
-                _state.ActiveUserId = userId;
-
-                await RealodUserData();
+                await RealodUserData(userId);
                 ReloadClientsDrop();
+                ReleadRemindersCounter();
 
-                _logger.LogInformation(LogTags.LegalAppLogPrefix + "Legal Application accessed by user {userName}, with Profile {userProfile}", _state.User.UserName, _state.User.Profile);
+                _logger.LogInformation(LogTags.LegalAppLogPrefix + "Legal Application accessed by user {userName}, with Profile {userProfile}", _state.AppActiveUserManager.UserName, _state.AppActiveUserManager.ProfileName);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, LogTags.LegalAppErrorLogPrefix + "Legal Application thrown an exception during launch for user {userName}, with Profile {userProfile}", _state.User.UserName, _state.User.Profile);
+                _logger.LogError(ex, LogTags.LegalAppErrorLogPrefix + "Legal Application thrown an exception during launch for user {userName}, with Profile {userProfile}", _state.AppActiveUserManager.UserName, _state.AppActiveUserManager.ProfileName);
             }
         }
 
-        private async Task RealodUserData()
+        private async Task RealodUserData(string userId)
         {
-            using var scope = _serviceProvider.CreateScope();
-            var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
-
-            _state.User.User = await userManager.FindByIdAsync(_state.ActiveUserId);
-            _state.User.Claims = await userManager.GetClaimsAsync(_state.User.User) as List<Claim>;
-            _state.User.Roles = await userManager.GetRolesAsync(_state.User.User) as List<string>;
-            _state.User.RelatedUsers = await userManager.GetUsersForClaimAsync(_state.User.ProfileClaim) as List<IdentityUser>;
-
-            _state.User.RelatedUsers.RemoveAll(x => x.Id == _state.ActiveUserId);
+            _state.AppActiveUserManager = new AppActiveUserManager(_serviceProvider, userId);
+            await _state.AppActiveUserManager.UpdateUserManager();
         }
 
         protected override void HandleActions(IAction action)
@@ -79,7 +72,25 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
             using var scope = _serviceProvider.CreateScope();
             var getClients = scope.ServiceProvider.GetRequiredService<GetClients>();
 
-            _state.Clients = getClients.GetClientsWithoutData(_state.User.Profile)?.Select(x => (ClientViewModel)x).ToList();
+            _state.Clients = getClients.GetClientsWithoutData(_state.AppActiveUserManager.ProfileName)?.Select(x => (ClientViewModel)x).ToList();
+        }
+
+        private void ReleadRemindersCounter()
+        {
+            if (_state.AppActiveUserManager.IsRoot)
+            {
+                try
+                {
+                    using var scope = _serviceProvider.CreateScope();
+                    var getReminders = scope.ServiceProvider.GetRequiredService<GetReminders>();
+
+                    _state.UpcomingReminders = getReminders.GetUpcoming(_state.AppActiveUserManager.ProfileName, DateTime.Now.AddDays(2)).Count();
+                }
+                catch (Exception ex)
+                {
+                    ShowErrorPage(ex);
+                }
+            }   
         }
 
         public void SetActivePanel(LegalAppPanels panel) => _state.ActivePanel = panel;
@@ -116,7 +127,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
 
         public void ShowErrorPage(Exception ex)
         {
-            _errorStore.SetException(ex, _state.ActiveUserId, _state.User.UserName);
+            _errorStore.SetException(ex, _state.AppActiveUserManager.User.Id, _state.AppActiveUserManager.UserName);
             _state.ActivePanel = LegalAppPanels.ErrorPage;
             BroadcastStateChange();
         }
@@ -137,20 +148,8 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
                 using var scope = _serviceProvider.CreateScope();
                 var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
 
-                _state.User.RelatedUsers = await userManager.GetUsersForClaimAsync(_state.User.ProfileClaim) as List<IdentityUser>;
+                _state.AppActiveUserManager.RelatedUsers = await userManager.GetUsersForClaimAsync(_state.AppActiveUserManager.ProfileClaim) as List<IdentityUser>;
                 BroadcastStateChange();
-            }
-            catch (Exception ex)
-            {
-                ShowErrorPage(ex);
-            }
-        }
-
-        public void ThrowTestException()
-        {
-            try
-            {
-                throw new Exception("bablabla");
             }
             catch (Exception ex)
             {
@@ -167,7 +166,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
                 using var scope = _serviceProvider.CreateScope();
                 var getClients = scope.ServiceProvider.GetRequiredService<GetClients>();
 
-                _state.Clients = getClients.GetClientsWithoutData(_state.User.Profile, true).Select(x => (ClientViewModel)x).ToList();
+                _state.Clients = getClients.GetClientsWithoutData(_state.AppActiveUserManager.ProfileName, true).Select(x => (ClientViewModel)x).ToList();
                 _state.ActiveClient = null;
                 _state.SelectedClientString = null;
                 BroadcastStateChange();
@@ -195,7 +194,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
 
         public ClientViewModel GetActiveClient() => _state.ActiveClient;
 
-        public UserModel GetApplicationUser() => _state.User;
+        public AppActiveUserManager GetApplicationUser() => _state.AppActiveUserManager;
 
         public void RefreshMainComponent() => BroadcastStateChange();
 
@@ -228,7 +227,15 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
 
         public override void RefreshSore()
         {
+            ReloadClientsDrop();
 
+            if (!_state.Clients.Any(x => x.Id != _state.ActiveClient.Id))
+            {
+                _state.SelectedClientString = null;
+            }
+
+            ReleadRemindersCounter();
+            BroadcastStateChange();
         }
     }
 }

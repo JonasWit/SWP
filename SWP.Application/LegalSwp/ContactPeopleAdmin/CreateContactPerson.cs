@@ -6,13 +6,14 @@ using System.Threading.Tasks;
 namespace SWP.Application.LegalSwp.ContactPeopleAdmin
 {
     [TransientService]
-    public class CreateContactPerson
+    public class CreateContactPerson : LegalActionsBase
     {
-        private readonly ILegalManager legalSwpManager;
-        public CreateContactPerson(ILegalManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
+        public CreateContactPerson(ILegalManager legalManager) : base(legalManager)
+        {
+        }
 
         public Task<ClientContactPerson> CreateContactPersonForClient(int clientId, Request request) =>
-            legalSwpManager.CreateClientContactPerson(clientId, new ClientContactPerson
+            _legalManager.CreateClientContactPerson(clientId, new ClientContactPerson
             {
                 Name = request.Name,
                 Surname = request.Surname,
@@ -27,7 +28,7 @@ namespace SWP.Application.LegalSwp.ContactPeopleAdmin
             });
 
         public Task<CaseContactPerson> CreateContactPersonForCase(int clientId, Request request) =>
-            legalSwpManager.CreateCaseContactPerson(clientId, new CaseContactPerson
+            _legalManager.CreateCaseContactPerson(clientId, new CaseContactPerson
             {
                 Name = request.Name,
                 Surname = request.Surname,

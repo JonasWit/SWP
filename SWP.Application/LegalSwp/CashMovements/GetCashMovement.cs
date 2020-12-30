@@ -4,11 +4,12 @@ using SWP.Domain.Models.LegalApp;
 namespace SWP.Application.LegalSwp.CashMovements
 {
     [TransientService]
-    public class GetCashMovement
+    public class GetCashMovement : LegalActionsBase
     {
-        private readonly ILegalManager legalSwpManager;
-        public GetCashMovement(ILegalManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
+        public GetCashMovement(ILegalManager legalManager) : base(legalManager)
+        {
+        }
 
-        public CashMovement Get(int id) => legalSwpManager.GetCashMovement(id);
+        public CashMovement Get(int id) => _legalManager.GetCashMovement(id);
     }
 }

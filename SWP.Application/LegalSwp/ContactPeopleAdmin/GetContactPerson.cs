@@ -4,12 +4,13 @@ using SWP.Domain.Models.LegalApp;
 namespace SWP.Application.LegalSwp.ContactPeopleAdmin
 {
     [TransientService]
-    public class GetContactPerson
+    public class GetContactPerson : LegalActionsBase
     {
-        private readonly ILegalManager legalSwpManager;
-        public GetContactPerson(ILegalManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
+        public GetContactPerson(ILegalManager legalManager) : base(legalManager)
+        {
+        }
 
-        public ClientContactPerson GetForClient(int id) => legalSwpManager.GetClientContactPerson(id);
-        public CaseContactPerson GetForCase(int id) => legalSwpManager.GetCaseContactPerson(id);
+        public ClientContactPerson GetForClient(int id) => _legalManager.GetClientContactPerson(id);
+        public CaseContactPerson GetForCase(int id) => _legalManager.GetCaseContactPerson(id);
     }
 }

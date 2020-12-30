@@ -154,7 +154,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Finance
                     Name = cash.Name,
                     Expense = cash.Expense,
                     Updated = DateTime.Now,
-                    UpdatedBy = MainStore.GetState().User.UserName,
+                    UpdatedBy = MainStore.GetState().AppActiveUserManager.UserName,
                     EventDate = cash.EventDate
                 });
 
@@ -214,9 +214,9 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Finance
                 using var scope = _serviceProvider.CreateScope();
                 var createCashMovement = scope.ServiceProvider.GetRequiredService<CreateCashMovement>();
 
-                request.UpdatedBy = MainStore.GetState().User.UserName;
+                request.UpdatedBy = MainStore.GetState().AppActiveUserManager.UserName;
 
-                var result = await createCashMovement.Create(MainStore.GetState().ActiveClient.Id, MainStore.GetState().User.Profile, request);
+                var result = await createCashMovement.Create(MainStore.GetState().ActiveClient.Id, MainStore.GetState().AppActiveUserManager.ProfileName, request);
 
                 _state.NewCashMovement = new CreateCashMovement.Request();
                 _state.CashMovements.Add(result);

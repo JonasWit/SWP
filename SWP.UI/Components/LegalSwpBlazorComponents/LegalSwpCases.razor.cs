@@ -17,7 +17,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
         [Inject]
         public MainStore MainStore { get; set; }
         [Inject]
-        public CasesStore CasesStore { get; set; }
+        public CasesStore Store { get; set; }
         [Inject]
         public GeneralViewModel Gvm { get; set; }
         [Inject]
@@ -28,8 +28,8 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
         public void Dispose()
         {
             MainStore.RemoveStateChangeListener(RefreshView);
-            CasesStore.RemoveStateChangeListener(UpdateView);
-            CasesStore.CleanUpStore();
+            Store.RemoveStateChangeListener(UpdateView);
+            Store.CleanUpStore();
         }
 
         private void UpdateView() => StateHasChanged();
@@ -42,20 +42,20 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
                 return;
             }
 
-            CasesStore.CleanUpStore();
-            CasesStore.RefreshSore();
+            Store.CleanUpStore();
+            Store.RefreshSore();
             StateHasChanged();
         }
 
         protected override void OnInitialized()
         {
-            CasesStore.EnableLoading(CasesStore.DataLoadingMessage);
+            Store.EnableLoading(Store.DataLoadingMessage);
 
             MainStore.AddStateChangeListener(RefreshView);
-            CasesStore.AddStateChangeListener(UpdateView);
-            CasesStore.Initialize();
+            Store.AddStateChangeListener(UpdateView);
+            Store.Initialize();
 
-            CasesStore.DisableLoading();
+            Store.DisableLoading();
         }
 
         public bool showFirstSection = false;

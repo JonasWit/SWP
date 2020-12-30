@@ -6,13 +6,14 @@ using System.Threading.Tasks;
 namespace SWP.Application.LegalSwp.Cases
 {
     [TransientService]
-    public class CreateCase
+    public class CreateCase : LegalActionsBase
     {
-        private readonly ILegalManager legalSwpManager;
-        public CreateCase(ILegalManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
+        public CreateCase(ILegalManager legalManager) : base(legalManager)
+        {
+        }
 
         public Task<Case> Create(int ClientId, string profile, Request request) => 
-            legalSwpManager.CreateCase(ClientId, profile, new Case
+            _legalManager.CreateCase(ClientId, profile, new Case
             { 
                 Name = request.Name,
                 Signature = string.IsNullOrEmpty(request.Signature) ? "Brak" : request.Signature,

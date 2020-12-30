@@ -4,12 +4,13 @@ using System.Threading.Tasks;
 namespace SWP.Application.LegalSwp.Reminders
 {
     [TransientService]
-    public class DeleteReminder
+    public class DeleteReminder : LegalActionsBase
     {
-        private readonly ILegalManager legalSwpManager;
-        public DeleteReminder(ILegalManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
+        public DeleteReminder(ILegalManager legalManager) : base(legalManager)
+        {
+        }
 
-        public Task<int> Delete(int id) => legalSwpManager.DeleteReminder(id);
+        public Task<int> Delete(int id) => _legalManager.DeleteReminder(id);
 
     }
 }

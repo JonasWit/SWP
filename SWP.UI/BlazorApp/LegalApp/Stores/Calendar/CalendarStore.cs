@@ -64,7 +64,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Calendar
                 }
                 else
                 {
-                    _state.Reminders = getReminders.Get(MainStore.GetState().User.Profile).Select(x => (ReminderViewModel)x).ToList();
+                    _state.Reminders = getReminders.Get(MainStore.GetState().AppActiveUserManager.ProfileName).Select(x => (ReminderViewModel)x).ToList();
                 }
 
                 UpdateRemindersData();

@@ -197,7 +197,7 @@ namespace SWP.DataBase.Managers
                 .Include(x => x.Cases)
                     .ThenInclude(y => y.Reminders)
                 .SelectMany(x => x.Cases.SelectMany(x => x.Reminders))
-                .Where(x => x.Start <= startDate)
+                .Where(x => x.Start <= startDate && x.Start >= DateTime.Now)
                 .ToList();
 
         public List<Reminder> GetUpcomingReminders(string profile, DateTime startDate) =>
@@ -206,7 +206,7 @@ namespace SWP.DataBase.Managers
                 .Include(x => x.Cases)
                     .ThenInclude(y => y.Reminders)
                 .SelectMany(x => x.Cases.SelectMany(x => x.Reminders))
-                .Where(x => x.Start <= startDate)
+                .Where(x => x.Start <= startDate && x.Start >= DateTime.Now)
                 .ToList();
 
         #endregion

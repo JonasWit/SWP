@@ -3,12 +3,10 @@
 namespace SWP.Application.LegalSwp.Notes
 {
     [TransientService]
-    public class GetNotes
+    public class GetNotes : LegalActionsBase
     {
-        private readonly ILegalManager legalSwpManager;
-        public GetNotes(ILegalManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
-
-
-
+        public GetNotes(ILegalManager legalManager) : base(legalManager)
+        {
+        }
     }
 }

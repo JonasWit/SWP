@@ -566,7 +566,7 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Users
                 var createLicense = scope.ServiceProvider.GetRequiredService<CreateLicense>();
 
                 request.UserId = _state.SelectedUser.Id;
-                request.CreatedBy = AppStore.GetState().User.UserName;
+                request.CreatedBy = AppStore.GetState().AppActiveUserManager.UserName;
 
                 var result = await createLicense.Create(request);
                 _state.NewLicense = new CreateLicense.Request();
@@ -604,7 +604,7 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Users
                 var updateLicense = scope.ServiceProvider.GetRequiredService<UpdateLicense>();
 
                 userLicense.Updated = DateTime.Now;
-                userLicense.UpdatedBy = AppStore.GetState().User.UserName;
+                userLicense.UpdatedBy = AppStore.GetState().AppActiveUserManager.UserName;
 
                 var result = await updateLicense.Update(userLicense);
 

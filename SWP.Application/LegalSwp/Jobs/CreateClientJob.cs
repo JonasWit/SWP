@@ -7,13 +7,14 @@ using System.Threading.Tasks;
 namespace SWP.Application.LegalSwp.Jobs
 {
     [TransientService]
-    public class CreateClientJob
+    public class CreateClientJob : LegalActionsBase
     {
-        private readonly ILegalManager legalSwpManager;
-        public CreateClientJob(ILegalManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
+        public CreateClientJob(ILegalManager legalManager) : base(legalManager)
+        {
+        }
 
         public Task<ClientJob> Create(Request request) => 
-            legalSwpManager.CreateClientJob(request.ClientId, new ClientJob
+            _legalManager.CreateClientJob(request.ClientId, new ClientJob
             {
                 Active = true,
                 Priority = request.Priority,

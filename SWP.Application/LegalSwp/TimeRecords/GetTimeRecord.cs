@@ -4,11 +4,12 @@ using SWP.Domain.Models.LegalApp;
 namespace SWP.Application.LegalSwp.TimeRecords
 {
     [TransientService]
-    public class GetTimeRecord
+    public class GetTimeRecord : LegalActionsBase
     {
-        private readonly ILegalManager legalSwpManager;
-        public GetTimeRecord(ILegalManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
+        public GetTimeRecord(ILegalManager legalManager) : base(legalManager)
+        {
+        }
 
-        public TimeRecord Get(int id) => legalSwpManager.GetTimeRecord(id);
+        public TimeRecord Get(int id) => _legalManager.GetTimeRecord(id);
     }
 }

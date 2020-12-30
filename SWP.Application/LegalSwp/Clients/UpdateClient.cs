@@ -6,14 +6,15 @@ using System.Threading.Tasks;
 namespace SWP.Application.LegalSwp.Clients
 {
     [TransientService]
-    public class UpdateClient
+    public class UpdateClient : LegalActionsBase
     {
-        private readonly ILegalManager legalSwpManager;
-        public UpdateClient(ILegalManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
+        public UpdateClient(ILegalManager legalManager) : base(legalManager)
+        {
+        }
 
         public Task<Client> Update(Request request)
         {
-            var record = legalSwpManager.GetClient(request.Id);
+            var record = _legalManager.GetClient(request.Id);
 
             record.Address = request.Address;
             record.Active = request.Active;
@@ -23,7 +24,7 @@ namespace SWP.Application.LegalSwp.Clients
             record.Updated = System.DateTime.Now;
             record.UpdatedBy = request.UpdatedBy;
 
-            return legalSwpManager.UpdateClient(record);
+            return _legalManager.UpdateClient(record);
         }          
 
         public class Request

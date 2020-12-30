@@ -6,13 +6,14 @@ using System.Threading.Tasks;
 namespace SWP.Application.LegalSwp.TimeRecords
 {
     [TransientService]
-    public class CreateTimeRecord
+    public class CreateTimeRecord : LegalActionsBase
     {
-        private readonly ILegalManager legalSwpManager;
-        public CreateTimeRecord(ILegalManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
+        public CreateTimeRecord(ILegalManager legalManager) : base(legalManager)
+        {
+        }
 
         public Task<TimeRecord> Create(int clientId, string profile, Request request) =>
-            legalSwpManager.CreateTimeRecord(clientId, profile, new TimeRecord
+            _legalManager.CreateTimeRecord(clientId, profile, new TimeRecord
             {
                 Lawyer = request.Lawyer,
                 Rate = request.Rate,

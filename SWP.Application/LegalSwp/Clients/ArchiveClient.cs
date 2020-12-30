@@ -4,14 +4,15 @@ using System.Threading.Tasks;
 namespace SWP.Application.LegalSwp.Clients
 {
     [TransientService]
-    public class ArchiveClient
+    public class ArchiveClient : LegalActionsBase
     {
-        private readonly ILegalManager legalSwpManager;
-        public ArchiveClient(ILegalManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
+        public ArchiveClient(ILegalManager legalManager) : base(legalManager)
+        {
+        }
 
-        public int CountAllArchivedClients() => legalSwpManager.CountArchivedClients();
+        public int CountAllArchivedClients() => _legalManager.CountArchivedClients();
 
-        public Task<int> ArchivizeClient(int clientId, string user) => legalSwpManager.ArchivizeClient(clientId, user);
-        public Task<int> RecoverClient(int clientId, string user) => legalSwpManager.RecoverClient(clientId, user);
+        public Task<int> ArchivizeClient(int clientId, string user) => _legalManager.ArchivizeClient(clientId, user);
+        public Task<int> RecoverClient(int clientId, string user) => _legalManager.RecoverClient(clientId, user);
     }
 }

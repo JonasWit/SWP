@@ -8,12 +8,13 @@ using System.Threading.Tasks;
 namespace SWP.Application.LegalSwp.Clients
 {
     [TransientService]
-    public class CreateClient
+    public class CreateClient : LegalActionsBase
     {
-        private readonly ILegalManager legalSwpManager;
-        public CreateClient(ILegalManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
+        public CreateClient(ILegalManager legalManager) : base(legalManager)
+        {
+        }
 
-        public Task<Client> Do(Request request) => legalSwpManager.CreateClient(new Client
+        public Task<Client> Do(Request request) => _legalManager.CreateClient(new Client
         {
             Name = request.Name,
             Active = true,

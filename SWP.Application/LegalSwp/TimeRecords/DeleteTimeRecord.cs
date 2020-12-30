@@ -4,11 +4,12 @@ using System.Threading.Tasks;
 namespace SWP.Application.LegalSwp.TimeRecords
 {
     [TransientService]
-    public class DeleteTimeRecord
+    public class DeleteTimeRecord : LegalActionsBase
     {
-        private readonly ILegalManager legalSwpManager;
-        public DeleteTimeRecord(ILegalManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
+        public DeleteTimeRecord(ILegalManager legalManager) : base(legalManager)
+        {
+        }
 
-        public Task<int> Delete(int id) => legalSwpManager.DeleteTimeRecord(id);
+        public Task<int> Delete(int id) => _legalManager.DeleteTimeRecord(id);
     }
 }

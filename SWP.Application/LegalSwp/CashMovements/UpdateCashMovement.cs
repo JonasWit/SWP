@@ -6,14 +6,15 @@ using System.Threading.Tasks;
 namespace SWP.Application.LegalSwp.CashMovements
 {
     [TransientService]
-    public class UpdateCashMovement
+    public class UpdateCashMovement : LegalActionsBase
     {
-        private readonly ILegalManager legalSwpManager;
-        public UpdateCashMovement(ILegalManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
+        public UpdateCashMovement(ILegalManager legalManager) : base(legalManager)
+        {
+        }
 
         public Task<CashMovement> Update(Request request)
         {
-            var c = legalSwpManager.GetCashMovement(request.Id);
+            var c = _legalManager.GetCashMovement(request.Id);
             double amount = request.Expense ? (Math.Abs(request.Amount) * (-1)) : request.Amount;
 
             c.Name = request.Name;
@@ -23,7 +24,7 @@ namespace SWP.Application.LegalSwp.CashMovements
             c.UpdatedBy = request.UpdatedBy;
             c.EventDate = request.EventDate;
 
-            return legalSwpManager.UpdateCashMovement(c);
+            return _legalManager.UpdateCashMovement(c);
         }
 
         public class Request

@@ -5,13 +5,14 @@ using System.Collections.Generic;
 namespace SWP.Application.LegalSwp.ContactPeopleAdmin
 {
     [TransientService]
-    public class GetContactPeople
+    public class GetContactPeople : LegalActionsBase
     {
-        private readonly ILegalManager legalSwpManager;
-        public GetContactPeople(ILegalManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
+        public GetContactPeople(ILegalManager legalManager) : base(legalManager)
+        {
+        }
 
-        public List<ClientContactPerson> GetClientContactPeople(int clientId) => legalSwpManager.GetContactPeopleForClient(clientId);
+        public List<ClientContactPerson> GetClientContactPeople(int clientId) => _legalManager.GetContactPeopleForClient(clientId);
 
-        public List<CaseContactPerson> GetCaseContactPeople(int caseId) => legalSwpManager.GetContactPeopleForCase(caseId);
+        public List<CaseContactPerson> GetCaseContactPeople(int caseId) => _legalManager.GetContactPeopleForCase(caseId);
     }
 }

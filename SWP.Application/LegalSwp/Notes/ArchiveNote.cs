@@ -5,12 +5,13 @@ using System.Threading.Tasks;
 namespace SWP.Application.LegalSwp.Notes
 {
     [TransientService]
-    public class ArchiveNote
+    public class ArchiveNote : LegalActionsBase
     {
-        private readonly ILegalManager legalSwpManager;
-        public ArchiveNote(ILegalManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
+        public ArchiveNote(ILegalManager legalManager) : base(legalManager)
+        {
+        }
 
-        public Task<int> ArchivizeNore(int noteId, string user) => legalSwpManager.ArchivizeNote(noteId, user);
-        public Note RecoverClientJob(int noteId, string user) => legalSwpManager.RecoverNote(noteId, user);
+        public Task<int> ArchivizeNore(int noteId, string user) => _legalManager.ArchivizeNote(noteId, user);
+        public Note RecoverClientJob(int noteId, string user) => _legalManager.RecoverNote(noteId, user);
     }
 }

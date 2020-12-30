@@ -5,11 +5,12 @@ using System.Collections.Generic;
 namespace SWP.Application.LegalSwp.CashMovements
 {
     [TransientService]
-    public class GetCashMovements
+    public class GetCashMovements : LegalActionsBase
     {
-        private readonly ILegalManager legalSwpManager;
-        public GetCashMovements(ILegalManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
+        public GetCashMovements(ILegalManager legalManager) : base(legalManager)
+        {
+        }
 
-        public List<CashMovement> Get(int clientId) => legalSwpManager.GetCashMovementsForClient(clientId);
+        public List<CashMovement> Get(int clientId) => _legalManager.GetCashMovementsForClient(clientId);
     }
 }

@@ -4,12 +4,13 @@ using System.Threading.Tasks;
 namespace SWP.Application.LegalSwp.ContactPeopleAdmin
 {
     [TransientService]
-    public class DeleteContactPerson
+    public class DeleteContactPerson : LegalActionsBase
     {
-        private readonly ILegalManager legalSwpManager;
-        public DeleteContactPerson(ILegalManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
+        public DeleteContactPerson(ILegalManager legalManager) : base(legalManager)
+        {
+        }
 
-        public Task<int> DeleteForClient(int id) => legalSwpManager.DeleteClientContactPerson(id);
-        public Task<int> DeleteForCase(int id) => legalSwpManager.DeleteCaseContactPerson(id);
+        public Task<int> DeleteForClient(int id) => _legalManager.DeleteClientContactPerson(id);
+        public Task<int> DeleteForCase(int id) => _legalManager.DeleteCaseContactPerson(id);
     }
 }

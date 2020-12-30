@@ -7,14 +7,15 @@ using System.Threading.Tasks;
 namespace SWP.Application.LegalSwp.Notes
 {
     [TransientService]
-    public class UpdateNote
+    public class UpdateNote : LegalActionsBase
     {
-        private readonly ILegalManager legalSwpManager;
-        public UpdateNote(ILegalManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
+        public UpdateNote(ILegalManager legalManager) : base(legalManager)
+        {
+        }
 
         public Task<Note> Update(Request request)
         {
-            var note = legalSwpManager.GetNote(request.Id);
+            var note = _legalManager.GetNote(request.Id);
 
             note.Name = request.Name;
             note.Priority = request.Priority;
@@ -23,7 +24,7 @@ namespace SWP.Application.LegalSwp.Notes
             note.Message = request.Message;
             note.UpdatedBy = request.UpdatedBy;
 
-            return legalSwpManager.UpdateNote(note);
+            return _legalManager.UpdateNote(note);
         }
 
         public class Request

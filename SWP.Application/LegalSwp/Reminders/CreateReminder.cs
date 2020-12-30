@@ -7,13 +7,14 @@ using System.Threading.Tasks;
 namespace SWP.Application.LegalSwp.Reminders
 {
     [TransientService]
-    public class CreateReminder
+    public class CreateReminder : LegalActionsBase
     {
-        private readonly ILegalManager legalSwpManager;
-        public CreateReminder(ILegalManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
+        public CreateReminder(ILegalManager legalManager) : base(legalManager)
+        {
+        }
 
         public Task<Reminder> Create(int caseId, Request request) =>
-            legalSwpManager.CreateReminder(caseId, new Reminder
+            _legalManager.CreateReminder(caseId, new Reminder
             {
                 Name = request.Name,
                 Start = request.Start,

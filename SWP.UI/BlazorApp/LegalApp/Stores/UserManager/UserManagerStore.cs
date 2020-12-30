@@ -61,7 +61,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.UserManager
             var input = (string)value;
             if (value != null)
             {
-                _state.SelectedUser = MainStore.GetState().User.RelatedUsers.FirstOrDefault(x => x.Id == input);
+                _state.SelectedUser = MainStore.GetState().AppActiveUserManager.RelatedUsers.FirstOrDefault(x => x.Id == input);
             }
             else
             {
@@ -76,13 +76,13 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.UserManager
                 using var scope = _serviceProvider.CreateScope();
                 var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
 
-                var profileClaim = MainStore.GetState().User.ProfileClaim;
-                var selectedUser = MainStore.GetState().User.RelatedUsers.FirstOrDefault(x => x.Id == _state.SelectedUser.Id);
+                var profileClaim = MainStore.GetState().AppActiveUserManager.ProfileClaim;
+                var selectedUser = MainStore.GetState().AppActiveUserManager.RelatedUsers.FirstOrDefault(x => x.Id == _state.SelectedUser.Id);
                 var userToRemove = await userManager.FindByIdAsync(_state.SelectedUser.Id);
 
                 var result = await userManager.RemoveClaimAsync(userToRemove, profileClaim);
 
-                _state.SelectedUser = MainStore.GetState().User.User;
+                _state.SelectedUser = MainStore.GetState().AppActiveUserManager.User;
                 await MainStore.RefreshRelatedUsers();
 
                 ShowNotification(NotificationSeverity.Success, "Sukces!", $"Użytkownik: {userToRemove.UserName} został usunięty z profilu {profileClaim.Value}.", GeneralViewModel.NotificationDuration);
@@ -103,7 +103,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.UserManager
                 //todo: uncomment this and test
                 //await deleteClient.Delete(MainStore.GetState().User.Profile);
 
-                ShowNotification(NotificationSeverity.Success, "Sukces!", $"Usunięto wszystkie dane powiązane z profilem: {MainStore.GetState().User.Profile}", GeneralViewModel.NotificationDuration);
+                ShowNotification(NotificationSeverity.Success, "Sukces!", $"Usunięto wszystkie dane powiązane z profilem: {MainStore.GetState().AppActiveUserManager.ProfileName}", GeneralViewModel.NotificationDuration);
                 BroadcastStateChange();
             }
             catch (Exception ex)

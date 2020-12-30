@@ -6,13 +6,14 @@ using System.Threading.Tasks;
 namespace SWP.Application.LegalSwp.CashMovements
 {
     [TransientService]
-    public class CreateCashMovement
+    public class CreateCashMovement : LegalActionsBase
     {
-        private readonly ILegalManager legalSwpManager;
-        public CreateCashMovement(ILegalManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
+        public CreateCashMovement(ILegalManager legalManager) : base(legalManager)
+        {
+        }
 
         public Task<CashMovement> Create(int clientId, string profile, Request request) =>
-            legalSwpManager.CreateCashMovement(clientId, profile, new CashMovement
+            _legalManager.CreateCashMovement(clientId, profile, new CashMovement
             {
                 Name = request.Name,
                 Amount = request.Expense ? request.ExpenseAmount : request.ResultAmount,

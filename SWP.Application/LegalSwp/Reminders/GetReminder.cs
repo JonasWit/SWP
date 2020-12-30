@@ -4,11 +4,12 @@ using SWP.Domain.Models.LegalApp;
 namespace SWP.Application.LegalSwp.Reminders
 {
     [TransientService]
-    public class GetReminder
+    public class GetReminder : LegalActionsBase
     {
-        private readonly ILegalManager legalSwpManager;
-        public GetReminder(ILegalManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
+        public GetReminder(ILegalManager legalManager) : base(legalManager)
+        {
+        }
 
-        public Reminder Get(int id) => legalSwpManager.GetReminder(id);
+        public Reminder Get(int id) => _legalManager.GetReminder(id);
     }
 }

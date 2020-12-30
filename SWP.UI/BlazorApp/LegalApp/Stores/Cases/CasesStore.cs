@@ -208,8 +208,8 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
                 using var scope = _serviceProvider.CreateScope();
                 var createCase = scope.ServiceProvider.GetRequiredService<CreateCase>();
 
-                request.UpdatedBy = MainStore.GetState().User.UserName;
-                var result = await createCase.Create(MainStore.GetState().ActiveClient.Id, MainStore.GetState().User.Profile, request);
+                request.UpdatedBy = MainStore.GetState().AppActiveUserManager.UserName;
+                var result = await createCase.Create(MainStore.GetState().ActiveClient.Id, MainStore.GetState().AppActiveUserManager.ProfileName, request);
                 _state.NewCase = new CreateCase.Request();
 
                 AddCaseToActiveClient(result);
@@ -240,7 +240,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
                     Description = c.Description,
                     Name = c.Name,
                     Signature = c.Signature,
-                    UpdatedBy = MainStore.GetState().User.UserName
+                    UpdatedBy = MainStore.GetState().AppActiveUserManager.UserName
                 });
 
                 ReplaceCaseFromActiveClient(result);
@@ -319,7 +319,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
                 var archiveCase = scope.ServiceProvider.GetRequiredService<ArchiveCases>();
 
                 _state.Cases.RemoveAll(x => x.Id == c.Id);
-                await archiveCase.ArchivizeCase(c.Id, MainStore.GetState().User.UserName);
+                await archiveCase.ArchivizeCase(c.Id, MainStore.GetState().AppActiveUserManager.UserName);
 
                 await _state.CasesGrid.Reload();
                 ShowNotification(NotificationSeverity.Success, "Sukces!", $"Sprawa: {c.Name} została zarchwizowana", GeneralViewModel.NotificationDuration);
@@ -373,7 +373,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
                 using var scope = _serviceProvider.CreateScope();
                 var createNote = scope.ServiceProvider.GetRequiredService<CreateNote>();
 
-                request.UpdatedBy = MainStore.GetState().User.UserName;
+                request.UpdatedBy = MainStore.GetState().AppActiveUserManager.UserName;
                 var result = await createNote.Create(_state.SelectedCase.Id, request);
 
                 _state.NewNote = new CreateNote.Request();
@@ -405,7 +405,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
                     Message = note.Message,
                     Name = note.Name,
                     Priority = note.Priority,
-                    UpdatedBy = MainStore.GetState().User.UserName
+                    UpdatedBy = MainStore.GetState().AppActiveUserManager.UserName
                 });
 
                 ReplaceNoteFromActiveCase(result);
@@ -467,7 +467,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
 
                 if (result != null)
                 {
-                    result.UpdatedBy = MainStore.GetState().User.UserName;
+                    result.UpdatedBy = MainStore.GetState().AppActiveUserManager.UserName;
 
                     var newReminder = await createReminder.Create(_state.SelectedCase.Id, new CreateReminder.Request
                     {
@@ -528,7 +528,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
                             Start = result.Start,
                             End = result.End < result.Start ? result.Start : result.End,
                             Updated = DateTime.Now,
-                            UpdatedBy = MainStore.GetState().User.UserName
+                            UpdatedBy = MainStore.GetState().AppActiveUserManager.UserName
                         });
 
                         RemoveReminderFromActiveCase(updatedReminder.Id);
@@ -584,7 +584,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
                     PhoneNumber = contact.PhoneNumber,
                     AlternativePhoneNumber = contact.AlternativePhoneNumber,
                     Updated = DateTime.Now,
-                    UpdatedBy = MainStore.GetState().User.UserName
+                    UpdatedBy = MainStore.GetState().AppActiveUserManager.UserName
                 });
 
                 ReplaceContactFromActiveCase(result);
@@ -630,7 +630,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
 
         private async Task SubmitNewContact(CreateContactPerson.Request request)
         {
-            request.UpdatedBy = MainStore.GetState().User.UserName;
+            request.UpdatedBy = MainStore.GetState().AppActiveUserManager.UserName;
 
             try
             {

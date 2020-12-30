@@ -1,7 +1,7 @@
 ﻿
-@if (CasesStore.Loading)
+@if (Store.Loading)
 {
-    <LoaderComponent Message="@CasesStore.LoadingMessage"></LoaderComponent>
+    <LoaderComponent Message="@Store.LoadingMessage"></LoaderComponent>
 }
 else
 {
@@ -9,7 +9,7 @@ else
         <div class="show-hide tab-section"><button class="show-hide-btn show-hide-btn-1"><span>Dodaj Sprawę</span></button></div>
         <div class="row-section">
 
-            <RadzenTemplateForm Data="@CasesStore.GetState().NewCase" Submit="@((CreateCase.Request args) => CreateNewCase(args))">
+            <RadzenTemplateForm Data="@Store.GetState().NewCase" Submit="@((CreateCase.Request args) => CreateNewCase(args))">
 
                 <RadzenFieldset Text="Nowa Sprawa">
                     <div class="help-box">
@@ -30,7 +30,7 @@ else
                             <div class="label">
                                 <RadzenLabel Text="Nazwa" />
                             </div>
-                            <RadzenTextBox Placeholder="Nazwa Sprawy..." @bind-Value="CasesStore.GetState().NewCase.Name" Name="Name" style="@(Gvm.FormInputBoxWidth)" />
+                            <RadzenTextBox Placeholder="Nazwa Sprawy..." @bind-Value="Store.GetState().NewCase.Name" Name="Name" style="@(Gvm.FormInputBoxWidth)" />
                             <RadzenRequiredValidator Component="Name" Text="Name cannot be empty!" />
                             <RadzenLengthValidator Max="50" Text="Max 50 characters!" Component="Name" />
                         </div>
@@ -39,7 +39,7 @@ else
                             <div class="label">
                                 <RadzenLabel Text="Sygnatura" />
                             </div>
-                            <RadzenTextBox Placeholder="Sygnatura..." @bind-Value="CasesStore.GetState().NewCase.Signature" Name="Signature" style="@(Gvm.FormInputBoxWidth)" />
+                            <RadzenTextBox Placeholder="Sygnatura..." @bind-Value="Store.GetState().NewCase.Signature" Name="Signature" style="@(Gvm.FormInputBoxWidth)" />
                         </div>
                     </div>
                     <div class="form">
@@ -48,14 +48,14 @@ else
                             <div class="label">
                                 <RadzenLabel Text="Opis" />
                             </div>
-                            <RadzenTextArea Placeholder="Opis..." @bind-Value="CasesStore.GetState().NewCase.Description" Name="Description" style="@(Gvm.FormInputBoxWidth)" />
+                            <RadzenTextArea Placeholder="Opis..." @bind-Value="Store.GetState().NewCase.Description" Name="Description" style="@(Gvm.FormInputBoxWidth)" />
                             <RadzenLengthValidator Max="500" Text="Max 500 characters!" Component="Description" />
                         </div>
                         <div class="text">
                             <div class="label">
                                 <RadzenLabel Text="Typ Sprawy" />
                             </div>
-                            <RadzenTextArea Placeholder="Typ Sprawy..." @bind-Value="CasesStore.GetState().NewCase.CaseType" Name="CaseType" style="@(Gvm.FormInputBoxWidth)" />
+                            <RadzenTextArea Placeholder="Typ Sprawy..." @bind-Value="Store.GetState().NewCase.CaseType" Name="CaseType" style="@(Gvm.FormInputBoxWidth)" />
                         </div>
                     </div>
                     <div class="form-btn">
@@ -83,8 +83,8 @@ else
                 <button class="info" @onclick="ShowHideInfoBoxII"></button>
             </div>
             <div class="row-section">
-                <RadzenGrid @ref="CasesStore.GetState().CasesGrid" AllowFiltering="true" AllowPaging="true" PageSize="5" AllowSorting="true"
-                            Data="@CasesStore.GetState().Cases" TItem="CaseViewModel" RowUpdate="@OnUpdateCaseRow" RowSelect="@(args => ActiveCaseChange(args))">
+                <RadzenGrid @ref="Store.GetState().CasesGrid" AllowFiltering="true" AllowPaging="true" PageSize="5" AllowSorting="true"
+                            Data="@Store.GetState().Cases" TItem="CaseViewModel" RowUpdate="@OnUpdateCaseRow" RowSelect="@(args => ActiveCaseChange(args))">
                     <Columns>
                         <RadzenGridColumn TItem="CaseViewModel" Property="Name" Title="Nazwa Sprawy">
                             <Template Context="cs">
@@ -159,15 +159,15 @@ else
             </div>
         </div>
 
-        @if (CasesStore.GetState().SelectedCase != null)
+        @if (Store.GetState().SelectedCase != null)
         {
             <div class="details">
-                <p><strong>Nazwa:</strong> @CasesStore.GetState().SelectedCase.Name</p>
-                <p><strong>Sygnatura:</strong> @CasesStore.GetState().SelectedCase.Signature</p>
-                <p><strong>Data utworzenia:</strong> @CasesStore.GetState().SelectedCase.Created</p>
-                <p><strong>Typ Sprawy:</strong> @CasesStore.GetState().SelectedCase.CaseType</p>
-                <p><strong>Opis:</strong> @CasesStore.GetState().SelectedCase.Description</p>
-                <p><strong>Data zmiany:</strong> @CasesStore.GetState().SelectedCase.Updated</p>
+                <p><strong>Nazwa:</strong> @Store.GetState().SelectedCase.Name</p>
+                <p><strong>Sygnatura:</strong> @Store.GetState().SelectedCase.Signature</p>
+                <p><strong>Data utworzenia:</strong> @Store.GetState().SelectedCase.Created</p>
+                <p><strong>Typ Sprawy:</strong> @Store.GetState().SelectedCase.CaseType</p>
+                <p><strong>Opis:</strong> @Store.GetState().SelectedCase.Description</p>
+                <p><strong>Data zmiany:</strong> @Store.GetState().SelectedCase.Updated</p>
             </div>
 
             @*<h3>Aktywna sprawa - @App.ActiveClientWithData.SelectedCase.Name</h3>*@
@@ -177,9 +177,9 @@ else
                     <Tabs>
                         <div>
                             <RadzenTabsItem Text="Kalendarz Sprawy">
-                                <RadzenScheduler @ref="CasesStore.GetState().CasesScheduler" style="height: 768px;"
+                                <RadzenScheduler @ref="Store.GetState().CasesScheduler" style="height: 768px;"
                                                  TItem="ReminderViewModel"
-                                                 Data="@CasesStore.GetState().SelectedCase.Reminders"
+                                                 Data="@Store.GetState().SelectedCase.Reminders"
                                                  StartProperty="Start"
                                                  EndProperty="End"
                                                  TextProperty="DisplayTextShort"
@@ -199,7 +199,7 @@ else
                         <div>
                             <RadzenTabsItem Text="Notatki">
                                 <div>
-                                    <RadzenTemplateForm Data="@CasesStore.GetState().NewNote" Submit="@((CreateNote.Request args) => CreateNewNote(args))">
+                                    <RadzenTemplateForm Data="@Store.GetState().NewNote" Submit="@((CreateNote.Request args) => CreateNewNote(args))">
 
                                         <RadzenFieldset Text="Dodaj notatkę">
                                             <div class="form">
@@ -207,7 +207,7 @@ else
                                                     <div class="label">
                                                         <RadzenLabel Text="Tytuł" />
                                                     </div>
-                                                    <RadzenTextBox Placeholder="Tytuł..." style="@(Gvm.FormInputBoxWidth)" @bind-Value="CasesStore.GetState().NewNote.Name" Name="Name" />
+                                                    <RadzenTextBox Placeholder="Tytuł..." style="@(Gvm.FormInputBoxWidth)" @bind-Value="Store.GetState().NewNote.Name" Name="Name" />
                                                     <RadzenRequiredValidator Component="Name" Text="Name cannot be empty!" />
                                                     <RadzenLengthValidator Max="50" Text="Max 50 characters!" Component="Name" />
                                                 </div>
@@ -215,7 +215,7 @@ else
                                                     <div class="label">
                                                         <RadzenLabel Text="Notatka" />
                                                     </div>
-                                                    <RadzenTextArea Placeholder="Message..." style="@(Gvm.FormInputBoxWidth)" @bind-Value="CasesStore.GetState().NewNote.Message" Name="Message" />
+                                                    <RadzenTextArea Placeholder="Message..." style="@(Gvm.FormInputBoxWidth)" @bind-Value="Store.GetState().NewNote.Message" Name="Message" />
                                                     <RadzenLengthValidator Max="500" Text="Max 500 characters!" Component="Message" />
                                                 </div>
 
@@ -232,8 +232,8 @@ else
                                 </div>
                                 <div>
                                     <div>
-                                        <RadzenGrid @ref="CasesStore.GetState().NotesGrid" AllowFiltering="true" AllowPaging="true" PageSize="10" AllowSorting="true" RowSelect="@(args => ActiveNoteChange(args))"
-                                                    Data="@CasesStore.GetState().SelectedCase.Notes" TItem="NoteViewModel" RowUpdate="@OnUpdateNoteRow">
+                                        <RadzenGrid @ref="Store.GetState().NotesGrid" AllowFiltering="true" AllowPaging="true" PageSize="10" AllowSorting="true" RowSelect="@(args => ActiveNoteChange(args))"
+                                                    Data="@Store.GetState().SelectedCase.Notes" TItem="NoteViewModel" RowUpdate="@OnUpdateNoteRow">
                                             <Columns>
                                                 <RadzenGridColumn TItem="NoteViewModel" Property="Name" Title="Nazwa">
                                                     <Template Context="note">
@@ -279,11 +279,11 @@ else
                                         </RadzenGrid>
                                     </div>
 
-                                    @if (CasesStore.GetState().SelectedCase != null && CasesStore.GetState().SelectedNote != null)
+                                    @if (Store.GetState().SelectedCase != null && Store.GetState().SelectedNote != null)
                                     {
                                         <div class="details">
-                                            <p><strong>Tytuł: </strong>@CasesStore.GetState().SelectedNote.Name</p>
-                                            <p><strong>Treść: </strong>@CasesStore.GetState().SelectedNote.Message</p>
+                                            <p><strong>Tytuł: </strong>@Store.GetState().SelectedNote.Name</p>
+                                            <p><strong>Treść: </strong>@Store.GetState().SelectedNote.Message</p>
 
                                         </div>
                                     }
@@ -293,7 +293,7 @@ else
                         </div>
 
                         <RadzenTabsItem Text="Osoby Kontaktowe">
-                            <RadzenTemplateForm Data="@CasesStore.GetState().NewContact" Submit="@((CreateContactPerson.Request args) => SubmitNewContact(args))">
+                            <RadzenTemplateForm Data="@Store.GetState().NewContact" Submit="@((CreateContactPerson.Request args) => SubmitNewContact(args))">
                                 <RadzenFieldset Text="Osoba Kontaktowa">
                                     <div class="help-box">
                                         <i class="user-icon"><img src="/Images/icons8-reception-36.png" /></i>
@@ -313,7 +313,7 @@ else
                                             <div class="label">
                                                 <RadzenLabel Text="Imię" />
                                             </div>
-                                            <RadzenTextArea Placeholder="Imię..." @bind-Value="CasesStore.GetState().NewContact.Name" style="@(Gvm.FormInputBoxWidth)" Name="Name" />
+                                            <RadzenTextArea Placeholder="Imię..." @bind-Value="Store.GetState().NewContact.Name" style="@(Gvm.FormInputBoxWidth)" Name="Name" />
                                             <RadzenRequiredValidator Component="Name" Text="Name cannot be empty!" />
                                             <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Name" />
                                         </div>
@@ -321,7 +321,7 @@ else
                                             <div class="label">
                                                 <RadzenLabel Text="Nazwisko" />
                                             </div>
-                                            <RadzenTextArea Placeholder="Nazwisko..." @bind-Value="CasesStore.GetState().NewContact.Surname" style="@(Gvm.FormInputBoxWidth)" Name="Surname" />
+                                            <RadzenTextArea Placeholder="Nazwisko..." @bind-Value="Store.GetState().NewContact.Surname" style="@(Gvm.FormInputBoxWidth)" Name="Surname" />
                                             <RadzenRequiredValidator Component="Surname" Text="Name cannot be empty!" />
                                             <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Surname" />
                                         </div>
@@ -329,7 +329,7 @@ else
                                             <div class="label">
                                                 <RadzenLabel Text="Adres" />
                                             </div>
-                                            <RadzenTextArea Placeholder="Adres..." @bind-Value="CasesStore.GetState().NewContact.Address" style="@(Gvm.FormInputBoxWidth)" Name="Address" />
+                                            <RadzenTextArea Placeholder="Adres..." @bind-Value="Store.GetState().NewContact.Address" style="@(Gvm.FormInputBoxWidth)" Name="Address" />
                                             <RadzenLengthValidator Max="500" Text="Maksymalnie 500 znaków!" Component="Address" />
                                         </div>
                                     </div>
@@ -338,21 +338,21 @@ else
                                             <div class="label">
                                                 <RadzenLabel Text="Telefon" />
                                             </div>
-                                            <RadzenTextBox Placeholder="Telefon..." @bind-Value="CasesStore.GetState().NewContact.PhoneNumber" style="@(Gvm.FormInputBoxWidth)" Name="PhoneNumber1" />
+                                            <RadzenTextBox Placeholder="Telefon..." @bind-Value="Store.GetState().NewContact.PhoneNumber" style="@(Gvm.FormInputBoxWidth)" Name="PhoneNumber1" />
                                             <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="PhoneNumber1" />
                                         </div>
                                         <div class="text">
                                             <div class="label">
                                                 <RadzenLabel Text="Telefon2" />
                                             </div>
-                                            <RadzenTextBox Placeholder="Telefon..." @bind-Value="CasesStore.GetState().NewContact.AlternativePhoneNumber" style="@(Gvm.FormInputBoxWidth)" Name="PhoneNumber2" />
+                                            <RadzenTextBox Placeholder="Telefon..." @bind-Value="Store.GetState().NewContact.AlternativePhoneNumber" style="@(Gvm.FormInputBoxWidth)" Name="PhoneNumber2" />
                                             <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="PhoneNumber2" />
                                         </div>
                                         <div class="text">
                                             <div class="label">
                                                 <RadzenLabel Text="Email" />
                                             </div>
-                                            <RadzenTextBox Placeholder="Adres Email..." @bind-Value="CasesStore.GetState().NewContact.Email" style="@(Gvm.FormInputBoxWidth)" Name="Email" />
+                                            <RadzenTextBox Placeholder="Adres Email..." @bind-Value="Store.GetState().NewContact.Email" style="@(Gvm.FormInputBoxWidth)" Name="Email" />
                                             <RadzenEmailValidator Component="Email" Text="Nieprawidłowy adres Email!" />
                                             <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Email" />
                                         </div>
@@ -366,8 +366,8 @@ else
                                 </RadzenFieldset>
                             </RadzenTemplateForm>
 
-                            <RadzenGrid @ref="CasesStore.GetState().ContactsGrid" AllowFiltering="true" AllowPaging="true" PageSize="10" AllowSorting="true"
-                                        Data="@CasesStore.GetState().SelectedCase.ContactPeople" TItem="ContactPersonViewModel" RowUpdate="@OnUpdateContactRow" RowSelect="@(args => ContactSelected(args))">
+                            <RadzenGrid @ref="Store.GetState().ContactsGrid" AllowFiltering="true" AllowPaging="true" PageSize="10" AllowSorting="true"
+                                        Data="@Store.GetState().SelectedCase.ContactPeople" TItem="ContactPersonViewModel" RowUpdate="@OnUpdateContactRow" RowSelect="@(args => ContactSelected(args))">
                                 <Columns>
                                     <RadzenGridColumn TItem="ContactPersonViewModel" Property="Name" Title="Nazwa">
                                         <Template Context="contact">
@@ -450,18 +450,18 @@ else
                                 </Columns>
                             </RadzenGrid>
 
-                            @if (CasesStore.GetState().SelectedContact != null)
+                            @if (Store.GetState().SelectedContact != null)
                             {
                                 <div class="details">
-                                    <p><strong>Imię:</strong> @CasesStore.GetState().SelectedContact.Name</p>
-                                    <p><strong>Nazwisko:</strong> @CasesStore.GetState().SelectedContact.Surname</p>
-                                    <p><strong>Adres:</strong> @CasesStore.GetState().SelectedContact.Address</p>
-                                    <p><strong>Telefon 1:</strong> @CasesStore.GetState().SelectedContact.PhoneNumber</p>
-                                    <p><strong>Telefon 2:</strong> @CasesStore.GetState().SelectedContact.AlternativePhoneNumber</p>
-                                    <p><strong>Email:</strong> @CasesStore.GetState().SelectedContact.Email</p>
-                                    <p><strong>Zmienione przez:</strong> @CasesStore.GetState().SelectedContact.UpdatedBy</p>
-                                    <p><strong>Data zmiany:</strong> @CasesStore.GetState().SelectedContact.Updated</p>
-                                    <p><strong>Data utworzenia:</strong> @CasesStore.GetState().SelectedContact.Created</p>
+                                    <p><strong>Imię:</strong> @Store.GetState().SelectedContact.Name</p>
+                                    <p><strong>Nazwisko:</strong> @Store.GetState().SelectedContact.Surname</p>
+                                    <p><strong>Adres:</strong> @Store.GetState().SelectedContact.Address</p>
+                                    <p><strong>Telefon 1:</strong> @Store.GetState().SelectedContact.PhoneNumber</p>
+                                    <p><strong>Telefon 2:</strong> @Store.GetState().SelectedContact.AlternativePhoneNumber</p>
+                                    <p><strong>Email:</strong> @Store.GetState().SelectedContact.Email</p>
+                                    <p><strong>Zmienione przez:</strong> @Store.GetState().SelectedContact.UpdatedBy</p>
+                                    <p><strong>Data zmiany:</strong> @Store.GetState().SelectedContact.Updated</p>
+                                    <p><strong>Data utworzenia:</strong> @Store.GetState().SelectedContact.Created</p>
                                 </div>
                             }
 

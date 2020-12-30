@@ -5,14 +5,15 @@ using System.Threading.Tasks;
 namespace SWP.Application.LegalSwp.Jobs
 {
     [TransientService]
-    public class ArchiveJob
+    public class ArchiveJob : LegalActionsBase
     {
-        private readonly ILegalManager legalSwpManager;
-        public ArchiveJob(ILegalManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
+        public ArchiveJob(ILegalManager legalManager) : base(legalManager)
+        {
+        }
 
-        public int CountAllArchivedClients() => legalSwpManager.CountArchivedClients();
+        public int CountAllArchivedClients() => _legalManager.CountArchivedClients();
 
-        public Task<ClientJob> ArchivizeClientJob(int jobId, string user) => legalSwpManager.ArchivizeClientJob(jobId, user);
-        public Task<ClientJob> RecoverClientJob(int jobId, string user) => legalSwpManager.RecoverClientJob(jobId, user);
+        public Task<ClientJob> ArchivizeClientJob(int jobId, string user) => _legalManager.ArchivizeClientJob(jobId, user);
+        public Task<ClientJob> RecoverClientJob(int jobId, string user) => _legalManager.RecoverClientJob(jobId, user);
     }
 }

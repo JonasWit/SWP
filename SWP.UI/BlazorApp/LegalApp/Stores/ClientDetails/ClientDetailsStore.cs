@@ -141,7 +141,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.ClientDetails
                     PhoneNumber = contact.PhoneNumber,
                     AlternativePhoneNumber = contact.AlternativePhoneNumber,
                     Updated = DateTime.Now,
-                    UpdatedBy = MainStore.GetState().User.UserName
+                    UpdatedBy = MainStore.GetState().AppActiveUserManager.UserName
                 });
 
                 UpdateClientContactPerson(result);
@@ -187,7 +187,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.ClientDetails
 
         private async Task SubmitNewContact(CreateContactPerson.Request request)
         {
-            request.UpdatedBy = MainStore.GetState().User.UserName;
+            request.UpdatedBy = MainStore.GetState().AppActiveUserManager.UserName;
 
             try
             {

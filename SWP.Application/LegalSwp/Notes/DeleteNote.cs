@@ -4,11 +4,12 @@ using System.Threading.Tasks;
 namespace SWP.Application.LegalSwp.Notes
 {
     [TransientService]
-    public class DeleteNote
+    public class DeleteNote : LegalActionsBase
     {
-        private readonly ILegalManager legalSwpManager;
-        public DeleteNote(ILegalManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
+        public DeleteNote(ILegalManager legalManager) : base(legalManager)
+        {
+        }
 
-        public Task<int> Delete(int id) => legalSwpManager.DeleteNote(id);
+        public Task<int> Delete(int id) => _legalManager.DeleteNote(id);
     }
 }

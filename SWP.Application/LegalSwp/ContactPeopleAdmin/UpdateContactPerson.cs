@@ -6,14 +6,15 @@ using System.Threading.Tasks;
 namespace SWP.Application.LegalSwp.ContactPeopleAdmin
 {
     [TransientService]
-    public class UpdateContactPerson
+    public class UpdateContactPerson : LegalActionsBase
     {
-        private readonly ILegalManager legalSwpManager;
-        public UpdateContactPerson(ILegalManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
+        public UpdateContactPerson(ILegalManager legalManager) : base(legalManager)
+        {
+        }
 
         public Task<CaseContactPerson> UpdateForCase(Request request)
         {
-            var c = legalSwpManager.GetCaseContactPerson(request.Id);
+            var c = _legalManager.GetCaseContactPerson(request.Id);
 
             c.Name = request.Name;
             c.Surname = request.Surname;
@@ -24,12 +25,12 @@ namespace SWP.Application.LegalSwp.ContactPeopleAdmin
             c.Updated = request.Updated;
             c.UpdatedBy = request.UpdatedBy;
 
-            return legalSwpManager.UpdateCaseContactPerson(c);
+            return _legalManager.UpdateCaseContactPerson(c);
         }
 
         public Task<ClientContactPerson> UpdateForClient(Request request)
         {
-            var c = legalSwpManager.GetClientContactPerson(request.Id);
+            var c = _legalManager.GetClientContactPerson(request.Id);
 
             c.Name = request.Name;
             c.Surname = request.Surname;
@@ -40,7 +41,7 @@ namespace SWP.Application.LegalSwp.ContactPeopleAdmin
             c.Updated = request.Updated;
             c.UpdatedBy = request.UpdatedBy;
 
-            return legalSwpManager.UpdateClientContactPerson(c);
+            return _legalManager.UpdateClientContactPerson(c);
         }
 
         public class Request

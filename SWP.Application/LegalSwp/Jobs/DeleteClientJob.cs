@@ -4,14 +4,12 @@ using System.Threading.Tasks;
 namespace SWP.Application.LegalSwp.Jobs
 {
     [TransientService]
-    public class DeleteClientJob
+    public class DeleteClientJob : LegalActionsBase
     {
-        private readonly ILegalManager legalSwpManager;
-        public DeleteClientJob(ILegalManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
+        public DeleteClientJob(ILegalManager legalManager) : base(legalManager)
+        {
+        }
 
-        public Task<int> Delete(int id) => legalSwpManager.DeleteClientJob(id);
-
-
-
+        public Task<int> Delete(int id) => _legalManager.DeleteClientJob(id);
     }
 }

@@ -16,7 +16,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
         [Inject]
         public MainStore MainStore { get; set; }
         [Inject]
-        public ClientsStore ClientsStore { get; set; }
+        public ClientsStore Store { get; set; }
         [Inject]
         public TooltipService TooltipService { get; set; }
         [Inject]
@@ -27,8 +27,8 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
         public void Dispose()
         {
             MainStore.RemoveStateChangeListener(UpdateView);
-            ClientsStore.RemoveStateChangeListener(UpdateView);
-            ClientsStore.CleanUpStore();
+            Store.RemoveStateChangeListener(UpdateView);
+            Store.CleanUpStore();
         }
 
         private void UpdateView()
@@ -39,7 +39,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
         protected override void OnInitialized()
         {
             MainStore.AddStateChangeListener(UpdateView);
-            ClientsStore.AddStateChangeListener(UpdateView);
+            Store.AddStateChangeListener(UpdateView);
         }
 
         private void ShowTooltip(ElementReference elementReference, TooltipOptions options = null) => TooltipService.Open(elementReference, options.Text, options);

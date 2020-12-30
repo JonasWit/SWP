@@ -1,9 +1,9 @@
 ﻿@using SWP.UI.BlazorApp.LegalApp.Stores.Clients
 
 
-@if (ClientsStore.Loading)
+@if (Store.Loading)
 {
-    <LoaderComponent Message="@ClientsStore.LoadingMessage"></LoaderComponent>
+    <LoaderComponent Message="@Store.LoadingMessage"></LoaderComponent>
 }
 else
 {
@@ -11,7 +11,7 @@ else
 
         <div class="show-hide tab-section"><button class="show-hide-btn show-hide-btn-1"><span>Dodaj Klienta</span></button></div>
         <div class="row-section">
-            <RadzenTemplateForm Data="@ClientsStore.GetState().NewClient" Submit="@((CreateClient.Request args) => SubmitNewClient(args))">
+            <RadzenTemplateForm Data="@Store.GetState().NewClient" Submit="@((CreateClient.Request args) => SubmitNewClient(args))">
                 <RadzenFieldset Text="Nowy Klient">
                     <div class="help-box">
                         <i class="user-icon"><img src="/Images/icons8-add-user-group-woman-man-36.png" /></i>
@@ -29,7 +29,7 @@ else
                             <div class="label">
                                 <RadzenLabel Text="Nazwa" />
                             </div>
-                            <RadzenTextArea Placeholder="Nazwa..." @bind-Value="ClientsStore.GetState().NewClient.Name" style="@Gvm.FormInputBoxWidth" Name="Nazwa" />
+                            <RadzenTextArea Placeholder="Nazwa..." @bind-Value="Store.GetState().NewClient.Name" style="@Gvm.FormInputBoxWidth" Name="Nazwa" />
                             <RadzenRequiredValidator Component="Nazwa" Text="Nazwa nie może być pusta!" style="@Gvm.FormInputBoxWidth" />
                             <div><RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Nazwa" Style="position: absolute" /></div>
                         </div>
@@ -37,7 +37,7 @@ else
                             <div class="label">
                                 <RadzenLabel Text="Adres" />
                             </div>
-                            <RadzenTextArea Placeholder="Adres..." @bind-Value="ClientsStore.GetState().NewClient.Address" style="@Gvm.FormInputBoxWidth" Name="Address" />
+                            <RadzenTextArea Placeholder="Adres..." @bind-Value="Store.GetState().NewClient.Address" style="@Gvm.FormInputBoxWidth" Name="Address" />
                             <div><RadzenLengthValidator Max="200" Text="Maksymalnie 200 znaków!" Component="Address" Style="position: absolute" /></div>
                         </div>
                     </div>
@@ -47,14 +47,14 @@ else
                             <div class="label">
                                 <RadzenLabel Text="Telefon" />
                             </div>
-                            <RadzenTextBox Placeholder="Telefon..." @bind-Value="ClientsStore.GetState().NewClient.PhoneNumber" style="@Gvm.FormInputBoxWidth" Name="PhoneNumber" />
+                            <RadzenTextBox Placeholder="Telefon..." @bind-Value="Store.GetState().NewClient.PhoneNumber" style="@Gvm.FormInputBoxWidth" Name="PhoneNumber" />
                             <div><RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="PhoneNumber" Style="position: absolute" /></div>
                         </div>
                         <div class="text">
                             <div class="label">
                                 <RadzenLabel Text="Email" />
                             </div>
-                            <RadzenTextBox Placeholder="Adres Email..." @bind-Value="ClientsStore.GetState().NewClient.Email" style="@Gvm.FormInputBoxWidth" Name="Email" />
+                            <RadzenTextBox Placeholder="Adres Email..." @bind-Value="Store.GetState().NewClient.Email" style="@Gvm.FormInputBoxWidth" Name="Email" />
                             <RadzenEmailValidator Component="Email" Text="Nieprawidłowy adres Email!" />
                             <div><RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków!" Component="Email" /></div>
                         </div>
@@ -85,8 +85,8 @@ else
             </div>
 
             <div class="list-table">
-                <RadzenGrid @ref="ClientsStore.GetState().ClientsGrid" AllowFiltering="true" AllowPaging="true" PageSize="10" AllowSorting="true"
-                            Data="@MainStore.GetState().Clients" TItem="ClientViewModel" RowUpdate="@OnUpdateClientRow" RowSelect="@(args => ClientsStore.ClientSelected(args))">
+                <RadzenGrid @ref="Store.GetState().ClientsGrid" AllowFiltering="true" AllowPaging="true" PageSize="10" AllowSorting="true"
+                            Data="@MainStore.GetState().Clients" TItem="ClientViewModel" RowUpdate="@OnUpdateClientRow" RowSelect="@(args => Store.ClientSelected(args))">
                     <Columns>
                         <RadzenGridColumn TItem="ClientViewModel" Property="Name" Title="Nazwa">
                             <Template Context="client">
@@ -162,16 +162,16 @@ else
             </div>
         </div>
 
-        @if (ClientsStore.GetState().SelectedClient != null)
+        @if (Store.GetState().SelectedClient != null)
         {
             <div class="details">
-                <p><strong>Nazwa:</strong> @ClientsStore.GetState().SelectedClient.Name</p>
-                <p><strong>Adres:</strong> @ClientsStore.GetState().SelectedClient.Address</p>
-                <p><strong>Telefon:</strong> @ClientsStore.GetState().SelectedClient.PhoneNumber</p>
-                <p><strong>Email:</strong> @ClientsStore.GetState().SelectedClient.Email</p>
-                <p><strong>Zmienione przez:</strong> @ClientsStore.GetState().SelectedClient.UpdatedBy</p>
-                <p><strong>Data zmiany:</strong> @ClientsStore.GetState().SelectedClient.Updated</p>
-                <p><strong>Data utworzenia:</strong> @ClientsStore.GetState().SelectedClient.Created</p>
+                <p><strong>Nazwa:</strong> @Store.GetState().SelectedClient.Name</p>
+                <p><strong>Adres:</strong> @Store.GetState().SelectedClient.Address</p>
+                <p><strong>Telefon:</strong> @Store.GetState().SelectedClient.PhoneNumber</p>
+                <p><strong>Email:</strong> @Store.GetState().SelectedClient.Email</p>
+                <p><strong>Zmienione przez:</strong> @Store.GetState().SelectedClient.UpdatedBy</p>
+                <p><strong>Data zmiany:</strong> @Store.GetState().SelectedClient.Updated</p>
+                <p><strong>Data utworzenia:</strong> @Store.GetState().SelectedClient.Created</p>
             </div>
         }
     </div>

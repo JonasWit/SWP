@@ -114,7 +114,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.ClientJobs
                 var createClientJob = scope.ServiceProvider.GetRequiredService<CreateClientJob>();
 
                 request.ClientId = MainStore.GetState().ActiveClient.Id;
-                request.UpdatedBy = MainStore.GetState().User.UserName;
+                request.UpdatedBy = MainStore.GetState().AppActiveUserManager.UserName;
 
                 var result = await createClientJob.Create(request);
                 _state.NewClientJob = new CreateClientJob.Request();
@@ -148,7 +148,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.ClientJobs
                     Name = clientJob.Name,
                     Priority = clientJob.Priority,
                     Updated = DateTime.Now,
-                    UpdatedBy = MainStore.GetState().User.UserName
+                    UpdatedBy = MainStore.GetState().AppActiveUserManager.UserName
                 });
 
                 _state.Jobs[_state.Jobs.FindIndex(x => x.Id == result.Id)] = result;
@@ -212,7 +212,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.ClientJobs
                 using var scope = _serviceProvider.CreateScope();
                 var archiveJob = scope.ServiceProvider.GetRequiredService<ArchiveJob>();
 
-                var result = await archiveJob.ArchivizeClientJob(clientJob.Id, MainStore.GetState().User.UserName);
+                var result = await archiveJob.ArchivizeClientJob(clientJob.Id, MainStore.GetState().AppActiveUserManager.UserName);
 
                 _state.Jobs.RemoveAll(x => x.Id == clientJob.Id);
                 _state.ArchivedJobs.Add(result);
@@ -238,7 +238,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.ClientJobs
                     using var scope = _serviceProvider.CreateScope();
                     var archiveJob = scope.ServiceProvider.GetRequiredService<ArchiveJob>();
 
-                    var result = await archiveJob.RecoverClientJob(_state.SelectedArchivizedClientJob.Id, MainStore.GetState().User.UserName);
+                    var result = await archiveJob.RecoverClientJob(_state.SelectedArchivizedClientJob.Id, MainStore.GetState().AppActiveUserManager.UserName);
 
                     _state.ArchivedJobs.RemoveAll(x => x.Id == _state.SelectedArchivizedClientJob.Id);
                     _state.Jobs.Add(result);

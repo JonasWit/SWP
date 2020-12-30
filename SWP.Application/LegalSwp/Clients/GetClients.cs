@@ -5,14 +5,15 @@ using System.Collections.Generic;
 namespace SWP.Application.LegalSwp.Clients
 {
     [TransientService]
-    public class GetClients
+    public class GetClients : LegalActionsBase
     {
-        private readonly ILegalManager legalSwpManager;
-        public GetClients(ILegalManager legalSwpManager) => this.legalSwpManager = legalSwpManager;
+        public GetClients(ILegalManager legalManager) : base(legalManager)
+        {
+        }
 
-        public List<Client> GetClientsWithoutData(string claim, bool active = true) => legalSwpManager.GetClientsWithoutCases(claim, active);
-        public IEnumerable<int> GetClientCasesIds(int id) => legalSwpManager.GetClientCasesIds(id);
-        public int CountJobsPerClient(int id) => legalSwpManager.CountJobsPerClient(id);
-        public int CountCasesPerClient(int clientId) => legalSwpManager.CountCasesPerClient(clientId);
+        public List<Client> GetClientsWithoutData(string claim, bool active = true) => _legalManager.GetClientsWithoutCases(claim, active);
+        public IEnumerable<int> GetClientCasesIds(int id) => _legalManager.GetClientCasesIds(id);
+        public int CountJobsPerClient(int id) => _legalManager.CountJobsPerClient(id);
+        public int CountCasesPerClient(int clientId) => _legalManager.CountCasesPerClient(clientId);
     }
 }

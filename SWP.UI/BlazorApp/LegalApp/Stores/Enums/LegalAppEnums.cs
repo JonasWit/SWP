@@ -17,5 +17,6 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Enums
         ClientJobs = 7,
         Archive = 8,
         ClientDetails = 9,
+        UserManager = 10
     }
 }

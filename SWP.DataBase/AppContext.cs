@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using SWP.Domain.Models.LegalApp;
+using SWP.Domain.Models.LegalApp.AccessControl;
 using SWP.Domain.Models.News;
 using SWP.Domain.Models.Portal;
 using SWP.Domain.Models.Portal.Communication;
@@ -9,7 +10,7 @@ namespace SWP.DataBase
 {
     public class AppContext : IdentityDbContext
     {
-        #region Legal SWP
+        #region Legal App
 
         public DbSet<Client> Clients { get; set; }
         public DbSet<Case> Cases { get; set; }
@@ -20,6 +21,10 @@ namespace SWP.DataBase
         public DbSet<CashMovement> CashMovements { get; set; }
         public DbSet<ClientContactPerson> ClientContactPeople { get; set; }
         public DbSet<CaseContactPerson> CaseContactPeople { get; set; }
+
+        public DbSet<AccessToCase> AccessToCases { get; set; }
+        public DbSet<AccessToClient> AccessToClients { get; set; }
+        public DbSet<AccessToPanel> AccessToPanels { get; set; }
 
         #endregion
 

@@ -1,4 +1,5 @@
 ﻿using SWP.Domain.Models.LegalApp;
+using SWP.Domain.Models.LegalApp.AccessControl;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,11 +9,38 @@ namespace SWP.Domain.Infrastructure.LegalApp
 {
     public interface ILegalManager
     {
+        #region Access
+
+        Task<int> DeleteAllAccess(string userId);
+
+        Task<List<AccessToCase>> GetAccessToCase(string userId);
+        Task<List<AccessToClient>> GetAccessToClient(string userId);
+        Task<List<AccessToPanel>> GetAccessToPanel(string userId);
+
+        Task<int> GrantAccessToCase(string userId, int caseId);
+        Task<int> GrantAccessToClient(string userId, int clientId);
+        Task<int> GrantAccessToPanel(string userId, int panelId);
+
+        Task<int> GrantAccessToCases(string userId, List<int> caseIds);
+        Task<int> GrantAccessToClients(string userId, List<int> clientIds);
+        Task<int> GrantAccessToRanels(string userId, List<int> panelsIds);
+
+        Task<int> RevokeAccessToCase(string userId, int caseId);
+        Task<int> RevokeAccessToClient(string userId, int clientId);
+        Task<int> RevokeAccessToPanel(string userId, int panelId);
+
+        Task<int> RevokeAccessToCases(string userId, List<int> caseIds);
+        Task<int> RevokeAccessToClients(string userId, List<int> clientIds);
+        Task<int> RevokeAccessToRanels(string userId, List<int> panelsIds);
+
+        #endregion
+
         #region Clients
 
         Client GetClient(int clientId);
         Client GetCleanClient(int clientId);
         List<Client> GetClientsWithoutCases(string profile, bool active = true);
+        List<Client> GetClientsWithCleanCases(string profile, bool active = true);
         Task<Client> CreateClient(Client client);
         Task<Client> UpdateClient(Client client);
         Task<int> DeleteClient(int clientId);

@@ -31,10 +31,30 @@
             @if (Store.GetState().Requests is null || Store.GetState().Requests.Count == 0)
             {
                 <p>Nie masz jeszcze żadnych wiadomości. Użyj guzika "Wyślij wiadomość". aby dodać nowe zapytanie.</p>
-
             }
             else
-            {<RadzenDataList WrapItems="true" AllowPaging="true" Data="@Store.GetState().Requests" TItem="RequestViewModel" PageSize="5">
+            {
+                <RadzenGrid @ref="Store.GetState().RequestsGrid" AllowFiltering="true" AllowPaging="true" PageSize="15" AllowSorting="true" RowSelect="@(args => RequestSelected(args))"
+                            Data="@Store.GetState().Requests" TItem="RequestViewModel">
+                    <Columns>
+                        <RadzenGridColumn TItem="RequestViewModel" Property="Created" Title="Utworzono">
+                            <Template Context="record">
+                                @record.Created.ToString("yyyy.MM.dd HH:mm:ss");
+                            </Template>
+                        </RadzenGridColumn>
+                        <RadzenGridColumn TItem="RequestViewModel" Property="Updated" Title="Ostatnia zmiana">
+                            <Template Context="record">
+                                @record.Updated.ToString("yyyy.MM.dd HH:mm:ss");
+                            </Template>
+                        </RadzenGridColumn>
+                        <RadzenGridColumn TItem="RequestViewModel" Property="DisplaySubject" Title="Temat">
+                        </RadzenGridColumn>
+                        <RadzenGridColumn TItem="RequestViewModel" Property="DisplayStatus" Title="Status">
+                        </RadzenGridColumn>
+                    </Columns>
+                </RadzenGrid>
+
+                @*<RadzenDataList WrapItems="true" AllowPaging="true" Data="@Store.GetState().Requests" TItem="RequestViewModel" PageSize="5">
                     <Template Context="request">
                         <RadzenCard Style="width:300px;">
                             <div class="row p-3" @onclick="@(() => ReuqestSelected(request.Id))">
@@ -45,7 +65,7 @@
                             </div>
                         </RadzenCard>
                     </Template>
-                </RadzenDataList>
+                </RadzenDataList>*@
             }
         </RadzenCard>
     </div>

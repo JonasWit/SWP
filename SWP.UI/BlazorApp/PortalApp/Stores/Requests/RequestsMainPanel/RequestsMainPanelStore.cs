@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Radzen.Blazor;
 using SWP.Application.PortalCustomers.RequestsManagement;
 using SWP.Domain.Models.Portal.Communication;
 using SWP.UI.BlazorApp.PortalApp.Stores.Requests.RequestsMainPanel.Actions;
@@ -21,6 +22,7 @@ namespace SWP.UI.BlazorApp.PortalApp.Stores.Requests.RequestsPanel
         public string ActiveUserName { get; set; }
         public int SelectedRequestId { get; set; }
         public List<RequestViewModel> Requests { get; set; } = new List<RequestViewModel>();
+        public RadzenGrid<RequestViewModel> RequestsGrid { get; set; }
 
         public enum InnerComponents
         {
@@ -103,9 +105,9 @@ namespace SWP.UI.BlazorApp.PortalApp.Stores.Requests.RequestsPanel
             _state.Requests = list.Select(x => (RequestViewModel)x).ToList().OrderByDescending(x => x.Updated).ToList();
         }
 
-        private void ShowRequestDetails(int id)
+        private void ShowRequestDetails(RequestViewModel arg)
         {
-            _state.SelectedRequestId = id;
+            _state.SelectedRequestId = arg.Id;
             _state.CurrentComponent = RequestsMainPanelState.InnerComponents.Details;
             BroadcastStateChange();
         }

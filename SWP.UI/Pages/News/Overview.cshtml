@@ -1,9 +1,10 @@
 ﻿@page
+@using SWP.UI.Utilities
 @model SWP.UI.Pages.News.IndexModel
 @{
 }
 
-@if (User.Identity.IsAuthenticated && User.IsInRole("Administrators"))
+@if (User.Identity.IsAuthenticated && User.IsInRole(PortalNames.Roles.Administrators))
 {
     <li class="nav-item p-lg-4">
         <a asp-page="/News/Manager/Index">Admin Zone</a>

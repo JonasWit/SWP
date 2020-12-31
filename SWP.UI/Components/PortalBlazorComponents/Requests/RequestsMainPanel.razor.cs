@@ -2,6 +2,7 @@
 using SWP.UI.BlazorApp;
 using SWP.UI.BlazorApp.PortalApp.Stores.Requests.RequestsMainPanel.Actions;
 using SWP.UI.BlazorApp.PortalApp.Stores.Requests.RequestsPanel;
+using SWP.UI.Components.PortalBlazorComponents.Requests.ViewModels;
 using System;
 using System.Threading.Tasks;
 
@@ -36,7 +37,7 @@ namespace SWP.UI.Components.PortalBlazorComponents.Requests
 
         #region Actions
 
-        private void ReuqestSelected(int id) => ActionDispatcher.Dispatch(new RequestSelectedAction { Arg = id });
+        private void RequestSelected(RequestViewModel arg) => ActionDispatcher.Dispatch(new RequestSelectedAction { Arg = arg });
 
         private void ActivateCreatePanel() => ActionDispatcher.Dispatch(new ActivateNewRequestPanelAction());
 

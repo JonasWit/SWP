@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
@@ -91,6 +92,7 @@ namespace SWP.UI.Areas.Identity.Pages.Account
                 {
                     _logger.LogInformation(LogTags.PortalIdentityLogPrefix + "User created a new account with password - {serName}", user.UserName);
                     await _userManager.AddToRoleAsync(user, RoleType.Users.ToString());
+                    await _userManager.AddClaimAsync(user, new Claim(ClaimType.Status.ToString(), UserStatus.Default.ToString()));
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));

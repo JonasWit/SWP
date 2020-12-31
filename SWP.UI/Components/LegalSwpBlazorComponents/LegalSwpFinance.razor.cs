@@ -79,7 +79,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
 
         private void ActiveCashMovementChange(object arg) => ActionDispatcher.Dispatch(new ActiveCashMovementChangeAction { Arg = arg });
 
-        private void SelectedMonthChange(object arg) => ActionDispatcher.Dispatch(new SelectedMonthChangeAction { Arg = arg });
+        private void SelectedMonthChange(object arg) => ActionDispatcher.Dispatch(new SelectedMonthChangeFinanceAction { Arg = arg });
 
         #endregion
     }

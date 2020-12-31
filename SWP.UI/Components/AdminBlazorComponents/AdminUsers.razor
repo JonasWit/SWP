@@ -20,12 +20,12 @@
                     <RadzenGridColumn TItem="UserModel" Property="ProfileClaim" Title="Profile" />
                     <RadzenGridColumn TItem="UserModel" Property="LockoutEnabled" Title="Is Lockout Possible" />
                     <RadzenGridColumn TItem="UserModel" Property="LockoutEnd" Title="Lockout End Date" />
-                    <RadzenGridColumn TItem="UserModel" Context="um" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="50px">
+                    @*<RadzenGridColumn TItem="UserModel" Context="um" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="50px">
                         <Template Context="um">
                             <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@(args => DeleteUser(um))">
                             </RadzenButton>
                         </Template>
-                    </RadzenGridColumn>
+                    </RadzenGridColumn>*@
                 </Columns>
             </RadzenGrid>
         </div>

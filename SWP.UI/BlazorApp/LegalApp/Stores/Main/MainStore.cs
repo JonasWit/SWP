@@ -12,13 +12,13 @@ using SWP.UI.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
 {
     public class MainState
     {
+        public string ActiveUserId { get; set; }
         public AppActiveUserManager AppActiveUserManager { get; set; }
         public List<ClientViewModel> Clients { get; set; } = new List<ClientViewModel>();
         public ClientViewModel ActiveClient { get; set; }
@@ -44,7 +44,8 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
         {
             try
             {
-                await RealodUserData(userId);
+                _state.ActiveUserId = userId;
+                await RealodUserData();
                 ReloadClientsDrop();
                 ReleadRemindersCounter();
 
@@ -56,10 +57,13 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
             }
         }
 
-        private async Task RealodUserData(string userId)
+        public async Task RealodUserData()
         {
-            _state.AppActiveUserManager = new AppActiveUserManager(_serviceProvider, userId);
-            await _state.AppActiveUserManager.UpdateUserManager();
+            if (!string.IsNullOrEmpty(_state.ActiveUserId))
+            {
+                _state.AppActiveUserManager = new AppActiveUserManager(_serviceProvider, _state.ActiveUserId);
+                await _state.AppActiveUserManager.UpdateUserManager();
+            }
         }
 
         protected override void HandleActions(IAction action)
@@ -72,6 +76,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
             using var scope = _serviceProvider.CreateScope();
             var getClients = scope.ServiceProvider.GetRequiredService<GetClients>();
 
+            //todo: add condition for profile & accesses
             _state.Clients = getClients.GetClientsWithoutData(_state.AppActiveUserManager.ProfileName)?.Select(x => (ClientViewModel)x).ToList();
         }
 

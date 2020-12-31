@@ -51,7 +51,11 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
 
         private void ConfirmRemoveAllData() => ActionDispatcher.Dispatch(new ConfirmRemoveAllDataAction());
 
-        private void UpdateAccess() { }
+        private void SelectedClientChange(object arg) => ActionDispatcher.Dispatch(new UserManagerSelectedClientChangeAction { Arg = arg });
+
+        private void SelectedCaseChange(object arg) => ActionDispatcher.Dispatch(new UserManagerSelectedCaseChangeAction { Arg = arg });
+
+        private void UpdateAccess() => ActionDispatcher.Dispatch(new UserManagerUpdateAccessAction());
 
         #endregion
 

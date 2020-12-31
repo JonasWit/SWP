@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SWP.Domain.Infrastructure.LegalApp;
 using SWP.Domain.Models.LegalApp;
+using SWP.Domain.Models.LegalApp.AccessControl;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,15 @@ namespace SWP.DataBase.Managers
     {
         public LegalManager(AppContext context) : base(context)
         {
+        }
+
+        public Task<int> DeleteAllAccess(string userId)
+        {
+            //todo: to be tested
+            _context.AccessToCases.RemoveRange(_context.AccessToCases.Where(x => x.UserId.Equals(userId)));
+            _context.AccessToClients.RemoveRange(_context.AccessToClients.Where(x => x.UserId.Equals(userId)));
+            _context.AccessToPanels.RemoveRange(_context.AccessToPanels.Where(x => x.UserId.Equals(userId)));
+            return _context.SaveChangesAsync();
         }
 
         #region Client
@@ -40,6 +50,8 @@ namespace SWP.DataBase.Managers
             _context.Clients
                 .Where(x => x.ProfileClaim == profile && (active ? x.Active : !x.Active))
                 .ToList();
+
+        public List<Client> GetClientsWithCleanCases(string profile, bool active = true) => _context.Clients.Where(x => x.Active).Include(x => x.Cases.Where(y => y.Active)).ToList();
 
         public async Task<Client> CreateClient(Client client)
         {
@@ -618,16 +630,160 @@ namespace SWP.DataBase.Managers
         public Task<int> DeleteClientContactPerson(int id)
         {
             var cp = _context.ClientContactPeople.FirstOrDefault(x => x.Id == id);
-            _context.ClientContactPeople.Remove(cp);
+            if (cp is not null)
+            {
+                _context.ClientContactPeople.Remove(cp);
+            }
+
             return _context.SaveChangesAsync();
         }
 
         public Task<int> DeleteCaseContactPerson(int id)
         {
             var cp = _context.CaseContactPeople.FirstOrDefault(x => x.Id == id);
-            _context.CaseContactPeople.Remove(cp);
+            if (cp is not null)
+            {
+                _context.CaseContactPeople.Remove(cp);
+            }
+
             return _context.SaveChangesAsync();
         }
+
+        #endregion
+
+        #region Access
+
+        public Task<int> GrantAccessToCase(string userId, int caseId)
+        {
+            if (!_context.AccessToCases.Any(x => x.Id.Equals(userId) && x.CaseId.Equals(caseId)))
+            {
+                _context.AccessToCases.Add(new AccessToCase { CaseId = caseId, UserId = userId });
+            }
+
+            return _context.SaveChangesAsync();
+        }
+
+        public Task<int> GrantAccessToClient(string userId, int clientId)
+        {
+            if (!_context.AccessToClients.Any(x => x.Id.Equals(userId) && x.ClientId.Equals(clientId)))
+            {
+                _context.AccessToClients.Add(new AccessToClient { ClientId = clientId, UserId = userId });
+            }
+
+            return _context.SaveChangesAsync();
+        }
+
+        public Task<int> GrantAccessToPanel(string userId, int panelId)
+        {
+            if (!_context.AccessToPanels.Any(x => x.Id.Equals(userId) && x.PanelId.Equals(panelId)))
+            {
+                _context.AccessToPanels.Add(new AccessToPanel { PanelId = panelId, UserId = userId });
+            }
+
+            return _context.SaveChangesAsync();
+        }
+
+        public Task<int> GrantAccessToCases(string userId, List<int> caseIds)
+        {
+            foreach (var caseId in caseIds)
+            {
+                if (!_context.AccessToCases.Any(x => x.Id.Equals(userId) && x.CaseId.Equals(caseId)))
+                {
+                    _context.AccessToCases.Add(new AccessToCase { CaseId = caseId, UserId = userId });
+                }
+            }
+
+            return _context.SaveChangesAsync();
+        }
+
+        public Task<int> GrantAccessToClients(string userId, List<int> clientIds)
+        {
+            foreach (var clientId in clientIds)
+            {
+                if (!_context.AccessToClients.Any(x => x.Id.Equals(userId) && x.ClientId.Equals(clientId)))
+                {
+                    _context.AccessToClients.Add(new AccessToClient { ClientId = clientId, UserId = userId });
+                }
+            }
+
+            return _context.SaveChangesAsync();
+        }
+
+        public Task<int> GrantAccessToRanels(string userId, List<int> panelIds)
+        {
+            foreach (var panelId in panelIds)
+            {
+                if (!_context.AccessToPanels.Any(x => x.Id.Equals(userId) && x.PanelId.Equals(panelId)))
+                {
+                    _context.AccessToPanels.Add(new AccessToPanel { PanelId = panelId, UserId = userId });
+                }
+            }
+
+            return _context.SaveChangesAsync();
+        }
+
+        public Task<int> RevokeAccessToCase(string userId, int caseId)
+        {
+            var toRemove = _context.AccessToCases.FirstOrDefault(x => x.Id.Equals(userId) && x.CaseId.Equals(caseId));
+            if (toRemove is not null)
+            {
+                _context.AccessToCases.Remove(toRemove);
+            }
+
+            return _context.SaveChangesAsync();
+        }
+
+        public Task<int> RevokeAccessToClient(string userId, int clientId)
+        {
+            var toRemove = _context.AccessToClients.FirstOrDefault(x => x.Id.Equals(userId) && x.ClientId.Equals(clientId));
+            if (toRemove is not null)
+            {
+                _context.AccessToClients.Remove(toRemove);
+            }
+
+            return _context.SaveChangesAsync();
+        }
+
+        public Task<int> RevokeAccessToPanel(string userId, int panelId)
+        {
+            var toRemove = _context.AccessToPanels.FirstOrDefault(x => x.Id.Equals(userId) && x.PanelId.Equals(panelId));
+            if (toRemove is not null)
+            {
+                _context.AccessToPanels.Remove(toRemove);
+            }
+
+            return _context.SaveChangesAsync();
+        }
+
+        public Task<int> RevokeAccessToCases(string userId, List<int> caseIds)
+        {
+            var toRemove = _context.AccessToCases.Where(x => x.UserId.Equals(userId) && caseIds.Contains(x.CaseId)).ToList();
+            _context.AccessToCases.RemoveRange(toRemove);
+
+            return _context.SaveChangesAsync();
+        }
+
+        public Task<int> RevokeAccessToClients(string userId, List<int> clientIds)
+        {
+            var toRemove = _context.AccessToClients.Where(x => x.UserId.Equals(userId) && clientIds.Contains(x.ClientId)).ToList();
+            _context.AccessToClients.RemoveRange(toRemove);
+
+            return _context.SaveChangesAsync();
+        }
+
+        public Task<int> RevokeAccessToRanels(string userId, List<int> panelsIds)
+        {
+            var toRemove = _context.AccessToPanels.Where(x => x.UserId.Equals(userId) && panelsIds.Contains(x.PanelId)).ToList();
+            _context.AccessToPanels.RemoveRange(toRemove);
+
+            return _context.SaveChangesAsync();
+        }
+
+        public Task<List<AccessToCase>> GetAccessToCase(string userId) => _context.AccessToCases.Where(x => x.UserId.Equals(userId)).ToListAsync();
+
+        public Task<List<AccessToClient>> GetAccessToClient(string userId) => _context.AccessToClients.Where(x => x.UserId.Equals(userId)).ToListAsync();
+
+        public Task<List<AccessToPanel>> GetAccessToPanel(string userId) => _context.AccessToPanels.Where(x => x.UserId.Equals(userId)).ToListAsync();
 
         #endregion
     }

@@ -97,8 +97,8 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Productivity
                     var activeTimeRecordChangeAction = (ActiveTimeRecordChangeAction)action;
                     ActiveTimeRecordChange(activeTimeRecordChangeAction.Arg);
                     break;
-                case SelectedMonthChangeAction.SelectedMonthChange:
-                    var selectedMonthChangeAction = (SelectedMonthChangeAction)action;
+                case SelectedMonthChangeProductivityAction.SelectedMonthChange:
+                    var selectedMonthChangeAction = (SelectedMonthChangeProductivityAction)action;
                     SelectedMonthChange(selectedMonthChangeAction.Arg);
                     break;
                 case SelectedFontChangeAction.SelectedFontChange:

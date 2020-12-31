@@ -130,8 +130,8 @@ namespace SWP.UI.Components.PortalBlazorComponents.Requests.ViewModels
             {
                 switch (item)
                 {
-                    case ApplicationType.LegalSwp:
-                        result.Add((int)ApplicationType.LegalSwp, "Twoja Kancelaria");
+                    case ApplicationType.LegalApplication:
+                        result.Add((int)ApplicationType.LegalApplication, "Twoja Kancelaria");
                         break;
                     case ApplicationType.NoApp:
                         result.Add((int)ApplicationType.NoApp, "Inne / Portal / Zapytanie Ogólne");

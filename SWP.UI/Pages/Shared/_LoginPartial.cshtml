@@ -1,4 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Identity
+@using SWP.UI.Utilities
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
 @inject IAuthorizationService authService
@@ -6,13 +7,13 @@
 @if (SignInManager.IsSignedIn(User))
 {
     <ul class="right">
-        @if ((await authService.AuthorizeAsync(User, "RootClient")).Succeeded)
+        @if ((await authService.AuthorizeAsync(User, PortalNames.Policies.RootClient)).Succeeded)
         {
             <li class="nav-item">
                 <strong>Konto Główne</strong>
             </li>
         }
-        else
+        else if ((await authService.AuthorizeAsync(User, PortalNames.Policies.RelatedAccount)).Succeeded)
         {
             <li class="nav-item">
                 Konto Powiązane

@@ -26,8 +26,8 @@ namespace SWP.Domain.Enums
     #endregion
 
     public enum ApplicationType
-    { 
-        LegalSwp = 0,
+    {
+        LegalApplication = 0,
         NoApp = 1,
     }
 
@@ -57,11 +57,6 @@ namespace SWP.Domain.Enums
         Application = 0,
         Profile = 1,
         Status = 2,
-    }
-
-    public enum ApplicationPolicy
-    {
-        LegalApplication = 0,
     }
 
     public enum UserDataClaims

@@ -22,7 +22,7 @@ namespace SWP.UI.BlazorApp
         public bool Loading { get; set; } = false;
         public string LoadingMessage { get; set; } = "";
 
-        public void EnableLoading(string message)
+        public void EnableLoading(string message = "Wczytywanie Danych...")
         {
             LoadingMessage = message;
             Loading = true;
@@ -90,6 +90,7 @@ namespace SWP.UI.BlazorApp
 
         public virtual void RefreshSore()
         {
+
 
         }
     }

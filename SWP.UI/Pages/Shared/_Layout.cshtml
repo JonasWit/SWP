@@ -1,4 +1,5 @@
-﻿@inject IAuthorizationService authService
+﻿@using SWP.UI.Utilities
+@inject IAuthorizationService authService
 
 <!DOCTYPE html>
 <html lang="en">
@@ -41,7 +42,7 @@
                         <a asp-page="/Rules/Index">Regulamin</a>
                     </li>
 
-                    @if (User.Identity.IsAuthenticated && (User.IsInRole("Administrators") || User.IsInRole("Users")))
+                    @if ((await authService.AuthorizeAsync(User, PortalNames.Policies.AuthenticatedUser)).Succeeded)
                     {
                         <li class="nav-item">
                             <a asp-page="/Applications/Index">Moje Aplikacje</a>
@@ -51,7 +52,7 @@
                         </li>
                     }
 
-                    @if (User.Identity.IsAuthenticated && User.IsInRole("Administrators"))
+                    @if (User.Identity.IsAuthenticated && User.IsInRole(PortalNames.Roles.Administrators))
                     {
                         <li class="nav-item">
                             <a asp-page="/Admin/Index">Admin</a>

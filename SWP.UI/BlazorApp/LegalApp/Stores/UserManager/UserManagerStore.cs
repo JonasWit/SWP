@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Radzen;
 using SWP.Application.LegalSwp.Clients;
+using SWP.Domain.Models.LegalApp;
 using SWP.UI.BlazorApp.LegalApp.Stores.Main;
 using SWP.UI.BlazorApp.LegalApp.Stores.UserManager.Actions;
 using SWP.UI.Components.LegalSwpBlazorComponents.Dialogs;
@@ -18,7 +19,12 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.UserManager
 
     public class UserManagerState
     {
+        public IEnumerable<int> SelectedClients;
+        public IEnumerable<int> SelectedCases;
+
         public IdentityUser SelectedUser { get; set; }
+        public List<Client> Clients { get; set; } = new List<Client>();
+        public List<Case> Cases { get; set; } = new List<Case>();
     }
 
     [UIScopedService]
@@ -36,10 +42,12 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.UserManager
             _logger = logger;
         }
 
-        public Task Initialize()
+        private void UpdateData()
         {
-            RefreshSore();
-            return Task.CompletedTask;
+            using var scope = _serviceProvider.CreateScope();
+            var getClients = scope.ServiceProvider.GetRequiredService<GetClients>();
+
+            _state.Clients = getClients.GetClientsWithCleanCases(MainStore.GetState().AppActiveUserManager.ProfileName);
         }
 
         protected override async void HandleActions(IAction action)
@@ -56,6 +64,13 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.UserManager
                 case ConfirmRemoveAllDataAction.ConfirmRemoveAllData:
                     ConfirmRemoveAllData();
                     break;
+                case UserManagerUpdateAccessAction.UserManagerUpdateAccess:
+                    await UpdateAccess();
+                    break;
+                case UserManagerSelectedClientChangeAction.UserManagerSelectedClientChange:
+                    var userManagerSelectedClientChangeAction = (UserManagerSelectedClientChangeAction)action;
+                    SelectedClientChange(userManagerSelectedClientChangeAction.Arg);
+                    break;
                 default:
                     break;
             }
@@ -67,11 +82,43 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.UserManager
             if (value != null)
             {
                 _state.SelectedUser = MainStore.GetState().AppActiveUserManager.RelatedUsers.FirstOrDefault(x => x.Id == input);
+                UpdateData();
             }
             else
             {
                 _state.SelectedUser = null;
             }
+        }
+
+        private void SelectedClientChange(object arg)
+        {
+            var enumerable = arg as IEnumerable<int>;
+            var selectedClients = enumerable.ToList();
+
+            var availableCases = _state.Clients.Where(x => selectedClients.Contains(x.Id)).SelectMany(x => x.Cases).ToList();
+
+            var casesToAdd = availableCases.Where(x => !_state.Cases.Any(y => y.Id.Equals(x.Id))).ToList();
+            var casesToRemove = _state.Cases.Where(x => !availableCases.Any(y => y.Id.Equals(x.Id))).ToList();
+
+            _state.Cases.RemoveAll(x => casesToRemove.Any(y => y.Id.Equals(x.Id)));
+            _state.Cases.AddRange(casesToAdd);
+
+            if (_state.SelectedCases is not null)
+            {
+                var selectedItems = _state.SelectedCases.ToList();
+                selectedItems.RemoveAll(x => !_state.Cases.Any(y => y.Id.Equals(x)));
+                _state.SelectedCases = selectedItems;
+            }
+
+            BroadcastStateChange();
+        }
+
+        public async Task UpdateAccess()
+        {
+
+
+
+
         }
 
         private async Task RemoveRelation()
@@ -95,7 +142,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.UserManager
 
                 var profileRemoveResult = await userManager.RemoveClaimAsync(userToRemove, profileClaim);
 
-                if (profileRemoveResult.Succeeded)
+                if (!profileRemoveResult.Succeeded)
                 {
                     var identityErrors = String.Join("; ", lockResult.Errors.Select(x => x.Description).ToList());
                     _logger.LogError(LogTags.LegalAppLogPrefix + "Issue when removing Profile {profileRemove} from User: {lockUser} by User: {rootUser} - Errors:" + identityErrors, profileClaim.Value, userToRemove.UserName, MainStore.GetState().AppActiveUserManager.UserName);
@@ -103,7 +150,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.UserManager
                 }
 
                 _state.SelectedUser = MainStore.GetState().AppActiveUserManager.User;
-                await MainStore.RefreshRelatedUsers();
+                await MainStore.RealodUserData();
 
                 ShowNotification(NotificationSeverity.Success, "Sukces!", $"Użytkownik: {userToRemove.UserName} został usunięty z profilu {profileClaim.Value}.", GeneralViewModel.NotificationDuration);
                 BroadcastStateChange();
@@ -151,14 +198,6 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.UserManager
         public override void CleanUpStore()
         {
 
-        }
-
-        public async Task UpdateAccess()
-        { 
-        
-        
-        
-        
         }
 
         private async Task RefreshDataLists()

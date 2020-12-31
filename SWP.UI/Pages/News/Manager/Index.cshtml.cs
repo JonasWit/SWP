@@ -7,10 +7,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using SWP.Application.News;
 using SWP.UI.Pages.News.ViewModels;
+using SWP.UI.Utilities;
 
 namespace SWP.UI.Pages.News.Manager
 {
-    [Authorize(Roles = "Administrators")]
+    [Authorize(Roles = PortalNames.Roles.Administrators)]
     public class IndexModel : PageModel
     {
         public List<NewsViewModel> DataModels { get; set; } = new List<NewsViewModel>();

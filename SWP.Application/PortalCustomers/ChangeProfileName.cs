@@ -8,11 +8,8 @@ namespace SWP.Application.PortalCustomers
     [TransientService]
     public class ChangeProfileName : PortalManagerBase
     {
-        private readonly IPortalManager _portalManager;
-
         public ChangeProfileName(IPortalManager portalManager) : base(portalManager)
         {
-            _portalManager = portalManager;
         }
 
         public Task<ManagerActionResult> Change(Claim oldProfile, string newProfile) => _portalManager.ChangeProfileName(oldProfile, newProfile);

@@ -80,8 +80,8 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Finance
                     var activeCashMovementChangeAction = (ActiveCashMovementChangeAction)action;
                     ActiveCashMovementChange(activeCashMovementChangeAction.Arg);
                     break;
-                case SelectedMonthChangeAction.SelectedMonthChange:
-                    var selectedMonthChangeAction = (SelectedMonthChangeAction)action;
+                case SelectedMonthChangeFinanceAction.SelectedMonthChange:
+                    var selectedMonthChangeAction = (SelectedMonthChangeFinanceAction)action;
                     SelectedMonthChange(selectedMonthChangeAction.Arg);
                     break;
                 default:

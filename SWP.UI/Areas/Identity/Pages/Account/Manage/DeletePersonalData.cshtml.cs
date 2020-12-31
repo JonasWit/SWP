@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using SWP.Application.LegalSwp.Clients;
 using SWP.Application.PortalCustomers;
 using SWP.Domain.Enums;
+using SWP.Domain.Infrastructure.LegalApp;
 using SWP.UI.Utilities;
 using System;
 using System.Collections.Generic;
@@ -22,11 +23,13 @@ namespace SWP.UI.Areas.Identity.Pages.Account.Manage
         private readonly DeleteClient _deleteClient;
         private readonly ILogger<DeletePersonalDataModel> _logger;
         private readonly DeleteBillingRecord _deleteBillingRecord;
+        private readonly DeleteAccountRelatedData _deleteAccountRelatedData;
 
         public DeletePersonalDataModel(
             UserManager<IdentityUser> userManager,
             SignInManager<IdentityUser> signInManager,
             DeleteClient deleteClient,
+            DeleteAccountRelatedData deleteAccountRelatedData,
             ILogger<DeletePersonalDataModel> logger,
             DeleteBillingRecord deleteBillingRecord)
         {
@@ -35,6 +38,7 @@ namespace SWP.UI.Areas.Identity.Pages.Account.Manage
             _deleteClient = deleteClient;
             _logger = logger;
             _deleteBillingRecord = deleteBillingRecord;
+            _deleteAccountRelatedData = deleteAccountRelatedData;
         }
 
         [BindProperty]
@@ -86,10 +90,15 @@ namespace SWP.UI.Areas.Identity.Pages.Account.Manage
                 }
             }
 
-            var rootClientClaim = claims.FirstOrDefault(x => x.Type == ClaimType.Status.ToString() && x.Value == UserStatus.RootClient.ToString());
-
             try
             {
+                //Delete all Accesses
+                //Delete all Personal Data
+                //Delete all Requests
+                await _deleteAccountRelatedData.Delete(user.Id);
+
+                var rootClientClaim = claims.FirstOrDefault(x => x.Type == ClaimType.Status.ToString() && x.Value == UserStatus.RootClient.ToString());
+
                 if (rootClientClaim is not null)
                 {
                     var claimsToRemove = new List<Claim>();
@@ -98,10 +107,6 @@ namespace SWP.UI.Areas.Identity.Pages.Account.Manage
                     //Delete all licenses
                     var applicationClaims = claims.Where(x => x.Type == ClaimType.Application.ToString());
                     claimsToRemove.AddRange(applicationClaims);
-
-                    //todo: skasowac też wszystkie requesty tego usera
-                    //Delete all Personal Data
-                    await _deleteBillingRecord.DeleteBillingDetail(user.Id);
 
                     if (profileClaim is not null)
                     {
@@ -152,7 +157,7 @@ namespace SWP.UI.Areas.Identity.Pages.Account.Manage
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, LogTags.PortalIdentityLogPrefix + "Error when cleaning up data for Root user {userName}", user.UserName);
+                _logger.LogError(ex, LogTags.PortalIdentityLogPrefix + "Error when cleaning up data for User: {userName}", user.UserName);
             }
 
             var result = await _userManager.DeleteAsync(user);

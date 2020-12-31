@@ -1,11 +1,12 @@
 ﻿@page
+@using SWP.UI.Utilities
 @model SWP.UI.Pages.Applications.IndexModel
 @inject IAuthorizationService authService
 
 <h2>Witaj!</h2>
 <h4 class="mt-3 mb-5">Zalogowano jako <span class="user-name">@Model.User.Identity.Name</span>.</h4>
 
-@if ((await authService.AuthorizeAsync(User, "LegalApplication")).Succeeded)
+@if ((await authService.AuthorizeAsync(User, PortalNames.Policies.LegalApplication)).Succeeded)
 {
     <div class="card app-card shadow-lg p-3 mb-5 bg-white rounded">
         <h5 class="text-center mt-5 mb-3">Twoja Kancelaria</h5>

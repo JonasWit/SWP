@@ -7,6 +7,7 @@ using SWP.Domain.Enums;
 using SWP.Domain.Infrastructure.Portal;
 using SWP.UI.Models;
 using SWP.UI.Pages.Applications.ViewModels;
+using SWP.UI.Utilities;
 using System;
 using System.Linq;
 using System.Security.Claims;
@@ -14,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace SWP.UI.Pages.Applications
 {
-    [Authorize(Roles = "Users, Administrators")]
+    [Authorize(Policy = PortalNames.Policies.AuthenticatedUser)]
     public class IndexModel : PageModel
     {
         public UserAccessModel AccessModel { get; set; } = new UserAccessModel();
@@ -23,7 +24,7 @@ namespace SWP.UI.Pages.Applications
         {
             public string ActiveUserId { get; set; }
             public AppActiveUserManager AppActiveUserManager { get; set; } 
-            public LicenseViewModel LegalLicense => AppActiveUserManager.Licenses.FirstOrDefault(x => x.Application == ApplicationType.LegalSwp);
+            public LicenseViewModel LegalLicense => AppActiveUserManager.LicenseVms.FirstOrDefault(x => x.Application == ApplicationType.LegalApplication);
         }
 
         public IndexModel([FromServices] IHttpContextAccessor httpContextAccessor) =>
@@ -39,7 +40,7 @@ namespace SWP.UI.Pages.Applications
 
             if (AccessModel.AppActiveUserManager.IsRoot)
             {
-                AccessModel.AppActiveUserManager.Licenses = getLicense.GetAll(AccessModel.ActiveUserId).Select(x => (LicenseViewModel)x).ToList();
+                AccessModel.AppActiveUserManager.LicenseVms = getLicense.GetAll(AccessModel.ActiveUserId).Select(x => (LicenseViewModel)x).ToList();
             }
             else
             {
@@ -47,7 +48,7 @@ namespace SWP.UI.Pages.Applications
 
                 if (!string.IsNullOrEmpty(parentId))
                 {
-                    AccessModel.AppActiveUserManager.Licenses = getLicense.GetAll(parentId).Select(x => (LicenseViewModel)x)?.ToList();
+                    AccessModel.AppActiveUserManager.LicenseVms = getLicense.GetAll(parentId).Select(x => (LicenseViewModel)x)?.ToList();
                 }
             }
 

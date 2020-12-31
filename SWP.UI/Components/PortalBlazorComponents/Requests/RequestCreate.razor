@@ -16,7 +16,7 @@
                     <Items>
                         @switch ((ApplicationType)Store.GetState().StepsConfig.ChosenApplication)
                         {
-                            case ApplicationType.LegalSwp:
+                            case ApplicationType.LegalApplication:
                                 @if (!Store.GetState().UserLicenses.Any(x => x.Application == ((ApplicationType)Store.GetState().StepsConfig.ChosenApplication).ToString()))
                                 {
                                     <RadzenRadioButtonListItem Text="@RequestViewModel.RequestReasonsDisplay()[(int)RequestReason.PurchaseLicense]" Value="(int)RequestReason.PurchaseLicense" />

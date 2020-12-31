@@ -25,8 +25,16 @@ namespace SWP.DataBase.Managers
         public Task<int> DeleteBillingDetail(string userId)
         {
             var entity = _context.BillingDetails.FirstOrDefault(x => x.UserId == userId);
-            _context.BillingDetails.Remove(entity);
-            return _context.SaveChangesAsync();
+
+            if (entity is not null)
+            {
+                _context.BillingDetails.Remove(entity);
+                return _context.SaveChangesAsync();
+            }
+            else
+            {
+                return Task.FromResult(0);    
+            }
         }
 
         public BillingDetail GetBillingDetail(string userId) => _context.BillingDetails.FirstOrDefault(x => x.UserId == userId);
@@ -257,10 +265,10 @@ namespace SWP.DataBase.Managers
 
         public Task<int> DeleteRequest(string userId)
         {
-            var entity = _context.ClientRequests.Where(x => x.RequestorId == userId);
-            _context.ClientRequests.RemoveRange(entity);
+            _context.ClientRequests.RemoveRange(_context.ClientRequests.Where(x => x.RequestorId == userId));
             return _context.SaveChangesAsync();
-        } 
+        }
+
 
         #endregion
     }

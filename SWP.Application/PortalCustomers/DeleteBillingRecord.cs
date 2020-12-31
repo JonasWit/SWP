@@ -13,6 +13,5 @@ namespace SWP.Application.PortalCustomers
         public DeleteBillingRecord(IPortalManager portalManager) : base(portalManager) { }
 
         public Task<int> DeleteBillingDetail(string userId) => _portalManager.DeleteBillingDetail(userId);
-
     }
 }

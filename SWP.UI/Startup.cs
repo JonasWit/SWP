@@ -14,6 +14,7 @@ using SWP.DataBase;
 using SWP.Domain.Enums;
 using SWP.UI.Localization;
 using SWP.UI.Services;
+using SWP.UI.Utilities;
 using System;
 
 namespace SWP.UI
@@ -66,8 +67,11 @@ namespace SWP.UI
 
             services.AddAuthorization(options =>
             {
-                options.AddPolicy(ApplicationPolicy.LegalApplication.ToString(), policy => policy.RequireClaim(ClaimType.Application.ToString(), ApplicationType.LegalSwp.ToString()));
-                options.AddPolicy("RootClient", policy => policy.RequireClaim(ClaimType.Status.ToString(), UserStatus.RootClient.ToString()));
+                options.AddPolicy(PortalNames.Policies.LegalApplication, policy => policy.RequireClaim(ClaimType.Application.ToString(), ApplicationType.LegalApplication.ToString()));
+                options.AddPolicy(PortalNames.Policies.RootClient, policy => policy.RequireClaim(ClaimType.Status.ToString(), UserStatus.RootClient.ToString()));
+                options.AddPolicy(PortalNames.Policies.RelatedAccount, policy => policy.RequireClaim(ClaimType.Status.ToString(), UserStatus.RelatedUser.ToString()));
+                options.AddPolicy(PortalNames.Policies.AuthenticatedUser, policy => policy.RequireAssertion(context => 
+                    context.User.IsInRole(PortalNames.Roles.Administrators) || context.User.IsInRole(PortalNames.Roles.Users)));
             });
 
             services.AddServerSideBlazor();

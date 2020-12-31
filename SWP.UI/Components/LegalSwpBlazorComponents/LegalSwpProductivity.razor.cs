@@ -153,7 +153,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
 
         private void ActiveTimeRecordChange(object arg) => ActionDispatcher.Dispatch(new ActiveTimeRecordChangeAction { Arg = arg });
 
-        private void SelectedMonthChange(object arg) => ActionDispatcher.Dispatch(new SelectedMonthChangeAction { Arg = arg });
+        private void SelectedMonthChange(object arg) => ActionDispatcher.Dispatch(new SelectedMonthChangeProductivityAction { Arg = arg });
 
         private void SelectedFontChange(object arg) => ActionDispatcher.Dispatch(new SelectedFontChangeAction { Arg = arg });
         

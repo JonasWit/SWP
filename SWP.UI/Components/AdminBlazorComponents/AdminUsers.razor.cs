@@ -22,21 +22,15 @@ namespace SWP.UI.Components.AdminBlazorComponents
 
         public void Dispose()
         {
-            ApplicationStore.RemoveStateChangeListener(UpdateView);
-            Store.RemoveStateChangeListener(UpdateView);
-        }
-
-        private void UpdateView()
-        {
-            Store.RefreshSore();
-            StateHasChanged();
+            ApplicationStore.RemoveStateChangeListener(StateHasChanged);
+            Store.RemoveStateChangeListener(StateHasChanged);
         }
 
         protected override async Task OnInitializedAsync()
         {
             base.OnInitialized();
-            ApplicationStore.AddStateChangeListener(UpdateView);
-            Store.AddStateChangeListener(UpdateView);
+            ApplicationStore.AddStateChangeListener(StateHasChanged);
+            Store.AddStateChangeListener(StateHasChanged);
             await Store.Initialize();
         }
 

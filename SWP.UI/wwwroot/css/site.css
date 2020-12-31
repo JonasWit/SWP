@@ -13,6 +13,17 @@ body {
     color: #000;
 }
 
+.carousel, .carousel-inner {
+    height: 350px;
+    margin-bottom: 2rem;
+}
+
+.carousel-text {
+    position: absolute;
+    left: 30%;
+    top:20%;
+}
+
 a {
     color: #262626;
     text-decoration: none;
@@ -129,7 +140,7 @@ li {
 }
 
     .ui-button:hover,
-    .btn:hover{
+    .btn:hover {
         background-position: right bottom !important;
         color: #fff !important;
         outline: none !important;
@@ -184,7 +195,6 @@ li {
         display: inline-block;
         padding-top: 10px;
         color: #0067b8;
-        text-transform: uppercase;
         font-weight: bold;
     }
 
@@ -192,13 +202,17 @@ li {
             margin-left: 10px;
         }
 
+.forward {
+    height: 14px;
+}
+
 .offer {
     padding: 0.5rem;
 }
 
-img:hover {
-    opacity: 0.7;
-}
+    .offer img:hover {
+        opacity: 0.7;
+    }
 
 .main-link {
     display: inline-block;

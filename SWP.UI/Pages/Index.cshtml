@@ -2,6 +2,62 @@
 @model SWP.UI.Pages.IndexModel
 @{
 }
+<section>
+    <div id="myCarousel" class="carousel carousel-dark slide" data-bs-ride="carousel">
+        @*<ol class="carousel-indicators">
+            <li data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active"></li>
+            <li data-bs-target="#carouselExampleDark" data-bs-slide-to="1"></li>
+            <li data-bs-target="#carouselExampleDarks" data-bs-slide-to="2"></li>
+        </ol>*@
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="~/Images/jess-bailey-q10VITrVYUM-unsplash-small.jpg" class="d-block w-100" alt="Computer" />
+                <div class="carousel-text">
+                    <h2>Systemy Wspomagania Pracy</h2>
+                    <a class="main-link ml-5" asp-page="/Marketing/Products">Poznaj nasze produkty</a>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img src="~/Images/pexels-fauxels-3183197-small.jpg" class="d-block w-100" alt="Computer">
+                <div class="carousel-text">
+                    <h5>Second slide label</h5>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img src="~/Images/pexels-pixabay-265087-small.jpg" class="d-block w-100" alt="...">
+                <div class="carousel-text">
+                    <h5>Third slide label</h5>
+                    <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
+                </div>
+            </div>
+        </div>
+        <a class="carousel-control-prev" href="#carouselExampleDark" role="button" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden"></span>
+        </a>
+        <a class="carousel-control-next" href="#carouselExampleDark" role="button" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden"></span>
+        </a>
+    </div>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 <header class="showcase" id="header">
     <h2>Systemy Wspomagania Pracy</h2>
@@ -10,13 +66,13 @@
 <!--Home cards 1-->
 <h2 class="text-center mt-5" id="offer">OFERTA</h2>
 <hr />
-
 <section class="home-cards">
     <div class="offer">
         <img class="" src="~/Images/pexels-fauxels-3183153.jpg" alt="" />
         <div class="">
             <h3><strong>Aplikacje webowe</strong></h3>
-            <p>Zajmujemy się tworzeniem aplikacji webowych oraz późniejszym wsparciem technicznym dla klientów. Aplikacje stworzone przez nas utrzymywane są na platformie hostingowej Webio - na rynku od 2008 roku.</p>
+            <p>Zajmujemy się tworzeniem aplikacji webowych oraz późniejszym wsparciem technicznym dla klientów. </p>
+            <a asp-page="/Marketing/Legal">Sprawdź produkty <i class="fas fa-chevron-right"></i></a>
         </div>
     </div>
 
@@ -24,7 +80,8 @@
         <img class="" src="~/Images/pexels-pixabay-265087.jpg" alt="" />
         <div class="">
             <h3><strong>Aplikacje desktopowe</strong></h3>
-            <p>Zajmujemy się tworzeniem aplikacji webowych oraz późniejszym wsparciem technicznym dla klientów. Aplikacje stworzone przez nas utrzymywane są na platformie hostingowej Webio - na rynku od 2008 roku.</p>
+            <p>Część naszych usług stanowią również aplikacje desktopowe.</p>
+            <a asp-page="/Marketing/PasswordManager">Sprawdź produkty <i class="fas fa-chevron-right"></i></a>
         </div>
     </div>
 
@@ -33,6 +90,7 @@
         <div class="">
             <h3><strong>Indywidualne rozwiązania</strong></h3>
             <p>Szukasz innych rozwiązań? Sprawdź co jeszcze możemy dla Ciebie zrobić.</p>
+            <a asp-page="/Marketing/IndividualSolutions">Sprawdź produkty <i class="fas fa-chevron-right"></i></a>
         </div>
     </div>
 </section>
@@ -56,3 +114,7 @@
     </div>
 </section>
 
+<script>
+    var myCarousel = document.querySelector('#myCarousel')
+    var carousel = new bootstrap.Carousel(myCarousel)
+</script>

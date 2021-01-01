@@ -15,23 +15,45 @@ body {
 
 /*CAROUSEL*/
 .carousel, .carousel-inner {
-    height: 350px;
+    height: 400px;
     margin-bottom: 2rem;
+    margin-top: 0;
+}
+
+.carousel-text {
+    border: 2px solid #fff;
+    padding: 6px 8px;
 }
 
 .carousel-text-1 {
     position: absolute;
     left: 33%;
-    top: 20%;
+    top: 10%;
 }
 
-    .carousel-text-1 a {
-        margin-left: 4rem;
-    }
+.carousel-text-2 {
+    position: absolute;
+    width: 350px;
+    left: 65%;
+    top: 2%;
+}
 
-    .carousel-text p {
-        white-space: normal;
-    }
+.carousel-text-3 {
+    position: absolute;
+    width: 390px;
+    left: 10%;
+    top: 2%;
+}
+
+
+
+.carousel-text-1 a {
+    margin-left: 4rem;
+}
+
+.carousel-text p {
+    white-space: normal;
+}
 
 a {
     color: #262626;
@@ -200,16 +222,16 @@ li {
         margin-bottom: 5px;
     }
 
-    .main-links {
-        display: inline-block;
-        padding-top: 10px;
-        color: #0067b8;
-        font-weight: bold;
-    }
+.main-links {
+    display: inline-block;
+    padding-top: 10px;
+    color: #0067b8;
+    font-weight: bold;
+}
 
-        .main-links:hover i {
-            margin-left: 10px;
-        }
+    .main-links:hover i {
+        margin-left: 10px;
+    }
 
 .forward {
     height: 14px;
@@ -294,7 +316,9 @@ li {
 }
 
 .footer {
-    height: 150px;
+    height: 250px;
+    margin: 0;
+    background-color: #bdbdbd;
 }
 
 /*Account management*/
@@ -315,6 +339,25 @@ li {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.contact-us {
+    height: 550px;
+    
+}
+
+.contact {
+    background-image: url(../Images/contact-us-photo.jpg);
+    height: 100%;
+    background-position: center top;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.contact-details {
+    background-color: #fff;
+    width: 100%;
+    margin-left: 0;
 }
 
 
@@ -349,17 +392,35 @@ li {
     }
 
     .carousel-text-1 {
-        position: relative;
-        margin-left: -100px;
+        left: 15%;
+        top: 30%;
+        background-color: #fff;
     }
 
-        .carousel-text-1 h2 {
-            font-size: 16px;
-        }
+    .carousel-text-2 {
+        left: 15%;
+        top: 30%;
+        background-color: #fff;
+    }
 
-        .carousel-text-1 a {
-            margin-left: 0;
-        }
+    .carousel-text-3 {
+        background-color: #fff;
+    }
+
+    .carousel-text-1 h2 {
+        font-size: 16px;
+    }
+
+    .carousel-text-1 a {
+        margin-left: 0;
+    }
+
+    .flex-row {
+        flex-direction: column !important;
+    }
+
+
+
 
     @media screen and (min-width: 768px) {
         .navigation {

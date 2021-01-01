@@ -13,16 +13,25 @@ body {
     color: #000;
 }
 
+/*CAROUSEL*/
 .carousel, .carousel-inner {
     height: 350px;
     margin-bottom: 2rem;
 }
 
-.carousel-text {
+.carousel-text-1 {
     position: absolute;
-    left: 30%;
-    top:20%;
+    left: 33%;
+    top: 20%;
 }
+
+    .carousel-text-1 a {
+        margin-left: 4rem;
+    }
+
+    .carousel-text p {
+        white-space: normal;
+    }
 
 a {
     color: #262626;
@@ -191,14 +200,14 @@ li {
         margin-bottom: 5px;
     }
 
-    .home-cards a {
+    .main-links {
         display: inline-block;
         padding-top: 10px;
         color: #0067b8;
         font-weight: bold;
     }
 
-        .home-cards a:hover i {
+        .main-links:hover i {
             margin-left: 10px;
         }
 
@@ -338,15 +347,27 @@ li {
         flex-direction: column;
         float: none;
     }
-}
 
-@media screen and (min-width: 768px) {
-    .navigation {
-        width: 100%;
-        justify-content: flex-start;
+    .carousel-text-1 {
+        position: relative;
+        margin-left: -100px;
     }
 
-    .nav-item a {
-        font-size: 0.85rem !important;
+        .carousel-text-1 h2 {
+            font-size: 16px;
+        }
+
+        .carousel-text-1 a {
+            margin-left: 0;
+        }
+
+    @media screen and (min-width: 768px) {
+        .navigation {
+            width: 100%;
+            justify-content: flex-start;
+        }
+
+        .nav-item a {
+            font-size: 0.85rem !important;
+        }
     }
-}

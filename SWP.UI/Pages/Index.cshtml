@@ -4,65 +4,66 @@
 }
 <section>
     <div id="myCarousel" class="carousel carousel-dark slide" data-bs-ride="carousel">
-        @*<ol class="carousel-indicators">
-            <li data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active"></li>
-            <li data-bs-target="#carouselExampleDark" data-bs-slide-to="1"></li>
-            <li data-bs-target="#carouselExampleDarks" data-bs-slide-to="2"></li>
-        </ol>*@
+        <ol class="carousel-indicators">
+            <li data-bs-target="#myCarousel" data-bs-slide-to="0" class="active"></li>
+            <li data-bs-target="#myCarousel" data-bs-slide-to="1"></li>
+            <li data-bs-target="#myCarousel" data-bs-slide-to="2"></li>
+        </ol>
         <div class="carousel-inner">
             <div class="carousel-item active">
                 <img src="~/Images/jess-bailey-q10VITrVYUM-unsplash-small.jpg" class="d-block w-100" alt="Computer" />
-                <div class="carousel-text">
-                    <h2>Systemy Wspomagania Pracy</h2>
-                    <a class="main-link ml-5" asp-page="/Marketing/Products">Poznaj nasze produkty</a>
+                <div class="carousel-text carousel-text-1">
+                    <h5>Systemy Wspomagania Pracy</h5>
+                    <p>Rozwiązania dostosowane do potrzeb Twojej firmy</p>
+                    <a class="main-link" asp-page="/Marketing/Products">Poznaj nasze produkty</a>
                 </div>
             </div>
             <div class="carousel-item">
                 <img src="~/Images/pexels-fauxels-3183197-small.jpg" class="d-block w-100" alt="Computer">
-                <div class="carousel-text">
+                <div class="carousel-text carousel-text-2">
                     <h5>Second slide label</h5>
                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
                 </div>
             </div>
             <div class="carousel-item">
                 <img src="~/Images/pexels-pixabay-265087-small.jpg" class="d-block w-100" alt="...">
-                <div class="carousel-text">
+                <div class="carousel-text carousel-text-3">
                     <h5>Third slide label</h5>
                     <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
                 </div>
             </div>
         </div>
-        <a class="carousel-control-prev" href="#carouselExampleDark" role="button" data-bs-slide="prev">
+        <a class="carousel-control-prev" href="#myCarousel" role="button" data-bs-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
             <span class="visually-hidden"></span>
         </a>
-        <a class="carousel-control-next" href="#carouselExampleDark" role="button" data-bs-slide="next">
+        <a class="carousel-control-next" href="#myCarousel" role="button" data-bs-slide="next">
             <span class="carousel-control-next-icon" aria-hidden="true"></span>
             <span class="visually-hidden"></span>
         </a>
     </div>
 </section>
 
+<section>
+    <div class="d-flex flex-row">
+        <div class="p-2">
+            <img class="mx-auto d-block p-2" src="/Images/icons8-security-shield-green-50.png" />
+            <h2 class="text-center">BEZPIECZEŃSTWO</h2>
+            <p>Kładziemy nacisk na <strong>bezpieczeńswto naszych aplikacji</strong>. Korzystamy z najnowszych rozwiązań w zakresie bezpieczeństwa baz danych i bezpieczeństwa w sieci. <a class="main-links" href="#">Dowiedz się więcej <i class="fas fa-chevron-right"></i></a></p>
+        </div>
+        <div class="p-2">
+            <img class="mx-auto d-block p-2" src="/Images/icons8-idea-sharing-50.png" />
+            <h2 class="text-center">INNOWACYJNOŚĆ</h2>
+            <p>Korzystamy z <strong>najnowszych technologii</strong> zapewniających bezproblemowe funkcjonowanie naszych rozwiązań. <a class="main-links" href="#">Dowiedz się więcej <i class="fas fa-chevron-right"></i></a> </p>
+        </div>
+        <div class="p-2">
+            <img class="mx-auto d-block p-2" src="/Images/icons8-consultation-50.png" />
+            <h2 class="text-center">DORADZTWO</h2>
+            <p>Pomagamy <strong>analizować</strong> potrzeby firmy celem dostowania najlepszych rozwiązań usprawniającyhc funkcjonowanie przedsiębiorstwa. <a class="main-links" href="#">Dowiedz się więcej <i class="fas fa-chevron-right"></i></a></p>
+        </div>
+    </div>
+</section>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<header class="showcase" id="header">
-    <h2>Systemy Wspomagania Pracy</h2>
-    <a class="main-link" asp-page="/Marketing/Products">Poznaj nasze produkty</a>
-</header>
 <!--Home cards 1-->
 <h2 class="text-center mt-5" id="offer">OFERTA</h2>
 <hr />
@@ -72,7 +73,7 @@
         <div class="">
             <h3><strong>Aplikacje webowe</strong></h3>
             <p>Zajmujemy się tworzeniem aplikacji webowych oraz późniejszym wsparciem technicznym dla klientów. </p>
-            <a asp-page="/Marketing/Legal">Sprawdź produkty <i class="fas fa-chevron-right"></i></a>
+            <a asp-page="/Marketing/WebSolutions/Index" class="main-links">Sprawdź produkty <i class="fas fa-chevron-right"></i></a>
         </div>
     </div>
 
@@ -81,7 +82,7 @@
         <div class="">
             <h3><strong>Aplikacje desktopowe</strong></h3>
             <p>Część naszych usług stanowią również aplikacje desktopowe.</p>
-            <a asp-page="/Marketing/PasswordManager">Sprawdź produkty <i class="fas fa-chevron-right"></i></a>
+            <a asp-page="/Marketing/DesktopSolutions/Index" class="main-links">Sprawdź produkty <i class="fas fa-chevron-right"></i></a>
         </div>
     </div>
 
@@ -90,7 +91,7 @@
         <div class="">
             <h3><strong>Indywidualne rozwiązania</strong></h3>
             <p>Szukasz innych rozwiązań? Sprawdź co jeszcze możemy dla Ciebie zrobić.</p>
-            <a asp-page="/Marketing/IndividualSolutions">Sprawdź produkty <i class="fas fa-chevron-right"></i></a>
+            <a asp-page="/Marketing/IndividualSolutions/Index" class="main-links">Sprawdź produkty <i class="fas fa-chevron-right"></i></a>
         </div>
     </div>
 </section>

@@ -10,9 +10,8 @@
 
 @*<RadzenButton Text="TEST!" Click="MainStore.ThrowTestException"></RadzenButton>*@
 <div class="list-row">
-    @if (Store.GetState().SelectedUser != null && 
-        MainStore.GetState().AppActiveUserManager.IsRoot && 
-        MainStore.GetState().AppActiveUserManager.User.Id != Store.GetState().SelectedUser.Id)
+    @if (Store.GetState().SelectedUser != null &&
+ MainStore.GetState().AppActiveUserManager.IsRoot)
     {
 
         <h1>Mozna skasowac</h1>
@@ -22,7 +21,7 @@
 
         <div>
             <h3>Klienci</h3>
-            <RadzenListBox AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" Multiple="true" Data=@(Store.GetState().Clients)  @bind-Value=@Store.GetState().SelectedClients 
+            <RadzenListBox AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" Multiple="true" Data=@(Store.GetState().Clients) @bind-Value=@Store.GetState().SelectedClients
                            TextProperty="Name" ValueProperty="Id" Style="height:200px" Change=@(args => SelectedClientChange(args)) />
         </div>
 
@@ -31,6 +30,24 @@
             <RadzenListBox AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" Multiple="true" @bind-Value=@Store.GetState().SelectedCases Data=@(Store.GetState().Cases)
                            TextProperty="Name" ValueProperty="Id" Change=@(args => SelectedCaseChange(args)) Style="height:200px" />
         </div>
+
+        <h3>Panel: Statystyki</h3>
+        <RadzenSwitch Style="margin-bottom: 20px" />
+
+        <h3>Panel: List Kontaktów</h3>
+        <RadzenSwitch Style="margin-bottom: 20px" />
+
+        <h3>Panel: List Zadań</h3>
+        <RadzenSwitch Style="margin-bottom: 20px" />
+
+        <h3>Panel: Finanse</h3>
+        <RadzenSwitch Style="margin-bottom: 20px" />
+
+        <h3>Panel: Rozliczenia</h3>
+        <RadzenSwitch Style="margin-bottom: 20px" />
+
+        <h3>Panel: Archiwum</h3>
+        <RadzenSwitch Style="margin-bottom: 20px" />
     }
 
     @if (MainStore.GetState().AppActiveUserManager.IsRoot)

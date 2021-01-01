@@ -47,6 +47,8 @@ namespace SWP.DataBase
 
             #region Legal App
 
+            //Client`s inner objects
+
             modelBuilder.Entity<Client>()
                 .HasMany(c => c.Cases)
                 .WithOne(e => e.Client)
@@ -72,6 +74,8 @@ namespace SWP.DataBase
                 .WithOne(e => e.Client)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            //Case`s inner objects
+
             modelBuilder.Entity<Case>()
                 .HasMany(c => c.Reminders)
                 .WithOne(e => e.Case)
@@ -85,6 +89,18 @@ namespace SWP.DataBase
             modelBuilder.Entity<Case>()
                 .HasMany(c => c.Notes)
                 .WithOne(e => e.Case)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            //Access Modifiers
+
+            modelBuilder.Entity<Case>()
+                .HasMany(c => c.AccessesToCase)
+                .WithOne(e => e.Case)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Client>()
+                .HasMany(c => c.AccessesToClient)
+                .WithOne(e => e.Client)
                 .OnDelete(DeleteBehavior.Cascade);
 
             #endregion

@@ -33,6 +33,9 @@ namespace SWP.Domain.Infrastructure.LegalApp
         Task<int> RevokeAccessToClients(string userId, List<int> clientIds);
         Task<int> RevokeAccessToRanels(string userId, List<int> panelsIds);
 
+        Task<int> DeleteCaseAccessRecords(List<int> caseIds);
+        Task<int> DeleteClientAccessRecords(List<int> clientIds);
+
         #endregion
 
         #region Clients

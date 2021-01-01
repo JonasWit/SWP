@@ -1,4 +1,5 @@
 ﻿using SWP.Domain.Models.BaseClasses;
+using SWP.Domain.Models.LegalApp.AccessControl;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -22,5 +23,6 @@ namespace SWP.Domain.Models.LegalApp
         public int ClientId { get; set; }
         public Client Client { get; set; }
         public List<CaseContactPerson> ContactPeople { get; set; }
+        public List<AccessToCase> AccessesToCase { get; set; }
     }
 }

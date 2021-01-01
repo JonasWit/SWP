@@ -22,7 +22,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
         public AppActiveUserManager AppActiveUserManager { get; set; }
         public List<ClientViewModel> Clients { get; set; } = new List<ClientViewModel>();
         public ClientViewModel ActiveClient { get; set; }
-        public LegalAppPanels ActivePanel { get; set; } = LegalAppPanels.MyApp;
+        public LegalAppPanels ActivePanel { get; set; } = LegalAppPanels.Info;
         public string SelectedClientString { get; set; }
         public int UpcomingReminders { get; set; }
     }

@@ -785,6 +785,22 @@ namespace SWP.DataBase.Managers
 
         public Task<List<AccessToPanel>> GetAccessToPanel(string userId) => _context.AccessToPanels.Where(x => x.UserId.Equals(userId)).ToListAsync();
 
+        public Task<int> DeleteCaseAccessRecords(List<int> caseIds)
+        {
+            var toRemove = _context.AccessToCases.Where(x => caseIds.Contains(x.CaseId)).ToList();
+            _context.AccessToCases.RemoveRange(toRemove);
+
+            return _context.SaveChangesAsync();
+        }
+
+        public Task<int> DeleteClientAccessRecords(List<int> clientIds)
+        {
+            var toRemove = _context.AccessToClients.Where(x => clientIds.Contains(x.ClientId)).ToList();
+            _context.AccessToClients.RemoveRange(toRemove);
+
+            return _context.SaveChangesAsync();
+        }
+
         #endregion
     }
 

@@ -2,6 +2,8 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Radzen;
+using SWP.Application.LegalSwp.AppDataAccess;
+using SWP.Application.LegalSwp.Cases;
 using SWP.Application.LegalSwp.Clients;
 using SWP.Domain.Models.LegalApp;
 using SWP.UI.BlazorApp.LegalApp.Stores.Main;
@@ -25,6 +27,16 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.UserManager
         public IdentityUser SelectedUser { get; set; }
         public List<Client> Clients { get; set; } = new List<Client>();
         public List<Case> Cases { get; set; } = new List<Case>();
+
+        public bool IsStatisticsVisible { get; set; } = false;
+        public bool IsClientJobsVisible { get; set; } = false;
+        public bool IsClientContactsVisible { get; set; } = false;
+        public bool IsFinanceVisible { get; set; } = false;
+        public bool IsProductivityVisible { get; set; } = false;
+        public bool IsArchiveVisible { get; set; } = false;
+
+        public bool AllowArchive { get; set; } = false;
+        public bool AllowDelete { get; set; } = false;
     }
 
     [UIScopedService]
@@ -48,6 +60,11 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.UserManager
             var getClients = scope.ServiceProvider.GetRequiredService<GetClients>();
 
             _state.Clients = getClients.GetClientsWithCleanCases(MainStore.GetState().AppActiveUserManager.ProfileName);
+
+
+
+
+
         }
 
         protected override async void HandleActions(IAction action)
@@ -56,7 +73,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.UserManager
             {
                 case SelectedUserChangeAction.SelectedUserChange:
                     var selectedUserChangeAction = (SelectedUserChangeAction)action;
-                    SelectedUserChange(selectedUserChangeAction.Arg);
+                    await SelectedUserChange(selectedUserChangeAction.Arg);
                     break;
                 case RemoveRelationAction.RemoveRelation:
                     await RemoveRelation();
@@ -76,13 +93,14 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.UserManager
             }
         }
 
-        private void SelectedUserChange(object value)
+        private async Task SelectedUserChange(object value)
         {
             var input = (string)value;
             if (value != null)
             {
                 _state.SelectedUser = MainStore.GetState().AppActiveUserManager.RelatedUsers.FirstOrDefault(x => x.Id == input);
                 UpdateData();
+                await GetCurrentAccesses();
             }
             else
             {
@@ -115,10 +133,83 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.UserManager
 
         public async Task UpdateAccess()
         {
+            if (string.IsNullOrEmpty(_state.SelectedUser.Id))
+            {
+                return;
+            }
+
+            try
+            {
+                using var scope = _serviceProvider.CreateScope();
+                var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+
+                var getAccess = scope.ServiceProvider.GetRequiredService<GetAccess>();
+
+                var getClients = scope.ServiceProvider.GetRequiredService<GetClients>();
+                var grantAccess = scope.ServiceProvider.GetRequiredService<GrantAccess>();
+                var revokeAccess = scope.ServiceProvider.GetRequiredService<RevokeAccess>();
+
+                var userToModify = await userManager.FindByIdAsync(_state.SelectedUser.Id);
+
+                var lockResult = await userManager.UpdateSecurityStampAsync(userToModify);
+
+                if (!lockResult.Succeeded)
+                {
+                    var identityErrors = String.Join("; ", lockResult.Errors.Select(x => x.Description).ToList());
+                    _logger.LogError(LogTags.LegalAppLogPrefix + "Issue when Locking User: {lockUser} by User: {rootUser} - Errors:" + identityErrors, userToModify.UserName, MainStore.GetState().AppActiveUserManager.UserName);
+                    throw new Exception(identityErrors);
+                }
+
+                var currentProfileClients = getClients.GetClientsWithCleanCases(MainStore.GetState().AppActiveUserManager.ProfileName);
+                var currentProfileCases = currentProfileClients.SelectMany(x => x.Cases).Select(x => x.Id).ToList();
+
+                var currentClientAccesses = await getAccess.GetAccessToClient(_state.SelectedUser.Id);
+                var currentCaseAccesses = await getAccess.GetAccessToCase(_state.SelectedUser.Id);
+                var currentPanelAccesses = await getAccess.GetAccessToPanel(_state.SelectedUser.Id);
+
+                var selectedClientAccesses = _state.SelectedClients.ToList();
+                var selectedCasesAccesses = _state.SelectedCases.ToList();
+
+                //Client accesses
+
+                var clientAccessesToRemove = new List<int>();
+                clientAccessesToRemove.AddRange(currentClientAccesses.Where(x => !selectedClientAccesses.Any(y => y.Equals(x))).Select(x => x.Id).ToList());
+
+                var clientAccessesToAdd = new List<int>();
+                clientAccessesToAdd.AddRange(selectedClientAccesses.Where(x => !currentClientAccesses.Any(y => y.ClientId.Equals(x)) && currentProfileClients.Any(y => y.Id.Equals(x))));
+
+                await revokeAccess.RevokeAccessToClients(_state.SelectedUser.Id, clientAccessesToRemove);
+                await grantAccess.GrantAccessToClients(_state.SelectedUser.Id, clientAccessesToAdd);
+
+                //Case accesses
+
+                var caseAccessesToRemove = new List<int>();
+                caseAccessesToRemove.AddRange(currentCaseAccesses.Where(x => !selectedCasesAccesses.Any(y => y.Equals(x))).Select(x => x.Id).ToList());
+
+                var caseAccessesToAdd = new List<int>();
+                clientAccessesToAdd.AddRange(selectedCasesAccesses.Where(x => !currentCaseAccesses.Any(y => y.CaseId.Equals(x)) && currentProfileCases.Any(y => y.Equals(x))));
+
+                await revokeAccess.RevokeAccessToCases(_state.SelectedUser.Id, clientAccessesToRemove);
+                await grantAccess.GrantAccessToCases(_state.SelectedUser.Id, clientAccessesToAdd);
+
+                //Panels accesses
 
 
 
 
+
+
+
+
+                ShowNotification(NotificationSeverity.Success, "Sukces!", $"Zmieniono dostępy dla: {_state.SelectedUser.UserName}.", GeneralViewModel.NotificationDuration);
+                await GetCurrentAccesses();
+                BroadcastStateChange();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, LogTags.LegalAppLogPrefix + "Exception in UpdateAccess method in Legal App Options panel, User: {rootUser}",  MainStore.GetState().AppActiveUserManager.UserName);
+                MainStore.ShowErrorPage(ex);
+            }
         }
 
         private async Task RemoveRelation()
@@ -137,7 +228,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.UserManager
                 {
                     var identityErrors = String.Join("; ", lockResult.Errors.Select(x => x.Description).ToList());
                     _logger.LogError(LogTags.LegalAppLogPrefix + "Issue when Locking User: {lockUser} by User: {rootUser} - Errors:" + identityErrors, userToRemove.UserName, MainStore.GetState().AppActiveUserManager.UserName);
-                    throw new Exception("Exception from Legal User Manager - Logged");  
+                    throw new Exception(identityErrors);  
                 }
 
                 var profileRemoveResult = await userManager.RemoveClaimAsync(userToRemove, profileClaim);
@@ -146,7 +237,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.UserManager
                 {
                     var identityErrors = String.Join("; ", lockResult.Errors.Select(x => x.Description).ToList());
                     _logger.LogError(LogTags.LegalAppLogPrefix + "Issue when removing Profile {profileRemove} from User: {lockUser} by User: {rootUser} - Errors:" + identityErrors, profileClaim.Value, userToRemove.UserName, MainStore.GetState().AppActiveUserManager.UserName);
-                    throw new Exception("Exception from Legal User Manager - Logged");
+                    throw new Exception(identityErrors);
                 }
 
                 _state.SelectedUser = MainStore.GetState().AppActiveUserManager.User;
@@ -157,6 +248,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.UserManager
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, LogTags.LegalAppLogPrefix + "Exception in RemoveRelation method in Legal App Options panel, User: {rootUser}", MainStore.GetState().AppActiveUserManager.UserName);
                 MainStore.ShowErrorPage(ex);
             }
         }
@@ -200,12 +292,29 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.UserManager
 
         }
 
-        private async Task RefreshDataLists()
-        { 
-        
-        
-        
-        
+        private async Task GetCurrentAccesses()
+        {
+            using var scope = _serviceProvider.CreateScope();
+
+            var getAccess = scope.ServiceProvider.GetRequiredService<GetAccess>();
+            var grantAccess = scope.ServiceProvider.GetRequiredService<GrantAccess>();
+            var revokeAccess = scope.ServiceProvider.GetRequiredService<RevokeAccess>();
+
+            try
+            {
+                var currentCasesAccess = await getAccess.GetAccessToCase(_state.SelectedUser.Id);
+                var currentClientsAccess = await getAccess.GetAccessToClient(_state.SelectedUser.Id);
+                var currentPanelsAccess = await getAccess.GetAccessToPanel(_state.SelectedUser.Id);
+
+                _state.SelectedClients = currentClientsAccess.Select(x => x.ClientId);
+                _state.SelectedCases = currentCasesAccess.Select(x => x.CaseId);
+
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
         }
     }
 }

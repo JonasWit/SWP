@@ -15,8 +15,8 @@ namespace SWP.Application.LegalSwp.AppDataAccess
         {
         }
 
-        public Task<List<AccessToCase>> GetAccessToCase(string userId) => GetAccessToCase( userId);
-        public Task<List<AccessToClient>> GetAccessToClient(string userId) => GetAccessToClient(userId);
-        public Task<List<AccessToPanel>> GetAccessToPanel(string userId) => GetAccessToPanel(userId);
+        public Task<List<AccessToCase>> GetAccessToCase(string userId) => _legalManager.GetAccessToCase( userId);
+        public Task<List<AccessToClient>> GetAccessToClient(string userId) => _legalManager.GetAccessToClient(userId);
+        public Task<List<AccessToPanel>> GetAccessToPanel(string userId) => _legalManager.GetAccessToPanel(userId);
     }
 }

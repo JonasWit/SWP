@@ -11,6 +11,13 @@
                 </ul>
                 <ul class="navigation">
 
+                    <li class="nav-item @(MainStore.GetState().ActivePanel == LegalAppPanels.Info ? "active" : "") " @onclick="@(() => MainStore.SetActivePanel(LegalAppPanels.Info))">
+                        <a class="nav-link ">
+                            <i><img src="/Images/icons8-web-design-36.png" /></i>
+                            <span class="@(showSidebar ? "link-text" : "text-hidden")">Informacje</span>
+                        </a>
+                    </li>
+
                     @if (MainStore.GetState().AppActiveUserManager.IsRoot)
                     {
                         <li class="nav-item @(MainStore.GetState().ActivePanel == LegalAppPanels.UserManager ? "active" : "") " @onclick="@(() => MainStore.SetActivePanel(LegalAppPanels.UserManager))">
@@ -164,8 +171,11 @@
                     case LegalAppPanels.UserManager:
                         <LegalSwpUserManager />
                         break;
+                    case LegalAppPanels.Info:
+                        <LegalSwpInfo />
+                        break;
                     default:
-                        <LegalSwpMyApp />
+                        <LegalSwpInfo />
                         break;
                 }
             </div>

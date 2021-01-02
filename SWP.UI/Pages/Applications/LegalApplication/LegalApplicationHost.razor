@@ -1,0 +1,31 @@
+﻿@page "/LegalAppHost"
+
+
+
+@if (AccessGranted && !string.IsNullOrEmpty(ActiveUserId))
+{
+    <LegalSwpMain ActiveUserId="@ActiveUserId"></LegalSwpMain>
+}
+else
+{
+    NavigationManager.NavigateTo(NavigationManager.BaseUri + @"Applications", true);
+}
+
+
+<AuthorizeView>
+    <Authorized>
+        @if (AccessGranted)
+        {
+            <LegalSwpMain ActiveUserId="@ActiveUserId"></LegalSwpMain>
+        }
+        else
+        {
+            NavigationManager.NavigateTo(NavigationManager.BaseUri + @"Applications", true);
+        }
+    </Authorized>
+    <NotAuthorized>
+        <h1>Authentication Failure!</h1>
+        <p>You're not signed in.</p>
+    </NotAuthorized>
+</AuthorizeView>
+

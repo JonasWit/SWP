@@ -1,10 +1,29 @@
-﻿<!--<!DOCTYPE html>
+﻿@*@page "/blazor"
 
-<html>
+@{
+    Layout = "_LayoutApp";
+}
+
+<app>
+    @(await Html.RenderComponentAsync<App>(RenderMode.Server))
+</app>*@
+
+
+
+@page "/blazor"
+@namespace SWP.UI.Pages
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <meta name="viewport" content="width=device-width" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>SWP</title>
-    <base href="/" />
+    <base href="~/" />
 
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link href="~/css/swpCss/SWPAppStyle.css" rel="stylesheet" />
@@ -12,23 +31,21 @@
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700&display=swap"
           rel="stylesheet" />
 
-    <environment include="Development">-->
+    <environment include="Development">
         @*<link href="~/css/Debug.css" rel="stylesheet" />*@
-    <!--</environment>
+    </environment>
 
     <link rel="stylesheet" href="_content/Radzen.Blazor/css/humanistic-base.css">
     <link href="SWP.UI.styles.css" rel="stylesheet" />
     <script src="_content/Radzen.Blazor/Radzen.Blazor.js"></script>
 </head>
-
 <body>
-    @RenderBody()
+    <component type="typeof(App)" render-mode="Server" />
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/_framework/blazor.server.js"></script>
     <script src="~/js/saveAsFile.js"></script>
 
-    @RenderSection("Scripts", required: false)
 </body>
-</html>-->
+</html>

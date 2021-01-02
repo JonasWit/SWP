@@ -74,8 +74,6 @@ namespace SWP.UI
                     context.User.IsInRole(PortalNames.Roles.Administrators) || context.User.IsInRole(PortalNames.Roles.Users)));
             });
 
-            services.AddServerSideBlazor();
-
             services.Configure<CookiePolicyOptions>(options =>
             {
                 options.CheckConsentNeeded = context => true;
@@ -83,6 +81,7 @@ namespace SWP.UI
             });
 
             services.AddRazorPages().AddRazorRuntimeCompilation();
+            services.AddServerSideBlazor();
             services.AddApplicationServices();
             services.AddDatabaseDeveloperPageExceptionFilter();
         }
@@ -112,8 +111,9 @@ namespace SWP.UI
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-                endpoints.MapBlazorHub();
                 endpoints.MapRazorPages();
+                endpoints.MapBlazorHub();
+                endpoints.MapFallbackToPage("/_Host");
             });
         }
     }

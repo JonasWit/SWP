@@ -166,7 +166,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
                 using var scope = _serviceProvider.CreateScope();
                 var getCases = scope.ServiceProvider.GetRequiredService<GetCases>();
                 var getAccess = scope.ServiceProvider.GetRequiredService<GetAccess>();
-                var caseAccess = await getAccess.GetAccessToCase(MainStore.GetState().ActiveUserId);
+                var caseAccess = await getAccess.GetAccessToCase(MainStore.GetState().AppActiveUserManager.UserId);
 
                 if (MainStore.GetState().AppActiveUserManager.IsRoot || MainStore.GetState().AppActiveUserManager.IsAdmin)
                 {
@@ -229,7 +229,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
                 if (!MainStore.GetState().AppActiveUserManager.IsRoot && !MainStore.GetState().AppActiveUserManager.IsAdmin)
                 {
                     var grantAccess = scope.ServiceProvider.GetRequiredService<GrantAccess>();
-                    await grantAccess.GrantAccessToCase(MainStore.GetState().ActiveUserId, result.Id);
+                    await grantAccess.GrantAccessToCase(MainStore.GetState().AppActiveUserManager.UserId, result.Id);
                 }
 
                 await _state.CasesGrid.Reload();

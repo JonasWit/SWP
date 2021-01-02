@@ -45,7 +45,7 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Application
 
             _state.NotificationService = scope.ServiceProvider.GetRequiredService<NotificationService>();
             _state.AppActiveUserManager = new AppActiveUserManager(_serviceProvider, userId);
-            await _state.AppActiveUserManager.UpdateUserManager();
+            await _state.AppActiveUserManager.UpdateClaimsAndRoles();
 
             _logger.LogInformation(LogTags.AdminAppLogPrefix + "Admin Application accessed by user {userName}", _state.AppActiveUserManager.User.UserName);
         }

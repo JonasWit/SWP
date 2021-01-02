@@ -128,6 +128,21 @@ namespace SWP.DataBase.Managers
             return _context.SaveChangesAsync();
         }
 
+        public Task<int> DeleteLicenses(string userId)
+        {
+            var entities = _context.UserLicenses.Where(x => x.UserId == userId).ToList();
+
+            if (entities.Count != 0)
+            {
+                _context.UserLicenses.RemoveRange(entities);
+                return _context.SaveChangesAsync();
+            }
+            else
+            {
+                return Task.FromResult(0);
+            }
+        }
+
         public bool ClaimExists(string claimType, string claimValue)
         {
             if (_context.UserClaims.Any(x => x.ClaimType == claimType && x.ClaimValue == claimValue))
@@ -268,7 +283,6 @@ namespace SWP.DataBase.Managers
             _context.ClientRequests.RemoveRange(_context.ClientRequests.Where(x => x.RequestorId == userId));
             return _context.SaveChangesAsync();
         }
-
 
         #endregion
     }

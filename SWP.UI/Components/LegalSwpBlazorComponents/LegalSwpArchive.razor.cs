@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
 using SWP.Domain.Enums;
 using SWP.UI.BlazorApp;
 using SWP.UI.BlazorApp.LegalApp.Stores.Archive;

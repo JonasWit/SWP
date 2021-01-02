@@ -47,7 +47,8 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
             {
                 _state.ActiveUserId = userId;
                 await RealodUserData();
-                await ReloadClientsDrop();
+
+                ReloadClientsDrop();
                 ReleadRemindersCounter();
 
                 _logger.LogInformation(LogTags.LegalAppLogPrefix + "Legal Application accessed by user {userName}, with Profile {userProfile}", _state.AppActiveUserManager.UserName, _state.AppActiveUserManager.ProfileName);
@@ -63,7 +64,8 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
             if (!string.IsNullOrEmpty(_state.ActiveUserId))
             {
                 _state.AppActiveUserManager = new AppActiveUserManager(_serviceProvider, _state.ActiveUserId);
-                await _state.AppActiveUserManager.UpdateUserManager();
+                await _state.AppActiveUserManager.UpdateClaimsAndRoles();
+                await _state.AppActiveUserManager.UpdatePermissions();
             }
         }
 
@@ -72,12 +74,10 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
 
         }
 
-        private async Task ReloadClientsDrop()
+        private void ReloadClientsDrop()
         {
             using var scope = _serviceProvider.CreateScope();
             var getClients = scope.ServiceProvider.GetRequiredService<GetClients>();
-            var getAccess = scope.ServiceProvider.GetRequiredService<GetAccess>();
-            var clientAccess = await getAccess.GetAccessToClient(_state.ActiveUserId);
 
             if (_state.AppActiveUserManager.IsRoot || _state.AppActiveUserManager.IsAdmin)
             {
@@ -86,8 +86,13 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
             else
             {
                 var clients = getClients.GetClientsWithoutData(_state.AppActiveUserManager.ProfileName)?.Select(x => (ClientViewModel)x).ToList();
-                clients.RemoveAll(x => !clientAccess.Any(y => y.ClientId.Equals(x.Id)));
+                clients.RemoveAll(x => !_state.AppActiveUserManager.ClientsPermissions.Any(y => y.Equals(x.Id)));
                 _state.Clients = clients;
+            }
+
+            if (_state.ActiveClient is not null && !_state.Clients.Any(x => x.Id.Equals(_state.ActiveClient.Id)))
+            {
+                _state.SelectedClientString = null;
             }
         }
 
@@ -241,9 +246,9 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
             _state.SelectedClientString = null;
         }
 
-        public async Task RefreshSore()
+        public void RefreshSore()
         {
-            await ReloadClientsDrop();
+            ReloadClientsDrop();
 
             if (!_state.Clients.Any(x => x.Id != _state.ActiveClient.Id))
             {

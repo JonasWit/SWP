@@ -19,6 +19,7 @@ namespace SWP.Domain.Infrastructure.Portal
         Task<UserLicense> UpdateLicense(UserLicense license);
         Task<int> DeleteLicense(int id);
         Task<int> DeleteLicense(string userId);
+        Task<int> DeleteLicenses(string userId);
 
         bool ClaimExists(string claimType, string claimValue);
         List<string> GetAllProfiles();

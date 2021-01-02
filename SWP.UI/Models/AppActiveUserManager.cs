@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using SWP.Application.LegalSwp.AppDataAccess;
 using SWP.Application.PortalCustomers.LicenseManagement;
 using SWP.Domain.Enums;
+using SWP.Domain.Infrastructure.Portal;
 using SWP.UI.Pages.Applications.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -34,9 +37,9 @@ namespace SWP.UI.Models
         public string UserName => User?.UserName;
         public string UserId => User?.Id;
 
-        public List<int> CasesPermissions { get; set; }
-        public List<int> ClientsPermissions { get; set; }
-        public List<int> PanelsPermissions { get; set; }
+        public List<int> CasesPermissions { get; set; } = new List<int>();
+        public List<int> ClientsPermissions { get; set; } = new List<int>();
+        public List<int> PanelsPermissions { get; set; } = new List<int>();
 
         public AppActiveUserManager(IServiceProvider serviceProvider, string activeUserId)
         {
@@ -44,15 +47,46 @@ namespace SWP.UI.Models
             _activeUserId = activeUserId;
         }
 
-        public async Task UpdateUserManager()
+        public async Task UpdatePermissions()
+        {
+            using var scope = _serviceProvider.CreateScope();
+            var getAccess = scope.ServiceProvider.GetRequiredService<GetAccess>();
+
+            var clients = await getAccess.GetAccessToClient(_activeUserId);
+            var cases = await getAccess.GetAccessToCase(_activeUserId);
+
+            ClientsPermissions = clients.Select(x => x.ClientId).ToList();
+            CasesPermissions = cases.Select(x => x.CaseId).ToList();
+        }
+
+
+        public async Task UpdateLicenses()
+        {
+            using var scope = _serviceProvider.CreateScope();
+            var portalManager = scope.ServiceProvider.GetRequiredService<IPortalManager>();
+            var getLicense = scope.ServiceProvider.GetRequiredService<GetLicense>();
+
+            if (IsRoot)
+            {
+                LicenseVms = getLicense.GetAll(_activeUserId).Select(x => (LicenseViewModel)x).ToList();
+            }
+            else
+            {
+                var parentId = await portalManager.GetParentAccountId(User, ProfileClaim);
+
+                if (!string.IsNullOrEmpty(parentId))
+                {
+                    LicenseVms = getLicense.GetAll(parentId).Select(x => (LicenseViewModel)x)?.ToList();
+                }
+            }
+        }
+
+        public async Task UpdateClaimsAndRoles()
         {
             try
             {
                 using var scope = _serviceProvider.CreateScope();
                 var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
-
-                User = await userManager.FindByIdAsync(_activeUserId);
-                Claims = await userManager.GetClaimsAsync(User) as List<Claim>;
 
                 User = await userManager.FindByIdAsync(_activeUserId);
                 Claims = await userManager.GetClaimsAsync(User) as List<Claim>;

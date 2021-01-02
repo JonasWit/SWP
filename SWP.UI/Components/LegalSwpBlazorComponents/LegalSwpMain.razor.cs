@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using SWP.UI.BlazorApp.LegalApp.Stores.Main;
@@ -15,6 +16,8 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
         public IServiceProvider ServiceProvider { get; set; }
         [Inject]
         public NavigationManager NavigationManager { get; set; }
+        [Inject]
+        public AuthenticationStateProvider AuthenticationStateProvider { get; set; }
         [Parameter]
         public string ActiveUserId { get; set; }
 

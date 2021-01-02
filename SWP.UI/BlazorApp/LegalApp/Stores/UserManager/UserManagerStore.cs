@@ -147,14 +147,14 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.UserManager
 
                 var userToModify = await userManager.FindByIdAsync(_state.SelectedUser.Id);
 
-                var lockResult = await userManager.UpdateSecurityStampAsync(userToModify);
+                //var lockResult = await userManager.UpdateSecurityStampAsync(userToModify);
 
-                if (!lockResult.Succeeded)
-                {
-                    var identityErrors = String.Join("; ", lockResult.Errors.Select(x => x.Description).ToList());
-                    _logger.LogError(LogTags.LegalAppLogPrefix + "Issue when Locking User: {lockUser} by User: {rootUser} - Errors:" + identityErrors, userToModify.UserName, MainStore.GetState().AppActiveUserManager.UserName);
-                    throw new Exception(identityErrors);
-                }
+                //if (!lockResult.Succeeded)
+                //{
+                //    var identityErrors = String.Join("; ", lockResult.Errors.Select(x => x.Description).ToList());
+                //    _logger.LogError(LogTags.LegalAppLogPrefix + "Issue when Locking User: {lockUser} by User: {rootUser} - Errors:" + identityErrors, userToModify.UserName, MainStore.GetState().AppActiveUserManager.UserName);
+                //    throw new Exception(identityErrors);
+                //}
 
                 var currentProfileClients = getClients.GetClientsWithCleanCases(MainStore.GetState().AppActiveUserManager.ProfileName);
                 var currentProfileCases = currentProfileClients.SelectMany(x => x.Cases).Select(x => x.Id).ToList();

@@ -113,7 +113,6 @@ namespace SWP.UI
                 endpoints.MapControllers();
                 endpoints.MapRazorPages();
                 endpoints.MapBlazorHub();
-                endpoints.MapFallbackToPage("/_Host");
             });
         }
     }

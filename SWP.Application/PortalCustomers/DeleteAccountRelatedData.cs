@@ -47,6 +47,15 @@ namespace SWP.Application.PortalCustomers
                 throw new Exception($"Exception when deleting Access data: {ex.Message}", ex);
             }
 
+            try
+            {
+                await _portalManager.DeleteLicenses(userId);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Exception when deleting Access data: {ex.Message}", ex);
+            }
+
             return true;
         }
     }

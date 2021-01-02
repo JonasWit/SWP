@@ -31,26 +31,11 @@ namespace SWP.UI.Pages.Applications
             AccessModel.ActiveUserId = httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
         public async Task<IActionResult> OnGet(
-            [FromServices] GetLicense getLicense, 
-            [FromServices] IPortalManager portalManager,
             [FromServices] IServiceProvider serviceProvider)
         {
             AccessModel.AppActiveUserManager = new AppActiveUserManager(serviceProvider, AccessModel.ActiveUserId);
-            await AccessModel.AppActiveUserManager.UpdateUserManager();
-
-            if (AccessModel.AppActiveUserManager.IsRoot)
-            {
-                AccessModel.AppActiveUserManager.LicenseVms = getLicense.GetAll(AccessModel.ActiveUserId).Select(x => (LicenseViewModel)x).ToList();
-            }
-            else
-            {
-                var parentId = await portalManager.GetParentAccountId(AccessModel.AppActiveUserManager.User, AccessModel.AppActiveUserManager.ProfileClaim);
-
-                if (!string.IsNullOrEmpty(parentId))
-                {
-                    AccessModel.AppActiveUserManager.LicenseVms = getLicense.GetAll(parentId).Select(x => (LicenseViewModel)x)?.ToList();
-                }
-            }
+            await AccessModel.AppActiveUserManager.UpdateClaimsAndRoles();
+            await AccessModel.AppActiveUserManager.UpdateLicenses();
 
             return Page();
         }

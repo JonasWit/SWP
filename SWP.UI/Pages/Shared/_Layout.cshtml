@@ -33,13 +33,21 @@
                     <li class="nav-item">
                         <a asp-page="/Index">Strona Główna</a>
                     </li>
+                    <li class="nav-item dropdown">
+                        <a class="dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Produkty
+                        </a>
+                        <ul class="dropdown-menu nav-item" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" asp-page="/Marketing/WebSolutions/Index">Aplikacje webowe</a></li>
+                            <li><a class="dropdown-item" asp-page="/Marketing/DesktopSolutions/Index">Aplikacje desktopowe</a></li>
+                            <li><a class="dropdown-item" asp-page="/Marketing/IndividualSolutions/Index">Indywidualne rozwiązania</a></li>
+                        </ul>
                     <li class="nav-item">
                         <a asp-page="/News/Overview">Aktualności</a>
                     </li>
                     <li class="nav-item">
                         <a asp-page="/Rules/Index">Regulamin</a>
                     </li>
-
                     @if ((await authService.AuthorizeAsync(User, PortalNames.Policies.AuthenticatedUser)).Succeeded)
                     {
                         <li class="nav-item">

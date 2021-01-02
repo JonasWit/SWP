@@ -71,6 +71,8 @@ ul {
     padding-top: 1rem;
 }
 
+
+
 .nav-item {
     white-space: nowrap;
     padding: 0.2rem 0.3rem 0rem 0.3rem;
@@ -135,7 +137,7 @@ li {
     flex-direction: row;
     justify-content: flex-end;
     padding-top: 1.5rem;
-    float: right;
+    float: right !important;
 }
 
 .rodo-links {
@@ -183,6 +185,21 @@ li {
     padding-right: 0.6rem;
 }
 
+.dropdown-menu {
+    border: 0;
+}
+
+    .dropdown-menu a {
+        padding: 2px;
+    }
+
+        .dropdown-menu a:hover,
+        .dropdown-menu a:active {
+            color: #262626;
+            text-decoration: none;
+            border-bottom: 2px solid;
+            background-color: #fff;
+        }
 
 /*Showcase*/
 .showcase {
@@ -343,7 +360,6 @@ li {
 
 .contact-us {
     height: 550px;
-    
 }
 
 .contact {
@@ -358,7 +374,6 @@ li {
     background-color: #fff;
     width: 100%;
     height: 210px;
-    
 }
 
 

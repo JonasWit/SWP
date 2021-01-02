@@ -50,7 +50,6 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Communication
         public CommunicationStore(IServiceProvider serviceProvider, IActionDispatcher actionDispatcher, NotificationService notificationService, ILogger<CommunicationStore> logger)
             : base(serviceProvider, actionDispatcher, notificationService)
         {
-            RefreshSore();
             _logger = logger;
         }
 
@@ -193,15 +192,5 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Communication
         #endregion
 
         private void ShowErrorPage(Exception ex) => AppStore.ShowErrorPage(ex);
-
-        public override void CleanUpStore()
-        {
-      
-        }
-
-        public override void RefreshSore()
-        {
-
-        }
     }
 }

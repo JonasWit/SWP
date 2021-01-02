@@ -28,7 +28,11 @@
         <h3>Sprawy</h3>
         <div>
             <RadzenListBox AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" Multiple="true" @bind-Value=@Store.GetState().SelectedCases Data=@(Store.GetState().Cases)
-                           TextProperty="Name" ValueProperty="Id" Change=@(args => SelectedCaseChange(args)) Style="height:200px" />
+                           TextProperty="Name" ValueProperty="Id" Change=@(args => SelectedCaseChange(args)) Style="height:200px">
+                <Template>
+                    Klient: @(Store.GetState().Clients.FirstOrDefault(x => x.Cases.Any(y => y.Id.Equals(context.Id))).Name) Sprawa: @((context as Case).Name)
+                </Template>
+            </RadzenListBox>
         </div>
 
         <h3>Panel: Statystyki</h3>
@@ -48,6 +52,8 @@
 
         <h3>Panel: Archiwum</h3>
         <RadzenSwitch Style="margin-bottom: 20px" />
+
+        <RadzenButton ButtonStyle="ButtonStyle.Warning" Click="UpdateAccess">Zmień Dostęp</RadzenButton>
     }
 
     @if (MainStore.GetState().AppActiveUserManager.IsRoot)

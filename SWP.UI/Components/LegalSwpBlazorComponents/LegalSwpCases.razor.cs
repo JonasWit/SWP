@@ -3,12 +3,13 @@ using Radzen;
 using SWP.Application.LegalSwp.Cases;
 using SWP.Application.LegalSwp.ContactPeopleAdmin;
 using SWP.Application.LegalSwp.Notes;
+using SWP.Domain.Enums;
 using SWP.UI.BlazorApp;
 using SWP.UI.BlazorApp.LegalApp.Stores.Cases;
 using SWP.UI.BlazorApp.LegalApp.Stores.Cases.Actions;
-using SWP.UI.BlazorApp.LegalApp.Stores.Enums;
 using SWP.UI.BlazorApp.LegalApp.Stores.Main;
 using SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data;
+using System.Threading.Tasks;
 
 namespace SWP.UI.Components.LegalSwpBlazorComponents
 {
@@ -47,13 +48,13 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
             StateHasChanged();
         }
 
-        protected override void OnInitialized()
+        protected override async Task OnInitializedAsync()        
         {
             Store.EnableLoading(Store.DataLoadingMessage);
 
             MainStore.AddStateChangeListener(RefreshView);
             Store.AddStateChangeListener(UpdateView);
-            Store.Initialize();
+            await Store.Initialize();
 
             Store.DisableLoading();
         }

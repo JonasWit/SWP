@@ -210,12 +210,12 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.ClientDetails
 
         #endregion
 
-        public override void CleanUpStore()
+        public void CleanUpStore()
         {
             _state.SelectedContact = null;
         }
 
-        public override void RefreshSore()
+        public void RefreshSore()
         {
             GetContactPeople(MainStore.GetState().ActiveClient.Id);
         }

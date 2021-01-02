@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Components;
+using SWP.Domain.Enums;
 using SWP.UI.BlazorApp;
 using SWP.UI.BlazorApp.LegalApp.Stores.Archive;
 using SWP.UI.BlazorApp.LegalApp.Stores.Archive.Actions;
-using SWP.UI.BlazorApp.LegalApp.Stores.Enums;
 using SWP.UI.BlazorApp.LegalApp.Stores.Main;
 using System;
 
@@ -23,7 +23,6 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
         {
             MainStore.RemoveStateChangeListener(RefreshView);
             ArchiveStore.RemoveStateChangeListener(RefreshView);
-            ArchiveStore.CleanUpStore();
         }
 
         private void RefreshView()

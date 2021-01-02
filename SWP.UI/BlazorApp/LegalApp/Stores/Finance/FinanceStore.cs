@@ -264,13 +264,13 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Finance
 
         #endregion
 
-        public override void CleanUpStore()
+        public void CleanUpStore()
         {
             _state.SelectedMonth = null;
             _state.SelectedCashMovement = null;
         }
 
-        public override void RefreshSore()
+        public void RefreshSore()
         {
             GetDataForMonthFilter();
             GetCashMovements(MainStore.GetState().ActiveClient.Id);

@@ -28,6 +28,8 @@ namespace SWP.UI.Models
         public Claim ProfileClaim => Claims.FirstOrDefault(x => x.Type == ClaimType.Profile.ToString());
 
         public bool IsRoot => Claims.Any(x => x.Type == ClaimType.Status.ToString() && x.Value == UserStatus.RootClient.ToString());
+        public bool IsAdmin => Roles.Any(x => x.Equals(RoleType.Administrators.ToString()));
+
         public List<Claim> StatusClaims => Claims.Where(x => x.Type == ClaimType.Status.ToString()).ToList();
         public string UserName => User?.UserName;
         public string UserId => User?.Id;

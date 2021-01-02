@@ -85,13 +85,5 @@ namespace SWP.UI.BlazorApp
         }
 
         #endregion
-
-        public abstract void CleanUpStore();
-
-        public virtual void RefreshSore()
-        {
-
-
-        }
     }
 }

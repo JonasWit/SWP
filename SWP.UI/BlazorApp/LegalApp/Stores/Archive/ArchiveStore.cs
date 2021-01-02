@@ -201,12 +201,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Archive
             }
         }
 
-        public override void CleanUpStore()
-        {
-
-        }
-
-        public override void RefreshSore()
+        public void RefreshSore()
         {
             RefreshData();
         }

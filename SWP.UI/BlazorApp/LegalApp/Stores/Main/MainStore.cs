@@ -2,9 +2,10 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Radzen;
+using SWP.Application.LegalSwp.AppDataAccess;
 using SWP.Application.LegalSwp.Clients;
 using SWP.Application.LegalSwp.Reminders;
-using SWP.UI.BlazorApp.LegalApp.Stores.Enums;
+using SWP.Domain.Enums;
 using SWP.UI.BlazorApp.LegalApp.Stores.Error;
 using SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data;
 using SWP.UI.Models;
@@ -46,7 +47,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
             {
                 _state.ActiveUserId = userId;
                 await RealodUserData();
-                ReloadClientsDrop();
+                await ReloadClientsDrop();
                 ReleadRemindersCounter();
 
                 _logger.LogInformation(LogTags.LegalAppLogPrefix + "Legal Application accessed by user {userName}, with Profile {userProfile}", _state.AppActiveUserManager.UserName, _state.AppActiveUserManager.ProfileName);
@@ -71,13 +72,23 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
 
         }
 
-        private void ReloadClientsDrop()
+        private async Task ReloadClientsDrop()
         {
             using var scope = _serviceProvider.CreateScope();
             var getClients = scope.ServiceProvider.GetRequiredService<GetClients>();
+            var getAccess = scope.ServiceProvider.GetRequiredService<GetAccess>();
+            var clientAccess = await getAccess.GetAccessToClient(_state.ActiveUserId);
 
-            //todo: add condition for profile & accesses
-            _state.Clients = getClients.GetClientsWithoutData(_state.AppActiveUserManager.ProfileName)?.Select(x => (ClientViewModel)x).ToList();
+            if (_state.AppActiveUserManager.IsRoot || _state.AppActiveUserManager.IsAdmin)
+            {
+                _state.Clients = getClients.GetClientsWithoutData(_state.AppActiveUserManager.ProfileName)?.Select(x => (ClientViewModel)x).ToList();
+            }
+            else
+            {
+                var clients = getClients.GetClientsWithoutData(_state.AppActiveUserManager.ProfileName)?.Select(x => (ClientViewModel)x).ToList();
+                clients.RemoveAll(x => !clientAccess.Any(y => y.ClientId.Equals(x.Id)));
+                _state.Clients = clients;
+            }
         }
 
         private void ReleadRemindersCounter()
@@ -225,14 +236,14 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
             }
         }
 
-        public override void CleanUpStore()
+        public void CleanUpStore()
         {
             _state.SelectedClientString = null;
         }
 
-        public override void RefreshSore()
+        public async Task RefreshSore()
         {
-            ReloadClientsDrop();
+            await ReloadClientsDrop();
 
             if (!_state.Clients.Any(x => x.Id != _state.ActiveClient.Id))
             {

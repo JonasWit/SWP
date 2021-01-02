@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Radzen;
 using SWP.Application.LegalSwp.Jobs;
+using SWP.Domain.Enums;
 using SWP.UI.BlazorApp;
 using SWP.UI.BlazorApp.LegalApp.Stores.ClientJobs;
 using SWP.UI.BlazorApp.LegalApp.Stores.ClientJobs.Actions;
-using SWP.UI.BlazorApp.LegalApp.Stores.Enums;
 using SWP.UI.BlazorApp.LegalApp.Stores.Main;
 using SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data;
 

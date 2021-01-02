@@ -675,12 +675,7 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Users
 
         #endregion
 
-        public override void CleanUpStore()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void RefreshSore()
+        public void RefreshSore()
         {
             using var scope = _serviceProvider.CreateScope();
             var getAllProfiles = scope.ServiceProvider.GetRequiredService<GetAllProfiles>();

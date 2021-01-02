@@ -6,6 +6,22 @@ namespace SWP.Domain.Enums
 {
     #region Requests
 
+    public enum LegalAppPanels
+    {
+        Clients = 0,
+        Calendar = 1,
+        Cases = 2,
+        MyApp = 3,
+        ErrorPage = 4,
+        Finance = 5,
+        Productivity = 6,
+        ClientJobs = 7,
+        Archive = 8,
+        ClientDetails = 9,
+        UserManager = 10,
+        Info = 11
+    }
+
     public enum RequestReason
     {
         Query = 0,

@@ -2,9 +2,9 @@
 using Microsoft.Extensions.DependencyInjection;
 using Radzen;
 using SWP.Application.LegalSwp.TimeRecords;
+using SWP.Domain.Enums;
 using SWP.UI.BlazorApp;
 using SWP.UI.BlazorApp.LegalApp.Services.Reporting;
-using SWP.UI.BlazorApp.LegalApp.Stores.Enums;
 using SWP.UI.BlazorApp.LegalApp.Stores.Main;
 using SWP.UI.BlazorApp.LegalApp.Stores.Productivity;
 using SWP.UI.BlazorApp.LegalApp.Stores.Productivity.Actions;

@@ -18,7 +18,6 @@ using System.Threading.Tasks;
 
 namespace SWP.UI.BlazorApp.LegalApp.Stores.UserManager
 {
-
     public class UserManagerState
     {
         public IEnumerable<int> SelectedClients;
@@ -60,11 +59,6 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.UserManager
             var getClients = scope.ServiceProvider.GetRequiredService<GetClients>();
 
             _state.Clients = getClients.GetClientsWithCleanCases(MainStore.GetState().AppActiveUserManager.ProfileName);
-
-
-
-
-
         }
 
         protected override async void HandleActions(IAction action)
@@ -106,6 +100,8 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.UserManager
             {
                 _state.SelectedUser = null;
             }
+
+            BroadcastStateChange();
         }
 
         private void SelectedClientChange(object arg)
@@ -173,10 +169,10 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.UserManager
                 //Client accesses
 
                 var clientAccessesToRemove = new List<int>();
-                clientAccessesToRemove.AddRange(currentClientAccesses.Where(x => !selectedClientAccesses.Any(y => y.Equals(x))).Select(x => x.Id).ToList());
+                clientAccessesToRemove.AddRange(currentClientAccesses.Where(x => !selectedClientAccesses.Any(y => y.Equals(x.ClientId))).Select(x => x.ClientId).ToList());
 
                 var clientAccessesToAdd = new List<int>();
-                clientAccessesToAdd.AddRange(selectedClientAccesses.Where(x => !currentClientAccesses.Any(y => y.ClientId.Equals(x)) && currentProfileClients.Any(y => y.Id.Equals(x))));
+                clientAccessesToAdd.AddRange(selectedClientAccesses.Where(x => !currentClientAccesses.Any(y => y.ClientId.Equals(x)) && currentProfileClients.Any(y => y.Id.Equals(x))).ToList());
 
                 await revokeAccess.RevokeAccessToClients(_state.SelectedUser.Id, clientAccessesToRemove);
                 await grantAccess.GrantAccessToClients(_state.SelectedUser.Id, clientAccessesToAdd);
@@ -184,22 +180,25 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.UserManager
                 //Case accesses
 
                 var caseAccessesToRemove = new List<int>();
-                caseAccessesToRemove.AddRange(currentCaseAccesses.Where(x => !selectedCasesAccesses.Any(y => y.Equals(x))).Select(x => x.Id).ToList());
+                caseAccessesToRemove.AddRange(currentCaseAccesses.Where(x => !selectedCasesAccesses.Any(y => y.Equals(x.CaseId))).Select(x => x.CaseId).ToList());
 
                 var caseAccessesToAdd = new List<int>();
-                clientAccessesToAdd.AddRange(selectedCasesAccesses.Where(x => !currentCaseAccesses.Any(y => y.CaseId.Equals(x)) && currentProfileCases.Any(y => y.Equals(x))));
+                caseAccessesToAdd.AddRange(selectedCasesAccesses.Where(x => !currentCaseAccesses.Any(y => y.CaseId.Equals(x)) && currentProfileCases.Any(y => y.Equals(x))).ToList());
 
-                await revokeAccess.RevokeAccessToCases(_state.SelectedUser.Id, clientAccessesToRemove);
-                await grantAccess.GrantAccessToCases(_state.SelectedUser.Id, clientAccessesToAdd);
+                await revokeAccess.RevokeAccessToCases(_state.SelectedUser.Id, caseAccessesToRemove);
+                await grantAccess.GrantAccessToCases(_state.SelectedUser.Id, caseAccessesToAdd);
 
                 //Panels accesses
 
+                if (_state.IsStatisticsVisible)
+                {
+
+                }
+                else
+                {
 
 
-
-
-
-
+                }
 
                 ShowNotification(NotificationSeverity.Success, "Sukces!", $"Zmieniono dostępy dla: {_state.SelectedUser.UserName}.", GeneralViewModel.NotificationDuration);
                 await GetCurrentAccesses();
@@ -287,11 +286,6 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.UserManager
             DisableLoading();
         }
 
-        public override void CleanUpStore()
-        {
-
-        }
-
         private async Task GetCurrentAccesses()
         {
             using var scope = _serviceProvider.CreateScope();
@@ -309,11 +303,28 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.UserManager
                 _state.SelectedClients = currentClientsAccess.Select(x => x.ClientId);
                 _state.SelectedCases = currentCasesAccess.Select(x => x.CaseId);
 
+                //Update selected content in listboxes
+                var selectedClients = _state.SelectedClients.ToList();
+                var availableCases = _state.Clients.Where(x => selectedClients.Contains(x.Id)).SelectMany(x => x.Cases).ToList();
+
+                var casesToAdd = availableCases.Where(x => !_state.Cases.Any(y => y.Id.Equals(x.Id))).ToList();
+                var casesToRemove = _state.Cases.Where(x => !availableCases.Any(y => y.Id.Equals(x.Id))).ToList();
+
+                _state.Cases.RemoveAll(x => casesToRemove.Any(y => y.Id.Equals(x.Id)));
+                _state.Cases.AddRange(casesToAdd);
+
+                if (_state.SelectedCases is not null)
+                {
+                    var selectedItems = _state.SelectedCases.ToList();
+                    selectedItems.RemoveAll(x => !_state.Cases.Any(y => y.Id.Equals(x)));
+                    _state.SelectedCases = selectedItems;
+                }
+
             }
             catch (Exception ex)
             {
-
-                throw;
+                _logger.LogError(ex, LogTags.LegalAppLogPrefix + "Exception in GetCurrentAccesses method in Legal App Options panel, User: {rootUser}", MainStore.GetState().AppActiveUserManager.UserName);
+                MainStore.ShowErrorPage(ex);
             }
         }
     }

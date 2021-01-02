@@ -24,7 +24,6 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
         {
             MainStore.RemoveStateChangeListener(RefreshView);
             Store.RemoveStateChangeListener(RefreshView);
-            Store.CleanUpStore();
         }
 
         private void RefreshView()

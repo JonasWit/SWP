@@ -140,12 +140,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.MyApp
             }
         }
 
-        public override void CleanUpStore()
-        {
-
-        }
-
-        public override void RefreshSore()
+        public void RefreshSore()
         {
             Loading = true;
 
@@ -160,7 +155,6 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.MyApp
                 RefreshAllProductivityData();
             }
 
-            base.RefreshSore();
             Loading = false;
         }
     }

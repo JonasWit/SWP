@@ -35,14 +35,9 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.StatusLog
             BroadcastStateChange();
         }
 
-        public override void CleanUpStore()
+        public void CleanUpStore()
         {
             _state.LogWindowContent = "";
-        }
-
-        public override void RefreshSore()
-        {
-
         }
     }
 }

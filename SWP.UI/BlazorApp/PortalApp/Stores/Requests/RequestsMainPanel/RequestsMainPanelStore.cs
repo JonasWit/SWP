@@ -119,12 +119,7 @@ namespace SWP.UI.BlazorApp.PortalApp.Stores.Requests.RequestsPanel
             BroadcastStateChange();
         }
 
-        public override void CleanUpStore()
-        {
-
-        }
-
-        public override void RefreshSore()
+        public void RefreshSore()
         {
             GetRequests();
             BroadcastStateChange();

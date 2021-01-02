@@ -234,17 +234,9 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Clients
 
         #endregion
 
-        public override void CleanUpStore()
+        public void CleanUpStore()
         {
             _state.SelectedClient = null;
         }
-
-        public override void RefreshSore()
-        {
-
-        }
-
-
-
     }
 }

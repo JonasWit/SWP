@@ -218,16 +218,5 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.AdminLog
 
         private void ShowErrorPage(Exception ex) => AppStore.ShowErrorPage(ex);
 
-        public override void CleanUpStore()
-        {
-
-        }
-
-        public override void RefreshSore()
-        {
-
-        }
     }
-
-
 }

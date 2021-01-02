@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Radzen;
 using SWP.Application.LegalSwp.CashMovements;
+using SWP.Domain.Enums;
 using SWP.UI.BlazorApp;
-using SWP.UI.BlazorApp.LegalApp.Stores.Enums;
 using SWP.UI.BlazorApp.LegalApp.Stores.Finance;
 using SWP.UI.BlazorApp.LegalApp.Stores.Finance.Actions;
 using SWP.UI.BlazorApp.LegalApp.Stores.Main;

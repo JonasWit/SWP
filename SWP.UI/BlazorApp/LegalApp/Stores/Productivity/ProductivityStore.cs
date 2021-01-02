@@ -361,13 +361,13 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Productivity
 
         #endregion
 
-        public override void CleanUpStore()
+        public void CleanUpStore()
         {
             _state.SelectedMonth = null;
             _state.SelectedTimeRecord = null;
         }
 
-        public override void RefreshSore()
+        public void RefreshSore()
         {
             GetDataForMonthFilter();
             GetDataForFontFilter();

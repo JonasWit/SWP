@@ -262,13 +262,13 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.ClientJobs
 
         #endregion
 
-        public override void CleanUpStore()
+        public void CleanUpStore()
         {
             _state.SelectedArchivizedClientJob = null;
             _state.SelectedJob = null;
         }
 
-        public override void RefreshSore()
+        public void RefreshSore()
         {
             GetClientJobs(MainStore.GetState().ActiveClient.Id);
         }

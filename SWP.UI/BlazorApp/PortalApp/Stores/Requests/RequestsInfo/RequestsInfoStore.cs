@@ -50,15 +50,5 @@ namespace SWP.UI.BlazorApp.PortalApp.Stores.Requests.RequestsInfo
         }
 
         private void ShowCreateRequestPanel() => MainStore.SetActiveComponent(RequestsMainPanelState.InnerComponents.Create);
-
-        public override void CleanUpStore()
-        {
-
-        }
-
-        public override void RefreshSore()
-        {
-
-        }
     }
 }

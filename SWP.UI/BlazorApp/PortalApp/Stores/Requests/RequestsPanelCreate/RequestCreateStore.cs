@@ -1,16 +1,13 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Radzen;
 using SWP.Application.PortalCustomers.LicenseManagement;
 using SWP.Application.PortalCustomers.RequestsManagement;
 using SWP.Domain.Enums;
 using SWP.Domain.Models.Portal;
 using SWP.UI.BlazorApp.PortalApp.Stores.Requests.RequestsPanel;
 using SWP.UI.BlazorApp.PortalApp.Stores.Requests.RequestsPanelCreate.Actions;
-using SWP.UI.Components.PortalBlazorComponents.Requests.ViewModels;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace SWP.UI.BlazorApp.PortalApp.Stores.Requests.RequestsPanelCreate
@@ -125,16 +122,6 @@ namespace SWP.UI.BlazorApp.PortalApp.Stores.Requests.RequestsPanelCreate
             {
                 MainStore.HandleError(ex, "Exception in Portal Contact App during Request creation.");
             }
-        }
-
-        public override void CleanUpStore()
-        {
-
-        }
-
-        public override void RefreshSore()
-        {
-
         }
     }
 }

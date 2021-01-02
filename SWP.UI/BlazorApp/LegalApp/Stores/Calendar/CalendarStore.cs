@@ -194,26 +194,17 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Calendar
             }
         }
 
-        public override void CleanUpStore()
+        public void CleanUpStore()
         {
             _state.SelectedReminder = null;
         }
 
-        public override void RefreshSore()
+        public void RefreshSore()
         {
             _state.SelectedReminder = null;
             RefreshCalendarData();
-            base.RefreshSore();
         }
 
         #endregion
-
-
-
-
-
-
-
-
     }
 }

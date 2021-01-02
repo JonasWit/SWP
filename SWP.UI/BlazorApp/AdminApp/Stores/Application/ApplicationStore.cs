@@ -80,16 +80,6 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Application
             }
         }
 
-        public override void CleanUpStore()
-        {
-
-        }
-
-        public override void RefreshSore()
-        {
-    
-        }
-
         public void RefreshMainComponent() => BroadcastStateChange();
     }
 }

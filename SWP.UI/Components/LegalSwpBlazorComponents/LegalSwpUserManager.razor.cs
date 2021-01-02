@@ -27,7 +27,6 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
 
         private void RefreshView()
         {
-            Store.RefreshSore();
             StateHasChanged();
         }
 

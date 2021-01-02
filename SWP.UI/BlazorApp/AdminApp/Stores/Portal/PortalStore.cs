@@ -23,15 +23,5 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Database
         {
             throw new NotImplementedException();
         }
-
-        public override void CleanUpStore()
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void RefreshSore()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

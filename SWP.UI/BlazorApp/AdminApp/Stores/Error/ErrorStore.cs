@@ -33,15 +33,5 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Error
         {
 
         }
-
-        public override void CleanUpStore()
-        {
-
-        }
-
-        public override void RefreshSore()
-        {
-       
-        }
     }
 }

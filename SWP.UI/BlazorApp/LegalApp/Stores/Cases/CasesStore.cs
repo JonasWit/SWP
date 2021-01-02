@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Radzen;
 using Radzen.Blazor;
+using SWP.Application.LegalSwp.AppDataAccess;
 using SWP.Application.LegalSwp.Cases;
 using SWP.Application.LegalSwp.ContactPeopleAdmin;
 using SWP.Application.LegalSwp.Notes;
@@ -16,7 +17,7 @@ using System.Threading.Tasks;
 
 namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
 {
-    public class CasesState : StateBase
+    public class CasesState
     {
         public CreateCase.Request NewCase { get; set; } = new CreateCase.Request();
         public CreateNote.Request NewNote { get; set; } = new CreateNote.Request();
@@ -44,9 +45,9 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
             _generalViewModel = generalViewModel;
         }
 
-        public void Initialize()
+        public Task Initialize()
         {
-            GetCases(MainStore.GetState().ActiveClient.Id);
+            return GetCases(MainStore.GetState().ActiveClient.Id);
         }
 
         protected override async void HandleActions(IAction action)
@@ -158,14 +159,25 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
             }
         }
 
-        private void GetCases(int clientId)
+        private async Task GetCases(int clientId)
         {
             try
             {
                 using var scope = _serviceProvider.CreateScope();
                 var getCases = scope.ServiceProvider.GetRequiredService<GetCases>();
+                var getAccess = scope.ServiceProvider.GetRequiredService<GetAccess>();
+                var caseAccess = await getAccess.GetAccessToCase(MainStore.GetState().ActiveUserId);
 
-                _state.Cases = getCases.GetCasesForClient(clientId).Where(x => x.Active).Select(x => (CaseViewModel)x).ToList();
+                if (MainStore.GetState().AppActiveUserManager.IsRoot || MainStore.GetState().AppActiveUserManager.IsAdmin)
+                {
+                    _state.Cases = getCases.GetCasesForClient(clientId).Where(x => x.Active).Select(x => (CaseViewModel)x).ToList();
+                }
+                else
+                {
+                    var cases = getCases.GetCasesForClient(clientId).Where(x => x.Active).Select(x => (CaseViewModel)x).ToList();
+                    cases.RemoveAll(x => !caseAccess.Any(y => y.CaseId.Equals(x.Id)));
+                    _state.Cases = cases;
+                }
 
                 BroadcastStateChange();
             }
@@ -213,6 +225,12 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
                 _state.NewCase = new CreateCase.Request();
 
                 AddCaseToActiveClient(result);
+
+                if (!MainStore.GetState().AppActiveUserManager.IsRoot && !MainStore.GetState().AppActiveUserManager.IsAdmin)
+                {
+                    var grantAccess = scope.ServiceProvider.GetRequiredService<GrantAccess>();
+                    await grantAccess.GrantAccessToCase(MainStore.GetState().ActiveUserId, result.Id);
+                }
 
                 await _state.CasesGrid.Reload();
                 ShowNotification(NotificationSeverity.Success, "Sukces!", $"Sprawa: {result.Name} została dodana.", GeneralViewModel.NotificationDuration);
@@ -667,19 +685,16 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
 
         #endregion
 
-        public override void CleanUpStore()
+        public void CleanUpStore()
         {
             _state.SelectedCase = null;
             _state.SelectedContact = null;
             _state.SelectedNote = null;
         }
 
-        public override void RefreshSore()
+        public void RefreshSore()
         {
             GetCases(MainStore.GetState().ActiveClient.Id);
         }
-
-
-
     }
 }

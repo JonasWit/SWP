@@ -97,12 +97,7 @@ namespace SWP.UI.BlazorApp.PortalApp.Stores.Requests
             BroadcastStateChange();
         }
 
-        public override void CleanUpStore()
-        {
-
-        }
-
-        public override void RefreshSore()
+        public void RefreshSore()
         {
             _state.ActiveRequest = GetRequest(MainStore.GetState().SelectedRequestId);
         }

@@ -376,6 +376,126 @@ li {
     height: 210px;
 }
 
+/*PRODUCT - WEB*/
+
+.module {
+    background: url(/Images/tingey-injury-law-firm-yCdPU73kGSc-unsplash.jpg);
+    background-attachment: fixed;
+    width: 100%;
+    height: 550px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+    overflow: hidden;
+    margin: 20px;
+}
+
+    .module > header {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        padding: 20px 10px;
+        background: inherit;
+        background-attachment: fixed;
+        overflow: hidden;
+    }
+
+        .module > header::before {
+            content: "";
+            position: absolute;
+            top: -20px;
+            left: 0;
+            width: 200%;
+            height: 200%;
+            background: inherit;
+            background-attachment: fixed;
+            -webkit-filter: blur(4px);
+            filter: blur(4px);
+        }
+
+        .module > header::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.25)
+        }
+
+        .module > header > h1,
+        .module > header > p {
+            margin: 0;
+            color: white;
+            position: relative;
+            z-index: 1;
+        }
+
+.product-section {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.pricing-table .card {
+    -webkit-transition: all 0.2s;
+    -o-transition: all 0.2s;
+    transition: all 0.2s;
+    -webkit-border-radius: 15px;
+    border-radius: 15px;
+    -webkit-box-shadow: 0 0.5rem 1rem 0 rgba(0, 0, 0, 0.3);
+    box-shadow: 0 0.5rem 1rem 0 rgba(0, 0, 0, 0.3);
+    height: 450px;
+}
+
+    .pricing-table .card .card-title {
+        font-size: 1rem;
+        letter-spacing: .2rem;
+        font-weight: 500;
+    }
+
+    .pricing-table .card .card-price {
+        font-size: 1.8rem;
+    }
+
+        .pricing-table .card .card-price .term {
+            font-size: .9rem;
+        }
+
+    .pricing-table .card .fa-ul li:not(:last-child) {
+        margin-bottom: 1rem;
+    }
+
+.screens {
+    position: relative;
+}
+
+.rzut-1 {
+    height: 550px;
+   
+}
+.rzut-2 {
+    height: 400px;
+    position: absolute;
+    top: 30%;
+    left: 35%;
+}
+
+.rzut-3 {
+    height: 350px;
+    position: absolute;
+    top: 45%;
+    left: 55%;
+}.app-text {
+     
+
+
+ }
+
+
+
 
 
 

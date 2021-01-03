@@ -66,6 +66,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
                 _state.AppActiveUserManager = new AppActiveUserManager(_serviceProvider, _state.ActiveUserId);
                 await _state.AppActiveUserManager.UpdateClaimsAndRoles();
                 await _state.AppActiveUserManager.UpdatePermissions();
+                await _state.AppActiveUserManager.UpdateLicenses();
             }
         }
 

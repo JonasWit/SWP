@@ -1,68 +1,73 @@
 ﻿
-<div class="list-row">
+@if (!Store.Loading)
+{
+    <LoaderComponent Message="@("Wczytywanie Danych...")"></LoaderComponent>
+}
+else
+{
     <div class="list-row">
-        <strong class="label">Wybierz profil: </strong><RadzenDropDown AllowClear="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" FilterOperator="StringFilterOperator.StartsWith" AllowFiltering="true" @bind-Value="RelatedUsersFilterValue" Data="@MainStore.GetState().AppActiveUserManager.RelatedUsers" TextProperty="UserName" ValueProperty="Id" Style="width: 200px; padding: 0" Change="@(args => SelectedUserChange(args))" />
+        <div class="list-row">
+            <strong class="label">Wybierz profil: </strong><RadzenDropDown AllowClear="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" FilterOperator="StringFilterOperator.StartsWith" AllowFiltering="true" @bind-Value="RelatedUsersFilterValue" Data="@MainStore.GetState().AppActiveUserManager.RelatedUsers" TextProperty="UserName" ValueProperty="Id" Style="width: 200px; padding: 0" Change="@(args => SelectedUserChange(args))" />
+        </div>
+        <div class="list-row">
+            <button @onclick="StateHasChanged" class="refresher @(Store.Loading ? "spin" : "")"><img src="Images/icons8-synchronize-40.png" /></button>
+        </div>
     </div>
+
+    @*<RadzenButton Text="TEST!" Click="MainStore.ThrowTestException"></RadzenButton>*@
     <div class="list-row">
-        <button @onclick="StateHasChanged" class="refresher @(Store.Loading ? "spin" : "")"><img src="Images/icons8-synchronize-40.png" /></button>
+        @if (Store.GetState().SelectedUser != null &&
+  MainStore.GetState().AppActiveUserManager.IsRoot)
+        {
+
+            <h1>Mozna skasowac</h1>
+            <RadzenButton Text="Usuń powiązanie!" Click="RemoveRelation"></RadzenButton>
+
+            <p>Uprawnienia</p>
+
+            <div>
+                <h3>Klienci</h3>
+                <RadzenListBox AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" Multiple="true" Data=@(Store.GetState().Clients) @bind-Value=@Store.GetState().SelectedClients
+                               TextProperty="Name" ValueProperty="Id" Style="height:200px" Change=@(args => SelectedClientChange(args)) />
+            </div>
+
+            <h3>Sprawy</h3>
+            <div>
+                <RadzenListBox AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" Multiple="true" @bind-Value=@Store.GetState().SelectedCases Data=@(Store.GetState().Cases)
+                               TextProperty="Name" ValueProperty="Id" Change=@(args => SelectedCaseChange(args)) Style="height:200px">
+                    <Template>
+                        Klient: @(Store.GetState().Clients.FirstOrDefault(x => x.Cases.Any(y => y.Id.Equals(context.Id))).Name) Sprawa: @((context as Case).Name)
+                    </Template>
+                </RadzenListBox>
+            </div>
+
+            <h3>Panel: Statystyki</h3>
+            <RadzenSwitch Style="margin-bottom: 20px" />
+
+            <h3>Panel: List Kontaktów</h3>
+            <RadzenSwitch Style="margin-bottom: 20px" />
+
+            <h3>Panel: List Zadań</h3>
+            <RadzenSwitch Style="margin-bottom: 20px" />
+
+            <h3>Panel: Finanse</h3>
+            <RadzenSwitch Style="margin-bottom: 20px" />
+
+            <h3>Panel: Rozliczenia</h3>
+            <RadzenSwitch Style="margin-bottom: 20px" />
+
+            <h3>Panel: Archiwum</h3>
+            <RadzenSwitch Style="margin-bottom: 20px" />
+
+            <RadzenButton ButtonStyle="ButtonStyle.Warning" Click="UpdateAccess">Zmień Dostęp</RadzenButton>
+        }
+
+        @if (MainStore.GetState().AppActiveUserManager.IsRoot)
+        {
+            <p class="label">Usuń wszystkie dane powiązane z wybranym profilem</p>
+            <RadzenButton ButtonStyle="ButtonStyle.Secondary" Text=@($"Usuń") Click="ConfirmRemoveAllData" />
+        }
     </div>
-</div>
-
-@*<RadzenButton Text="TEST!" Click="MainStore.ThrowTestException"></RadzenButton>*@
-<div class="list-row">
-    @if (Store.GetState().SelectedUser != null &&
- MainStore.GetState().AppActiveUserManager.IsRoot)
-    {
-
-        <h1>Mozna skasowac</h1>
-        <RadzenButton Text="Usuń powiązanie!" Click="RemoveRelation"></RadzenButton>
-
-        <p>Uprawnienia</p>
-
-        <div>
-            <h3>Klienci</h3>
-            <RadzenListBox AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" Multiple="true" Data=@(Store.GetState().Clients) @bind-Value=@Store.GetState().SelectedClients
-                           TextProperty="Name" ValueProperty="Id" Style="height:200px" Change=@(args => SelectedClientChange(args)) />
-        </div>
-
-        <h3>Sprawy</h3>
-        <div>
-            <RadzenListBox AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" Multiple="true" @bind-Value=@Store.GetState().SelectedCases Data=@(Store.GetState().Cases)
-                           TextProperty="Name" ValueProperty="Id" Change=@(args => SelectedCaseChange(args)) Style="height:200px">
-                <Template>
-                    Klient: @(Store.GetState().Clients.FirstOrDefault(x => x.Cases.Any(y => y.Id.Equals(context.Id))).Name) Sprawa: @((context as Case).Name)
-                </Template>
-            </RadzenListBox>
-        </div>
-
-        <h3>Panel: Statystyki</h3>
-        <RadzenSwitch Style="margin-bottom: 20px" />
-
-        <h3>Panel: List Kontaktów</h3>
-        <RadzenSwitch Style="margin-bottom: 20px" />
-
-        <h3>Panel: List Zadań</h3>
-        <RadzenSwitch Style="margin-bottom: 20px" />
-
-        <h3>Panel: Finanse</h3>
-        <RadzenSwitch Style="margin-bottom: 20px" />
-
-        <h3>Panel: Rozliczenia</h3>
-        <RadzenSwitch Style="margin-bottom: 20px" />
-
-        <h3>Panel: Archiwum</h3>
-        <RadzenSwitch Style="margin-bottom: 20px" />
-
-        <RadzenButton ButtonStyle="ButtonStyle.Warning" Click="UpdateAccess">Zmień Dostęp</RadzenButton>
-    }
-
-    @if (MainStore.GetState().AppActiveUserManager.IsRoot)
-    {
-        <p class="label">Usuń wszystkie dane powiązane z wybranym profilem</p>
-        <RadzenButton ButtonStyle="ButtonStyle.Secondary" Text=@($"Usuń") Click="ConfirmRemoveAllData" />
-    }
-</div>
-
-
+}
 
 

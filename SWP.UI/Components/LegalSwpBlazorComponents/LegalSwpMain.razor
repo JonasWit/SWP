@@ -1,6 +1,7 @@
 ﻿@if (!MainStore.Loading)
 {
-    @if (MainStore.GetState().AppActiveUserManager.ProfileName != null)
+    @if (MainStore.GetState().AppActiveUserManager.ProfileName is not null ||
+        !MainStore.GetState().AppActiveUserManager.IsLegalLicenseActive)
     {
         <div id="grid-container-2">
             <nav class="sidebar @(!showSidebar ? "" : "sidebar-add")">
@@ -183,7 +184,7 @@
     }
     else
     {
-        <LegalSwpNoProfileWarning />
+        <LegalAppGeneralWarningComponent Message="@("TEST")"></LegalAppGeneralWarningComponent>
     }
 }
 else

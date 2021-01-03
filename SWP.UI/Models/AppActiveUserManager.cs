@@ -30,6 +30,10 @@ namespace SWP.UI.Models
         public string ProfileName => Claims.FirstOrDefault(x => x.Type == ClaimType.Profile.ToString())?.Value;
         public Claim ProfileClaim => Claims.FirstOrDefault(x => x.Type == ClaimType.Profile.ToString());
 
+        public bool HasLegalLicense => LicenseVms.FirstOrDefault(x => x.Application == ApplicationType.LegalApplication) is not null ? true : false;
+        public bool IsLegalLicenseActive => LicenseVms.FirstOrDefault(x => x.Application == ApplicationType.LegalApplication) is not null ? 
+            LicenseVms.FirstOrDefault(x => x.Application == ApplicationType.LegalApplication).ValidTo >= DateTime.Now ? true : false : false;
+
         public bool IsRoot => Claims.Any(x => x.Type == ClaimType.Status.ToString() && x.Value == UserStatus.RootClient.ToString());
         public bool IsAdmin => Roles.Any(x => x.Equals(RoleType.Administrators.ToString()));
 

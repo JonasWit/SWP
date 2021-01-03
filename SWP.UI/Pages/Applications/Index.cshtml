@@ -3,74 +3,103 @@
 @model SWP.UI.Pages.Applications.IndexModel
 @inject IAuthorizationService authService
 
-<h2>Witaj!</h2>
-<h4 class="mt-3 mb-5">Zalogowano jako <span class="user-name">@Model.User.Identity.Name</span>.</h4>
+@{
+    switch (Model.ActiveApp)
+    {
+        case ApplicationType.LegalApplication:
+            Layout = "_LayoutApp";
+            break;
+        case ApplicationType.NoApp:
+            Layout = "_Layout";
+            break;
+        default:
+            Layout = "_Layout";
+            break;
+    }
+}
 
-@if ((await authService.AuthorizeAsync(User, PortalNames.Policies.LegalApplication)).Succeeded)
+@switch (Model.ActiveApp)
 {
-    <div class="card app-card shadow-lg p-3 mb-5 bg-white rounded">
-        <h5 class="text-center mt-5 mb-3">Twoja Kancelaria</h5>
-        <i class="text-center"><img src="~/Images/icons8-courthouse-80.png" /></i>
-        <div class="card-body mt-4 mb-4">
-            <div class="row">
-                <div class="col-4 text-left">
-                    <p><strong>Użytkownik:</strong> </p>
-                    <p><strong>Liczba powiązanych użytkowników:</strong></p>
-                    <p><strong>Ważność licencji:</strong></p>
-                    <p><strong>Profil:</strong></p>
-                </div>
-                <div class="col-4 text-left">
-                    <div>
-                        <p>@Model.User.Identity.Name</p>
-                    </div>
-                    @if (Model.AccessModel.LegalLicense != null)
-                    {
-                        <p>@Model.AccessModel.LegalLicense.RelatedUsers</p>
-                        <p>@Model.AccessModel.LegalLicense.ValidTo.ToShortDateString()</p>
-                        <p>@(Model.AccessModel.AppActiveUserManager.ProfileName == null ? "Brak Profilu" : Model.AccessModel.AppActiveUserManager.ProfileName)</p>
-                    }
-                    else if (Model.AccessModel.LegalLicense == null)
-                    {
-                        <p>Brak Licencji</p>
-                        <p>Brak Licencji</p>
-                        <p>Brak Licencji</p>
-                    }
-                </div>
-                <div class="col-4">
-                    @if (Model.AccessModel.LegalLicense == null)
-                    {
-                        <p class="text-center"><a class="btn-2" asp-page="/Communication/Request">Kup Licencję</a></p>
-                    }
-                    else
-                    {
-                        @if (Model.AccessModel.AppActiveUserManager.ProfileName == null)
-                        {
-                            <p class="text-center"><a class="btn-2" asp-page="/Communication/Request">Stwórz Profil</a></p>
-                        }
-                        else
-                        {
-                            @if (Model.AccessModel.AppActiveUserManager.IsLocked)
+    case ApplicationType.LegalApplication:
+        <component type="typeof(LegalSwpMain)" render-mode="Server" param-ActiveUserId="@(Model.AccessModel.ActiveUserId)" />
+        break;
+    case ApplicationType.NoApp:
+        <h2>Witaj!</h2>
+        <h4 class="mt-3 mb-5">Zalogowano jako <span class="user-name">@Model.User.Identity.Name</span>.</h4>
+
+        @if ((await authService.AuthorizeAsync(User, PortalNames.Policies.LegalApplication)).Succeeded)
+        {
+            <div class="card app-card shadow-lg p-3 mb-5 bg-white rounded">
+                <h5 class="text-center mt-5 mb-3">Twoja Kancelaria</h5>
+                <i class="text-center"><img src="~/Images/icons8-courthouse-80.png" /></i>
+                <div class="card-body mt-4 mb-4">
+                    <div class="row">
+                        <div class="col-4 text-left">
+                            <p><strong>Użytkownik:</strong> </p>
+                            <p><strong>Liczba powiązanych użytkowników:</strong></p>
+                            <p><strong>Ważność licencji:</strong></p>
+                            <p><strong>Profil:</strong></p>
+                        </div>
+                        <div class="col-4 text-left">
+                            <div>
+                                <p>@Model.User.Identity.Name</p>
+                            </div>
+                            @if (Model.AccessModel.LegalLicense != null)
                             {
-                                <p class="text-center">Użytkownik został zablokowany!</p>
+                                <p>@Model.AccessModel.LegalLicense.RelatedUsers</p>
+                                <p>@Model.AccessModel.LegalLicense.ValidTo.ToShortDateString()</p>
+                                <p>@(Model.AccessModel.AppActiveUserManager.ProfileName == null ? "Brak Profilu" : Model.AccessModel.AppActiveUserManager.ProfileName)</p>
                             }
-                            else if (Model.AccessModel.LegalLicense.ValidTo <= DateTime.Now)
+                            else if (Model.AccessModel.LegalLicense == null)
                             {
-                                <p class="text-center"><a class="btn-2" asp-page="/Communication/Request">Przedłuż Licencję</a></p>
+                                <p>Brak Licencji</p>
+                                <p>Brak Licencji</p>
+                                <p>Brak Licencji</p>
+                            }
+                        </div>
+                        <div class="col-4">
+                            @if (Model.AccessModel.LegalLicense == null)
+                            {
+                                <p class="text-center"><a class="btn-2" asp-page="/Communication/Request">Kup Licencję</a></p>
                             }
                             else
                             {
-                                <p class="text-center"><a class="btn-2" asp-page="/Applications/LegalApplication/Index">Przejdź do aplikacji</a></p>
+                                @if (Model.AccessModel.AppActiveUserManager.ProfileName == null)
+                                {
+                                    <p class="text-center"><a class="btn-2" asp-page="/Communication/Request">Stwórz Profil</a></p>
+                                }
+                                else
+                                {
+                                    @if (Model.AccessModel.AppActiveUserManager.IsLocked)
+                                    {
+                                        <p class="text-center">Użytkownik został zablokowany!</p>
+                                    }
+                                    else if (Model.AccessModel.LegalLicense.ValidTo <= DateTime.Now)
+                                    {
+                                        <p class="text-center"><a class="btn-2" asp-page="/Communication/Request">Przedłuż Licencję</a></p>
+                                    }
+                                    else
+                                    {
+                                        <p class="text-center"><a class="btn-2" asp-page-handler="LegalApp">Przejdź do aplikacji</a></p>
+                                        @*<p class="text-center"><a class="btn-2" asp-page="/Applications/LegalApplication/Index">Przejdź do aplikacji</a></p>*@
+                                    }
+                                }
                             }
-                        }
-                    }
 
-                    <p class="text-center"><a data-toggle="tooltip" data-placement="bottom" title="Przejdź do pomocy" asp-page="/Applications/Help"><img src="/Images/icons8-get-help-96.png" /></a></p>
+                            <p class="text-center"><a data-toggle="tooltip" data-placement="bottom" title="Przejdź do pomocy" asp-page="/Applications/Help"><img src="/Images/icons8-get-help-96.png" /></a></p>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
+        }
+        else
+        {
+            <h4 class="mt-3 mb-5">Nie posiadasz obecnie dostępu do żadnych Aplikacji.</h4>
+        }
+        break;
+    default:
+        <p>Error</p>
+        break;
 }
-else
-{
-    <h4 class="mt-3 mb-5">Nie posiadasz obecnie dostępu do żadnych Aplikacji.</h4>
-}
+
+

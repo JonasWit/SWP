@@ -19,6 +19,7 @@ namespace SWP.UI.Pages.Applications
     public class IndexModel : PageModel
     {
         public UserAccessModel AccessModel { get; set; } = new UserAccessModel();
+        public ApplicationType ActiveApp { get; set; } = ApplicationType.NoApp;
 
         public class UserAccessModel
         {
@@ -38,6 +39,11 @@ namespace SWP.UI.Pages.Applications
             await AccessModel.AppActiveUserManager.UpdateLicenses();
 
             return Page();
+        }
+
+        public void OnGetLegalApp()
+        {
+            ActiveApp = ApplicationType.LegalApplication;
         }
     }
 }

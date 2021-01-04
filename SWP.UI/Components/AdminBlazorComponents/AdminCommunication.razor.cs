@@ -3,6 +3,7 @@ using SWP.UI.BlazorApp;
 using SWP.UI.BlazorApp.AdminApp.Stores.Communication;
 using SWP.UI.BlazorApp.AdminApp.Stores.Communication.Actions;
 using SWP.UI.BlazorApp.AdminApp.Stores.Database;
+using SWP.UI.Components.PortalBlazorComponents.Requests.ViewModels;
 using System;
 using System.Threading.Tasks;
 
@@ -23,6 +24,7 @@ namespace SWP.UI.Components.AdminBlazorComponents
         private async void UpdateView()
         {
             await Store.GetRecipients();
+            Store.GetRequests();
             StateHasChanged();
         }
 
@@ -30,6 +32,7 @@ namespace SWP.UI.Components.AdminBlazorComponents
         {
             Store.AddStateChangeListener(UpdateView);
             await Store.GetRecipients();
+            Store.GetRequests();
         }
 
         #region Actions
@@ -39,6 +42,8 @@ namespace SWP.UI.Components.AdminBlazorComponents
         private void FilterRecipients() => ActionDispatcher.Dispatch(new FilterAction());
 
         private void ClearSelection() => ActionDispatcher.Dispatch(new ClearSelectionAction());
+
+        private void RequestSelected(RequestViewModel arg) { }
 
         #endregion
     }

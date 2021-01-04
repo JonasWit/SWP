@@ -20,5 +20,7 @@ namespace SWP.Application.PortalCustomers.RequestsManagement
 
         public List<ClientRequest> GetRequestsForClient(string userId) => 
             _portalManager.GetRequestsForClient(userId);
+
+
     }
 }

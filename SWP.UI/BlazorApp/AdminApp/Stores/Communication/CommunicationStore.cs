@@ -3,10 +3,13 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Radzen;
+using Radzen.Blazor;
+using SWP.Application.PortalCustomers.RequestsManagement;
 using SWP.Domain.Enums;
 using SWP.UI.BlazorApp.AdminApp.Stores.Application;
 using SWP.UI.BlazorApp.AdminApp.Stores.Communication.Actions;
 using SWP.UI.BlazorApp.AdminApp.Stores.StatusLog;
+using SWP.UI.Components.PortalBlazorComponents.Requests.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +26,9 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Communication
         public IEnumerable<string> SelectedRecipients { get; set; }
         public IEnumerable<int> UserTypes { get; set; }
         public IEnumerable<int> ApplicationTypes { get; set; }
+
+        public List<RequestViewModel> Requests { get; set; } = new List<RequestViewModel>();
+        public RadzenGrid<RequestViewModel> RequestsGrid { get; set; }
     }
 
     public class Recipient
@@ -72,6 +78,16 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Communication
         }
 
         #region Communication
+
+        public void GetRequests()
+        {
+            //todo: zaciaganie requestow
+            using var scope = _serviceProvider.CreateScope();
+            var getRequest = scope.ServiceProvider.GetRequiredService<GetRequest>();
+
+            //var list = getRequest.GetRequestsForClient(_state.ActiveUserId);
+            //_state.Requests = list.Select(x => (RequestViewModel)x).ToList().OrderByDescending(x => x.Updated).ToList();
+        }
 
         public async Task GetRecipients()
         {

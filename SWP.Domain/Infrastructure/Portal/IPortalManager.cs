@@ -2,6 +2,7 @@
 using SWP.Domain.Models.Portal;
 using SWP.Domain.Models.Portal.Communication;
 using SWP.Domain.Utilities;
+using System;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -35,6 +36,7 @@ namespace SWP.Domain.Infrastructure.Portal
 
         ClientRequest GetRequestWithMessages(int requestId);
         List<ClientRequest> GetRequestsForClient(string userId);
+        List<TResult> GetRequests<TResult>(Func<ClientRequest, TResult> selector, Func<ClientRequest, bool> predicate);
         Task<int> CreateRequest(ClientRequest clientRequest);
         Task<int> CreateRequestMessage(ClientRequestMessage clientRequestMessage, int reuqestId);
         Task<int> DeleteRequest(int id);

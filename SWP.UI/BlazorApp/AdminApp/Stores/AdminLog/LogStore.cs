@@ -31,6 +31,7 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.AdminLog
         public List<Log> LogRecords { get; set; } = new List<Log>();
         public RadzenGrid<Log> LogGrid { get; set; }
         public IEnumerable<int> SelectedLogRecordTypes { get; set; }
+        public IEnumerable<string> SelectedLogTags { get; set; }
         public DateTime? LogStartDate { get; set; }
         public DateTime? LogEndDate { get; set; }
     }
@@ -67,6 +68,10 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.AdminLog
                     var selectedLogTypesChangeAction = (SelectedLogTypesChangeAction)action;
                     SelectedLogTypesChange(selectedLogTypesChangeAction.Arg);
                     break;
+                case SelectedLogTagsChangeAction.SelectedLogTagsChangeChange:
+                    var selectedLogTagsChangeAction = (SelectedLogTagsChangeAction)action;
+                    SelectedLogTagChange(selectedLogTagsChangeAction.Arg);
+                    break;
                 case LogStartDateChangeAction.LogStartDateChange:
                     var logStartDateChangeAction = (LogStartDateChangeAction)action;
                     LogStartDateChange(logStartDateChangeAction.Arg);
@@ -93,7 +98,7 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.AdminLog
                     return;
                 }
 
-                if (_state.SelectedLogRecordTypes == null || _state.SelectedLogRecordTypes.Count() == 0)
+                if (_state.SelectedLogRecordTypes is null)
                 {
                     ShowNotification(NotificationSeverity.Error, "Aborted!", $"Select Record Types!", 2000);
                     return;
@@ -114,7 +119,16 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.AdminLog
                     .Select(x => x.ToString())
                     .ToList();
 
-                _state.LogRecords = getLogs.GetLogs(selectedTypes, (DateTime)_state.LogStartDate, (DateTime)_state.LogEndDate).OrderByDescending(x => x.TimeStamp).ToList();
+                if (_state.SelectedLogRecordTypes is not null && _state.SelectedLogTags is not null)
+                {
+                    _state.LogRecords = getLogs.GetLogsByTypesAndTags(selectedTypes, _state.SelectedLogTags.ToList(),(DateTime)_state.LogStartDate, (DateTime)_state.LogEndDate).OrderByDescending(x => x.TimeStamp).ToList();
+                }
+                else if (_state.SelectedLogRecordTypes is not null)
+                {
+                    _state.LogRecords = getLogs.GetLogsByTypes(selectedTypes, (DateTime)_state.LogStartDate, (DateTime)_state.LogEndDate)?.OrderByDescending(x => x.TimeStamp)?.ToList();
+                }
+
+                _state.LogRecords = getLogs.GetLogsByTypes(selectedTypes, (DateTime)_state.LogStartDate, (DateTime)_state.LogEndDate)?.OrderByDescending(x => x.TimeStamp)?.ToList();
 
                 ShowNotification(NotificationSeverity.Success, "Success!", $"{_state.LogRecords.Count} Records downloaded", 2000);
                 BroadcastStateChange();
@@ -136,7 +150,7 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.AdminLog
             {
                 Loading = true;
 
-                if (_state.SelectedLogRecordTypes == null || _state.SelectedLogRecordTypes.Count() == 0)
+                if (_state.SelectedLogRecordTypes is null)
                 {
                     ShowNotification(NotificationSeverity.Error, "Aborted!", $"Select Record Types!", 2000);
                     return;
@@ -150,7 +164,14 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.AdminLog
                     .Select(x => x.ToString())
                     .ToList();
 
-                _state.LogRecords = getLogs.GetLogs(selectedTypes, DateTime.Now.AddDays(-7), DateTime.Now).OrderByDescending(x => x.TimeStamp).ToList();
+                if (_state.SelectedLogRecordTypes is not null && _state.SelectedLogTags is not null)
+                {
+                    _state.LogRecords = getLogs.GetLogsByTypesAndTags(selectedTypes, _state.SelectedLogTags.ToList(), DateTime.Now.AddDays(-7), (DateTime)DateTime.Now)?.OrderByDescending(x => x.TimeStamp)?.ToList();
+                }
+                else if (_state.SelectedLogRecordTypes is not null)
+                {
+                    _state.LogRecords = getLogs.GetLogsByTypes(selectedTypes, DateTime.Now.AddDays(-7), (DateTime)DateTime.Now)?.OrderByDescending(x => x.TimeStamp)?.ToList();
+                }
 
                 ShowNotification(NotificationSeverity.Success, "Success!", $"{_state.LogRecords.Count} Records downloaded", 2000);
                 BroadcastStateChange();
@@ -208,6 +229,11 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.AdminLog
         private void SelectedLogTypesChange(object value)
         {
             _state.SelectedLogRecordTypes = value as IEnumerable<int>;
+        }
+
+        private void SelectedLogTagChange(object value)
+        {
+            _state.SelectedLogTags = value as IEnumerable<string>;
         }
 
         private void LogStartDateChange(object value) => _state.LogStartDate = (DateTime?)value;

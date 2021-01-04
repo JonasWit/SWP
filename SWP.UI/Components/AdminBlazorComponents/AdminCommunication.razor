@@ -1,13 +1,30 @@
-﻿
-<p>Requests here</p>
-
-<div class="section">
+﻿<div class="section">
     <RadzenCard>
         <div class="columns is-0 is-centered">
             <h2>Internal Communication</h2>
         </div>
 
-
+        <div class="columns is-0 is-centered">
+            <RadzenGrid @ref="Store.GetState().RequestsGrid" AllowFiltering="true" AllowPaging="true" PageSize="15" AllowSorting="true" RowSelect="@(args => RequestSelected(args))"
+                        Data="@Store.GetState().Requests" TItem="RequestViewModel">
+                <Columns>
+                    <RadzenGridColumn TItem="RequestViewModel" Property="Created" Title="Utworzono">
+                        <Template Context="record">
+                            @record.Created.ToString("yyyy.MM.dd HH:mm:ss");
+                        </Template>
+                    </RadzenGridColumn>
+                    <RadzenGridColumn TItem="RequestViewModel" Property="Updated" Title="Ostatnia zmiana">
+                        <Template Context="record">
+                            @record.Updated.ToString("yyyy.MM.dd HH:mm:ss");
+                        </Template>
+                    </RadzenGridColumn>
+                    <RadzenGridColumn TItem="RequestViewModel" Property="DisplaySubject" Title="Temat">
+                    </RadzenGridColumn>
+                    <RadzenGridColumn TItem="RequestViewModel" Property="DisplayStatus" Title="Status">
+                    </RadzenGridColumn>
+                </Columns>
+            </RadzenGrid>
+        </div>
 
     </RadzenCard>
 </div>
@@ -21,14 +38,7 @@
         <div class="columns is-vcentered is-centered">
             <div class="column is-half">
                 <div class="columns is-0 is-vcentered">
-                    <RadzenListBox AllowFiltering="true"
-                                   FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
-                                   @bind-Value=@Store.GetState().SelectedRecipients
-                                   Multiple="true"
-                                   Data=@Store.GetState().Recipients
-                                   TextProperty="DisplayName"
-                                   ValueProperty="Id"
-                                   Style="height:200px" />
+                    <RadzenListBox AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" @bind-Value=@Store.GetState().SelectedRecipients Multiple="true" Data=@Store.GetState().Recipients TextProperty="DisplayName" ValueProperty="Id" Style="height:200px" />
                 </div>
             </div>
             <div class="column is-half">

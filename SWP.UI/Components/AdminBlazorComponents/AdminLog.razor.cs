@@ -48,6 +48,8 @@ namespace SWP.UI.Components.AdminBlazorComponents
 
         private void SelectedLogTypesChange(object arg) => ActionDispatcher.Dispatch(new SelectedLogTypesChangeAction { Arg = arg });
 
+        private void SelectedLogTagsChange(object arg) => ActionDispatcher.Dispatch(new SelectedLogTagsChangeAction { Arg = arg });
+
         private void LogStartDateChange(object arg) => ActionDispatcher.Dispatch(new LogStartDateChangeAction { Arg = arg });
 
         #endregion

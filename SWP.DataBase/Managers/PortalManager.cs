@@ -284,6 +284,9 @@ namespace SWP.DataBase.Managers
             return _context.SaveChangesAsync();
         }
 
+        public List<TResult> GetRequests<TResult>(Func<ClientRequest, TResult> selector, Func<ClientRequest, bool> predicate) => 
+            _context.ClientRequests.Where(predicate).Select(selector).ToList();
+
         #endregion
     }
 }

@@ -14,7 +14,13 @@ namespace SWP.Application.Logs
         private readonly ILogManager _logManager;
         public GetLogRecords(ILogManager logManager) => _logManager = logManager;
 
-        public List<Log> GetLogs(List<string> logTypes, DateTime startDate, DateTime endDate) =>
+        public List<Log> GetLogsByTypes(List<string> logTypes, DateTime startDate, DateTime endDate) =>
             _logManager.GetLogRecords(x => x, x => logTypes.Contains(x.Level) && x.TimeStamp >= startDate && x.TimeStamp <= endDate);
+
+        public List<Log> GetLogsByTypesAndTags(List<string> logTypes, List<string> logTags, DateTime startDate, DateTime endDate) =>
+            _logManager.GetLogRecords(x => x, x => logTypes.Contains(x.Level) && logTags.Any(y => x.Message.Contains(y)) && x.TimeStamp >= startDate && x.TimeStamp <= endDate);
+
+        public List<Log> GetLogsByTags(List<string> logTags, DateTime startDate, DateTime endDate) =>
+            _logManager.GetLogRecords(x => x, x => logTags.Any(y => x.Message.Contains(y)) && x.TimeStamp >= startDate && x.TimeStamp <= endDate);
     }
 }

@@ -14,159 +14,172 @@
                 </Items>
             </RadzenSelectBar>
         </div>
-        <div class="columns is-vcentered is-centered mb-6">
-            <div class="column is-half">
-                <div class="is-pulled-right">
-                    <div class="columns is-0 is-centered">
-                        <h3>Start Date</h3>
-                    </div>
-                    <div class="columns is-0 is-centered">
-                        <RadzenDatePicker TValue="DateTime?" ShowTime="true" ShowSeconds="true" HoursStep="1" MinutesStep="5" SecondsStep="10" DateFormat="MM/dd/yyyy HH:mm" Change=@((args) => LogStartDateChange(args)) />
-                    </div>
-                </div>
-            </div>
-            <div class="column is-half">
-                <div class="is-pulled-left">
-                    <div class="columns is-0 is-centered">
-                        <h3>End Date</h3>
-                    </div>
-                    <div class="columns is-0 is-centered">
-                        <RadzenDatePicker TValue="DateTime?" ShowTime="true" ShowSeconds="true" HoursStep="1" MinutesStep="5" SecondsStep="10" DateFormat="MM/dd/yyyy HH:mm" Change=@((args) =>  Store.LogEndDateChange(args)) />
-                    </div>
-                </div>
-            </div>
-        </div>
         <div class="columns is-0 is-centered mb-6">
-            <RadzenButton ButtonStyle="ButtonStyle.Secondary" Click="@RefreshLogsForLastWeek">Get Data (last week)</RadzenButton>
-            <RadzenButton ButtonStyle="ButtonStyle.Secondary" Click="@RefreshLogs">Get Data</RadzenButton>
-        </div>
-    </RadzenCard>
-</div>
+            <RadzenSelectBar @bind-Value="Store.GetState().SelectedLogTags" TValue="IEnumerable<string>" Change="@((args) => SelectedLogTagsChange(args))" Multiple="true">
+                <Items>
+                    @foreach (var constant in typeof(LogTags).GetFields())
+                    {
+                        if (constant.IsLiteral && !constant.IsInitOnly)
+                        {
+                            <RadzenSelectBarItem Text="@constant.GetValue(null).ToString()" Value="@(constant.GetValue(null).ToString())" />
+                        }
+                    }
+                    </Items>
+                </RadzenSelectBar>
+            </div>
+            <div class="columns is-vcentered is-centered mb-6">
+                <div class="column is-half">
+                    <div class="is-pulled-right">
+                        <div class="columns is-0 is-centered">
+                            <h3>Start Date</h3>
+                        </div>
+                        <div class="columns is-0 is-centered">
+                            <RadzenDatePicker TValue="DateTime?" ShowTime="true" ShowSeconds="true" HoursStep="1" MinutesStep="5" SecondsStep="10" DateFormat="MM/dd/yyyy HH:mm" Change=@((args) => LogStartDateChange(args)) />
+                        </div>
+                    </div>
+                </div>
+                <div class="column is-half">
+                    <div class="is-pulled-left">
+                        <div class="columns is-0 is-centered">
+                            <h3>End Date</h3>
+                        </div>
+                        <div class="columns is-0 is-centered">
+                            <RadzenDatePicker TValue="DateTime?" ShowTime="true" ShowSeconds="true" HoursStep="1" MinutesStep="5" SecondsStep="10" DateFormat="MM/dd/yyyy HH:mm" Change=@((args) =>  Store.LogEndDateChange(args)) />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="columns is-0 is-centered mb-6">
+                <RadzenButton ButtonStyle="ButtonStyle.Secondary" Click="@RefreshLogsForLastWeek">Get Data (last week)</RadzenButton>
+                <RadzenButton ButtonStyle="ButtonStyle.Secondary" Click="@RefreshLogs">Get Data</RadzenButton>
+            </div>
+        </RadzenCard>
+    </div>
 
-<div class="section">
-    @if (!Store.GetState().Loading)
+    <div class="section">
+        @if (!Store.GetState().Loading)
+        {
+            <RadzenCard>
+                <div class="columns is-0 is-centered">
+                    <h2>Log Records</h2>
+                </div>
+                <div class="columns is-0 is-centered">
+                    <RadzenGrid @ref="Store.GetState().LogGrid"
+                                AllowFiltering="true"
+                                AllowPaging="true"
+                                PageSize="15"
+                                AllowSorting="true"
+                                Data="@Store.GetState().LogRecords"
+                                TItem="@Log"
+                                Value="@Store.GetState().SelectedLogRecord"
+                                RowSelect="@(args => RowSelected(args))">
+                        <Columns>
+                            <RadzenGridColumn TItem="Log" Property="Id" Title="Id" Width="50px" />
+                            <RadzenGridColumn TItem="Log" Property="Message" Title="Message" />
+                            <RadzenGridColumn TItem="Log" Property="Level" Title="Level" Width="150px" />
+                            <RadzenGridColumn TItem="Log" Property="TimeStamp" Title="TimeStamp" Width="150px" />
+                            <RadzenGridColumn TItem="Log" Property="Exception" Title="Exception" Width="150px" />
+                            <RadzenGridColumn TItem="Log" Context="um" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="50px">
+                                <Template Context="lr">
+                                    <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@(() => DeleteLogRecord(lr))">
+                                    </RadzenButton>
+                                </Template>
+                            </RadzenGridColumn>
+                        </Columns>
+                    </RadzenGrid>
+                </div>
+            </RadzenCard>
+        }
+        else
+        {
+            <div class="columns is-0 is-centered">
+                <h1>Loading...</h1>
+            </div>
+        }
+    </div>
+
+    @if (Store.GetState().SelectedLogRecord != null)
     {
-        <RadzenCard>
-            <div class="columns is-0 is-centered">
-                <h2>Log Records</h2>
-            </div>
-            <div class="columns is-0 is-centered">
-                <RadzenGrid @ref="Store.GetState().LogGrid"
-                            AllowFiltering="true"
-                            AllowPaging="true"
-                            PageSize="15"
-                            AllowSorting="true"
-                            Data="@Store.GetState().LogRecords"
-                            TItem="@Log"
-                            Value="@Store.GetState().SelectedLogRecord"
-                            RowSelect="@(args => RowSelected(args))">
-                    <Columns>
-                        <RadzenGridColumn TItem="Log" Property="Id" Title="Id" Width="50px" />
-                        <RadzenGridColumn TItem="Log" Property="Message" Title="Message" />
-                        <RadzenGridColumn TItem="Log" Property="Level" Title="Level" Width="150px"/>
-                        <RadzenGridColumn TItem="Log" Property="TimeStamp" Title="TimeStamp" Width="150px"/>
-                        <RadzenGridColumn TItem="Log" Property="Exception" Title="Exception" Width="150px"/>
-                        <RadzenGridColumn TItem="Log" Context="um" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="50px">
-                            <Template Context="lr">
-                                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@(() => DeleteLogRecord(lr))">
-                                </RadzenButton>
-                            </Template>
-                        </RadzenGridColumn>
-                    </Columns>
-                </RadzenGrid>
-            </div>
-        </RadzenCard>
-    }
-    else
-    {
-        <div class="columns is-0 is-centered">
-            <h1>Loading...</h1>
+        <div class="section">
+            <RadzenCard>
+                <div class="columns is-vcentered is-centered">
+                    <div class="column">
+                        <div class="columns is-0 is-centered">
+                            <h2>Id</h2>
+                        </div>
+                        <div class="columns is-0 is-centered mb-4">
+                            <p>@Store.GetState().SelectedLogRecord.Id</p>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="columns is-0 is-centered">
+                            <h2>Time Stamp</h2>
+                        </div>
+                        <div class="columns is-0 is-centered mb-4">
+                            <p>@Store.GetState().SelectedLogRecord.TimeStamp</p>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="columns is-0 is-centered">
+                            <h2>Level</h2>
+                        </div>
+                        <div class="columns is-0 is-centered mb-4">
+                            <p>@Store.GetState().SelectedLogRecord.Level</p>
+                        </div>
+                    </div>
+                </div>
+            </RadzenCard>
+        </div>
+        <div class="section">
+            <RadzenCard>
+                <div class="columns is-0 is-centered">
+                    <h2>Message</h2>
+                </div>
+                <div class="columns is-0 is-centered mb-4">
+                    <p>@Store.GetState().SelectedLogRecord.Message</p>
+                </div>
+            </RadzenCard>
+        </div>
+        <div class="section">
+            <RadzenCard>
+                <div class="columns is-0 is-centered">
+                    <h2>Message Template</h2>
+                </div>
+                <div class="columns is-0 is-centered mb-4">
+                    <p>@Store.GetState().SelectedLogRecord.MessageTemplate</p>
+                </div>
+            </RadzenCard>
+        </div>
+        <div class="section">
+            <RadzenCard>
+                <div class="columns is-0 is-centered">
+                    <h2>Properties</h2>
+                </div>
+                <div class="columns is-0 is-centered mb-4">
+                    <p>@Store.GetState().SelectedLogRecord.Properties</p>
+                </div>
+            </RadzenCard>
+        </div>
+        <div class="section">
+            <RadzenCard>
+                <div class="columns is-0 is-centered">
+                    <h2>Exception</h2>
+                </div>
+                <div class="columns is-0 is-centered mb-4">
+                    <p>@Store.GetState().SelectedLogRecord.Exception</p>
+                </div>
+            </RadzenCard>
+        </div>
+        <div class="section">
+            <RadzenCard>
+                <div class="columns is-0 is-centered">
+                    <h2>Log Event</h2>
+                </div>
+                <div class="columns is-0 is-centered mb-4">
+                    <p>@Store.GetState().SelectedLogRecord.LogEvent</p>
+                </div>
+            </RadzenCard>
         </div>
     }
-</div>
 
-@if (Store.GetState().SelectedLogRecord != null)
-{
-    <div class="section">
-        <RadzenCard>
-            <div class="columns is-vcentered is-centered">
-                <div class="column">
-                    <div class="columns is-0 is-centered">
-                        <h2>Id</h2>
-                    </div>
-                    <div class="columns is-0 is-centered mb-4">
-                        <p>@Store.GetState().SelectedLogRecord.Id</p>
-                    </div>
-                </div>
-                <div class="column">
-                    <div class="columns is-0 is-centered">
-                        <h2>Time Stamp</h2>
-                    </div>
-                    <div class="columns is-0 is-centered mb-4">
-                        <p>@Store.GetState().SelectedLogRecord.TimeStamp</p>
-                    </div>
-                </div>
-                <div class="column">
-                    <div class="columns is-0 is-centered">
-                        <h2>Level</h2>
-                    </div>
-                    <div class="columns is-0 is-centered mb-4">
-                        <p>@Store.GetState().SelectedLogRecord.Level</p>
-                    </div>
-                </div>
-            </div>
-        </RadzenCard>
-    </div>
-    <div class="section">
-        <RadzenCard>
-            <div class="columns is-0 is-centered">
-                <h2>Message</h2>
-            </div>
-            <div class="columns is-0 is-centered mb-4">
-                <p>@Store.GetState().SelectedLogRecord.Message</p>
-            </div>
-        </RadzenCard>
-    </div>
-    <div class="section">
-        <RadzenCard>
-            <div class="columns is-0 is-centered">
-                <h2>Message Template</h2>
-            </div>
-            <div class="columns is-0 is-centered mb-4">
-                <p>@Store.GetState().SelectedLogRecord.MessageTemplate</p>
-            </div>
-        </RadzenCard>
-    </div>
-    <div class="section">
-        <RadzenCard>
-            <div class="columns is-0 is-centered">
-                <h2>Properties</h2>
-            </div>
-            <div class="columns is-0 is-centered mb-4">
-                <p>@Store.GetState().SelectedLogRecord.Properties</p>
-            </div>
-        </RadzenCard>
-    </div>
-    <div class="section">
-        <RadzenCard>
-            <div class="columns is-0 is-centered">
-                <h2>Exception</h2>
-            </div>
-            <div class="columns is-0 is-centered mb-4">
-                <p>@Store.GetState().SelectedLogRecord.Exception</p>
-            </div>
-        </RadzenCard>
-    </div>
-    <div class="section">
-        <RadzenCard>
-            <div class="columns is-0 is-centered">
-                <h2>Log Event</h2>
-            </div>
-            <div class="columns is-0 is-centered mb-4">
-                <p>@Store.GetState().SelectedLogRecord.LogEvent</p>
-            </div>
-        </RadzenCard>
-    </div>
-}
-
-<RadzenButton Click="ApplicationStore.TestExceptionThrow">Test Exception</RadzenButton>
+    <RadzenButton Click="ApplicationStore.TestExceptionThrow">Test Exception</RadzenButton>

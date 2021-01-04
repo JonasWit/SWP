@@ -6,7 +6,7 @@
 
 @if (SignInManager.IsSignedIn(User))
 {
-    <ul class="right">
+    <ul class="navbar-nav ml-md-auto right ">
         @if ((await authService.AuthorizeAsync(User, PortalNames.Policies.RootClient)).Succeeded)
         {
             <li class="nav-item">
@@ -31,7 +31,7 @@
 }
 else
 {
-    <ul class="right">
+    <ul class="navbar-nav ml-md-auto right ">
         <li class="nav-item "><a class="reg-item" asp-area="Identity" asp-page="/Account/Register">Zarejestruj się</a></li>
         <li class="nav-item "><a class="reg-item" asp-area="Identity" asp-page="/Account/Login">Zaloguj</a></li>
     </ul>

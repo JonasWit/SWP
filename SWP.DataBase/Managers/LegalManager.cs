@@ -51,6 +51,11 @@ namespace SWP.DataBase.Managers
                 .Where(x => x.ProfileClaim == profile && (active ? x.Active : !x.Active))
                 .ToList();
 
+        public List<Client> GetClientsWithoutCases(string profile, List<int> allowedIds, bool active = true) =>
+            _context.Clients
+                .Where(x => x.ProfileClaim == profile && allowedIds.Contains(x.Id) && (active ? x.Active : !x.Active))
+                .ToList();
+
         public List<Client> GetClientsWithCleanCases(string profile, bool active = true) => _context.Clients.Where(x => x.Active).Include(x => x.Cases.Where(y => y.Active)).ToList();
 
         public async Task<Client> CreateClient(Client client)
@@ -89,7 +94,15 @@ namespace SWP.DataBase.Managers
 
         public List<Case> GetCasesForClient(int clientId) =>
             _context.Cases
-                .Where(c => c.ClientId == clientId && c.Active)
+                .Where(c => c.ClientId.Equals(clientId) && c.Active)
+                    .Include(c => c.Reminders)
+                    .Include(c => c.Notes)
+                    .Include(c => c.ContactPeople)
+                .ToList();
+
+        public List<Case> GetCasesForClient(int clientId, List<int> allowedIds) =>
+            _context.Cases
+                .Where(c => c.ClientId.Equals(clientId) && allowedIds.Contains(c.Id) && c.Active)
                     .Include(c => c.Reminders)
                     .Include(c => c.Notes)
                     .Include(c => c.ContactPeople)

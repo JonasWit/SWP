@@ -56,9 +56,9 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Productivity
 
         public void Initialize()
         {
+            GetTimeRecords(MainStore.GetState().ActiveClient.Id);
             GetDataForMonthFilter();
             GetDataForFontFilter();
-            GetTimeRecords(MainStore.GetState().ActiveClient.Id);
         }
 
         protected override async void HandleActions(IAction action)
@@ -369,9 +369,9 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Productivity
 
         public void RefreshSore()
         {
+            GetTimeRecords(MainStore.GetState().ActiveClient.Id);
             GetDataForMonthFilter();
             GetDataForFontFilter();
-            GetTimeRecords(MainStore.GetState().ActiveClient.Id);
         }
     }
 }

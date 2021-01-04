@@ -36,6 +36,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
 
             MainStore.AddStateChangeListener(RefreshView);
             Store.AddStateChangeListener(RefreshView);
+            Store.ClearSelections();
 
             Store.DisableLoading();
         }

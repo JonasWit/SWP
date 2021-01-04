@@ -1,5 +1,5 @@
 ﻿
-@if (!Store.Loading)
+@if (Store.Loading)
 {
     <LoaderComponent Message="@("Wczytywanie Danych...")"></LoaderComponent>
 }
@@ -16,8 +16,7 @@ else
 
     @*<RadzenButton Text="TEST!" Click="MainStore.ThrowTestException"></RadzenButton>*@
     <div class="list-row">
-        @if (Store.GetState().SelectedUser != null &&
-  MainStore.GetState().AppActiveUserManager.IsRoot)
+        @if (Store.GetState().SelectedUser is not null)
         {
 
             <h1>Mozna skasowac</h1>
@@ -41,23 +40,45 @@ else
                 </RadzenListBox>
             </div>
 
-            <h3>Panel: Statystyki</h3>
-            <RadzenSwitch Style="margin-bottom: 20px" />
+            <div class="list-row">
+                <h3>Panel: Statystyki</h3>
+                <RadzenSwitch Style="margin-bottom: 20px" @bind-Value=@Store.GetState().IsStatisticsVisible />
+            </div>
 
-            <h3>Panel: List Kontaktów</h3>
-            <RadzenSwitch Style="margin-bottom: 20px" />
+            <div class="list-row">
+                <h3>Panel: List Kontaktów</h3>
+                <RadzenSwitch Style="margin-bottom: 20px" @bind-Value=@Store.GetState().IsClientContactsVisible />
+            </div>
 
-            <h3>Panel: List Zadań</h3>
-            <RadzenSwitch Style="margin-bottom: 20px" />
+            <div class="list-row">
+                <h3>Panel: List Zadań</h3>
+                <RadzenSwitch Style="margin-bottom: 20px" @bind-Value=@Store.GetState().IsClientJobsVisible />
+            </div>
 
-            <h3>Panel: Finanse</h3>
-            <RadzenSwitch Style="margin-bottom: 20px" />
+            <div class="list-row">
+                <h3>Panel: Finanse</h3>
+                <RadzenSwitch Style="margin-bottom: 20px" @bind-Value=@Store.GetState().IsFinanceVisible />
+            </div>
 
-            <h3>Panel: Rozliczenia</h3>
-            <RadzenSwitch Style="margin-bottom: 20px" />
+            <div class="list-row">
+                <h3>Panel: Rozliczenia</h3>
+                <RadzenSwitch Style="margin-bottom: 20px" @bind-Value=@Store.GetState().IsProductivityVisible />
+            </div>
 
-            <h3>Panel: Archiwum</h3>
-            <RadzenSwitch Style="margin-bottom: 20px" />
+            <div class="list-row">
+                <h3>Panel: Archiwum</h3>
+                <RadzenSwitch Style="margin-bottom: 20px" @bind-Value=@Store.GetState().IsArchiveVisible />
+            </div>
+
+            <div class="list-row">
+                <h3>Może: Usuwać Dane</h3>
+                <RadzenSwitch Style="margin-bottom: 20px" @bind-Value=@Store.GetState().CanDelete />
+            </div>
+
+            <div class="list-row">
+                <h3>Może: Archiwizować Dane</h3>
+                <RadzenSwitch Style="margin-bottom: 20px" @bind-Value=@Store.GetState().CanArchive />
+            </div>
 
             <RadzenButton ButtonStyle="ButtonStyle.Warning" Click="UpdateAccess">Zmień Dostęp</RadzenButton>
         }

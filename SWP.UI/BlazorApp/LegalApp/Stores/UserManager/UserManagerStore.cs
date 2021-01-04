@@ -5,15 +5,18 @@ using Radzen;
 using SWP.Application.LegalSwp.AppDataAccess;
 using SWP.Application.LegalSwp.Cases;
 using SWP.Application.LegalSwp.Clients;
+using SWP.Domain.Enums;
 using SWP.Domain.Models.LegalApp;
 using SWP.UI.BlazorApp.LegalApp.Stores.Main;
 using SWP.UI.BlazorApp.LegalApp.Stores.UserManager.Actions;
 using SWP.UI.Components.LegalSwpBlazorComponents.Dialogs;
 using SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data;
+using SWP.UI.Models;
 using SWP.UI.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace SWP.UI.BlazorApp.LegalApp.Stores.UserManager
@@ -23,19 +26,19 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.UserManager
         public IEnumerable<int> SelectedClients;
         public IEnumerable<int> SelectedCases;
 
-        public IdentityUser SelectedUser { get; set; }
+        public AppActiveUserManager.RelatedUser SelectedUser { get; set; }
         public List<Client> Clients { get; set; } = new List<Client>();
         public List<Case> Cases { get; set; } = new List<Case>();
 
-        public bool IsStatisticsVisible { get; set; } = false;
-        public bool IsClientJobsVisible { get; set; } = false;
-        public bool IsClientContactsVisible { get; set; } = false;
-        public bool IsFinanceVisible { get; set; } = false;
-        public bool IsProductivityVisible { get; set; } = false;
-        public bool IsArchiveVisible { get; set; } = false;
+        public bool IsStatisticsVisible { get; set; }
+        public bool IsClientJobsVisible { get; set; }
+        public bool IsClientContactsVisible { get; set; }
+        public bool IsFinanceVisible { get; set; }
+        public bool IsProductivityVisible { get; set; }
+        public bool IsArchiveVisible { get; set; }
 
-        public bool AllowArchive { get; set; } = false;
-        public bool AllowDelete { get; set; } = false;
+        public bool CanArchive { get; set; }
+        public bool CanDelete { get; set; }
     }
 
     [UIScopedService]
@@ -127,6 +130,13 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.UserManager
             BroadcastStateChange();
         }
 
+        public void ClearSelections()
+        {
+            _state.SelectedUser = null;
+            _state.SelectedCases = null;
+            _state.SelectedClients = null;
+        }
+
         public async Task UpdateAccess()
         {
             if (string.IsNullOrEmpty(_state.SelectedUser.Id))
@@ -136,77 +146,295 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.UserManager
 
             try
             {
-                using var scope = _serviceProvider.CreateScope();
-                var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+                EnableLoading("Przetwarzanie zmian...");
 
-                var getAccess = scope.ServiceProvider.GetRequiredService<GetAccess>();
-
-                var getClients = scope.ServiceProvider.GetRequiredService<GetClients>();
-                var grantAccess = scope.ServiceProvider.GetRequiredService<GrantAccess>();
-                var revokeAccess = scope.ServiceProvider.GetRequiredService<RevokeAccess>();
-
-                var userToModify = await userManager.FindByIdAsync(_state.SelectedUser.Id);
-
-                //var lockResult = await userManager.UpdateSecurityStampAsync(userToModify);
-
-                //if (!lockResult.Succeeded)
-                //{
-                //    var identityErrors = String.Join("; ", lockResult.Errors.Select(x => x.Description).ToList());
-                //    _logger.LogError(LogTags.LegalAppLogPrefix + "Issue when Locking User: {lockUser} by User: {rootUser} - Errors:" + identityErrors, userToModify.UserName, MainStore.GetState().AppActiveUserManager.UserName);
-                //    throw new Exception(identityErrors);
-                //}
-
-                var currentProfileClients = getClients.GetClientsWithCleanCases(MainStore.GetState().AppActiveUserManager.ProfileName);
-                var currentProfileCases = currentProfileClients.SelectMany(x => x.Cases).Select(x => x.Id).ToList();
-
-                var currentClientAccesses = await getAccess.GetAccessToClient(_state.SelectedUser.Id);
-                var currentCaseAccesses = await getAccess.GetAccessToCase(_state.SelectedUser.Id);
-                var currentPanelAccesses = await getAccess.GetAccessToPanel(_state.SelectedUser.Id);
-
-                var selectedClientAccesses = _state.SelectedClients.ToList();
-                var selectedCasesAccesses = _state.SelectedCases.ToList();
-
-                //Client accesses
-
-                var clientAccessesToRemove = new List<int>();
-                clientAccessesToRemove.AddRange(currentClientAccesses.Where(x => !selectedClientAccesses.Any(y => y.Equals(x.ClientId))).Select(x => x.ClientId).ToList());
-
-                var clientAccessesToAdd = new List<int>();
-                clientAccessesToAdd.AddRange(selectedClientAccesses.Where(x => !currentClientAccesses.Any(y => y.ClientId.Equals(x)) && currentProfileClients.Any(y => y.Id.Equals(x))).ToList());
-
-                await revokeAccess.RevokeAccessToClients(_state.SelectedUser.Id, clientAccessesToRemove);
-                await grantAccess.GrantAccessToClients(_state.SelectedUser.Id, clientAccessesToAdd);
-
-                //Case accesses
-
-                var caseAccessesToRemove = new List<int>();
-                caseAccessesToRemove.AddRange(currentCaseAccesses.Where(x => !selectedCasesAccesses.Any(y => y.Equals(x.CaseId))).Select(x => x.CaseId).ToList());
-
-                var caseAccessesToAdd = new List<int>();
-                caseAccessesToAdd.AddRange(selectedCasesAccesses.Where(x => !currentCaseAccesses.Any(y => y.CaseId.Equals(x)) && currentProfileCases.Any(y => y.Equals(x))).ToList());
-
-                await revokeAccess.RevokeAccessToCases(_state.SelectedUser.Id, caseAccessesToRemove);
-                await grantAccess.GrantAccessToCases(_state.SelectedUser.Id, caseAccessesToAdd);
-
-                //Panels accesses
-
-                if (_state.IsStatisticsVisible)
+                using (var scope = _serviceProvider.CreateScope())
                 {
+                    var getAccess = scope.ServiceProvider.GetRequiredService<GetAccess>();
+                    var getClients = scope.ServiceProvider.GetRequiredService<GetClients>();
+                    var grantAccess = scope.ServiceProvider.GetRequiredService<GrantAccess>();
+                    var revokeAccess = scope.ServiceProvider.GetRequiredService<RevokeAccess>();
 
-                }
-                else
-                {
+                    //var lockResult = await userManager.UpdateSecurityStampAsync(userToModify);
 
+                    //if (!lockResult.Succeeded)
+                    //{
+                    //    var identityErrors = String.Join("; ", lockResult.Errors.Select(x => x.Description).ToList());
+                    //    _logger.LogError(LogTags.LegalAppLogPrefix + "Issue when Locking User: {lockUser} by User: {rootUser} - Errors:" + identityErrors, userToModify.UserName, MainStore.GetState().AppActiveUserManager.UserName);
+                    //    throw new Exception(identityErrors);
+                    //}
 
+                    var currentProfileClients = getClients.GetClientsWithCleanCases(MainStore.GetState().AppActiveUserManager.ProfileName);
+                    var currentProfileCases = currentProfileClients.SelectMany(x => x.Cases).Select(x => x.Id).ToList();
+
+                    var currentClientAccesses = await getAccess.GetAccessToClient(_state.SelectedUser.Id);
+                    var currentCaseAccesses = await getAccess.GetAccessToCase(_state.SelectedUser.Id);
+
+                    var selectedClientAccesses = _state.SelectedClients.ToList();
+                    var selectedCasesAccesses = _state.SelectedCases.ToList();
+
+                    //Client accesses
+
+                    var clientAccessesToRemove = new List<int>();
+                    clientAccessesToRemove.AddRange(currentClientAccesses.Where(x => !selectedClientAccesses.Any(y => y.Equals(x.ClientId))).Select(x => x.ClientId).ToList());
+
+                    var clientAccessesToAdd = new List<int>();
+                    clientAccessesToAdd.AddRange(selectedClientAccesses.Where(x => !currentClientAccesses.Any(y => y.ClientId.Equals(x)) && currentProfileClients.Any(y => y.Id.Equals(x))).ToList());
+
+                    await revokeAccess.RevokeAccessToClients(_state.SelectedUser.Id, clientAccessesToRemove);
+                    await grantAccess.GrantAccessToClients(_state.SelectedUser.Id, clientAccessesToAdd);
+
+                    //Case accesses
+
+                    var caseAccessesToRemove = new List<int>();
+                    caseAccessesToRemove.AddRange(currentCaseAccesses.Where(x => !selectedCasesAccesses.Any(y => y.Equals(x.CaseId))).Select(x => x.CaseId).ToList());
+
+                    var caseAccessesToAdd = new List<int>();
+                    caseAccessesToAdd.AddRange(selectedCasesAccesses.Where(x => !currentCaseAccesses.Any(y => y.CaseId.Equals(x)) && currentProfileCases.Any(y => y.Equals(x))).ToList());
+
+                    await revokeAccess.RevokeAccessToCases(_state.SelectedUser.Id, caseAccessesToRemove);
+                    await grantAccess.GrantAccessToCases(_state.SelectedUser.Id, caseAccessesToAdd);
+
+                    //Panels accesses
+
+                    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+                    var user = await userManager.FindByIdAsync(_state.SelectedUser.Id);
+                    var claims = await userManager.GetClaimsAsync(user) as List<Claim>;
+
+                    if (!_state.IsStatisticsVisible.Equals(claims.Any(x => x.Type == ApplicationType.LegalApplication.ToString() && x.Value == LegalAppPanels.MyApp.ToString())))
+                    {
+                        if (_state.IsStatisticsVisible && !claims.Any(x => x.Type == ApplicationType.LegalApplication.ToString() && x.Value == LegalAppPanels.MyApp.ToString()))
+                        {
+                            var newClaim = new Claim(ApplicationType.LegalApplication.ToString(), LegalAppPanels.MyApp.ToString());
+                            var result = await userManager.AddClaimAsync(user, newClaim);
+
+                            if (!result.Succeeded)
+                            {
+                                var identityErrors = string.Join("; ", result.Errors.Select(x => x.Description).ToList());
+                                _logger.LogError(LogTags.LegalAppLogPrefix + "Issue during access modification for Profile {profileRemove} for User: {lockUser} by User: {rootUser} - Errors:" + identityErrors, MainStore.GetState().AppActiveUserManager.ProfileName, user.UserName, MainStore.GetState().AppActiveUserManager.UserName);
+                                throw new Exception(identityErrors);
+                            }
+                        }
+                        else if (!_state.IsStatisticsVisible && claims.Any(x => x.Type == ApplicationType.LegalApplication.ToString() && x.Value == LegalAppPanels.MyApp.ToString()))
+                        {
+                            var deletedClaim = claims.FirstOrDefault(x => x.Type.Equals(ApplicationType.LegalApplication.ToString()) && x.Value.Equals(LegalAppPanels.MyApp.ToString()));
+                            var result = await userManager.RemoveClaimAsync(user, deletedClaim);
+
+                            if (!result.Succeeded)
+                            {
+                                var identityErrors = string.Join("; ", result.Errors.Select(x => x.Description).ToList());
+                                _logger.LogError(LogTags.LegalAppLogPrefix + "Issue during access modification for Profile {profileRemove} for User: {lockUser} by User: {rootUser} - Errors:" + identityErrors, MainStore.GetState().AppActiveUserManager.ProfileName, user.UserName, MainStore.GetState().AppActiveUserManager.UserName);
+                                throw new Exception(identityErrors);
+                            }
+                        }
+                    }
+
+                    if (!_state.IsClientJobsVisible.Equals(claims.Any(x => x.Type == ApplicationType.LegalApplication.ToString() && x.Value == LegalAppPanels.ClientJobs.ToString())))
+                    {
+                        if (_state.IsClientJobsVisible && !claims.Any(x => x.Type == ApplicationType.LegalApplication.ToString() && x.Value == LegalAppPanels.ClientJobs.ToString()))
+                        {
+                            var newClaim = new Claim(ApplicationType.LegalApplication.ToString(), LegalAppPanels.ClientJobs.ToString());
+                            var result = await userManager.AddClaimAsync(user, newClaim);
+
+                            if (!result.Succeeded)
+                            {
+                                var identityErrors = string.Join("; ", result.Errors.Select(x => x.Description).ToList());
+                                _logger.LogError(LogTags.LegalAppLogPrefix + "Issue during access modification for Profile {profileRemove} for User: {lockUser} by User: {rootUser} - Errors:" + identityErrors, MainStore.GetState().AppActiveUserManager.ProfileName, user.UserName, MainStore.GetState().AppActiveUserManager.UserName);
+                                throw new Exception(identityErrors);
+                            }
+                        }
+                        else if (!_state.IsClientJobsVisible && claims.Any(x => x.Type == ApplicationType.LegalApplication.ToString() && x.Value == LegalAppPanels.ClientJobs.ToString()))
+                        {
+                            var deletedClaim = claims.FirstOrDefault(x => x.Type.Equals(ApplicationType.LegalApplication.ToString()) && x.Value.Equals(LegalAppPanels.ClientJobs.ToString()));
+                            var result = await userManager.RemoveClaimAsync(user, deletedClaim);
+
+                            if (!result.Succeeded)
+                            {
+                                var identityErrors = string.Join("; ", result.Errors.Select(x => x.Description).ToList());
+                                _logger.LogError(LogTags.LegalAppLogPrefix + "Issue during access modification for Profile {profileRemove} for User: {lockUser} by User: {rootUser} - Errors:" + identityErrors, MainStore.GetState().AppActiveUserManager.ProfileName, user.UserName, MainStore.GetState().AppActiveUserManager.UserName);
+                                throw new Exception(identityErrors);
+                            }
+                        }
+                    }
+
+                    if (!_state.IsClientContactsVisible.Equals(claims.Any(x => x.Type == ApplicationType.LegalApplication.ToString() && x.Value == LegalAppPanels.ClientDetails.ToString())))
+                    {
+                        if (_state.IsClientContactsVisible && !claims.Any(x => x.Type == ApplicationType.LegalApplication.ToString() && x.Value == LegalAppPanels.ClientDetails.ToString()))
+                        {
+                            var newClaim = new Claim(ApplicationType.LegalApplication.ToString(), LegalAppPanels.ClientDetails.ToString());
+                            var result = await userManager.AddClaimAsync(user, newClaim);
+
+                            if (!result.Succeeded)
+                            {
+                                var identityErrors = string.Join("; ", result.Errors.Select(x => x.Description).ToList());
+                                _logger.LogError(LogTags.LegalAppLogPrefix + "Issue during access modification for Profile {profileRemove} for User: {lockUser} by User: {rootUser} - Errors:" + identityErrors, MainStore.GetState().AppActiveUserManager.ProfileName, user.UserName, MainStore.GetState().AppActiveUserManager.UserName);
+                                throw new Exception(identityErrors);
+                            }
+                        }
+                        else if (!_state.IsClientContactsVisible && claims.Any(x => x.Type == ApplicationType.LegalApplication.ToString() && x.Value == LegalAppPanels.ClientDetails.ToString()))
+                        {
+                            var deletedClaim = claims.FirstOrDefault(x => x.Type.Equals(ApplicationType.LegalApplication.ToString()) && x.Value.Equals(LegalAppPanels.ClientDetails.ToString()));
+                            var result = await userManager.RemoveClaimAsync(user, deletedClaim);
+
+                            if (!result.Succeeded)
+                            {
+                                var identityErrors = string.Join("; ", result.Errors.Select(x => x.Description).ToList());
+                                _logger.LogError(LogTags.LegalAppLogPrefix + "Issue during access modification for Profile {profileRemove} for User: {lockUser} by User: {rootUser} - Errors:" + identityErrors, MainStore.GetState().AppActiveUserManager.ProfileName, user.UserName, MainStore.GetState().AppActiveUserManager.UserName);
+                                throw new Exception(identityErrors);
+                            }
+                        }
+                    }
+
+                    if (!_state.IsFinanceVisible.Equals(claims.Any(x => x.Type == ApplicationType.LegalApplication.ToString() && x.Value == LegalAppPanels.Finance.ToString())))
+                    {
+                        if (_state.IsFinanceVisible && !claims.Any(x => x.Type == ApplicationType.LegalApplication.ToString() && x.Value == LegalAppPanels.Finance.ToString()))
+                        {
+                            var newClaim = new Claim(ApplicationType.LegalApplication.ToString(), LegalAppPanels.Finance.ToString());
+                            var result = await userManager.AddClaimAsync(user, newClaim);
+
+                            if (!result.Succeeded)
+                            {
+                                var identityErrors = string.Join("; ", result.Errors.Select(x => x.Description).ToList());
+                                _logger.LogError(LogTags.LegalAppLogPrefix + "Issue during access modification for Profile {profileRemove} for User: {lockUser} by User: {rootUser} - Errors:" + identityErrors, MainStore.GetState().AppActiveUserManager.ProfileName, user.UserName, MainStore.GetState().AppActiveUserManager.UserName);
+                                throw new Exception(identityErrors);
+                            }
+                        }
+                        else if (!_state.IsFinanceVisible && claims.Any(x => x.Type == ApplicationType.LegalApplication.ToString() && x.Value == LegalAppPanels.Finance.ToString()))
+                        {
+                            var deletedClaim = claims.FirstOrDefault(x => x.Type.Equals(ApplicationType.LegalApplication.ToString()) && x.Value.Equals(LegalAppPanels.Finance.ToString()));
+                            var result = await userManager.RemoveClaimAsync(user, deletedClaim);
+
+                            if (!result.Succeeded)
+                            {
+                                var identityErrors = string.Join("; ", result.Errors.Select(x => x.Description).ToList());
+                                _logger.LogError(LogTags.LegalAppLogPrefix + "Issue during access modification for Profile {profileRemove} for User: {lockUser} by User: {rootUser} - Errors:" + identityErrors, MainStore.GetState().AppActiveUserManager.ProfileName, user.UserName, MainStore.GetState().AppActiveUserManager.UserName);
+                                throw new Exception(identityErrors);
+                            }
+                        }
+                    }
+
+                    if (!_state.IsProductivityVisible.Equals(claims.Any(x => x.Type == ApplicationType.LegalApplication.ToString() && x.Value == LegalAppPanels.Productivity.ToString())))
+                    {
+                        if (_state.IsProductivityVisible && !claims.Any(x => x.Type == ApplicationType.LegalApplication.ToString() && x.Value == LegalAppPanels.Productivity.ToString()))
+                        {
+                            var newClaim = new Claim(ApplicationType.LegalApplication.ToString(), LegalAppPanels.Productivity.ToString());
+                            var result = await userManager.AddClaimAsync(user, newClaim);
+
+                            if (!result.Succeeded)
+                            {
+                                var identityErrors = string.Join("; ", result.Errors.Select(x => x.Description).ToList());
+                                _logger.LogError(LogTags.LegalAppLogPrefix + "Issue during access modification for Profile {profileRemove} for User: {lockUser} by User: {rootUser} - Errors:" + identityErrors, MainStore.GetState().AppActiveUserManager.ProfileName, user.UserName, MainStore.GetState().AppActiveUserManager.UserName);
+                                throw new Exception(identityErrors);
+                            }
+                        }
+                        else if (!_state.IsProductivityVisible && claims.Any(x => x.Type == ApplicationType.LegalApplication.ToString() && x.Value == LegalAppPanels.Productivity.ToString()))
+                        {
+                            var deletedClaim = claims.FirstOrDefault(x => x.Type.Equals(ApplicationType.LegalApplication.ToString()) && x.Value.Equals(LegalAppPanels.Productivity.ToString()));
+                            var result = await userManager.RemoveClaimAsync(user, deletedClaim);
+
+                            if (!result.Succeeded)
+                            {
+                                var identityErrors = string.Join("; ", result.Errors.Select(x => x.Description).ToList());
+                                _logger.LogError(LogTags.LegalAppLogPrefix + "Issue during access modification for Profile {profileRemove} for User: {lockUser} by User: {rootUser} - Errors:" + identityErrors, MainStore.GetState().AppActiveUserManager.ProfileName, user.UserName, MainStore.GetState().AppActiveUserManager.UserName);
+                                throw new Exception(identityErrors);
+                            }
+                        }
+                    }
+
+                    if (!_state.IsArchiveVisible.Equals(claims.Any(x => x.Type == ApplicationType.LegalApplication.ToString() && x.Value == LegalAppPanels.Archive.ToString())))
+                    {
+                        if (_state.IsArchiveVisible && !claims.Any(x => x.Type == ApplicationType.LegalApplication.ToString() && x.Value == LegalAppPanels.Archive.ToString()))
+                        {
+                            var newClaim = new Claim(ApplicationType.LegalApplication.ToString(), LegalAppPanels.Archive.ToString());
+                            var result = await userManager.AddClaimAsync(user, newClaim);
+
+                            if (!result.Succeeded)
+                            {
+                                var identityErrors = string.Join("; ", result.Errors.Select(x => x.Description).ToList());
+                                _logger.LogError(LogTags.LegalAppLogPrefix + "Issue during access modification for Profile {profileRemove} for User: {lockUser} by User: {rootUser} - Errors:" + identityErrors, MainStore.GetState().AppActiveUserManager.ProfileName, user.UserName, MainStore.GetState().AppActiveUserManager.UserName);
+                                throw new Exception(identityErrors);
+                            }
+                        }
+                        else if (!_state.IsArchiveVisible && claims.Any(x => x.Type == ApplicationType.LegalApplication.ToString() && x.Value == LegalAppPanels.Archive.ToString()))
+                        {
+                            var deletedClaim = claims.FirstOrDefault(x => x.Type.Equals(ApplicationType.LegalApplication.ToString()) && x.Value.Equals(LegalAppPanels.Archive.ToString()));
+                            var result = await userManager.RemoveClaimAsync(user, deletedClaim);
+
+                            if (!result.Succeeded)
+                            {
+                                var identityErrors = string.Join("; ", result.Errors.Select(x => x.Description).ToList());
+                                _logger.LogError(LogTags.LegalAppLogPrefix + "Issue during access modification for Profile {profileRemove} for User: {lockUser} by User: {rootUser} - Errors:" + identityErrors, MainStore.GetState().AppActiveUserManager.ProfileName, user.UserName, MainStore.GetState().AppActiveUserManager.UserName);
+                                throw new Exception(identityErrors);
+                            }
+                        }
+                    }
+
+                    if (!_state.CanArchive.Equals(claims.Any(x => x.Type == ApplicationType.LegalApplication.ToString() && x.Value == LegalAppActions.CanArchive.ToString())))
+                    {
+                        if (_state.CanArchive && !claims.Any(x => x.Type == ApplicationType.LegalApplication.ToString() && x.Value == LegalAppActions.CanArchive.ToString()))
+                        {
+                            var newClaim = new Claim(ApplicationType.LegalApplication.ToString(), LegalAppActions.CanArchive.ToString());
+                            var result = await userManager.AddClaimAsync(user, newClaim);
+
+                            if (!result.Succeeded)
+                            {
+                                var identityErrors = string.Join("; ", result.Errors.Select(x => x.Description).ToList());
+                                _logger.LogError(LogTags.LegalAppLogPrefix + "Issue during access modification for Profile {profileRemove} for User: {lockUser} by User: {rootUser} - Errors:" + identityErrors, MainStore.GetState().AppActiveUserManager.ProfileName, user.UserName, MainStore.GetState().AppActiveUserManager.UserName);
+                                throw new Exception(identityErrors);
+                            }
+                        }
+                        else if (!_state.CanArchive && claims.Any(x => x.Type == ApplicationType.LegalApplication.ToString() && x.Value == LegalAppActions.CanArchive.ToString()))
+                        {
+                            var deletedClaim = claims.FirstOrDefault(x => x.Type.Equals(ApplicationType.LegalApplication.ToString()) && x.Value.Equals(LegalAppActions.CanArchive.ToString()));
+                            var result = await userManager.RemoveClaimAsync(user, deletedClaim);
+
+                            if (!result.Succeeded)
+                            {
+                                var identityErrors = string.Join("; ", result.Errors.Select(x => x.Description).ToList());
+                                _logger.LogError(LogTags.LegalAppLogPrefix + "Issue during access modification for Profile {profileRemove} for User: {lockUser} by User: {rootUser} - Errors:" + identityErrors, MainStore.GetState().AppActiveUserManager.ProfileName, user.UserName, MainStore.GetState().AppActiveUserManager.UserName);
+                                throw new Exception(identityErrors);
+                            }
+                        }
+                    }
+
+                    if (!_state.CanArchive.Equals(claims.Any(x => x.Type == ApplicationType.LegalApplication.ToString() && x.Value == LegalAppActions.CanDelete.ToString())))
+                    {
+                        if (_state.CanArchive && !claims.Any(x => x.Type == ApplicationType.LegalApplication.ToString() && x.Value == LegalAppActions.CanDelete.ToString()))
+                        {
+                            var newClaim = new Claim(ApplicationType.LegalApplication.ToString(), LegalAppActions.CanDelete.ToString());
+                            var result = await userManager.AddClaimAsync(user, newClaim);
+
+                            if (!result.Succeeded)
+                            {
+                                var identityErrors = string.Join("; ", result.Errors.Select(x => x.Description).ToList());
+                                _logger.LogError(LogTags.LegalAppLogPrefix + "Issue during access modification for Profile {profileRemove} for User: {lockUser} by User: {rootUser} - Errors:" + identityErrors, MainStore.GetState().AppActiveUserManager.ProfileName, user.UserName, MainStore.GetState().AppActiveUserManager.UserName);
+                                throw new Exception(identityErrors);
+                            }
+                        }
+                        else if (!_state.CanArchive && claims.Any(x => x.Type == ApplicationType.LegalApplication.ToString() && x.Value == LegalAppActions.CanDelete.ToString()))
+                        {
+                            var deletedClaim = claims.FirstOrDefault(x => x.Type.Equals(ApplicationType.LegalApplication.ToString()) && x.Value.Equals(LegalAppActions.CanDelete.ToString()));
+                            var result = await userManager.RemoveClaimAsync(user, deletedClaim);
+
+                            if (!result.Succeeded)
+                            {
+                                var identityErrors = string.Join("; ", result.Errors.Select(x => x.Description).ToList());
+                                _logger.LogError(LogTags.LegalAppLogPrefix + "Issue during access modification for Profile {profileRemove} for User: {lockUser} by User: {rootUser} - Errors:" + identityErrors, MainStore.GetState().AppActiveUserManager.ProfileName, user.UserName, MainStore.GetState().AppActiveUserManager.UserName);
+                                throw new Exception(identityErrors);
+                            }
+                        }
+                    }
                 }
 
                 ShowNotification(NotificationSeverity.Success, "Sukces!", $"Zmieniono dostępy dla: {_state.SelectedUser.UserName}.", GeneralViewModel.NotificationDuration);
                 await GetCurrentAccesses();
+                DisableLoading();
                 BroadcastStateChange();
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, LogTags.LegalAppLogPrefix + "Exception in UpdateAccess method in Legal App Options panel, User: {rootUser}",  MainStore.GetState().AppActiveUserManager.UserName);
+                _logger.LogError(ex, LogTags.LegalAppLogPrefix + "Exception in UpdateAccess method in Legal App Options panel, User: {rootUser}", MainStore.GetState().AppActiveUserManager.UserName);
+                DisableLoading();
                 MainStore.ShowErrorPage(ex);
             }
         }
@@ -227,7 +455,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.UserManager
                 {
                     var identityErrors = String.Join("; ", lockResult.Errors.Select(x => x.Description).ToList());
                     _logger.LogError(LogTags.LegalAppLogPrefix + "Issue when Locking User: {lockUser} by User: {rootUser} - Errors:" + identityErrors, userToRemove.UserName, MainStore.GetState().AppActiveUserManager.UserName);
-                    throw new Exception(identityErrors);  
+                    throw new Exception(identityErrors);
                 }
 
                 var profileRemoveResult = await userManager.RemoveClaimAsync(userToRemove, profileClaim);
@@ -239,7 +467,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.UserManager
                     throw new Exception(identityErrors);
                 }
 
-                _state.SelectedUser = MainStore.GetState().AppActiveUserManager.User;
+                _state.SelectedUser = null;
                 await MainStore.RealodUserData();
 
                 ShowNotification(NotificationSeverity.Success, "Sukces!", $"Użytkownik: {userToRemove.UserName} został usunięty z profilu {profileClaim.Value}.", GeneralViewModel.NotificationDuration);
@@ -288,20 +516,26 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.UserManager
 
         private async Task GetCurrentAccesses()
         {
-            using var scope = _serviceProvider.CreateScope();
+            //var getAccess = scope.ServiceProvider.GetRequiredService<GetAccess>();
+            //var grantAccess = scope.ServiceProvider.GetRequiredService<GrantAccess>();
+            //var revokeAccess = scope.ServiceProvider.GetRequiredService<RevokeAccess>();
 
-            var getAccess = scope.ServiceProvider.GetRequiredService<GetAccess>();
-            var grantAccess = scope.ServiceProvider.GetRequiredService<GrantAccess>();
-            var revokeAccess = scope.ServiceProvider.GetRequiredService<RevokeAccess>();
+            if (_state.SelectedUser is null) return;
 
             try
             {
-                var currentCasesAccess = await getAccess.GetAccessToCase(_state.SelectedUser.Id);
-                var currentClientsAccess = await getAccess.GetAccessToClient(_state.SelectedUser.Id);
-                var currentPanelsAccess = await getAccess.GetAccessToPanel(_state.SelectedUser.Id);
+                using var scope = _serviceProvider.CreateScope();
+                var user = new AppActiveUserManager(_serviceProvider, _state.SelectedUser.Id);
 
-                _state.SelectedClients = currentClientsAccess.Select(x => x.ClientId);
-                _state.SelectedCases = currentCasesAccess.Select(x => x.CaseId);
+                await user.UpdateClaimsAndRoles();
+                await user.UpdatePermissions();
+                //await user.UpdateLicenses();
+
+                //var currentCasesAccess = await getAccess.GetAccessToCase(_state.SelectedUser.Id);
+                //var currentClientsAccess = await getAccess.GetAccessToClient(_state.SelectedUser.Id);
+
+                _state.SelectedClients = user.ClientsPermissions;
+                _state.SelectedCases = user.CasesPermissions;
 
                 //Update selected content in listboxes
                 var selectedClients = _state.SelectedClients.ToList();
@@ -320,6 +554,14 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.UserManager
                     _state.SelectedCases = selectedItems;
                 }
 
+                _state.IsStatisticsVisible = user.IsStatisticsVisible;
+                _state.IsClientJobsVisible = user.IsClientJobsVisible;
+                _state.IsClientContactsVisible = user.IsClientContactsVisible;
+                _state.IsFinanceVisible = user.IsFinanceVisible;
+                _state.IsProductivityVisible = user.IsProductivityVisible;
+                _state.IsArchiveVisible = user.IsArchiveVisible;
+                _state.CanArchive = user.CanArchive;
+                _state.CanDelete = user.CanDelete;
             }
             catch (Exception ex)
             {

@@ -174,8 +174,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
                 }
                 else
                 {
-                    var cases = getCases.GetCasesForClient(clientId).Where(x => x.Active).Select(x => (CaseViewModel)x).ToList();
-                    cases.RemoveAll(x => !caseAccess.Any(y => y.CaseId.Equals(x.Id)));
+                    var cases = getCases.GetCasesForClient(clientId, MainStore.GetState().AppActiveUserManager.CasesPermissions).Where(x => x.Active).Select(x => (CaseViewModel)x).ToList();
                     _state.Cases = cases;
                 }
 
@@ -692,9 +691,9 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
             _state.SelectedNote = null;
         }
 
-        public void RefreshSore()
+        public async Task RefreshSore()
         {
-            GetCases(MainStore.GetState().ActiveClient.Id);
+            await GetCases(MainStore.GetState().ActiveClient.Id);
         }
     }
 }

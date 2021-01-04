@@ -1,7 +1,7 @@
 ﻿@if (!MainStore.Loading)
 {
     @if (MainStore.GetState().AppActiveUserManager.ProfileName is not null ||
-        !MainStore.GetState().AppActiveUserManager.IsLegalLicenseActive)
+      !MainStore.GetState().AppActiveUserManager.IsLegalLicenseActive)
     {
         <div id="grid-container-2">
             <nav class="sidebar @(!showSidebar ? "" : "sidebar-add")">
@@ -29,7 +29,7 @@
                         </li>
                     }
 
-                    @if (true)
+                    @if (MainStore.GetState().AppActiveUserManager.IsRoot || MainStore.GetState().AppActiveUserManager.IsStatisticsVisible)
                     {
                         <li class="nav-item @(MainStore.GetState().ActivePanel == LegalAppPanels.MyApp ? "active" : "") " @onclick="@(() => MainStore.SetActivePanel(LegalAppPanels.MyApp))">
                             <a class="nav-link ">
@@ -50,25 +50,34 @@
                         </a>
                     </li>
 
-                    @if (MainStore.GetState().ActiveClient != null)
+                    @if (MainStore.GetState().ActiveClient is not null)
                     {
-                        <li class="nav-item @(MainStore.GetState().ActivePanel == LegalAppPanels.ClientDetails ? "active" : "")" @onclick="@(() => MainStore.SetActivePanel(LegalAppPanels.ClientDetails))">
-                            <a class="nav-link ">
-                                <i><img src="/Images/icons8-address-book-40.png" /></i><span class="@(showSidebar ? "link-text" : "text-hidden")">Lista Kontaktów</span>
-                            </a>
-                        </li>
-                        <li class="nav-item @(MainStore.GetState().ActivePanel == LegalAppPanels.ClientJobs ? "active" : "") " @onclick="@(() => MainStore.SetActivePanel(LegalAppPanels.ClientJobs))">
-                            <a class="nav-link ">
-                                <i><img src="/Images/icons8-to-do-36.png" /></i> <span class="@(showSidebar ? "link-text" : "text-hidden")">Lista Zadań</span>
-                            </a>
-                        </li>
+
+                        @if (MainStore.GetState().AppActiveUserManager.IsRoot || MainStore.GetState().AppActiveUserManager.IsClientContactsVisible)
+                        {
+                            <li class="nav-item @(MainStore.GetState().ActivePanel == LegalAppPanels.ClientDetails ? "active" : "")" @onclick="@(() => MainStore.SetActivePanel(LegalAppPanels.ClientDetails))">
+                                <a class="nav-link ">
+                                    <i><img src="/Images/icons8-address-book-40.png" /></i><span class="@(showSidebar ? "link-text" : "text-hidden")">Lista Kontaktów</span>
+                                </a>
+                            </li>
+                        }
+
+                        @if (MainStore.GetState().AppActiveUserManager.IsRoot || MainStore.GetState().AppActiveUserManager.IsClientJobsVisible)
+                        {
+                            <li class="nav-item @(MainStore.GetState().ActivePanel == LegalAppPanels.ClientJobs ? "active" : "") " @onclick="@(() => MainStore.SetActivePanel(LegalAppPanels.ClientJobs))">
+                                <a class="nav-link ">
+                                    <i><img src="/Images/icons8-to-do-36.png" /></i> <span class="@(showSidebar ? "link-text" : "text-hidden")">Lista Zadań</span>
+                                </a>
+                            </li>
+                        }
+
                         <li class="nav-item  @(MainStore.GetState().ActivePanel == LegalAppPanels.Cases ? "active" : "")" @onclick="@(() => MainStore.SetActivePanel(LegalAppPanels.Cases))">
                             <a class="nav-link ">
                                 <i><img src="/Images/icons8-documents-36.png" /></i><span class="@(showSidebar ? "link-text" : "text-hidden")">Sprawy</span>
                             </a>
                         </li>
 
-                        @if (true)
+                        @if (MainStore.GetState().AppActiveUserManager.IsRoot || MainStore.GetState().AppActiveUserManager.IsFinanceVisible)
                         {
                             <li class="nav-item @(MainStore.GetState().ActivePanel == LegalAppPanels.Finance ? "active" : "") " @onclick="@(() => MainStore.SetActivePanel(LegalAppPanels.Finance))">
                                 <a class="nav-link ">
@@ -77,7 +86,7 @@
                             </li>
                         }
 
-                        @if (true)
+                        @if (MainStore.GetState().AppActiveUserManager.IsRoot || MainStore.GetState().AppActiveUserManager.IsProductivityVisible)
                         {
                             <li class="nav-item @(MainStore.GetState().ActivePanel == LegalAppPanels.Productivity ? "active" : "")" @onclick="@(() => MainStore.SetActivePanel(LegalAppPanels.Productivity))">
                                 <a class="nav-link ">
@@ -87,11 +96,14 @@
                         }
                     }
 
-                    <li class="nav-item @(MainStore.GetState().ActivePanel == LegalAppPanels.Archive ? "active" : "")" @onclick="@(() => MainStore.SetActivePanel(LegalAppPanels.Archive))">
-                        <a class="nav-link ">
-                            <i><img src="/Images/icons8-filing-cabinet-36.png" /></i><span class="@(showSidebar ? "link-text" : "text-hidden")"> Archiwum</span>
-                        </a>
-                    </li>
+                    @if (MainStore.GetState().AppActiveUserManager.IsRoot || MainStore.GetState().AppActiveUserManager.IsArchiveVisible)
+                    {
+                        <li class="nav-item @(MainStore.GetState().ActivePanel == LegalAppPanels.Archive ? "active" : "")" @onclick="@(() => MainStore.SetActivePanel(LegalAppPanels.Archive))">
+                            <a class="nav-link ">
+                                <i><img src="/Images/icons8-filing-cabinet-36.png" /></i><span class="@(showSidebar ? "link-text" : "text-hidden")"> Archiwum</span>
+                            </a>
+                        </li>
+                    }
 
                 </ul>
             </nav>

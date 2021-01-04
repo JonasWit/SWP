@@ -43,6 +43,7 @@ namespace SWP.Domain.Infrastructure.LegalApp
         Client GetClient(int clientId);
         Client GetCleanClient(int clientId);
         List<Client> GetClientsWithoutCases(string profile, bool active = true);
+        List<Client> GetClientsWithoutCases(string profile, List<int> allowedIds, bool active = true);
         List<Client> GetClientsWithCleanCases(string profile, bool active = true);
         Task<Client> CreateClient(Client client);
         Task<Client> UpdateClient(Client client);
@@ -65,6 +66,7 @@ namespace SWP.Domain.Infrastructure.LegalApp
         #region Cases
 
         List<Case> GetCasesForClient(int clientId);
+        List<Case> GetCasesForClient(int clientId, List<int> allowedIds);
         Case GetCase(int id);
         List<Case> GetArchivedCases(int clientId);
         Case GetCaseWithoutData(int id);

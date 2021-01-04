@@ -35,7 +35,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
 
         private void UpdateView() => StateHasChanged();
 
-        private void RefreshView()
+        private async void RefreshView()
         {
             if (MainStore.GetState().ActiveClient == null)
             {
@@ -44,7 +44,7 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
             }
 
             Store.CleanUpStore();
-            Store.RefreshSore();
+            await Store.RefreshSore();
             StateHasChanged();
         }
 

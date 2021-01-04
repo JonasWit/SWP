@@ -22,7 +22,7 @@ namespace SWP.UI.Models
         public IdentityUser User { get; set; }
         public List<Claim> Claims { get; set; } = new List<Claim>();
         public List<string> Roles { get; set; } = new List<string>();
-        public List<IdentityUser> RelatedUsers { get; set; } = new List<IdentityUser>();
+        public List<RelatedUser> RelatedUsers { get; set; } = new List<RelatedUser>();
         public bool IsLocked => User.LockoutEnd != null;
 
         public List<LicenseViewModel> LicenseVms { get; set; } = new List<LicenseViewModel>();
@@ -31,7 +31,7 @@ namespace SWP.UI.Models
         public Claim ProfileClaim => Claims.FirstOrDefault(x => x.Type == ClaimType.Profile.ToString());
 
         public bool HasLegalLicense => LicenseVms.FirstOrDefault(x => x.Application == ApplicationType.LegalApplication) is not null ? true : false;
-        public bool IsLegalLicenseActive => LicenseVms.FirstOrDefault(x => x.Application == ApplicationType.LegalApplication) is not null ? 
+        public bool IsLegalLicenseActive => LicenseVms.FirstOrDefault(x => x.Application == ApplicationType.LegalApplication) is not null ?
             LicenseVms.FirstOrDefault(x => x.Application == ApplicationType.LegalApplication).ValidTo >= DateTime.Now ? true : false : false;
 
         public bool IsRoot => Claims.Any(x => x.Type == ClaimType.Status.ToString() && x.Value == UserStatus.RootClient.ToString());
@@ -43,12 +43,86 @@ namespace SWP.UI.Models
 
         public List<int> CasesPermissions { get; set; } = new List<int>();
         public List<int> ClientsPermissions { get; set; } = new List<int>();
-        public List<int> PanelsPermissions { get; set; } = new List<int>();
+
+        public bool IsStatisticsVisible => Claims.Any(x => x.Type == ApplicationType.LegalApplication.ToString() && x.Value == LegalAppPanels.MyApp.ToString());
+        public bool IsClientJobsVisible => Claims.Any(x => x.Type == ApplicationType.LegalApplication.ToString() && x.Value == LegalAppPanels.ClientJobs.ToString());
+        public bool IsClientContactsVisible => Claims.Any(x => x.Type == ApplicationType.LegalApplication.ToString() && x.Value == LegalAppPanels.ClientDetails.ToString());
+        public bool IsFinanceVisible => Claims.Any(x => x.Type == ApplicationType.LegalApplication.ToString() && x.Value == LegalAppPanels.Finance.ToString());
+        public bool IsProductivityVisible => Claims.Any(x => x.Type == ApplicationType.LegalApplication.ToString() && x.Value == LegalAppPanels.Productivity.ToString());
+        public bool IsArchiveVisible => Claims.Any(x => x.Type == ApplicationType.LegalApplication.ToString() && x.Value == LegalAppPanels.Archive.ToString());
+
+        public bool CanArchive => Claims.Any(x => x.Type == ApplicationType.LegalApplication.ToString() && x.Value == LegalAppActions.CanArchive.ToString());
+        public bool CanDelete => Claims.Any(x => x.Type == ApplicationType.LegalApplication.ToString() && x.Value == LegalAppActions.CanDelete.ToString());
+
+        public class RelatedUser
+        {
+            public string Id { get; set; }
+            public string UserName { get; set; }
+        }
+
 
         public AppActiveUserManager(IServiceProvider serviceProvider, string activeUserId)
         {
             _serviceProvider = serviceProvider;
             _activeUserId = activeUserId;
+        }
+
+        public async Task AddClaim(string type, string value)
+        {
+            using var scope = _serviceProvider.CreateScope();
+            var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+
+            var newClaim = new Claim(type, value);  
+            var result = await userManager.AddClaimAsync(User, newClaim);
+
+            if (result.Succeeded)
+            {
+                Claims.Add(newClaim);
+            }
+        }
+
+        public async Task AddClaim(string userId, string type, string value)
+        {
+            using var scope = _serviceProvider.CreateScope();
+            var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+            var user = await userManager.FindByIdAsync(userId);
+
+            var newClaim = new Claim(type, value);
+            var result = await userManager.AddClaimAsync(user, newClaim);
+
+            if (result.Succeeded)
+            {
+                Claims.Add(newClaim);
+            }
+        }
+
+        public async Task RemoveClaim(string type, string value)
+        {
+            using var scope = _serviceProvider.CreateScope();
+            var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+
+            var deletedClaim = Claims.FirstOrDefault(x => x.Type.Equals(type) && x.Value.Equals(value));
+            var result = await userManager.RemoveClaimAsync(User, deletedClaim);
+
+            if (result.Succeeded)
+            {
+                Claims.RemoveAll(x => x.Type.Equals(type) && x.Value.Equals(value));
+            }
+        }
+
+        public async Task RemoveClaim(string userId, string type, string value)
+        {
+            using var scope = _serviceProvider.CreateScope();
+            var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
+            var user = await userManager.FindByIdAsync(userId);
+
+            var deletedClaim = Claims.FirstOrDefault(x => x.Type.Equals(type) && x.Value.Equals(value));
+            var result = await userManager.RemoveClaimAsync(User, deletedClaim);
+
+            if (result.Succeeded)
+            {
+                Claims.RemoveAll(x => x.Type.Equals(type) && x.Value.Equals(value));
+            }
         }
 
         public async Task UpdatePermissions()
@@ -62,7 +136,6 @@ namespace SWP.UI.Models
             ClientsPermissions = clients.Select(x => x.ClientId).ToList();
             CasesPermissions = cases.Select(x => x.CaseId).ToList();
         }
-
 
         public async Task UpdateLicenses()
         {
@@ -98,8 +171,9 @@ namespace SWP.UI.Models
 
                 if (ProfileClaim is not null)
                 {
-                    RelatedUsers = await userManager.GetUsersForClaimAsync(ProfileClaim) as List<IdentityUser>;
-                    RelatedUsers.RemoveAll(x => x.Id == _activeUserId);
+                    var users = await userManager.GetUsersForClaimAsync(ProfileClaim) as List<IdentityUser>;
+                    users.RemoveAll(x => x.Id.Equals(_activeUserId));
+                    RelatedUsers = users.Select(x => new RelatedUser { Id = x.Id, UserName = x.UserName }).ToList();
                 }
             }
             catch (Exception ex)

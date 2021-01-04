@@ -22,6 +22,12 @@ namespace SWP.Domain.Enums
         Info = 11
     }
 
+    public enum LegalAppActions
+    {
+        CanArchive = 0,
+        CanDelete = 1
+    }
+
     public enum RequestReason
     {
         Query = 0,

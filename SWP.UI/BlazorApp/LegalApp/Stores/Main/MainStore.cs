@@ -86,7 +86,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
             }
             else
             {
-                var clients = getClients.GetClientsWithoutData(_state.AppActiveUserManager.ProfileName)?.Select(x => (ClientViewModel)x).ToList();
+                var clients = getClients.GetClientsWithoutData(_state.AppActiveUserManager.ProfileName, _state.AppActiveUserManager.ClientsPermissions)?.Select(x => (ClientViewModel)x).ToList();
                 clients.RemoveAll(x => !_state.AppActiveUserManager.ClientsPermissions.Any(y => y.Equals(x.Id)));
                 _state.Clients = clients;
             }
@@ -156,27 +156,11 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
 
         public void DismissErrorPage()
         {
-            _state.ActivePanel = LegalAppPanels.MyApp;
+            _state.ActivePanel = LegalAppPanels.Info;
             _state.ActiveClient = null;
             _state.SelectedClientString = null;
             ReloadClientsDrop();
             BroadcastStateChange();
-        }
-
-        public async Task RefreshRelatedUsers()
-        {
-            try
-            {
-                using var scope = _serviceProvider.CreateScope();
-                var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
-
-                _state.AppActiveUserManager.RelatedUsers = await userManager.GetUsersForClaimAsync(_state.AppActiveUserManager.ProfileClaim) as List<IdentityUser>;
-                BroadcastStateChange();
-            }
-            catch (Exception ex)
-            {
-                ShowErrorPage(ex);
-            }
         }
 
         public void UpdateClientsList(ClientViewModel input) => _state.Clients[_state.Clients.FindIndex(x => x.Id == input.Id)] = input;
@@ -188,7 +172,18 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
                 using var scope = _serviceProvider.CreateScope();
                 var getClients = scope.ServiceProvider.GetRequiredService<GetClients>();
 
-                _state.Clients = getClients.GetClientsWithoutData(_state.AppActiveUserManager.ProfileName, true).Select(x => (ClientViewModel)x).ToList();
+                //_state.Clients = getClients.GetClientsWithoutData(_state.AppActiveUserManager.ProfileName, true).Select(x => (ClientViewModel)x).ToList();
+                if (_state.AppActiveUserManager.IsRoot || _state.AppActiveUserManager.IsAdmin)
+                {
+                    _state.Clients = getClients.GetClientsWithoutData(_state.AppActiveUserManager.ProfileName)?.Select(x => (ClientViewModel)x).ToList();
+                }
+                else
+                {
+                    var clients = getClients.GetClientsWithoutData(_state.AppActiveUserManager.ProfileName, _state.AppActiveUserManager.ClientsPermissions)?.Select(x => (ClientViewModel)x).ToList();
+                    clients.RemoveAll(x => !_state.AppActiveUserManager.ClientsPermissions.Any(y => y.Equals(x.Id)));
+                    _state.Clients = clients;
+                }
+
                 _state.ActiveClient = null;
                 _state.SelectedClientString = null;
                 BroadcastStateChange();

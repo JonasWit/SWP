@@ -44,8 +44,8 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Finance
 
         public void Initialize()
         {
-            GetDataForMonthFilter();
             GetCashMovements(MainStore.GetState().ActiveClient.Id);
+            GetDataForMonthFilter();
         }
 
         protected override async void HandleActions(IAction action)
@@ -83,6 +83,9 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Finance
                 case SelectedMonthChangeFinanceAction.SelectedMonthChange:
                     var selectedMonthChangeAction = (SelectedMonthChangeFinanceAction)action;
                     SelectedMonthChange(selectedMonthChangeAction.Arg);
+                    break;
+                case RefreshDataForFinanceMonthFilter.RefreshDataForFinanceMonth:
+                    GetDataForMonthFilter();
                     break;
                 default:
                     break;
@@ -272,8 +275,8 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Finance
 
         public void RefreshSore()
         {
-            GetDataForMonthFilter();
             GetCashMovements(MainStore.GetState().ActiveClient.Id);
+            GetDataForMonthFilter();
         }
     }
 }

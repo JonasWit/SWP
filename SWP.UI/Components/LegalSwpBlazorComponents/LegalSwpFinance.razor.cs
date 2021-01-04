@@ -81,6 +81,8 @@ namespace SWP.UI.Components.LegalSwpBlazorComponents
 
         private void SelectedMonthChange(object arg) => ActionDispatcher.Dispatch(new SelectedMonthChangeFinanceAction { Arg = arg });
 
+        private void RefreshMonthFilter(object arg) => ActionDispatcher.Dispatch(new RefreshDataForFinanceMonthFilter());
+
         #endregion
     }
 }

@@ -24,15 +24,14 @@ namespace SWP.UI.Pages.Applications
         public class UserAccessModel
         {
             public string ActiveUserId { get; set; }
-            public AppActiveUserManager AppActiveUserManager { get; set; } 
+            public AppActiveUserManager AppActiveUserManager { get; set; }
             public LicenseViewModel LegalLicense => AppActiveUserManager.LicenseVms.FirstOrDefault(x => x.Application == ApplicationType.LegalApplication);
         }
 
         public IndexModel([FromServices] IHttpContextAccessor httpContextAccessor) =>
             AccessModel.ActiveUserId = httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-        public async Task<IActionResult> OnGet(
-            [FromServices] IServiceProvider serviceProvider)
+        public async Task<IActionResult> OnGet([FromServices] IServiceProvider serviceProvider)
         {
             AccessModel.AppActiveUserManager = new AppActiveUserManager(serviceProvider, AccessModel.ActiveUserId);
             await AccessModel.AppActiveUserManager.UpdateClaimsAndRoles();

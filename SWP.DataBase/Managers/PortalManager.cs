@@ -287,6 +287,8 @@ namespace SWP.DataBase.Managers
         public List<TResult> GetRequests<TResult>(Func<ClientRequest, TResult> selector, Func<ClientRequest, bool> predicate) => 
             _context.ClientRequests.Where(predicate).Select(selector).ToList();
 
+        public List<ClientRequest> GetRequests() => _context.ClientRequests.ToList();
+
         #endregion
     }
 }

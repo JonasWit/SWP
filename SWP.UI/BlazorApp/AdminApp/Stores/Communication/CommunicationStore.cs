@@ -6,6 +6,7 @@ using Radzen;
 using Radzen.Blazor;
 using SWP.Application.PortalCustomers.RequestsManagement;
 using SWP.Domain.Enums;
+using SWP.Domain.Models.Portal.Communication;
 using SWP.UI.BlazorApp.AdminApp.Stores.Application;
 using SWP.UI.BlazorApp.AdminApp.Stores.Communication.Actions;
 using SWP.UI.BlazorApp.AdminApp.Stores.StatusLog;
@@ -27,8 +28,13 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Communication
         public IEnumerable<int> UserTypes { get; set; }
         public IEnumerable<int> ApplicationTypes { get; set; }
 
+        public RequestViewModel SelectedRequest { get; set; }
         public List<RequestViewModel> Requests { get; set; } = new List<RequestViewModel>();
         public RadzenGrid<RequestViewModel> RequestsGrid { get; set; }
+
+        public RequestViewModel ActiveRequest { get; set; } = new RequestViewModel();
+        public RequestMessageViewModel ActiveRequestMessage { get; set; }
+        public CreateRequest.RequestMessage NewRequestMessage { get; set; } = new CreateRequest.RequestMessage();
     }
 
     public class Recipient
@@ -72,6 +78,10 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Communication
                 case ClearSelectionAction.ClearSelection:
                     ClearSelection();
                     break;
+                case AdminRequestSelectedChangeAction.AdminCommRequestSelectedChange:
+                    var adminRequestSelectedChangeAction = (AdminRequestSelectedChangeAction)action;
+                    ShowRequestDetails(adminRequestSelectedChangeAction.Arg);
+                    break;
                 default:
                     break;
             }
@@ -85,8 +95,24 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Communication
             using var scope = _serviceProvider.CreateScope();
             var getRequest = scope.ServiceProvider.GetRequiredService<GetRequest>();
 
-            //var list = getRequest.GetRequestsForClient(_state.ActiveUserId);
-            //_state.Requests = list.Select(x => (RequestViewModel)x).ToList().OrderByDescending(x => x.Updated).ToList();
+            _state.Requests = getRequest.GetRequests().Select(x => (RequestViewModel)x).ToList().OrderByDescending(x => x.Updated).ToList();
+        }
+
+        private void ShowRequestDetails(RequestViewModel arg)
+        {
+            _state.SelectedRequest = GetRequest(arg.Id);
+            BroadcastStateChange();
+        }
+
+        private ClientRequest GetRequest(int requestId)
+        {
+            using var scope = _serviceProvider.CreateScope();
+            var getRequest = scope.ServiceProvider.GetRequiredService<GetRequest>();
+
+            var result = getRequest.GetRequestWithMessages(requestId);
+            result.Messages = result.Messages.OrderByDescending(x => x.Created).ToList();
+
+            return result;
         }
 
         public async Task GetRecipients()

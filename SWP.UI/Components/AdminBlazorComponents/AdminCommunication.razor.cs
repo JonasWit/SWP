@@ -43,7 +43,7 @@ namespace SWP.UI.Components.AdminBlazorComponents
 
         private void ClearSelection() => ActionDispatcher.Dispatch(new ClearSelectionAction());
 
-        private void RequestSelected(RequestViewModel arg) { }
+        private void AdminRequestSelectedChange(RequestViewModel arg) => ActionDispatcher.Dispatch(new AdminRequestSelectedChangeAction { Arg = arg });
 
         #endregion
     }

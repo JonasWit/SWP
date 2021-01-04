@@ -37,11 +37,10 @@ namespace SWP.Domain.Infrastructure.Portal
         ClientRequest GetRequestWithMessages(int requestId);
         List<ClientRequest> GetRequestsForClient(string userId);
         List<TResult> GetRequests<TResult>(Func<ClientRequest, TResult> selector, Func<ClientRequest, bool> predicate);
+        List<ClientRequest> GetRequests();
         Task<int> CreateRequest(ClientRequest clientRequest);
         Task<int> CreateRequestMessage(ClientRequestMessage clientRequestMessage, int reuqestId);
         Task<int> DeleteRequest(int id);
         Task<int> DeleteRequest(string userId);
-
-
     }
 }

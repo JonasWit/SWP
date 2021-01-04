@@ -50,11 +50,6 @@ namespace SWP.UI.Components.PortalBlazorComponents.Requests
 
         public void SubmitNewRequest(CreateRequest.Request arg) => ActionDispatcher.Dispatch(new CreateNewRequestAction { Arg = arg });
 
-
-
-
-
-
         #endregion
     }
 }

@@ -30,7 +30,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Calendar
 
         public MainStore MainStore => _serviceProvider.GetRequiredService<MainStore>();
 
-        public CalendarStore(IServiceProvider serviceProvider, IActionDispatcher actionDispatcher, NotificationService notificationService, DialogService dialogService, GeneralViewModel generalViewModel) 
+        public CalendarStore(IServiceProvider serviceProvider, IActionDispatcher actionDispatcher, NotificationService notificationService, DialogService dialogService, GeneralViewModel generalViewModel)
             : base(serviceProvider, actionDispatcher, notificationService, dialogService)
         {
             _generalViewModel = generalViewModel;
@@ -58,16 +58,31 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Calendar
                 using var scope = _serviceProvider.CreateScope();
                 var getReminders = scope.ServiceProvider.GetRequiredService<GetReminders>();
 
-                if (MainStore.GetState().ActiveClient != null)
+                if (MainStore.GetState().AppActiveUserManager.IsRoot || MainStore.GetState().AppActiveUserManager.IsAdmin)
                 {
-                    _state.Reminders = getReminders.Get(MainStore.GetState().ActiveClient.Id).Select(x => (ReminderViewModel)x).ToList();
+                    if (MainStore.GetState().ActiveClient != null)
+                    {
+                        _state.Reminders = getReminders.Get(MainStore.GetState().ActiveClient.Id).Select(x => (ReminderViewModel)x).ToList();
+                    }
+                    else
+                    {
+                        _state.Reminders = getReminders.Get(MainStore.GetState().AppActiveUserManager.ProfileName).Select(x => (ReminderViewModel)x).ToList();
+                    }
                 }
                 else
                 {
-                    _state.Reminders = getReminders.Get(MainStore.GetState().AppActiveUserManager.ProfileName).Select(x => (ReminderViewModel)x).ToList();
+                    if (MainStore.GetState().ActiveClient != null)
+                    {
+                        _state.Reminders = getReminders.Get(MainStore.GetState().ActiveClient.Id, MainStore.GetState().AppActiveUserManager.CasesPermissions).Select(x => (ReminderViewModel)x).ToList();
+                    }
+                    else
+                    {
+                        _state.Reminders = getReminders.Get(MainStore.GetState().AppActiveUserManager.ProfileName, MainStore.GetState().AppActiveUserManager.CasesPermissions).Select(x => (ReminderViewModel)x).ToList();
+                    }
                 }
 
                 UpdateRemindersData();
+                BroadcastStateChange();
             }
             catch (Exception ex)
             {
@@ -92,8 +107,6 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Calendar
                     reminder.ParentClientName = getCase.GetCaseParentName(reminder.CaseId);
                 }
             }
-
-            BroadcastStateChange();
         }
 
         private async Task OnAppointmentSelect(SchedulerAppointmentSelectEventArgs<ReminderViewModel> args)
@@ -102,7 +115,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Calendar
             var getCase = scope.ServiceProvider.GetRequiredService<GetCase>();
 
             ReminderViewModel result = await _dialogService.OpenAsync<EditReminderPage>($"Client: " +
-                $"{getCase.GetCaseParentName(args.Data.CaseId)} Case: {getCase.GetCaseName(args.Data.CaseId)}", new Dictionary<string, object> { { "Reminder", args.Data } }, 
+                $"{getCase.GetCaseParentName(args.Data.CaseId)} Case: {getCase.GetCaseName(args.Data.CaseId)}", new Dictionary<string, object> { { "Reminder", args.Data } },
                 new DialogOptions() { Width = "450px", Height = "630px", Left = "calc(20%)", Top = "calc(25px)" });
 
             if (result != null)

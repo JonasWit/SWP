@@ -85,11 +85,16 @@ namespace SWP.Domain.Infrastructure.LegalApp
 
         Reminder GetReminder(int id);
         List<Reminder> GetReminders(string profile);
-        List<Reminder> GetUpcomingReminders(string profile);
+        List<Reminder> GetReminders(string profile, List<int> allowedCases);
+
         List<Reminder> GetRemindersForClient(int clientId);
+        List<Reminder> GetRemindersForClient(int clientId, List<int> allowedCases);
+
+        List<Reminder> GetUpcomingReminders(string profile, DateTime startDate);
+        List<Reminder> GetUpcomingReminders(string profile, DateTime startDate, List<int> allowedCases);
 
         List<Reminder> GetUpcomingReminders(int clientId, DateTime startDate);
-        List<Reminder> GetUpcomingReminders(string profile, DateTime startDate);
+        List<Reminder> GetUpcomingReminders(int clientId, DateTime startDate, List<int> allowedCases);
 
         Task<Reminder> CreateReminder(int caseId, Reminder reminder);
         Task<Reminder> UpdateReminder(Reminder reminder);

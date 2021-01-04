@@ -165,8 +165,6 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
             {
                 using var scope = _serviceProvider.CreateScope();
                 var getCases = scope.ServiceProvider.GetRequiredService<GetCases>();
-                var getAccess = scope.ServiceProvider.GetRequiredService<GetAccess>();
-                var caseAccess = await getAccess.GetAccessToCase(MainStore.GetState().AppActiveUserManager.UserId);
 
                 if (MainStore.GetState().AppActiveUserManager.IsRoot || MainStore.GetState().AppActiveUserManager.IsAdmin)
                 {

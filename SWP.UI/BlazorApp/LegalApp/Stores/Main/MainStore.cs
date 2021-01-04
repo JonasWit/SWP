@@ -99,20 +99,24 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
 
         private void ReleadRemindersCounter()
         {
-            if (_state.AppActiveUserManager.IsRoot)
+            try
             {
-                try
-                {
-                    using var scope = _serviceProvider.CreateScope();
-                    var getReminders = scope.ServiceProvider.GetRequiredService<GetReminders>();
+                using var scope = _serviceProvider.CreateScope();
+                var getReminders = scope.ServiceProvider.GetRequiredService<GetReminders>();
 
+                if (_state.AppActiveUserManager.IsRoot || _state.AppActiveUserManager.IsAdmin)
+                {
                     _state.UpcomingReminders = getReminders.GetUpcoming(_state.AppActiveUserManager.ProfileName, DateTime.Now.AddDays(2)).Count();
                 }
-                catch (Exception ex)
+                else
                 {
-                    ShowErrorPage(ex);
+                    _state.UpcomingReminders = getReminders.GetUpcoming(_state.AppActiveUserManager.ProfileName, DateTime.Now.AddDays(2), _state.AppActiveUserManager.CasesPermissions).Count();
                 }
-            }   
+            }
+            catch (Exception ex)
+            {
+                ShowErrorPage(ex);
+            }
         }
 
         public void SetActivePanel(LegalAppPanels panel) => _state.ActivePanel = panel;
@@ -172,7 +176,6 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Main
                 using var scope = _serviceProvider.CreateScope();
                 var getClients = scope.ServiceProvider.GetRequiredService<GetClients>();
 
-                //_state.Clients = getClients.GetClientsWithoutData(_state.AppActiveUserManager.ProfileName, true).Select(x => (ClientViewModel)x).ToList();
                 if (_state.AppActiveUserManager.IsRoot || _state.AppActiveUserManager.IsAdmin)
                 {
                     _state.Clients = getClients.GetClientsWithoutData(_state.AppActiveUserManager.ProfileName)?.Select(x => (ClientViewModel)x).ToList();

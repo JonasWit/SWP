@@ -170,6 +170,14 @@ namespace SWP.DataBase.Managers
                 .SelectMany(x => x.Cases.SelectMany(x => x.Reminders))
                 .ToList();
 
+        public List<Reminder> GetReminders(string profile, List<int> allowedCases) =>
+            _context.Clients
+                .Where(x => x.ProfileClaim == profile && x.Active)
+                .Include(x => x.Cases.Where(y => allowedCases.Contains(y.Id)))
+                    .ThenInclude(y => y.Reminders)
+                .SelectMany(x => x.Cases.Where(y => allowedCases.Contains(y.Id)).SelectMany(x => x.Reminders))
+                .ToList();
+
         public List<Reminder> GetUpcomingReminders(string profile) =>
             _context.Clients
                 .Where(x => x.ProfileClaim == profile && x.Active)
@@ -182,6 +190,14 @@ namespace SWP.DataBase.Managers
             _context.Clients
                 .Where(x => x.Id == clientId && x.Active)
                 .Include(x => x.Cases)
+                    .ThenInclude(y => y.Reminders)
+                .SelectMany(x => x.Cases.SelectMany(x => x.Reminders))
+                .ToList();
+
+        public List<Reminder> GetRemindersForClient(int clientId, List<int> allowedCases) =>
+            _context.Clients
+                .Where(x => x.Id == clientId && x.Active)
+                .Include(x => x.Cases.Where(y => allowedCases.Contains(y.Id)))
                     .ThenInclude(y => y.Reminders)
                 .SelectMany(x => x.Cases.SelectMany(x => x.Reminders))
                 .ToList();
@@ -231,6 +247,24 @@ namespace SWP.DataBase.Managers
                 .Include(x => x.Cases)
                     .ThenInclude(y => y.Reminders)
                 .SelectMany(x => x.Cases.SelectMany(x => x.Reminders))
+                .Where(x => x.Start <= startDate && x.Start >= DateTime.Now)
+                .ToList();
+
+        public List<Reminder> GetUpcomingReminders(int clientId, DateTime startDate, List<int> allowedCases) =>
+            _context.Clients
+                .Where(x => x.Id == clientId)
+                .Include(x => x.Cases.Where(y => allowedCases.Contains(y.Id)))
+                    .ThenInclude(y => y.Reminders)
+                .SelectMany(x => x.Cases.Where(y => allowedCases.Contains(y.Id)).SelectMany(x => x.Reminders))
+                .Where(x => x.Start <= startDate && x.Start >= DateTime.Now)
+                .ToList();
+
+        public List<Reminder> GetUpcomingReminders(string profile, DateTime startDate, List<int> allowedCases) =>
+            _context.Clients
+                .Where(x => x.ProfileClaim == profile)
+                .Include(x => x.Cases.Where(y => allowedCases.Contains(y.Id)))
+                    .ThenInclude(y => y.Reminders)
+                .SelectMany(x => x.Cases.Where(y => allowedCases.Contains(y.Id)).SelectMany(x => x.Reminders))
                 .Where(x => x.Start <= startDate && x.Start >= DateTime.Now)
                 .ToList();
 

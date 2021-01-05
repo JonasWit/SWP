@@ -11,6 +11,7 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Enums
         Error = 1,
         Communication = 2,
         Log = 3,
-        Portal = 4
+        Portal = 4,
+        Requests = 5
     }
 }

@@ -83,7 +83,7 @@ namespace SWP.UI.BlazorApp.PortalApp.Stores.Requests
                     Message = request.Message
                 }, _state.ActiveRequest.Id);
 
-                MainStore.RefreshSore();
+                await MainStore.RefreshSore();
             }
             catch (Exception ex)
             {

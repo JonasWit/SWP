@@ -148,7 +148,6 @@ namespace SWP.UI.Components.PortalBlazorComponents.Requests.ViewModels
 
         public static implicit operator RequestViewModel(ClientRequest input)
         {
-            var test = Enum.GetValues(typeof(RequestReason)).Cast<RequestReason>().ToList();
             var result = new RequestViewModel
             {
                 Id = input.Id,
@@ -163,9 +162,22 @@ namespace SWP.UI.Components.PortalBlazorComponents.Requests.ViewModels
                 StartDate = input.StartDate,
                 EndDate = input.EndDate,
                 RelatedUsers = input.RelatedUsers,
-                Messages = input.Messages == null ? new List<RequestMessageViewModel>() : input.Messages.Select(x => (RequestMessageViewModel)x).ToList(),
+                Messages = input.Messages == null ? new List<RequestMessageViewModel>() : input.Messages.Select(x => (RequestMessageViewModel)x).ToList().OrderByDescending(x => x.Updated).ToList(),
                 DisplaySubject = RequestReasonsDisplay()[input.Reason],
                 DisplayStatus = RequestStatusesDisplay()[input.Status],
+            };
+
+            return result;
+        }
+
+        public static implicit operator ClientRequest(RequestViewModel input)
+        {
+            var result = new ClientRequest
+            {
+                Id = input.Id,
+                Updated = input.Updated,
+                UpdatedBy = input.UpdatedBy,
+                Status = (int)input.Status,
             };
 
             return result;

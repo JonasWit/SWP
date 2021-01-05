@@ -78,42 +78,12 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Communication
                 case ClearSelectionAction.ClearSelection:
                     ClearSelection();
                     break;
-                case AdminRequestSelectedChangeAction.AdminCommRequestSelectedChange:
-                    var adminRequestSelectedChangeAction = (AdminRequestSelectedChangeAction)action;
-                    ShowRequestDetails(adminRequestSelectedChangeAction.Arg);
-                    break;
                 default:
                     break;
             }
         }
 
         #region Communication
-
-        public void GetRequests()
-        {
-            //todo: zaciaganie requestow
-            using var scope = _serviceProvider.CreateScope();
-            var getRequest = scope.ServiceProvider.GetRequiredService<GetRequest>();
-
-            _state.Requests = getRequest.GetRequests().Select(x => (RequestViewModel)x).ToList().OrderByDescending(x => x.Updated).ToList();
-        }
-
-        private void ShowRequestDetails(RequestViewModel arg)
-        {
-            _state.SelectedRequest = GetRequest(arg.Id);
-            BroadcastStateChange();
-        }
-
-        private ClientRequest GetRequest(int requestId)
-        {
-            using var scope = _serviceProvider.CreateScope();
-            var getRequest = scope.ServiceProvider.GetRequiredService<GetRequest>();
-
-            var result = getRequest.GetRequestWithMessages(requestId);
-            result.Messages = result.Messages.OrderByDescending(x => x.Created).ToList();
-
-            return result;
-        }
 
         public async Task GetRecipients()
         {

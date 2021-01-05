@@ -289,6 +289,18 @@ namespace SWP.DataBase.Managers
 
         public List<ClientRequest> GetRequests() => _context.ClientRequests.ToList();
 
+        public Task<int> UpdateRequest(ClientRequest request)
+        {
+            var entity = _context.ClientRequests.FirstOrDefault(x => x.Id.Equals(request.Id));
+
+            entity.UpdatedBy = request.UpdatedBy;
+            entity.Updated = request.Updated;
+            entity.Status = request.Status;
+
+            _context.ClientRequests.Update(entity);
+            return _context.SaveChangesAsync();
+        }
+
         #endregion
     }
 }

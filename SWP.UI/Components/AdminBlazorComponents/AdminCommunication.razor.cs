@@ -24,7 +24,6 @@ namespace SWP.UI.Components.AdminBlazorComponents
         private async void UpdateView()
         {
             await Store.GetRecipients();
-            Store.GetRequests();
             StateHasChanged();
         }
 
@@ -32,7 +31,6 @@ namespace SWP.UI.Components.AdminBlazorComponents
         {
             Store.AddStateChangeListener(UpdateView);
             await Store.GetRecipients();
-            Store.GetRequests();
         }
 
         #region Actions
@@ -42,8 +40,6 @@ namespace SWP.UI.Components.AdminBlazorComponents
         private void FilterRecipients() => ActionDispatcher.Dispatch(new FilterAction());
 
         private void ClearSelection() => ActionDispatcher.Dispatch(new ClearSelectionAction());
-
-        private void AdminRequestSelectedChange(RequestViewModel arg) => ActionDispatcher.Dispatch(new AdminRequestSelectedChangeAction { Arg = arg });
 
         #endregion
     }

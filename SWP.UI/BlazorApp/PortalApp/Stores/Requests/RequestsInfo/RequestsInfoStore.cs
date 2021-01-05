@@ -37,18 +37,18 @@ namespace SWP.UI.BlazorApp.PortalApp.Stores.Requests.RequestsInfo
 
         }
 
-        protected override void HandleActions(IAction action)
+        protected override async void HandleActions(IAction action)
         {
             switch (action.Name)
             {
                 case InfoCreateRequestAction.InfoCreateRequest:
-                    ShowCreateRequestPanel();
+                    await ShowCreateRequestPanel();
                     break;
                 default:
                     break;
             }
         }
 
-        private void ShowCreateRequestPanel() => MainStore.SetActiveComponent(RequestsMainPanelState.InnerComponents.Create);
+        private async Task ShowCreateRequestPanel() => await MainStore.SetActiveComponent(RequestsMainPanelState.InnerComponents.Create);
     }
 }

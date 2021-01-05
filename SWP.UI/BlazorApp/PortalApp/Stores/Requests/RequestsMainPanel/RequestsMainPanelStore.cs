@@ -74,7 +74,7 @@ namespace SWP.UI.BlazorApp.PortalApp.Stores.Requests.RequestsPanel
             _navigationManager.NavigateTo($@"{_navigationManager.BaseUri}Error", true);
         }
 
-        protected override void HandleActions(IAction action)
+        protected override async void HandleActions(IAction action)
         {
             switch (action.Name)
             {
@@ -82,10 +82,10 @@ namespace SWP.UI.BlazorApp.PortalApp.Stores.Requests.RequestsPanel
                     GetRequests();
                     break;
                 case ActivateNewRequestPanelAction.ActivateNewRequestPanel:
-                    SetActiveComponent(RequestsMainPanelState.InnerComponents.Create);
+                    await SetActiveComponent(RequestsMainPanelState.InnerComponents.Create);
                     break;
                 case ActivateRequestInfoPanelAction.ActivateRequestInfoPanel:
-                    SetActiveComponent(RequestsMainPanelState.InnerComponents.Info);
+                    await SetActiveComponent(RequestsMainPanelState.InnerComponents.Info);
                     break;
                 case RequestSelectedAction.RequestSelected:
                     var requestSelectedAction = (RequestSelectedAction)action;
@@ -112,16 +112,16 @@ namespace SWP.UI.BlazorApp.PortalApp.Stores.Requests.RequestsPanel
             BroadcastStateChange();
         }
 
-        public void SetActiveComponent(RequestsMainPanelState.InnerComponents component)
+        public Task SetActiveComponent(RequestsMainPanelState.InnerComponents component)
         {
             _state.CurrentComponent = component;
-            RefreshSore();
-            BroadcastStateChange();
+            return RefreshSore();
         }
 
-        public void RefreshSore()
+        public async Task RefreshSore()
         {
             GetRequests();
+            await _state.RequestsGrid.Reload();
             BroadcastStateChange();
         }
     }

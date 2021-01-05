@@ -17,7 +17,6 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Application
     {
         public NotificationService NotificationService { get; set; }
         public bool Loading { get; set; } = false;
-        public string ActiveUserId { get; set; }
         public string LoadingMessage { get; set; }
         public AppActiveUserManager AppActiveUserManager { get; set; } 
         public AdminAppPanels ActivePanel { get; set; } = AdminAppPanels.Users;
@@ -57,7 +56,7 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Application
 
         public void ShowErrorPage(Exception ex)
         {
-            _errorStore.SetException(ex, _state.ActiveUserId, _state.AppActiveUserManager.UserName);
+            _errorStore.SetException(ex, _state.AppActiveUserManager.UserId, _state.AppActiveUserManager.UserName);
             _state.ActivePanel = AdminAppPanels.Error;
             BroadcastStateChange();
         }

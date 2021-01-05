@@ -17,6 +17,9 @@
             <a class="navbar-item @(ApplicationStore.GetState().ActivePanel == AdminAppPanels.Communication ? "is-active" : "")" @onclick="@(() => ApplicationStore.SetActivePanel(AdminAppPanels.Communication))">
                 Communication
             </a>
+            <a class="navbar-item @(ApplicationStore.GetState().ActivePanel == AdminAppPanels.Requests ? "is-active" : "")" @onclick="@(() => ApplicationStore.SetActivePanel(AdminAppPanels.Requests))">
+                Requests
+            </a>
             <a class="navbar-item @(ApplicationStore.GetState().ActivePanel == AdminAppPanels.Log ? "is-active" : "")" @onclick="@(() => ApplicationStore.SetActivePanel(AdminAppPanels.Log))">
                 Log
             </a>
@@ -48,6 +51,9 @@
                 break;
             case AdminAppPanels.Portal:
                 <AdminPortal />
+                break;
+            case AdminAppPanels.Requests:
+                <AdminRequests />
                 break;
             default:
                 break;

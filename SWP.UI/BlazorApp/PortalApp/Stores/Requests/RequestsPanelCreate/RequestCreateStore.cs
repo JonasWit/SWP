@@ -110,13 +110,12 @@ namespace SWP.UI.BlazorApp.PortalApp.Stores.Requests.RequestsPanelCreate
                         AuthorId = MainStore.GetState().ActiveUserName, 
                         Message = request.RequestMessage.Message 
                     },
-                    RequestorId = MainStore.GetState().ActiveUserName,
+                    RequestorId = MainStore.GetState().ActiveUserId,
                     StartDate = request.StartDate,
                     Status = (int)RequestStatus.WaitingForAnswer,
                 });
 
-                MainStore.RefreshSore();
-                MainStore.SetActiveComponent(RequestsMainPanelState.InnerComponents.Info);
+                await MainStore.SetActiveComponent(RequestsMainPanelState.InnerComponents.Info);
             }
             catch (Exception ex)
             {

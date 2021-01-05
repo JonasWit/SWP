@@ -1,0 +1,143 @@
+﻿@if (Store.Loading)
+{
+    <LoaderComponent Message="@Store.LoadingMessage"></LoaderComponent>
+}
+else
+{
+    <RadzenCard>
+        <div class="columns is-0 is-centered">
+            <h2>Internal Communication</h2>
+        </div>
+        <div class="columns is-0 is-centered mb-6">
+            <RadzenGrid @ref="Store.GetState().RequestsGrid" AllowFiltering="true" AllowPaging="true" PageSize="20" AllowSorting="true" RowSelect="@(args => AdminRequestSelectedChange(args))"
+                        Data="@Store.GetState().Requests" TItem="RequestViewModel">
+                <Columns>
+                    <RadzenGridColumn TItem="RequestViewModel" Property="Created" Title="Utworzono">
+                        <Template Context="record">
+                            @record.Created.ToString("yyyy/MM/dd HH:mm:ss")
+                        </Template>
+                    </RadzenGridColumn>
+                    <RadzenGridColumn TItem="RequestViewModel" Property="Updated" Title="Ostatnia zmiana">
+                        <Template Context="record">
+                            @record.Updated.ToString("yyyy/MM/dd HH:mm:ss")
+                        </Template>
+                    </RadzenGridColumn>
+                    <RadzenGridColumn TItem="RequestViewModel" Property="UpdatedBy" Title="Zmienione przez">
+                    </RadzenGridColumn>
+                    <RadzenGridColumn TItem="RequestViewModel" Property="Reason" Title="Temat">
+                    </RadzenGridColumn>
+                    <RadzenGridColumn TItem="RequestViewModel" Property="Status" Title="Status">
+                    </RadzenGridColumn>
+                    <RadzenGridColumn TItem="RequestViewModel" Property="Application" Title="Aplikacja">
+                    </RadzenGridColumn>
+                </Columns>
+            </RadzenGrid>
+        </div>
+
+        @if (Store.GetState().SelectedRequest is not null)
+        {
+            <div class="columns is-vcentered is-centered mb-6">
+                <div class="column">
+                    <div class="columns is-0 is-centered">
+                        <h2>Created By:</h2>
+                    </div>
+                    <div class="columns is-0 is-centered">
+                        <p>@Store.GetState().SelectedRequest.CreatedBy</p>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="columns is-0 is-centered">
+                        <h2>Last Update:</h2>
+                    </div>
+                    <div class="columns is-0 is-centered">
+                        <p>@Store.GetState().SelectedRequest.Updated</p>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="columns is-0 is-centered">
+                        <h2>Last Update By:</h2>
+                    </div>
+                    <div class="columns is-0 is-centered">
+                        <p>@Store.GetState().SelectedRequest.UpdatedBy</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="columns is-vcentered is-centered mb-6">
+                <div class="column">
+                    <div class="columns is-0 is-centered">
+                        <h2>Status:</h2>
+                    </div>
+                    <div class="columns is-0 is-centered mb-4">
+                        <RadzenDropDown AllowClear="true" TValue="int" @bind-Value="@Store.GetState().SelectedRequestStatus" Data=@Store.GetState().RequestStatuses TextProperty="Status" ValueProperty="Id" />
+                        <RadzenButton Click="AdminUpdateRequestStatus">Update</RadzenButton>
+                    </div>
+                </div>
+            </div>
+
+            @if (Store.GetState().SelectedRequest.Messages.Count != 0)
+            {
+                <div class="rows mb-4">
+                    <div class="row is-full">
+                        <div class="columns is-vcentered is-centered">
+                            <div class="column">
+                                <div class="columns is-4 is-centered">
+                                    <h2>Messages:</h2>
+                                </div>
+                            </div>
+                            <div class="column">
+                                <div class="columns is-8 is-centered">
+                                    <h2>Details:</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="rows mb-6">
+                    <div class="row is-full">
+                        <div class="columns is-vcentered is-centered">
+                            <div class="column">
+                                <div class="columns is-4 is-centered">
+                                    <RadzenListBox TValue="int" Data=@Store.GetState().SelectedRequest.Messages TextProperty="Message" ValueProperty="Id" Style="height:300px" Change=@(args => AdminRequestMessageSelectedChange(args))>
+                                        <Template>
+                                            @($"Date: {(context as RequestMessageViewModel).Updated} Author: {(context as RequestMessageViewModel).UpdatedBy}")
+                                        </Template>
+                                    </RadzenListBox>
+                                </div>
+                            </div>
+                            <div class="column">
+                                <div class="columns is-8 is-centered">
+                                    @if (Store.GetState().SelectedRequestMessage is not null)
+                                    {
+                                        <p>@Store.GetState().SelectedRequestMessage.Message</p>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+
+            <div class="columns is-0 is-centered">
+                <h2>Response:</h2>
+            </div>
+            <div class="columns is-0 is-centered mb-6">
+                <RadzenTemplateForm Data="@Store.GetState().NewRequestMessage" Submit="@((CreateRequest.RequestMessage args) => AdminSubmitNewRequestResponse(args))">
+                    <RadzenFieldset Text="New Message">
+                        <div class="columns is-12 is-centered">
+                            <RadzenLabel Text="Message" />
+                        </div>
+                        <div class="mb-2">
+                            <RadzenTextArea Placeholder="Wiadomość..." @bind-Value="Store.GetState().NewRequestMessage.Message" Name="RequestMessage" Style="width: 400px; height: 250px;" />
+                            <RadzenLengthValidator Max="1000" Text="Maksymalnie 1000 znaków!" Component="RequestMessage" />
+                            <RadzenRequiredValidator Component="RequestMessage" Text="Proszę krótko opisać problem / pytanie." Popup="true" />
+                        </div>
+                        <div class="columns is-12 is-centered">
+                            <RadzenButton ButtonType="ButtonType.Submit" Text="Send" ButtonStyle="ButtonStyle.Primary" />
+                        </div>
+                    </RadzenFieldset>
+                </RadzenTemplateForm>
+            </div>
+        }
+    </RadzenCard>
+}

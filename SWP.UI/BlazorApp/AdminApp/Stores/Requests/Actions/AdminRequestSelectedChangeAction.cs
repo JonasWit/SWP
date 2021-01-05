@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SWP.UI.BlazorApp.AdminApp.Stores.Communication.Actions
+namespace SWP.UI.BlazorApp.AdminApp.Stores.Requests.Actions
 {
     public class AdminRequestSelectedChangeAction : IAction
     {

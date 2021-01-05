@@ -84,13 +84,14 @@
                             <RadzenNumericRangeValidator Component="RelatedUsers" Min="@license.RelatedUsers" Text="Można tylko dodawać użytkowników powiązanych" Popup="false" Style="position: absolute" />
                         }
 
-                        <div class="text pb-4 pt-2">
-                            <div class="label pb-2">
-                                <RadzenLabel Text="Wiadomość" />
-                            </div>
-                            <RadzenTextArea Placeholder="Wiadomość..." @bind-Value="Store.GetState().NewRequest.RequestMessage.Message" Name="RequestMessage" Style="width: 400px; height: 250px;"/>
-                            <RadzenRequiredValidator Component="RequestMessage" Text="Proszę krótko opisać problem / pytanie." Popup="true" />
+                    <div class="text pb-4 pt-2">
+                        <div class="label pb-2">
+                            <RadzenLabel Text="Wiadomość" />
                         </div>
+                        <RadzenTextArea Placeholder="Wiadomość..." @bind-Value="Store.GetState().NewRequest.RequestMessage.Message" Name="RequestMessage" Style="width: 400px; height: 250px;" />
+                        <RadzenRequiredValidator Component="RequestMessage" Text="Proszę krótko opisać problem / pytanie." Popup="true" />
+                        <RadzenLengthValidator Max="1000" Text="Maksymalnie 1000 znaków!" Component="RequestMessage" />
+                    </div>
                         <RadzenButton ButtonType="ButtonType.Submit" Text="Wyślij" ButtonStyle="ButtonStyle.Secondary" />
                     </RadzenFieldset>
                 </RadzenTemplateForm>

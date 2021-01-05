@@ -42,5 +42,6 @@ namespace SWP.Domain.Infrastructure.Portal
         Task<int> CreateRequestMessage(ClientRequestMessage clientRequestMessage, int reuqestId);
         Task<int> DeleteRequest(int id);
         Task<int> DeleteRequest(string userId);
+        Task<int> UpdateRequest(ClientRequest request);
     }
 }

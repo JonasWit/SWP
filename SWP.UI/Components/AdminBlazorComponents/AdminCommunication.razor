@@ -1,49 +1,6 @@
 ﻿<div class="section">
     <RadzenCard>
         <div class="columns is-0 is-centered">
-            <h2>Internal Communication</h2>
-        </div>
-        <div class="columns is-0 is-centered">
-            <RadzenGrid @ref="Store.GetState().RequestsGrid" AllowFiltering="true" AllowPaging="true" PageSize="20" AllowSorting="true" RowSelect="@(args => AdminRequestSelectedChange(args))"
-                        Data="@Store.GetState().Requests" TItem="RequestViewModel">
-                <Columns>
-                    <RadzenGridColumn TItem="RequestViewModel" Property="Created" Title="Utworzono">
-                        <Template Context="record">
-                            @record.Created.ToString("yyyy.MM.dd HH:mm:ss")
-                        </Template>
-                    </RadzenGridColumn>
-                    <RadzenGridColumn TItem="RequestViewModel" Property="Updated" Title="Ostatnia zmiana">
-                        <Template Context="record">
-                            @record.Updated.ToString("yyyy.MM.dd HH:mm:ss")
-                        </Template>
-                    </RadzenGridColumn>
-                    <RadzenGridColumn TItem="RequestViewModel" Property="UpdatedBy" Title="Zmienione przez">
-                    </RadzenGridColumn>
-                    <RadzenGridColumn TItem="RequestViewModel" Property="DisplaySubject" Title="Temat">
-                    </RadzenGridColumn>
-                    <RadzenGridColumn TItem="RequestViewModel" Property="DisplayStatus" Title="Status">
-                    </RadzenGridColumn>
-                    <RadzenGridColumn TItem="RequestViewModel" Property="DisplayApplication" Title="Aplikacja">
-                    </RadzenGridColumn>
-                </Columns>
-            </RadzenGrid>
-        </div>
-
-        @if (Store.GetState().SelectedRequest is not null)
-        {
-            <div class="columns is-0 is-centered">
-                <h2>Internal Communication</h2>
-            </div>
-        
-
-
-        }
-    </RadzenCard>
-</div>
-
-<div class="section">
-    <RadzenCard>
-        <div class="columns is-0 is-centered">
             <h2>Recipients</h2>
         </div>
 

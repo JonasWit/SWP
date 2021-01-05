@@ -4,8 +4,6 @@ using System.Text;
 
 namespace SWP.Domain.Enums
 {
-    #region Requests
-
     public enum LegalAppPanels
     {
         Clients = 0,
@@ -44,8 +42,6 @@ namespace SWP.Domain.Enums
         Answered = 1,
         Solved = 2
     }
-
-    #endregion
 
     public enum ApplicationType
     {

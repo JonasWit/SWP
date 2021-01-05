@@ -124,12 +124,9 @@ else
             <div class="columns is-0 is-centered mb-6">
                 <RadzenTemplateForm Data="@Store.GetState().NewRequestMessage" Submit="@((CreateRequest.RequestMessage args) => AdminSubmitNewRequestResponse(args))">
                     <RadzenFieldset Text="New Message">
-                        <div class="columns is-12 is-centered">
-                            <RadzenLabel Text="Message" />
-                        </div>
                         <div class="mb-2">
-                            <RadzenTextArea Placeholder="Wiadomość..." @bind-Value="Store.GetState().NewRequestMessage.Message" Name="RequestMessage" Style="width: 400px; height: 250px;" />
-                            <RadzenLengthValidator Max="1000" Text="Maksymalnie 1000 znaków!" Component="RequestMessage" />
+                            <RadzenTextArea Placeholder="Message..." @bind-Value="Store.GetState().NewRequestMessage.Message" Name="RequestMessage" Style="width: 400px; height: 250px;" />
+                            <RadzenLengthValidator Max="1000" Text="Max 1000 chars!" Component="RequestMessage" />
                             <RadzenRequiredValidator Component="RequestMessage" Text="Proszę krótko opisać problem / pytanie." Popup="true" />
                         </div>
                         <div class="columns is-12 is-centered">

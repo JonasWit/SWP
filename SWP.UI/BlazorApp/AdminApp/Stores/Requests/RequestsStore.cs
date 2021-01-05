@@ -105,6 +105,7 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Communication
                 }, _state.SelectedRequest.Id);
 
                 _state.SelectedRequest = GetRequest(_state.SelectedRequest.Id);
+                ShowNotification(NotificationSeverity.Success, "Done!", $"New Message Added!", 5000);
                 BroadcastStateChange();
             }
             catch (Exception ex)
@@ -130,7 +131,8 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Communication
 
                 _state.SelectedRequest = GetRequest(request.Id);
                 _state.SelectedRequestStatus = (int)_state.SelectedRequest.Status;
-     
+
+                ShowNotification(NotificationSeverity.Success, "Done!", $"Status changed to {_state.SelectedRequest.Status}!", 5000);
                 BroadcastStateChange();
             }
             catch (Exception ex)

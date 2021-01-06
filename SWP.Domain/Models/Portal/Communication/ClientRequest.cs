@@ -16,6 +16,7 @@ namespace SWP.Domain.Models.Portal.Communication
         public int Status { get; set; }
         public int LicenseMonths { get; set; }
         public int RelatedUsers { get; set; }
+        public bool AutoRenewal { get; set; }
 
         public List<ClientRequestMessage> Messages { get; set; }
     }

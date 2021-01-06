@@ -40,8 +40,6 @@ namespace SWP.UI.Components.PortalBlazorComponents.Requests
             Store.AddStateChangeListener(UpdateView);
         }
 
-        CompareOperator compareOperator = CompareOperator.GreaterThanEqual;
-
         #region Actions
 
         public void SelectedRequestSubjectChange(int? arg) => ActionDispatcher.Dispatch(new SelectedRequestReasonChangeAction { Arg = arg });

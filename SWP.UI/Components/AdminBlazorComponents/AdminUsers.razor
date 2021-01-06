@@ -241,6 +241,7 @@
                 <RadzenGrid @ref="Store.GetState().LicensesGrid" AllowFiltering="true" AllowPaging="true" PageSize="10" AllowSorting="true"
                             Data="@Store.GetState().SelectedUser.Licenses" TItem="UserLicense" RowUpdate="@OnUpdateLicenseRow">
                     <Columns>
+
                         <RadzenGridColumn TItem="UserLicense" Property="Application" Title="Application">
                             <Template Context="license">
                                 <span>@license.Application</span>
@@ -254,6 +255,7 @@
                                 </div>
                             </EditTemplate>
                         </RadzenGridColumn>
+
                         <RadzenGridColumn TItem="UserLicense" Property="Type" Title="Type">
                             <Template Context="license">
                                 <span>@license.Type</span>
@@ -267,6 +269,7 @@
                                 </div>
                             </EditTemplate>
                         </RadzenGridColumn>
+
                         <RadzenGridColumn TItem="UserLicense" Property="RelatedUsers" Title="Related Users">
                             <Template Context="license">
                                 <span>@license.RelatedUsers</span>
@@ -275,6 +278,13 @@
                                 <RadzenNumeric TValue="int" @bind-Value="license.RelatedUsers" Name="RelatedUsers" Placeholder="0" />
                             </EditTemplate>
                         </RadzenGridColumn>
+
+                        <RadzenGridColumn TItem="UserLicense" Property="AutoRenewal" Title="Auto Renewal">
+                            <EditTemplate Context="license">
+                                <RadzenCheckBox @bind-Value="@license.AutoRenewal" TValue="bool" />
+                            </EditTemplate>
+                        </RadzenGridColumn>
+
                         <RadzenGridColumn TItem="UserLicense" Property="ValidTo" Title="Valid To">
                             <Template Context="license">
                                 <span>@license.ValidTo.ToShortDateString()</span>
@@ -300,6 +310,7 @@
                                 </RadzenButton>
                             </EditTemplate>
                         </RadzenGridColumn>
+
                         <RadzenGridColumn TItem="UserLicense" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="75px">
                             <Template Context="license">
                                 <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@((args) => DeleteLicenseRow(license))">
@@ -309,6 +320,7 @@
                             <EditTemplate Context="job">
                             </EditTemplate>
                         </RadzenGridColumn>
+
                     </Columns>
                 </RadzenGrid>
             </RadzenCard>

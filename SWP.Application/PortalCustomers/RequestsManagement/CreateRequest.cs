@@ -26,6 +26,7 @@ namespace SWP.Application.PortalCustomers.RequestsManagement
                 LicenseMonths = request.LicenseMonths,
                 RelatedUsers = request.RelatedUsers,
                 Status = request.Status,
+                AutoRenewal = request.AutoRenewal
             };
 
             changes += await _portalManager.CreateRequest(newRequestEntity);
@@ -65,6 +66,7 @@ namespace SWP.Application.PortalCustomers.RequestsManagement
             public int Status { get; set; }
             public int LicenseMonths { get; set; }
             public int RelatedUsers { get; set; }
+            public bool AutoRenewal { get; set; }
 
             public DateTime Created { get; set; }
             public string CreatedBy { get; set; }

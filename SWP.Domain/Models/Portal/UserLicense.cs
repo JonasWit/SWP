@@ -15,6 +15,7 @@ namespace SWP.Domain.Models.Portal
         public string Application { get; set; }
         [MaxLength(100)]
         public string Type { get; set; }
+        public bool AutoRenewal { get; set; }
         public int RelatedUsers { get; set; }
         public DateTime ValidTo { get; set; }
     }

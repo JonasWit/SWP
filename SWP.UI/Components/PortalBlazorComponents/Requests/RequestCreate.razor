@@ -47,16 +47,29 @@
                         <h2>Aplikacja: @($"{RequestViewModel.ApplicationssDisplay()[Store.GetState().StepsConfig.ChosenApplication]}")</h2>
                         <h2>Temat : @($"{RequestViewModel.RequestReasonsDisplay()[Store.GetState().StepsConfig.ChosenRequestReason]}")</h2>
 
-                        @if (!Store.GetState().UserLicenses.Any(x => x.Application == ((ApplicationType)Store.GetState().StepsConfig.ChosenApplication).ToString()) && Store.GetState().StepsConfig.NewRequestReason == RequestReason.PurchaseLicense)
+                        @*Zakup licencji*@
+
+                        @if (!Store.GetState().UserLicenses.Any(x => x.Application.Equals(((ApplicationType)Store.GetState().StepsConfig.ChosenApplication).ToString())) && 
+                            Store.GetState().StepsConfig.NewRequestReason.Equals(RequestReason.PurchaseLicense))
                         {
                             <div class="label pb-2">
-                                <RadzenLabel Text="Koniec Licencji" />
+                                <RadzenLabel Text="Okres (Miesiące)" />
                                 <RadzenNumeric TValue="int" @bind-Value="Store.GetState().NewRequest.LicenseMonths" Min="1" Name="LicenseMonths" />
                                 <RadzenNumericRangeValidator Component="LicenseMonths" Min="1" Text="Minimalny czas licencji to 1 miesiąc od zaksięgowania zapłaty." Popup="false" Style="position: absolute" />
                             </div>
+
+                            //Automatyczne odnowienie
+
+
+
+
+
                         }
 
-                        @if (Store.GetState().UserLicenses.Any(x => x.Application == ((ApplicationType)Store.GetState().StepsConfig.ChosenApplication).ToString()) && Store.GetState().StepsConfig.NewRequestReason == RequestReason.ModifyLicense)
+                        @*Zmiana licencji*@
+
+                        @if (Store.GetState().UserLicenses.Any(x => x.Application.Equals(((ApplicationType)Store.GetState().StepsConfig.ChosenApplication).ToString())) && 
+                            Store.GetState().StepsConfig.NewRequestReason.Equals(RequestReason.ModifyLicense))
                         {
                             var license = Store.GetState().UserLicenses.FirstOrDefault(x => x.Application == ((ApplicationType)Store.GetState().StepsConfig.ChosenApplication).ToString());
 
@@ -68,14 +81,20 @@
                             }
 
                             <div class="label pb-2">
-                                <RadzenLabel Text="Przedłuż licencję" />
-                                <RadzenNumeric TValue="int" @bind-Value="Store.GetState().NewRequest.LicenseMonths" Min="1" Name="LicenseMonths" />
-                                <RadzenNumericRangeValidator Component="LicenseMonths" Min="1" Text="Minimalny czas licencji to 1 miesiąc od zaksięgowania zapłaty." Popup="false" Style="position: absolute" />
+                                <RadzenLabel Text="Przedłuż licencję (Miesiące)" />
+                                <RadzenNumeric TValue="int" @bind-Value="Store.GetState().NewRequest.LicenseMonths" Min="1" Name="LicenseMonths" Placeholder="1" />
+                                <RadzenNumericRangeValidator Component="LicenseMonths" Min="1" Text="Minimalny okres licencji to 1 miesiąc od zaksięgowania zapłaty." Popup="false" Style="position: absolute" />
                             </div>
 
                             <p class="pt-2">Zmiana liczby powiązanych użytkowników</p>
                             <RadzenNumeric TValue="int" @bind-Value="Store.GetState().NewRequest.RelatedUsers" Min="@license.RelatedUsers" Name="RelatedUsers" />
                             <RadzenNumericRangeValidator Component="RelatedUsers" Min="@license.RelatedUsers" Text="Można dodawać użytkowników powiązanych, nie usuwać." Popup="false" Style="position: absolute" />
+
+                            //Automatyczne odnowienie
+
+
+
+
                         }
 
                         <div class="text pb-4 pt-2">

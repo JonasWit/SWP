@@ -121,7 +121,12 @@ namespace SWP.UI.BlazorApp.PortalApp.Stores.Requests.RequestsPanel
         public async Task RefreshSore()
         {
             GetRequests();
-            await _state.RequestsGrid.Reload();
+
+            if (_state.Requests is not null)
+            {
+                await _state.RequestsGrid.Reload();
+            }
+
             BroadcastStateChange();
         }
     }

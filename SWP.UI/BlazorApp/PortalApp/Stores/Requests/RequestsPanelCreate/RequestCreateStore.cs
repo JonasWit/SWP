@@ -102,17 +102,16 @@ namespace SWP.UI.BlazorApp.PortalApp.Stores.Requests.RequestsPanelCreate
                     Application = (int)_state.StepsConfig.NewRequestApplication,
                     Created = DateTime.Now,
                     CreatedBy = MainStore.GetState().ActiveUserName,
-                    EndDate = request.EndDate,
                     Reason = (int)_state.StepsConfig.NewRequestReason,
                     RelatedUsers = request.RelatedUsers,
-                    RequestMessage = new CreateRequest.RequestMessage 
-                    { 
-                        AuthorId = MainStore.GetState().ActiveUserName, 
-                        Message = request.RequestMessage.Message 
-                    },
                     RequestorId = MainStore.GetState().ActiveUserId,
-                    StartDate = request.StartDate,
+                    LicenseMonths = request.LicenseMonths,
                     Status = (int)RequestStatus.WaitingForAnswer,
+                    RequestMessage = new CreateRequest.RequestMessage
+                    {
+                        AuthorId = MainStore.GetState().ActiveUserName,
+                        Message = request.RequestMessage.Message
+                    },
                 });
 
                 await MainStore.SetActiveComponent(RequestsMainPanelState.InnerComponents.Info);

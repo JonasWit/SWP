@@ -18,8 +18,7 @@ namespace SWP.UI.Components.PortalBlazorComponents.Requests.ViewModels
         public RequestStatus Status { get; set; }
         public RequestReason Reason { get; set; }
         public ApplicationType Application { get; set; }
-        public DateTime? StartDate { get; set; }
-        public DateTime? EndDate { get; set; }
+        public int LicenseMonths { get; set; }
         public int RelatedUsers { get; set; }
         public string DisplaySubject { get; set; }
         public string DisplayStatus { get; set; }
@@ -159,8 +158,7 @@ namespace SWP.UI.Components.PortalBlazorComponents.Requests.ViewModels
                 Status = (RequestStatus)input.Status,
                 Reason = (RequestReason)input.Reason,
                 Application = (ApplicationType)input.Application,
-                StartDate = input.StartDate,
-                EndDate = input.EndDate,
+                LicenseMonths = input.LicenseMonths,
                 RelatedUsers = input.RelatedUsers,
                 Messages = input.Messages == null ? new List<RequestMessageViewModel>() : input.Messages.Select(x => (RequestMessageViewModel)x).ToList().OrderByDescending(x => x.Updated).ToList(),
                 DisplaySubject = RequestReasonsDisplay()[input.Reason],

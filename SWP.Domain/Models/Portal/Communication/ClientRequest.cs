@@ -14,8 +14,7 @@ namespace SWP.Domain.Models.Portal.Communication
         public int Reason { get; set; }
         public int Application { get; set; }
         public int Status { get; set; }
-        public DateTime? StartDate { get; set; }
-        public DateTime? EndDate { get; set; }
+        public int LicenseMonths { get; set; }
         public int RelatedUsers { get; set; }
 
         public List<ClientRequestMessage> Messages { get; set; }

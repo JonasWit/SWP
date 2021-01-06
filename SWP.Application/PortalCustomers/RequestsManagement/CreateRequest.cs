@@ -23,8 +23,7 @@ namespace SWP.Application.PortalCustomers.RequestsManagement
                 UpdatedBy = request.CreatedBy,
                 RequestorId = request.RequestorId,
                 Reason = request.Reason,
-                StartDate = request.StartDate,
-                EndDate = request.EndDate,
+                LicenseMonths = request.LicenseMonths,
                 RelatedUsers = request.RelatedUsers,
                 Status = request.Status,
             };
@@ -64,8 +63,7 @@ namespace SWP.Application.PortalCustomers.RequestsManagement
             public int Reason { get; set; }
             public int Application { get; set; }
             public int Status { get; set; }
-            public DateTime StartDate { get; set; }
-            public DateTime EndDate { get; set; }
+            public int LicenseMonths { get; set; }
             public int RelatedUsers { get; set; }
 
             public DateTime Created { get; set; }

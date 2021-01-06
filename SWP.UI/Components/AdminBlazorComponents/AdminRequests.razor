@@ -44,6 +44,12 @@ else
                     <div class="columns is-0 is-centered">
                         <p>@Store.GetState().SelectedRequest.CreatedBy</p>
                     </div>
+                    <div class="columns is-0 is-centered">
+                        <h2>Related Users:</h2>
+                    </div>
+                    <div class="columns is-0 is-centered">
+                        <p>@Store.GetState().SelectedRequest.RelatedUsers</p>
+                    </div>
                 </div>
                 <div class="column">
                     <div class="columns is-0 is-centered">
@@ -51,6 +57,12 @@ else
                     </div>
                     <div class="columns is-0 is-centered">
                         <p>@Store.GetState().SelectedRequest.Updated</p>
+                    </div>
+                    <div class="columns is-0 is-centered">
+                        <h2>License Months:</h2>
+                    </div>
+                    <div class="columns is-0 is-centered">
+                        <p>@Store.GetState().SelectedRequest.LicenseMonths</p>
                     </div>
                 </div>
                 <div class="column">

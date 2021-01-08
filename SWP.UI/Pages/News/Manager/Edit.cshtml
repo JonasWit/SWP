@@ -31,7 +31,7 @@
         </div>
         <div>
             <label>Body</label>
-            <textarea id="editor" asp-for="DataModel.Body"></textarea>
+            @*<textarea id="editor" asp-for="DataModel.Body"></textarea>*@
         </div>
         <div>
             <label>Image</label>
@@ -45,11 +45,3 @@
         <input type="submit" value="Submit" />
     </form>
 </div>
-
-@section scripts{
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="~/lib/Trumbowyg-master/dist/trumbowyg.min.js"></script>
-    <script>
-        $('#editor').trumbowyg();
-    </script>
-}

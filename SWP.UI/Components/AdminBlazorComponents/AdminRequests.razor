@@ -36,44 +36,40 @@ else
 
         @if (Store.GetState().SelectedRequest is not null)
         {
-            <div class="columns is-vcentered is-centered mb-6">
-                <div class="column">
-                    <div class="columns is-0 is-centered">
-                        <h2>Created By:</h2>
-                    </div>
-                    <div class="columns is-0 is-centered">
-                        <p>@Store.GetState().SelectedRequest.CreatedBy</p>
-                    </div>
-                    <div class="columns is-0 is-centered">
-                        <h2>Related Users:</h2>
-                    </div>
-                    <div class="columns is-0 is-centered">
-                        <p>@Store.GetState().SelectedRequest.RelatedUsers</p>
-                    </div>
-                </div>
-                <div class="column">
-                    <div class="columns is-0 is-centered">
-                        <h2>Last Update:</h2>
-                    </div>
-                    <div class="columns is-0 is-centered">
-                        <p>@Store.GetState().SelectedRequest.Updated</p>
-                    </div>
-                    <div class="columns is-0 is-centered">
-                        <h2>License Months:</h2>
-                    </div>
-                    <div class="columns is-0 is-centered">
-                        <p>@Store.GetState().SelectedRequest.LicenseMonths</p>
-                    </div>
-                </div>
-                <div class="column">
-                    <div class="columns is-0 is-centered">
-                        <h2>Last Update By:</h2>
-                    </div>
-                    <div class="columns is-0 is-centered">
-                        <p>@Store.GetState().SelectedRequest.UpdatedBy</p>
-                    </div>
-                </div>
-            </div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Created</th>
+                        <th>Created By</th>
+                        <th>Updated</th>
+                        <th>Updated By</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>@Store.GetState().SelectedRequest.Created</td>
+                        <td>@Store.GetState().SelectedRequest.CreatedBy</td>
+                        <td>@Store.GetState().SelectedRequest.Updated</td>
+                        <td>@Store.GetState().SelectedRequest.UpdatedBy</td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Status</th>
+                        <th>Reason</th>
+                        <th>Application</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>@Store.GetState().SelectedRequest.Status</td>
+                        <td>@Store.GetState().SelectedRequest.Reason</td>
+                        <td>@Store.GetState().SelectedRequest.Application</td>
+                    </tr>
+                </tbody>
+            </table>
 
             <div class="columns is-vcentered is-centered mb-6">
                 <div class="column">

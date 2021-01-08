@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Components;
 using SWP.UI.BlazorApp;
+using SWP.UI.BlazorApp.PortalApp.Stores.Requests;
 using SWP.UI.BlazorApp.PortalApp.Stores.Requests.RequestsMainPanel.Actions;
 using SWP.UI.BlazorApp.PortalApp.Stores.Requests.RequestsPanel;
 using SWP.UI.Components.PortalBlazorComponents.Requests.ViewModels;
 using System;
-using System.Threading.Tasks;
 
 namespace SWP.UI.Components.PortalBlazorComponents.Requests
 {
@@ -17,11 +17,14 @@ namespace SWP.UI.Components.PortalBlazorComponents.Requests
         [Inject]
         public RequestsMainPanelStore Store { get; set; }
         [Inject]
+        public RequestsPanelDetailsStore DetailsStore { get; set; }
+        [Inject]
         public IActionDispatcher ActionDispatcher { get; set; }
 
         public void Dispose()
         {
             Store.RemoveStateChangeListener(UpdateView);
+            DetailsStore.RemoveStateChangeListener(UpdateView);
         }
 
         private void UpdateView()
@@ -33,6 +36,7 @@ namespace SWP.UI.Components.PortalBlazorComponents.Requests
         {
             Store.Initialize(ActiveUserId, ActiveUserName);
             Store.AddStateChangeListener(UpdateView);
+            DetailsStore.AddStateChangeListener(UpdateView);
         }
 
         #region Actions

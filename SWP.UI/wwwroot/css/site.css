@@ -393,54 +393,68 @@ li {
     overflow: hidden;
 }
 
+.module-3 {
+    background: url(/Images/website-3374825_1920.jpg);
+    background-attachment: fixed;
+    height: 550px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+    overflow: hidden;
+}
 
+.module > header,
+.module-2 > header,
+.module-3 > header {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 20px 10px;
+    background: inherit;
+    background-attachment: fixed;
+    overflow: hidden;
+}
 
-    .module > header,
-    .module-2 > header {
+    .module > header::before,
+    .module-2 > header::before,
+    .module-3 > header::before {
+        content: "";
         position: absolute;
-        bottom: 0;
+        top: -20px;
         left: 0;
-        width: 100%;
-        padding: 20px 10px;
+        width: 200%;
+        height: 200%;
         background: inherit;
         background-attachment: fixed;
-        overflow: hidden;
+        -webkit-filter: blur(10px);
+        filter: blur(10px);
     }
 
-        .module > header::before,
-        .module-2 > header::before {
-            content: "";
-            position: absolute;
-            top: -20px;
-            left: 0;
-            width: 200%;
-            height: 200%;
-            background: inherit;
-            background-attachment: fixed;
-            -webkit-filter: blur(4px);
-            filter: blur(4px);
-        }
+    .module > header::after,
+    .module-2 > header::after,
+    .module-3 > header::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.25)
+    }
 
-        .module > header::after,
-        .module-2 > header::after {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.25)
-        }
-
-        .module > header > h1,
-        .module > header > p,
-        .module-2 > header > h1,
-        .module-2 > header > p {
-            margin: 0;
-            color: white;
-            position: relative;
-            z-index: 1;
-        }
+    .module > header > h1,
+    .module > header > p,
+    .module-2 > header > h1,
+    .module-2 > header > p,
+    .module-3 > header > h1,
+    .module-3 > header > p {
+        margin: 0;
+        color: white;
+        position: relative;
+        z-index: 1;
+    }
 
 .product-section {
     display: flex;
@@ -498,6 +512,13 @@ li {
     top: 45%;
     left: 50%;
 }
+
+
+
+
+
+
+
 
 
 @media screen and (max-width: 768px) {

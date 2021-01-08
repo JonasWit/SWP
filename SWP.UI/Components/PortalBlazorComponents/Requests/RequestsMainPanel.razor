@@ -8,7 +8,7 @@
 }
 
 <div class="row pt-4">
-    <div class="col-md-8">
+    <div class="col-md-12">
         @switch (Store.GetState().CurrentComponent)
         {
             case RequestsMainPanelState.InnerComponents.Info:
@@ -17,16 +17,13 @@
             case RequestsMainPanelState.InnerComponents.Create:
                 <RequestCreate />
                 break;
-            case RequestsMainPanelState.InnerComponents.Details:
-                <RequestDetails />
-                break;
-            default:
-                break;
         }
     </div>
-    <div class="col-md-4">
+
+    <div class="col-md-12">
         <RadzenCard>
-            <h2 class="p-3">Historia komunikacji</h2>
+            <h2 class="pb-1">Historia komunikacji</h2>
+            <p class="pb-3">Wybierz wiadomość żeby zobaczyć szczegóły.</p>
 
             @if (Store.GetState().Requests is null || Store.GetState().Requests.Count == 0)
             {
@@ -56,6 +53,18 @@
             }
         </RadzenCard>
     </div>
+    <div class="col-md-12">
+        @switch (Store.GetState().CurrentComponent)
+        {
+            
+            case RequestsMainPanelState.InnerComponents.Details:
+                <RequestDetails />
+                break;
+            default:
+                break;
+        }
+    </div>
+
 </div>
 
 

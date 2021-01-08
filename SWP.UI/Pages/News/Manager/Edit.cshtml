@@ -3,7 +3,8 @@
 @{
 }
 
-<link href="~/lib/Trumbowyg-master/dist/ui/trumbowyg.min.css" rel="stylesheet" />
+
+<component type="typeof(NewsAdminPage)" render-mode="Server" />
 
 <div>
     <form method="post" enctype="multipart/form-data">
@@ -31,7 +32,7 @@
         </div>
         <div>
             <label>Body</label>
-            @*<textarea id="editor" asp-for="DataModel.Body"></textarea>*@
+            <textarea id="editor" asp-for="DataModel.Body"></textarea>
         </div>
         <div>
             <label>Image</label>

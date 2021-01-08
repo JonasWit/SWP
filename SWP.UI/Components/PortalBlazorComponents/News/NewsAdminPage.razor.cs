@@ -1,11 +1,8 @@
 ﻿using Microsoft.AspNetCore.Components;
 using SWP.UI.BlazorApp;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace SWP.UI.Components.PortalBlazorComponents
+namespace SWP.UI.Components.PortalBlazorComponents.News
 {
     public partial class NewsAdminPage : IDisposable
     {
@@ -17,13 +14,7 @@ namespace SWP.UI.Components.PortalBlazorComponents
          
         }
 
-        private void UpdateView() => StateHasChanged();
 
-        protected override void OnInitialized()
-        {
-        
- 
-        }
 
         #region Actions
 

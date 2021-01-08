@@ -202,6 +202,8 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Users
             var claims = await userManager.GetClaimsAsync(user) as List<Claim>;
             var role = await userManager.GetRolesAsync(user) as List<string>;
 
+            var licenses = GetUserLicenses(user.Id);
+
             return new UserModel
             {
                 Name = user.UserName,
@@ -211,7 +213,7 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Users
                 UserRole = (RoleType)Enum.Parse(typeof(RoleType), role.First(), true),
                 LockoutEnd = user.LockoutEnd,
                 LockoutEnabled = user.LockoutEnabled,
-                Licenses = GetUserLicenses(user.Id)
+                Licenses = licenses
             };
         }
 

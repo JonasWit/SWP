@@ -49,8 +49,7 @@
 
                         @*Zakup licencji*@
 
-                        @if (!Store.GetState().UserLicenses.Any(x => x.Application.Equals(((ApplicationType)Store.GetState().StepsConfig.ChosenApplication).ToString())) && 
-                            Store.GetState().StepsConfig.NewRequestReason.Equals(RequestReason.PurchaseLicense))
+                        @if (!Store.GetState().UserLicenses.Any(x => x.Application.Equals(((ApplicationType)Store.GetState().StepsConfig.ChosenApplication).ToString())) && Store.GetState().StepsConfig.NewRequestReason.Equals(RequestReason.PurchaseLicense))
                         {
                             <div class="label pb-2">
                                 <RadzenLabel Text="Okres (Miesiące)" />
@@ -59,17 +58,16 @@
                             </div>
 
                             //Automatyczne odnowienie
+                            <p class="pt-2">Automatyczne Odnowienie</p>
+                            <RadzenCheckBox @bind-Value="@Store.GetState().NewRequest.AutoRenewal" TValue="bool" />
 
-
-
-
-
+                            <p class="pt-2">Zmiana liczby powiązanych użytkowników</p>
+                            <RadzenNumeric TValue="int" @bind-Value="Store.GetState().NewRequest.RelatedUsers" Min="@Store.GetState().NewRequest.RelatedUsers" Name="RelatedUsers" />
                         }
 
                         @*Zmiana licencji*@
 
-                        @if (Store.GetState().UserLicenses.Any(x => x.Application.Equals(((ApplicationType)Store.GetState().StepsConfig.ChosenApplication).ToString())) && 
-                            Store.GetState().StepsConfig.NewRequestReason.Equals(RequestReason.ModifyLicense))
+                        @if (Store.GetState().UserLicenses.Any(x => x.Application.Equals(((ApplicationType)Store.GetState().StepsConfig.ChosenApplication).ToString())) && Store.GetState().StepsConfig.NewRequestReason.Equals(RequestReason.ModifyLicense))
                         {
                             var license = Store.GetState().UserLicenses.FirstOrDefault(x => x.Application == ((ApplicationType)Store.GetState().StepsConfig.ChosenApplication).ToString());
 
@@ -91,8 +89,8 @@
                             <RadzenNumericRangeValidator Component="RelatedUsers" Min="@license.RelatedUsers" Text="Można dodawać użytkowników powiązanych, nie usuwać." Popup="false" Style="position: absolute" />
 
                             //Automatyczne odnowienie
-
-
+                            <p class="pt-2">Automatyczne Odnowienie</p>
+                            <RadzenCheckBox @bind-Value="@Store.GetState().NewRequest.AutoRenewal" TValue="bool" />
 
 
                         }

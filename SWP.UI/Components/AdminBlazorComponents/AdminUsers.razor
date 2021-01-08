@@ -221,10 +221,18 @@
                                 </div>
                                 <div class="columns">
                                     <div class="column">
+                                        <RadzenLabel Text="Auto Renewal" />
+                                    </div>
+                                    <div class="column">
+                                        <RadzenCheckBox @bind-Value="@Store.GetState().NewLicense.AutoRenewal" TValue="bool" />
+                                    </div>
+                                </div>
+                                <div class="columns">
+                                    <div class="column">
                                         <RadzenLabel Text="Valid To" />
                                     </div>
                                     <div class="column">
-                                        <RadzenDatePicker @bind-Value=@Store.GetState().NewLicense.ValidTo DateFormat="d" Name="ValidTo" />
+                                        <RadzenDatePicker YearRange="@($"{DateTime.Now.Year}:{DateTime.Now.AddYears(10).Year}")" @bind-Value=@Store.GetState().NewLicense.ValidTo DateFormat="d" Name="ValidTo" />
                                         <div>
                                             <RadzenRequiredValidator Component="ValidTo" Text="Date is required" Popup=false Style="position: absolute" />
                                         </div>
@@ -261,9 +269,7 @@
                                 <span>@license.Type</span>
                             </Template>
                             <EditTemplate Context="license">
-                                <RadzenDropDown AllowClear="true" TValue="string" Name="Type"
-                                                FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" FilterOperator="StringFilterOperator.StartsWith" AllowFiltering="true"
-                                                Data="@Store.GetState().LicenseTypeClaims" @bind-Value="license.Type" />
+                                <RadzenDropDown AllowClear="true" TValue="string" Name="Type" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" FilterOperator="StringFilterOperator.StartsWith" AllowFiltering="true" Data="@Store.GetState().LicenseTypeClaims" @bind-Value="license.Type" />
                                 <div>
                                     <RadzenRequiredValidator Component="Type" Text="Type is required" Popup=false Style="position: absolute" />
                                 </div>

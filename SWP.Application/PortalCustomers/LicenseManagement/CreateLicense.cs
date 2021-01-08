@@ -25,7 +25,8 @@ namespace SWP.Application.PortalCustomers.LicenseManagement
                 Application = request.Product,
                 Type = request.Type,
                 RelatedUsers = request.RelatedUsers,
-                ValidTo = request.ValidTo
+                ValidTo = request.ValidTo,
+                AutoRenewal = request.AutoRenewal
             });
         }
     
@@ -34,6 +35,7 @@ namespace SWP.Application.PortalCustomers.LicenseManagement
             public string UserId { get; set; }
             public string Product { get; set; }
             public string Type { get; set; }
+            public bool AutoRenewal { get; set; }
             public int RelatedUsers { get; set; }
             public DateTime ValidTo { get; set; }
             public string CreatedBy { get; set; }

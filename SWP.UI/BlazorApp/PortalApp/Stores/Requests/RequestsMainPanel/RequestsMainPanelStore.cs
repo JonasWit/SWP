@@ -122,7 +122,7 @@ namespace SWP.UI.BlazorApp.PortalApp.Stores.Requests.RequestsPanel
         {
             GetRequests();
 
-            if (_state.Requests is not null)
+            if (_state.Requests is not null && _state.Requests.Count != 0)
             {
                 await _state.RequestsGrid.Reload();
             }

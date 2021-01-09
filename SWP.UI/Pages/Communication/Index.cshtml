@@ -4,12 +4,18 @@
 }
 
 @if (User.Identity.IsAuthenticated)
-{
-    <a asp-page="/Communication/Request">Przejdz do Panelu Kontaktu</a>
+{<div class="text-center py-5">
+        <a class="btn py-2 px-5" asp-page="/Communication/Request"><img class="r-btn" src="/Images/icons8-communication-50.png" />Przejdź do Panelu Kontaktu</a>
+    </div>
 }
 else
 {
-    <p>Tylko zarejestrowane użytkownik może wysyłać komunikację!</p>
+    
+    <div class="text-center py-5">
+        <h3 class="pb-3">Tylko zarejestrowany użytkownik może korzystać z panelu komunikacji!</h3>
+        <a class="btn py-2 px-5" asp-area="Identity" asp-page="/Account/Register"><img class="r-btn" src="/Images/icons8-user-folder-50.png" />Przejdź do panelu rejestracji</a>
+    </div>
+
 }
 
 

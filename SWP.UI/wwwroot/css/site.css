@@ -96,7 +96,7 @@ li {
 }
 
 
-.btn {
+/*.btn {
     cursor: pointer;
     display: inline-block;
     border: 0;
@@ -112,7 +112,7 @@ li {
         background-color: #007bff;
         opacity: 0.9;
         color: #fff;
-    }
+    }*/
 
 
 .download {
@@ -160,9 +160,10 @@ li {
     font-size: 12px !important;
     font-weight: bold;
     outline: none !important;
-    background-size: 200% 100% !important;
+    background-size: 205% 100% !important;
     background-position: left bottom !important;
     transition: all .4s ease-in-out !important;
+    border: 0 !important;
 }
 
     .ui-button:hover,
@@ -574,11 +575,6 @@ li {
     .carousel-text-1 a {
         margin-left: 0;
     }
-
-    .flex-row {
-        flex-direction: column !important;
-    }
-
 
 
 

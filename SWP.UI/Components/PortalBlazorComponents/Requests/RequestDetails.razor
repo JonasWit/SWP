@@ -4,30 +4,34 @@
 }
 else
 {
-  
 
-<RadzenCard>
-    <h2>Szczegóły zapytania</h2>
-   
-    <RadzenDataList WrapItems="true" AllowPaging="true" Data="@Store.GetState().ActiveRequest.Messages" TItem="RequestMessageViewModel" PageSize="5">
-        <Template Context="message">
-            <RadzenCard Style="width:100%">
-                <div class="flex-column" @onclick="@(() => MessageSelected(message.Id))">
-                    <div class="flex-column">
-                        <p class="p-2"><strong>Data: </strong>@(message.Created.ToString("yyyy.MM.dd HH:mm:ss"))</p>
-                        <p class="p-2"><strong>Autor: </strong>@(message.AuthorId)</p>
-                        <p class="p-2"><strong>Treść wiadomości: </strong>@(message.Message)</p>
+
+    <RadzenCard>
+        <h2>Szczegóły zapytania</h2>
+
+        <RadzenDataList WrapItems="true" AllowPaging="true" Data="@Store.GetState().ActiveRequest.Messages" TItem="RequestMessageViewModel" PageSize="5">
+            <Template Context="message">
+                <RadzenCard Style="width:100%">
+                    <div class="flex-column" @onclick="@(() => MessageSelected(message.Id))">
+                        <div class="flex-column">
+                            <div class="rodo-links py-1">
+                                <p class=""><strong>Data: </strong>@(message.Created.ToString("yyyy.MM.dd HH:mm:ss"))</p>
+                                <p class=""><strong>Autor: </strong>@(message.AuthorId)</p>
+                            </div>
+                            <div>
+                                <p class=""><strong>Treść wiadomości: </strong>@(message.Message)</p>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </RadzenCard>
-        </Template>
-    </RadzenDataList>
-</RadzenCard>
+                </RadzenCard>
+            </Template>
+        </RadzenDataList>
+    </RadzenCard>
 
     <RadzenTemplateForm Data="@Store.GetState().NewRequestMessage" Submit="@((CreateRequest.RequestMessage args) => SubmitNewRequest(args))">
         <RadzenFieldset Text="Dodaj nową wiadomość do zapytania">
             <div class="text pb-3">
-                <RadzenTextArea Placeholder="Wiadomość..." @bind-Value="Store.GetState().NewRequestMessage.Message" Name="RequestMessage" Style="width:100%; height:180px;"/>
+                <RadzenTextArea Placeholder="Wiadomość..." @bind-Value="Store.GetState().NewRequestMessage.Message" Name="RequestMessage" Style="width:100%; height:180px;" />
                 <RadzenRequiredValidator Component="RequestMessage" Text="Wiadomość..." Popup="true" />
             </div>
             <RadzenButton ButtonType="ButtonType.Submit" Text="Wyślij" ButtonStyle="ButtonStyle.Secondary" />

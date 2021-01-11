@@ -63,7 +63,6 @@ else
         <RadzenHtmlEditorFormatBlock />
     </RadzenHtmlEditor>
     <ValidationMessage For="@(() => Store.GetState().DataModel.Body)"></ValidationMessage>
-    @*<RadzenLengthValidator Component="BodyEditor" Max="1000" Text="Max 1000 Chars!" Popup=false Style="position: absolute" />*@
 
     <p>
         <InputFile OnChange="@OnInputFileChange" />

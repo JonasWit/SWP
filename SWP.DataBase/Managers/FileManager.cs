@@ -13,9 +13,9 @@ namespace SWP.DataBase.Managers
         private readonly string _newsImagesPath;
 
         public FileManager(IConfiguration configuration)
-        { 
+        {
             _newsImagesPath = configuration["Path:News"];
-        } 
+        }
 
         public FileStream ImageStream(string image) => new FileStream(Path.Combine(_newsImagesPath, image), FileMode.Open, FileAccess.Read);
 
@@ -27,7 +27,7 @@ namespace SWP.DataBase.Managers
 
                 if (!Directory.Exists(savePath)) Directory.CreateDirectory(savePath);
 
-                var fileName = $"img_{DateTime.Now:dd-MM-yyyy-HH-mm-ss}{image.FileName.Substring(image.FileName.LastIndexOf('.'))}";
+                var fileName = $"img_{DateTime.Now:dd-MM-yyyy-HH-mm-ss}{image.FileName[image.FileName.LastIndexOf('.')..]}";
 
                 using var fileStream = new FileStream(Path.Combine(savePath, fileName), FileMode.Create);
 
@@ -100,5 +100,46 @@ namespace SWP.DataBase.Managers
             JpegSubsampleMode = ChromaSubsampleMode.Subsample420
         };
 
+        public async Task<string> SaveImageAsync(Stream image, string name)
+        {
+            try
+            {
+                var savePath = Path.Combine(_newsImagesPath);
+
+                if (!Directory.Exists(savePath)) Directory.CreateDirectory(savePath);
+
+                var fileName = $"img_{DateTime.Now:dd-MM-yyyy-HH-mm-ss}{name[name.LastIndexOf('.')..]}";
+
+                using var fileStream = new FileStream(Path.Combine(savePath, fileName), FileMode.Create);     
+                await Task.Run(() => MagicImageProcessor.ProcessImage(image, fileStream, ImageOptions()));
+
+                return fileName;
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+
+        public async Task<string> SaveImageAsync(byte[] buffer, string name)
+        {
+            try
+            {
+                var savePath = Path.Combine(_newsImagesPath);
+
+                if (!Directory.Exists(savePath)) Directory.CreateDirectory(savePath);
+
+                var fileName = $"img_{DateTime.Now:dd-MM-yyyy-HH-mm-ss}{name[name.LastIndexOf('.')..]}";
+
+                using var fileStream = new FileStream(Path.Combine(savePath, fileName), FileMode.Create);
+                await Task.Run(() => MagicImageProcessor.ProcessImage(buffer, fileStream, ImageOptions()));
+
+                return fileName;
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
     }
 }

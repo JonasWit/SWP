@@ -2,21 +2,38 @@
 using SWP.Domain.Models.News;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.IO;
+using System.Linq;
 
 namespace SWP.UI.Pages.News.ViewModels
 {
     public class NewsViewModel
     {
         public int Id { get; set; }
+        [Required]
+        [StringLength(200, ErrorMessage = "Max 200 Chars.")]
         public string Title { get; set; }
+        [Required]
+        [StringLength(1000, ErrorMessage = "Max 1000 Chars.")]
         public string Body { get; set; }
+
         public string ImagePath { get; set; }
 
+        [Required]
+        [StringLength(100, ErrorMessage = "Max 100 Chars.")]
         public string Description { get; set; }
+        [Required]
+        [StringLength(100, ErrorMessage = "Max 100 Chars.")]
         public string Tags { get; set; }
+        [Required]
+        [StringLength(100, ErrorMessage = "Max 100 Chars.")]
         public string Category { get; set; }
 
-        public IFormFile Image { get; set; } = null;
+        //public IFormFile Image { get; set; } = null;
+        //public Stream ImageStream { get; set; } = null;
+        public string ImageName { get; set; } = null;
+        public byte[] ImageStream { get; set; }
 
         public DateTime Created { get; set; }
         public DateTime Updated { get; set; }
@@ -33,6 +50,8 @@ namespace SWP.UI.Pages.News.ViewModels
             {
                 Categories.Add(category.ToString());
             }
+
+            Category = Categories.First();
         }
 
         public static implicit operator NewsViewModel(NewsRecord input) =>

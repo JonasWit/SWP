@@ -2,6 +2,7 @@
 using SWP.Domain.Infrastructure.Portal;
 using SWP.Domain.Models.News;
 using System;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace SWP.Application.News
@@ -32,7 +33,7 @@ namespace SWP.Application.News
                 Updated = request.Created,
                 UpdatedBy = request.CreatedBy,
 
-                Image = await _fileManager.SaveImageAsync(request.Image)
+                Image = await _fileManager.SaveImageAsync(request.ImageStream, request.ImageName)
             };
 
             var result = await _newsManager.CreateOneNews(singleNews);
@@ -48,7 +49,10 @@ namespace SWP.Application.News
             public string Tags { get; set; }
             public string Category { get; set; }
 
-            public IFormFile Image { get; set; } = null;
+            //public IFormFile Image { get; set; } = null;
+            public byte[] ImageStream { get; set; }
+            public string ImageName { get; set; } = null;
+
             public DateTime Created { get; set; }
             public string CreatedBy { get; set; }
         }

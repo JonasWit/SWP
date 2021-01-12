@@ -91,7 +91,7 @@ namespace SWP.UI
             @this.AddSingleton<JobWakeUpCall>();
             @this.AddSingleton(new JobSchedule(
                 jobType: typeof(JobWakeUpCall),
-                cronExpression: "0 0/10 * * * ?"));
+                cronExpression: "0 0/20 * * * ?"));
 
             @this.AddSingleton<JobCleanupCall>();
             @this.AddSingleton(new JobSchedule(

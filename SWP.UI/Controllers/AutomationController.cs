@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using SWP.Application.Maintenance;
 using SWP.UI.Utilities;
 using System.Threading.Tasks;
 
@@ -14,6 +15,23 @@ namespace SWP.UI.Controllers
         public IActionResult WakeUpCheck([FromServices] ILogger<AutomationController> logger)
         {
             logger.LogInformation($"{LogTags.AutomationLogPrefix} Wake Up Call.");
+            return Ok(true);
+        }
+
+        [HttpGet("CleanupCall")]
+        public async Task<IActionResult> CleanupCall(
+            [FromServices] ILogger<AutomationController> logger, 
+            [FromServices] RunPortalMaintenance runPortalMaintenance)
+        {
+            //var resuest = new CreateLogRecord.Request { Message = "Crawlers Started", TimeStamp = DateTime.Now };
+            //await createLogRecord.DoAsync(resuest);
+
+            //var productsFound = await crawlersCommander.RunEngineAsync();
+
+            //resuest = new CreateLogRecord.Request { Message = $"Scraping Finished, products found: {productsFound}", TimeStamp = DateTime.Now };
+            //await createLogRecord.DoAsync(resuest);
+
+            logger.LogInformation($"{LogTags.AutomationLogPrefix} Clean Up Call.");
             return Ok(true);
         }
     }

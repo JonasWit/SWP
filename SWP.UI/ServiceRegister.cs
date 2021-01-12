@@ -93,7 +93,10 @@ namespace SWP.UI
                 jobType: typeof(JobWakeUpCall),
                 cronExpression: "0 0/10 * * * ?"));
 
-            //todo: add new job for possible cleanup
+            @this.AddSingleton<JobCleanupCall>();
+            @this.AddSingleton(new JobSchedule(
+                jobType: typeof(JobCleanupCall),
+                cronExpression: "0 15 4 ? * *"));
 
             @this.AddHostedService<QuartzHostedService>();
 

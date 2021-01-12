@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace SWP.UI.Automation
 {
-    public class JobWakeUpCall : IJob
+    public class JobCleanupCall : IJob
     {
         private readonly IHttpClientFactory _httpFactory;
         private readonly IConfiguration _configuration;
 
-        public JobWakeUpCall(IHttpClientFactory httpFactory, IConfiguration configuration)
+        public JobCleanupCall(IHttpClientFactory httpFactory, IConfiguration configuration)
         {
             _httpFactory = httpFactory;
             _configuration = configuration;
@@ -25,7 +25,7 @@ namespace SWP.UI.Automation
             HttpRequestMessage httpRequestMessage = new HttpRequestMessage
             {
                 Method = new HttpMethod("GET"),
-                RequestUri = new Uri($"{uri}/AutomationAPI/Automation/WakeUpCall")
+                RequestUri = new Uri($"{uri}/AutomationAPI/Automation/CleanupCall")
             };
 
             httpRequestMessage.Headers.Add("ApiKey", _configuration["ApiKey"]);

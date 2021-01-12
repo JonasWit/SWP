@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Radzen;
 using Radzen.Blazor;
+using SWP.Application.LegalSwp.AppDataAccess;
 using SWP.Application.LegalSwp.Clients;
 using SWP.UI.BlazorApp.LegalApp.Stores.Clients.Actions;
 using SWP.UI.BlazorApp.LegalApp.Stores.Main;
@@ -219,10 +220,17 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Clients
 
                 MainStore.AddClient(result);
 
+                if (!MainStore.GetState().AppActiveUserManager.IsRoot && !MainStore.GetState().AppActiveUserManager.IsAdmin)
+                {
+                    var grantAccess = scope.ServiceProvider.GetRequiredService<GrantAccess>();
+                    await grantAccess.GrantAccessToClient(MainStore.GetState().AppActiveUserManager.UserId, result.Id);
+                }
+
                 if (_state.ClientsGrid != null)
                 {
                     await _state.ClientsGrid.Reload();
                 }
+
                 ShowNotification(NotificationSeverity.Success, "Sukces!", $"Klient: {result.Name} został dodany.", GeneralViewModel.NotificationDuration);
                 BroadcastStateChange();
             }

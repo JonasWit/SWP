@@ -14,5 +14,6 @@ namespace SWP.Application.PortalCustomers.RequestsManagement
         public UpdateRequest(IPortalManager portalManager) : base(portalManager) { }
 
         public Task<int> Update(ClientRequest clientRequest) => _portalManager.UpdateRequest(clientRequest);
+        public Task<int> MarkMessageAsSeen(int messageId) => _portalManager.MarkMessageAsSeen(messageId);
     }
 }

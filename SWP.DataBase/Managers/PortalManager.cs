@@ -301,6 +301,19 @@ namespace SWP.DataBase.Managers
             return _context.SaveChangesAsync();
         }
 
+        public int CountPendingMessages(int id) =>
+            _context.ClientRequests
+                .Include(x => x.Messages)
+                .FirstOrDefault(x => x.Id.Equals(id))
+                .Messages.Count(x => !x.Seen);
+
+        public Task<int> MarkMessageAsSeen(int id)
+        {
+            var entity = _context.ClientRequestMessages.FirstOrDefault(x => x.Id.Equals(id));
+            entity.Seen = true;
+            return _context.SaveChangesAsync();
+        }
+
         #endregion
     }
 }

@@ -137,24 +137,32 @@ else
                                 </RadzenButton>
                             </EditTemplate>
                         </RadzenGridColumn>
-                        <RadzenGridColumn TItem="CaseViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="65px">
-                            <Template Context="cs">
-                                <RadzenButton ButtonStyle="ButtonStyle.Warning" Icon="archive" Size="ButtonSize.Small" Click="@((args) => ArchivizeCase(cs))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Archiwizuj", Style = Gvm.ToolTipStyle }))">
-                                    Archiwizuj
-                                </RadzenButton>
-                            </Template>
-                        </RadzenGridColumn>
-                        <RadzenGridColumn TItem="CaseViewModel" Context="order" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="45px">
-                            <Template Context="cs">
-                                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@((args) => DeleteCaseRow(cs))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Usuń", Style = Gvm.ToolTipStyle }))">
-                                    Usuń
-                                </RadzenButton>
-                            </Template>
-                            <EditTemplate Context="cs">
-                            </EditTemplate>
-                        </RadzenGridColumn>
 
-                    </Columns>
+                        @if (MainStore.GetState().AppActiveUserManager.IsRoot || MainStore.GetState().AppActiveUserManager.CanArchive)
+                        {
+                            <RadzenGridColumn TItem="CaseViewModel" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="65px">
+                                <Template Context="cs">
+                                    <RadzenButton ButtonStyle="ButtonStyle.Warning" Icon="archive" Size="ButtonSize.Small" Click="@((args) => ArchivizeCase(cs))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Archiwizuj", Style = Gvm.ToolTipStyle }))">
+                                        Archiwizuj
+                                    </RadzenButton>
+                                </Template>
+                            </RadzenGridColumn>
+                        }
+
+                        @if (MainStore.GetState().AppActiveUserManager.IsRoot || MainStore.GetState().AppActiveUserManager.CanDelete)
+                        {
+
+                            <RadzenGridColumn TItem="CaseViewModel" Context="order" Bubble="false" Filterable="false" Sortable="false" TextAlign="TextAlign.Center" Width="45px">
+                                <Template Context="cs">
+                                    <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="close" Size="ButtonSize.Small" Click="@((args) => DeleteCaseRow(cs))" MouseEnter="@(args => ShowTooltip(args, new TooltipOptions { Text = "Usuń", Style = Gvm.ToolTipStyle }))">
+                                        Usuń
+                                    </RadzenButton>
+                                </Template>
+                                <EditTemplate Context="cs">
+                                </EditTemplate>
+                            </RadzenGridColumn>
+                        }
+                        </Columns>
                 </RadzenGrid>
             </div>
         </div>

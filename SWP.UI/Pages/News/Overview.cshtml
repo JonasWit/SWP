@@ -21,10 +21,11 @@
             {
                 var imageNews = $"/Image/{singleNews.ImagePath}";
                 <div class="col-sm-6 p-4">
+
                     <div class="hovereffect">
                         <img class="img-responsive img-thumbnail" src="@imageNews" alt="Card image">
                         <div class="overlay">
-                            <h2>
+                            <h2 class="text-center py-1">
                                 <span>
                                     @singleNews.Title
                                 </span>
@@ -32,7 +33,7 @@
                                     @singleNews.Created.ToShortDateString()
                                 </span>
                             </h2>
-                            <p>@singleNews.ShortNews<span>...</span></p>
+                            <p>@singleNews.ShortNews</p>
                             <a class="info" asp-page="/News/NewsDetails" asp-route-id="@singleNews.Id">Zobacz</a>
                         </div>
                     </div>

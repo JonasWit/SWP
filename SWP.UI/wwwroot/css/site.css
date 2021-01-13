@@ -573,7 +573,7 @@ li {
         position: relative;
         font-size: 17px;
         padding: 10px;
-        background: rgba(0, 51, 102, 0.6);
+        
         -webkit-transform: translateY(45px);
         -ms-transform: translateY(45px);
         transform: translateY(45px);

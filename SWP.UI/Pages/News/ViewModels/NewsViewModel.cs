@@ -20,6 +20,8 @@ namespace SWP.UI.Pages.News.ViewModels
 
         public string ImagePath { get; set; }
 
+        public string ShortNews => new string($"{Description.Take(10).ToArray()}...");
+
         [Required]
         [StringLength(100, ErrorMessage = "Max 100 Chars.")]
         public string Description { get; set; }

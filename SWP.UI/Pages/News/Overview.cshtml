@@ -6,59 +6,39 @@
 
 @if (User.Identity.IsAuthenticated && User.IsInRole(PortalNames.Roles.Administrators))
 {
-    <li class="nav-item p-lg-4">
-        <a asp-page="/News/Manager/Index">Admin Zone</a>
-    </li>
-}
 
+    <a class="btn py-2 px-3" asp-page="/News/Manager/Index"><img class="r-btn" src="/Images/icons8-add-new-24.png" />Dodaj aktualności</a>
+
+}
 <div class="container-fluid product">
     <div>
-        <h1 class="mine-title text-center mt-4 mb-4" style="color: #ffffff; font-size: 55px;">Aktualności</h1>
-    </div>
-    <div class="container mb-5">
-        <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist">
-            <li class="nav-item nav-tabs-item">
-                <a class="nav-link nav-tabs-link " asp-page="/News/Overview" asp-route-pageNumber="1">Wszystko</a>
-            </li>
-            @foreach (var category in Model.DataModel.Categories)
-            {
-                //@(($"{ViewContext.RouteData.Values["Controller"].ToString()}/{ViewContext.RouteData.Values["Action"].ToString()}").Contains("UsersPanel") ? "klasa na aktywny link" : ""
-                <li class="nav-item nav-tabs-item">
-                    <a class="nav-link nav-tabs-link" asp-page="/News/Overview" asp-route-pageNumber="1"
-                       asp-route-category="@category">@category</a>
-                </li>
-            }
-        </ul>
+        <h1 class="text-center py-3">Aktualności</h1>
     </div>
     <div class="container">
-        <div> <partial name="_NewsPagination" model="Model.DataModel" /></div>
-        <div class="row">
+        <div class="pb-4 pt-0"> <partial name="_NewsPagination" model="Model.DataModel" /></div>
+        <div class="row py-4">
             @foreach (var singleNews in Model.DataModel.News)
             {
                 var imageNews = $"/Image/{singleNews.ImagePath}";
-                <div class="col-sm-6">
-                    <a class="mine-post" asp-page="/News/NewsDetails" asp-route-id="@singleNews.Id">
-                        <div class="card1 text-white">
-                            <div class="cover">
-                                <img class="card-img" src="@imageNews" alt="Card image">
-                                <div class=" card-img-overlay">
-                                    <div class="blur">
-                                        <h5 class="card-title">
-                                            <span>
-                                                @singleNews.Title
-                                            </span>
-                                            <span>
-                                                @singleNews.Created.ToShortDateString()
-                                            </span>
-                                        </h5>
-                                    </div>
-                                </div>
-                            </div>
+                <div class="col-sm-6 p-4">
+                    <div class="hovereffect">
+                        <img class="img-responsive img-thumbnail" src="@imageNews" alt="Card image">
+                        <div class="overlay">
+                            <h2>
+                                <span>
+                                    @singleNews.Title
+                                </span>
+                                <span>
+                                    @singleNews.Created.ToShortDateString()
+                                </span>
+                            </h2>
+                            <p>@singleNews.ShortNews<span>...</span></p>
+                            <a class="info" asp-page="/News/NewsDetails" asp-route-id="@singleNews.Id">Zobacz</a>
                         </div>
-                    </a>
+                    </div>
                 </div>
             }
         </div>
-        <div><partial name="_NewsPagination" model="Model.DataModel" /></div>
     </div>
+    <div><partial name="_NewsPagination" model="Model.DataModel" /></div>
 </div>

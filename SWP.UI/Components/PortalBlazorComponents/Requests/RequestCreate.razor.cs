@@ -32,7 +32,7 @@ namespace SWP.UI.Components.PortalBlazorComponents.Requests
         {
             StateHasChanged();
         }
- 
+
         protected override void OnInitialized()
         {
             Store.Initialize();

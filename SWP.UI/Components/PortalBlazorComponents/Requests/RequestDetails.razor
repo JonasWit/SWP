@@ -31,6 +31,7 @@ else
             <div class="text pb-3">
                 <RadzenTextArea Placeholder="Wiadomość..." @bind-Value="Store.GetState().NewRequestMessage.Message" Name="RequestMessage" Style="width:100%; height:180px;" />
                 <RadzenRequiredValidator Component="RequestMessage" Text="Wiadomość..." Popup="true" />
+                <RadzenLengthValidator Max="1000" Text="Maksymalnie 1000 znaków!" Component="RequestMessage" />
             </div>
             <RadzenButton ButtonType="ButtonType.Submit" Text="Wyślij" ButtonStyle="ButtonStyle.Secondary" />
         </RadzenFieldset>

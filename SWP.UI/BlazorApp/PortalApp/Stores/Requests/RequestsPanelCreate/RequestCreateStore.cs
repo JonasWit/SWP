@@ -120,6 +120,7 @@ namespace SWP.UI.BlazorApp.PortalApp.Stores.Requests.RequestsPanelCreate
                         AuthorId = MainStore.GetState().ActiveUserName,
                         Message = request.RequestMessage.Message
                     },
+                    AutoRenewal = request.AutoRenewal
                 });
 
                 await MainStore.SetActiveComponent(RequestsMainPanelState.InnerComponents.Info);

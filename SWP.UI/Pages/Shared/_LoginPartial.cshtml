@@ -19,6 +19,12 @@
                 Konto Powiązane
             </li>
         }
+        else if ((await authService.AuthorizeAsync(User, PortalNames.Policies.BasicUser)).Succeeded)
+        {
+            <li class="nav-item">
+                Konto Podstawowe
+            </li>
+        }
         <li class="nav-item">
             <img src="/Images/icons8-male-user-24.png" /> <strong><a asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">@User.Identity.Name</a></strong>
         </li>

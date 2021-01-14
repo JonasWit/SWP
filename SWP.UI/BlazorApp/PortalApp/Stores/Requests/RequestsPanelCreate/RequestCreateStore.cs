@@ -20,9 +20,9 @@ namespace SWP.UI.BlazorApp.PortalApp.Stores.Requests.RequestsPanelCreate
 
         public class StepsConfiguration
         {
-            public int ChosenRequestReason { get; set; } 
-            public int ChosenApplication { get; set; } 
-            public RequestReason NewRequestReason { get; set; } 
+            public int ChosenRequestReason { get; set; }
+            public int ChosenApplication { get; set; }
+            public RequestReason NewRequestReason { get; set; }
             public ApplicationType NewRequestApplication { get; set; }
             public string Message { get; set; }
 

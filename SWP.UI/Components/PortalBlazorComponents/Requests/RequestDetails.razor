@@ -6,7 +6,6 @@ else
 {
     <RadzenCard>
         <h2>Szczegóły zapytania</h2>
-
         <RadzenDataList WrapItems="true" AllowPaging="true" Data="@Store.GetState().ActiveRequest.Messages" TItem="RequestMessageViewModel" PageSize="5">
             <Template Context="message">
                 <RadzenCard Style="width:100%">

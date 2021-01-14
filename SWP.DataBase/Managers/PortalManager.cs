@@ -204,6 +204,7 @@ namespace SWP.DataBase.Managers
 
         public async Task<ManagerActionResult> ChangeProfileName(Claim oldProfile, string newProfile)
         {
+            //not used for now
             try
             {
                 var users = await GetUsersForProfile(oldProfile) as List<IdentityUser>;
@@ -242,11 +243,6 @@ namespace SWP.DataBase.Managers
             catch (ManagerActionResult ex)
             {
                 return ex;
-            }
-            finally
-            {
-
-                //todo: check and cleanup all root profiles or incorrect profiles
             }
         }
 

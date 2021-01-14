@@ -24,7 +24,6 @@ namespace SWP.DataBase
 
         public DbSet<AccessToCase> AccessToCases { get; set; }
         public DbSet<AccessToClient> AccessToClients { get; set; }
-        public DbSet<AccessToPanel> AccessToPanels { get; set; }
 
         #endregion
 

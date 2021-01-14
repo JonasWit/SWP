@@ -254,7 +254,6 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Productivity
 
         private void CancelTimeRecordEdit(TimeRecordViewModel time)
         {
-            //todo: sprawdzic te cancele pozniej dla gridow
             _state.TimeRecordsGrid.CancelEditRow(time);
             BroadcastStateChange();
         }

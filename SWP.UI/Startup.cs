@@ -113,8 +113,10 @@ namespace SWP.UI
             {
                 endpoints.MapControllers();
                 endpoints.MapRazorPages();
-                endpoints.MapBlazorHub();
+                endpoints.MapBlazorHub("/Blazor/_blazor");
+                endpoints.MapFallbackToPage("~/Blazor/{*clientroutes:nonfile}", "/Blazor/_Host");
             });
+
         }
     }
 }

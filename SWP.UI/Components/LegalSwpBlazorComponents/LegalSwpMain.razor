@@ -1,7 +1,6 @@
 ﻿@if (!MainStore.Loading)
 {
-    @if (MainStore.GetState().AppActiveUserManager.ProfileName is not null ||
-      !MainStore.GetState().AppActiveUserManager.IsLegalLicenseActive)
+    @if (MainStore.GetState().AppActiveUserManager.ProfileName is not null && MainStore.GetState().AppActiveUserManager.IsLegalLicenseActive)
     {
         <div id="grid-container-2">
             <nav class="sidebar @(!showSidebar ? "" : "sidebar-add")">
@@ -196,7 +195,14 @@
     }
     else
     {
-        <LegalAppGeneralWarningComponent Message="@("TEST")"></LegalAppGeneralWarningComponent>
+        if (MainStore.GetState().AppActiveUserManager.ProfileName is null)
+        {
+            <LegalAppGeneralWarningComponent Message="@("Brak Profilu! Skontaktuj się z nami jeśli chcesz zakupić licencję.")"></LegalAppGeneralWarningComponent>
+        }
+        else if (!MainStore.GetState().AppActiveUserManager.IsLegalLicenseActive)
+        {
+            <LegalAppGeneralWarningComponent Message="@("Licencja nieaktywna! Skontaktuj się z nami jeśli chcesz zakupić licencję.")"></LegalAppGeneralWarningComponent>
+        }
     }
 }
 else

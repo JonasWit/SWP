@@ -45,6 +45,13 @@ body {
     top: 2%;
 }
 
+.carousel-text-4 {
+    position: absolute;
+    width: 350px;
+    left: 65%;
+    top: 2%;
+    background-color: #fff !important;
+}
 
 
 .carousel-text-1 a {

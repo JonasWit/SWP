@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace SWP.UI.Pages.Marketing.IndividualSolutions
+namespace SWP.UI.Pages.Marketing.WebPages
 {
     public class IndexModel : PageModel
     {

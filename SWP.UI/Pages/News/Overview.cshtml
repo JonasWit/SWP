@@ -33,8 +33,16 @@
                                     @singleNews.Created.ToShortDateString()
                                 </span>
                             </h2>
-                            <a class="info" asp-page="/News/NewsDetails" asp-route-id="@singleNews.Id">Zobacz</a>
+
+                            <div class="py-4 news-intro">
+                                @singleNews.Description
+
+                                <div class=""><a class="btn py-2 px-3" asp-page="/News/NewsDetails" asp-route-id="@singleNews.Id">Zobacz</a></div>
+                            </div>
+                           
                         </div>
+
+
                     </div>
                 </div>
             }

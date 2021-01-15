@@ -564,18 +564,18 @@ li {
         transition: all 0.4s ease-in-out;
     }
 
-    .hovereffect:hover .overlay {
+  /*  .hovereffect:hover .overlay {
         background-color: rgba(0, 51, 102, 0.4);
-    }
+    }*/
 
     .hovereffect img {
         display: block;
         position: relative;
     }
 
-    .hovereffect h2 {
+    /*.hovereffect h2 {
         text-transform: uppercase;
-        color: #fff;
+        color: #000;
         text-align: center;
         position: relative;
         font-size: 17px;
@@ -592,6 +592,7 @@ li {
         -webkit-transform: translateY(5px);
         -ms-transform: translateY(5px);
         transform: translateY(5px);
+        color: #fff;
     }
 
     .hovereffect a.info {
@@ -624,9 +625,13 @@ li {
 
     .hovereffect a.info:hover {
         box-shadow: 0 0 5px #fff;
-    }
+    }*/
 
-
+.news-intro {
+   width: auto;
+   margin: auto;
+   background-color: #fff;
+}
 
 
 @media screen and (max-width: 768px) {

@@ -11,16 +11,13 @@ namespace SWP.DataBase.Managers
 {
     public class LegalManager : DataManagerBase, ILegalManager
     {
-        public LegalManager(AppContext context) : base(context)
-        {
-        }
+        public LegalManager(AppContext context) : base(context) { }
 
         public Task<int> DeleteAllAccess(string userId)
         {
             //todo: to be tested
             _context.AccessToCases.RemoveRange(_context.AccessToCases.Where(x => x.UserId.Equals(userId)));
             _context.AccessToClients.RemoveRange(_context.AccessToClients.Where(x => x.UserId.Equals(userId)));
-            _context.AccessToPanels.RemoveRange(_context.AccessToPanels.Where(x => x.UserId.Equals(userId)));
             return _context.SaveChangesAsync();
         }
 
@@ -80,7 +77,15 @@ namespace SWP.DataBase.Managers
 
         public Task<int> DeleteProfileClients(string profile)
         {
-            _context.Clients.RemoveRange(_context.Clients.Where(x => x.ProfileClaim == profile));
+            //todo: test this
+
+            var clients = _context.Clients.Where(x => x.ProfileClaim == profile);
+
+            _context.Clients.RemoveRange(clients);
+
+            _context.AccessToClients.RemoveRange(_context.AccessToClients.Where(x => !_context.Clients.Any(y => y.Id.Equals(x.ClientId))));
+            _context.AccessToCases.RemoveRange(_context.AccessToCases.Where(x => !_context.Cases.Any(y => y.Id.Equals(x.CaseId))));
+
             return _context.SaveChangesAsync();
         }
 
@@ -720,16 +725,6 @@ namespace SWP.DataBase.Managers
             return _context.SaveChangesAsync();
         }
 
-        public Task<int> GrantAccessToPanel(string userId, int panelId)
-        {
-            if (!_context.AccessToPanels.Any(x => x.Id.Equals(userId) && x.PanelId.Equals(panelId)))
-            {
-                _context.AccessToPanels.Add(new AccessToPanel { PanelId = panelId, UserId = userId });
-            }
-
-            return _context.SaveChangesAsync();
-        }
-
         public Task<int> GrantAccessToCases(string userId, List<int> caseIds)
         {
             foreach (var caseId in caseIds)
@@ -750,19 +745,6 @@ namespace SWP.DataBase.Managers
                 if (!_context.AccessToClients.Any(x => x.Id.Equals(userId) && x.ClientId.Equals(clientId)))
                 {
                     _context.AccessToClients.Add(new AccessToClient { ClientId = clientId, UserId = userId });
-                }
-            }
-
-            return _context.SaveChangesAsync();
-        }
-
-        public Task<int> GrantAccessToRanels(string userId, List<int> panelIds)
-        {
-            foreach (var panelId in panelIds)
-            {
-                if (!_context.AccessToPanels.Any(x => x.Id.Equals(userId) && x.PanelId.Equals(panelId)))
-                {
-                    _context.AccessToPanels.Add(new AccessToPanel { PanelId = panelId, UserId = userId });
                 }
             }
 
@@ -791,17 +773,6 @@ namespace SWP.DataBase.Managers
             return _context.SaveChangesAsync();
         }
 
-        public Task<int> RevokeAccessToPanel(string userId, int panelId)
-        {
-            var toRemove = _context.AccessToPanels.FirstOrDefault(x => x.Id.Equals(userId) && x.PanelId.Equals(panelId));
-            if (toRemove is not null)
-            {
-                _context.AccessToPanels.Remove(toRemove);
-            }
-
-            return _context.SaveChangesAsync();
-        }
-
         public Task<int> RevokeAccessToCases(string userId, List<int> caseIds)
         {
             var toRemove = _context.AccessToCases.Where(x => x.UserId.Equals(userId) && caseIds.Contains(x.CaseId)).ToList();
@@ -818,19 +789,9 @@ namespace SWP.DataBase.Managers
             return _context.SaveChangesAsync();
         }
 
-        public Task<int> RevokeAccessToRanels(string userId, List<int> panelsIds)
-        {
-            var toRemove = _context.AccessToPanels.Where(x => x.UserId.Equals(userId) && panelsIds.Contains(x.PanelId)).ToList();
-            _context.AccessToPanels.RemoveRange(toRemove);
-
-            return _context.SaveChangesAsync();
-        }
-
         public Task<List<AccessToCase>> GetAccessToCase(string userId) => _context.AccessToCases.Where(x => x.UserId.Equals(userId)).ToListAsync();
 
         public Task<List<AccessToClient>> GetAccessToClient(string userId) => _context.AccessToClients.Where(x => x.UserId.Equals(userId)).ToListAsync();
-
-        public Task<List<AccessToPanel>> GetAccessToPanel(string userId) => _context.AccessToPanels.Where(x => x.UserId.Equals(userId)).ToListAsync();
 
         public Task<int> DeleteCaseAccessRecords(List<int> caseIds)
         {

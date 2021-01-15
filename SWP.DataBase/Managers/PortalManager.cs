@@ -204,6 +204,7 @@ namespace SWP.DataBase.Managers
 
         public async Task<ManagerActionResult> ChangeProfileName(Claim oldProfile, string newProfile)
         {
+            //not used for now
             try
             {
                 var users = await GetUsersForProfile(oldProfile) as List<IdentityUser>;
@@ -242,11 +243,6 @@ namespace SWP.DataBase.Managers
             catch (ManagerActionResult ex)
             {
                 return ex;
-            }
-            finally
-            {
-
-                //todo: check and cleanup all root profiles or incorrect profiles
             }
         }
 
@@ -298,19 +294,6 @@ namespace SWP.DataBase.Managers
             entity.Status = request.Status;
 
             _context.ClientRequests.Update(entity);
-            return _context.SaveChangesAsync();
-        }
-
-        public int CountPendingMessages(int id) =>
-            _context.ClientRequests
-                .Include(x => x.Messages)
-                .FirstOrDefault(x => x.Id.Equals(id))
-                .Messages.Count(x => !x.Seen);
-
-        public Task<int> MarkMessageAsSeen(int id)
-        {
-            var entity = _context.ClientRequestMessages.FirstOrDefault(x => x.Id.Equals(id));
-            entity.Seen = true;
             return _context.SaveChangesAsync();
         }
 

@@ -4,7 +4,7 @@ using SWP.Application.LegalSwp.Cases;
 using SWP.Application.LegalSwp.Clients;
 using SWP.UI.BlazorApp.LegalApp.Stores.Archive.Actions;
 using SWP.UI.BlazorApp.LegalApp.Stores.Main;
-using SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data;
+using SWP.UI.Components.ViewModels.LegalApp;
 using System;
 using System.Collections.Generic;
 using System.Linq;

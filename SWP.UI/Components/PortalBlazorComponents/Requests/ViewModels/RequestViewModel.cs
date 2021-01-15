@@ -24,6 +24,7 @@ namespace SWP.UI.Components.PortalBlazorComponents.Requests.ViewModels
         public string DisplayStatus { get; set; }
         public string DisplayApplication => Application.ToString();
         public int AwaitingMessages { get; set; }
+        public bool AutoRenewal { get; set; }
 
         public List<RequestMessageViewModel> Messages { get; set; } = new List<RequestMessageViewModel>();
 
@@ -164,6 +165,7 @@ namespace SWP.UI.Components.PortalBlazorComponents.Requests.ViewModels
                 Messages = input.Messages == null ? new List<RequestMessageViewModel>() : input.Messages.Select(x => (RequestMessageViewModel)x).ToList().OrderByDescending(x => x.Updated).ToList(),
                 DisplaySubject = RequestReasonsDisplay()[input.Reason],
                 DisplayStatus = RequestStatusesDisplay()[input.Status],
+                AutoRenewal = input.AutoRenewal
             };
 
             return result;

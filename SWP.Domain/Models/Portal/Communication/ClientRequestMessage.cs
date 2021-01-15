@@ -13,7 +13,6 @@ namespace SWP.Domain.Models.Portal.Communication
         public string AuthorId { get; set; }
         [MaxLength(1000)]
         public string Message { get; set; }
-        public bool Seen { get; set; }
 
         public int ClientRequestId { get; set; }
         public ClientRequest ClientRequest { get; set; }

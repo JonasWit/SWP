@@ -20,6 +20,7 @@ namespace SWP.Application.Maintenance
 
         public Task<int> RunFullCleanup()
         {
+            //todo: run for cleanup only
             //todo: delete all clients accesses
             //todo: delete all cases accesses
             //todo: delete any possible billing data
@@ -27,7 +28,7 @@ namespace SWP.Application.Maintenance
 
 
 
-            throw new NotImplementedException();
+            return Task.FromResult(0);
         }
     }
 }

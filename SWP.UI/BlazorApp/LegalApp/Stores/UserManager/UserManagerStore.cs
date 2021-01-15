@@ -9,8 +9,8 @@ using SWP.Domain.Enums;
 using SWP.Domain.Models.LegalApp;
 using SWP.UI.BlazorApp.LegalApp.Stores.Main;
 using SWP.UI.BlazorApp.LegalApp.Stores.UserManager.Actions;
-using SWP.UI.Components.LegalSwpBlazorComponents.Dialogs;
-using SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data;
+using SWP.UI.Components.LegalAppBlazorComponents.Dialogs;
+using SWP.UI.Components.ViewModels.LegalApp;
 using SWP.UI.Models;
 using SWP.UI.Utilities;
 using System;
@@ -486,8 +486,8 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.UserManager
             {
                 using var scope = _serviceProvider.CreateScope();
                 var deleteClient = scope.ServiceProvider.GetRequiredService<DeleteClient>();
-                //todo: uncomment this and test
-                //await deleteClient.Delete(MainStore.GetState().User.Profile);
+
+                await deleteClient.Delete(MainStore.GetState().AppActiveUserManager.ProfileName);
 
                 ShowNotification(NotificationSeverity.Success, "Sukces!", $"Usunięto wszystkie dane powiązane z profilem: {MainStore.GetState().AppActiveUserManager.ProfileName}", GeneralViewModel.NotificationDuration);
                 BroadcastStateChange();

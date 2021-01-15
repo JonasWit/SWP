@@ -15,23 +15,18 @@ namespace SWP.Domain.Infrastructure.LegalApp
 
         Task<List<AccessToCase>> GetAccessToCase(string userId);
         Task<List<AccessToClient>> GetAccessToClient(string userId);
-        Task<List<AccessToPanel>> GetAccessToPanel(string userId);
 
         Task<int> GrantAccessToCase(string userId, int caseId);
         Task<int> GrantAccessToClient(string userId, int clientId);
-        Task<int> GrantAccessToPanel(string userId, int panelId);
 
         Task<int> GrantAccessToCases(string userId, List<int> caseIds);
         Task<int> GrantAccessToClients(string userId, List<int> clientIds);
-        Task<int> GrantAccessToRanels(string userId, List<int> panelsIds);
 
         Task<int> RevokeAccessToCase(string userId, int caseId);
         Task<int> RevokeAccessToClient(string userId, int clientId);
-        Task<int> RevokeAccessToPanel(string userId, int panelId);
 
         Task<int> RevokeAccessToCases(string userId, List<int> caseIds);
         Task<int> RevokeAccessToClients(string userId, List<int> clientIds);
-        Task<int> RevokeAccessToRanels(string userId, List<int> panelsIds);
 
         Task<int> DeleteCaseAccessRecords(List<int> caseIds);
         Task<int> DeleteClientAccessRecords(List<int> clientIds);

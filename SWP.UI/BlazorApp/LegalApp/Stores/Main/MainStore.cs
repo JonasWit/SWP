@@ -7,7 +7,7 @@ using SWP.Application.LegalSwp.Clients;
 using SWP.Application.LegalSwp.Reminders;
 using SWP.Domain.Enums;
 using SWP.UI.BlazorApp.LegalApp.Stores.Error;
-using SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data;
+using SWP.UI.Components.ViewModels.LegalApp;
 using SWP.UI.Models;
 using SWP.UI.Utilities;
 using System;

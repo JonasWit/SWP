@@ -1,5 +1,5 @@
 ﻿using Radzen;
-using SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data;
+using SWP.UI.Components.ViewModels.LegalApp;
 using System;
 using System.Collections.Generic;
 using System.Linq;

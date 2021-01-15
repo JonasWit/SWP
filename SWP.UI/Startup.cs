@@ -69,6 +69,7 @@ namespace SWP.UI
             {
                 options.AddPolicy(PortalNames.Policies.LegalApplication, policy => policy.RequireClaim(ClaimType.Application.ToString(), ApplicationType.LegalApplication.ToString()));
                 options.AddPolicy(PortalNames.Policies.RootClient, policy => policy.RequireClaim(ClaimType.Status.ToString(), UserStatus.RootClient.ToString()));
+                options.AddPolicy(PortalNames.Policies.BasicUser, policy => policy.RequireClaim(ClaimType.Status.ToString(), UserStatus.Default.ToString()));
                 options.AddPolicy(PortalNames.Policies.RelatedAccount, policy => policy.RequireClaim(ClaimType.Status.ToString(), UserStatus.RelatedUser.ToString()));
                 options.AddPolicy(PortalNames.Policies.AuthenticatedUser, policy => policy.RequireAssertion(context => 
                     context.User.IsInRole(PortalNames.Roles.Administrators) || context.User.IsInRole(PortalNames.Roles.Users)));

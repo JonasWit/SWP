@@ -16,11 +16,9 @@ namespace SWP.Application.LegalSwp.AppDataAccess
 
         public Task<int> GrantAccessToCase(string userId, int caseId) => _legalManager.GrantAccessToCase(userId, caseId);
         public Task<int> GrantAccessToClient(string userId, int clientId) => _legalManager.GrantAccessToClient(userId, clientId);
-        public Task<int> GrantAccessToPanel(string userId, int panelId) => _legalManager.GrantAccessToPanel(userId, panelId);
 
         public Task<int> GrantAccessToCases(string userId, List<int> caseIds) => caseIds.Count == 0 ? Task.FromResult(0) : _legalManager.GrantAccessToCases(userId, caseIds);
         public Task<int> GrantAccessToClients(string userId, List<int> clientIds) => clientIds.Count == 0 ? Task.FromResult(0) : _legalManager.GrantAccessToClients(userId, clientIds);
-        public Task<int> GrantAccessToRanels(string userId, List<int> panelsIds) => panelsIds.Count == 0 ? Task.FromResult(0) : _legalManager.GrantAccessToRanels(userId, panelsIds);
 
     }
 }

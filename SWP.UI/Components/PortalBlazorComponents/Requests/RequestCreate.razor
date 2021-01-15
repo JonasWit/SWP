@@ -57,12 +57,12 @@
                                 <RadzenNumericRangeValidator Component="LicenseMonths" Min="1" Text="Minimalny czas licencji to 1 miesiąc od zaksięgowania zapłaty." Popup="false" Style="position: absolute" />
                             </div>
 
+                            <p class="pt-2">Zmiana liczby powiązanych użytkowników</p>
+                            <RadzenNumeric TValue="int" @bind-Value="Store.GetState().NewRequest.RelatedUsers" Min="@Store.GetState().NewRequest.RelatedUsers" Name="RelatedUsers" />
+
                             //Automatyczne odnowienie
                             <p class="pt-2">Automatyczne Odnowienie</p>
                             <RadzenCheckBox @bind-Value="@Store.GetState().NewRequest.AutoRenewal" TValue="bool" />
-
-                            <p class="pt-2">Zmiana liczby powiązanych użytkowników</p>
-                            <RadzenNumeric TValue="int" @bind-Value="Store.GetState().NewRequest.RelatedUsers" Min="@Store.GetState().NewRequest.RelatedUsers" Name="RelatedUsers" />
                         }
 
                         @*Zmiana licencji*@

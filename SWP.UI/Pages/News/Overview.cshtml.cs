@@ -11,7 +11,7 @@ namespace SWP.UI.Pages.News
     public class IndexModel : PageModel
     {
         public NewsPageViewModel DataModel { get; set; }
-        public int PageSize { get; set; } = 5;
+        public int PageSize { get; set; } = 4;
 
         public IActionResult OnGet(int pageNumber, string category, [FromServices] GetNews getNews)
         {

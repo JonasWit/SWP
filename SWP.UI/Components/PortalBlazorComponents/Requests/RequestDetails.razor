@@ -6,7 +6,6 @@ else
 {
     <RadzenCard>
         <h2>Szczegóły zapytania</h2>
-
         <RadzenDataList WrapItems="true" AllowPaging="true" Data="@Store.GetState().ActiveRequest.Messages" TItem="RequestMessageViewModel" PageSize="5">
             <Template Context="message">
                 <RadzenCard Style="width:100%">
@@ -31,6 +30,7 @@ else
             <div class="text pb-3">
                 <RadzenTextArea Placeholder="Wiadomość..." @bind-Value="Store.GetState().NewRequestMessage.Message" Name="RequestMessage" Style="width:100%; height:180px;" />
                 <RadzenRequiredValidator Component="RequestMessage" Text="Wiadomość..." Popup="true" />
+                <RadzenLengthValidator Max="1000" Text="Maksymalnie 1000 znaków!" Component="RequestMessage" />
             </div>
             <RadzenButton ButtonType="ButtonType.Submit" Text="Wyślij" ButtonStyle="ButtonStyle.Secondary" />
         </RadzenFieldset>

@@ -43,7 +43,5 @@ namespace SWP.Domain.Infrastructure.Portal
         Task<int> DeleteRequest(int id);
         Task<int> DeleteRequest(string userId);
         Task<int> UpdateRequest(ClientRequest request);
-        int CountPendingMessages(int id);
-        Task<int> MarkMessageAsSeen(int id);
     }
 }

@@ -24,6 +24,6 @@ namespace SWP.Application.PortalCustomers.RequestsManagement
 
         public List<ClientRequest> GetRequests() => _portalManager.GetRequests();
 
-        public int CountPendingMessages(int requestId) => _portalManager.CountPendingMessages(requestId);
+
     }
 }

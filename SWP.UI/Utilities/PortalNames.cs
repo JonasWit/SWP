@@ -9,6 +9,7 @@ namespace SWP.UI.Utilities
     {
         public struct Policies
         {
+            public const string BasicUser = nameof(BasicUser);
             public const string RootClient = nameof(RootClient);
             public const string RelatedAccount = nameof(RelatedAccount);
             public const string UnrelatedAccount = nameof(UnrelatedAccount);

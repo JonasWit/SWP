@@ -1,0 +1,64 @@
+﻿@using SWP.UI.Components.ViewModels.LegalApp
+
+<div class="popup-box">
+    <RadzenTemplateForm TItem="ReminderViewModel" Data="@model" Submit=@OnSubmit Style="width: 100%;">
+        <div class="popup">
+            <div>
+                <strong> <RadzenLabel Text="Nazwa" Style="width: 100%; margin-bottom: 10px;" /></strong>
+            </div>
+            <div>
+                <RadzenTextBox @bind-Value="@model.Name" Name="Name" Style="width: 100%; margin-bottom: 10px; " />
+                <RadzenRequiredValidator Text="Nazwa jest wymagana" Component="Name" />
+                <RadzenLengthValidator Max="50" Text="Maksymalnie 50 znaków" Component="Name" />
+            </div>
+            <div>
+                <strong><RadzenLabel Text="Treść" Style="width: 100%; margin-bottom: 10px;" /></strong>
+            </div>
+            <div>
+                <RadzenTextArea @bind-Value="@model.Message" Name="Message" Style="width: 100%; margin-bottom: 10px; " />
+                <RadzenLengthValidator Max="500" Text="Maksymalnie 500 znaków!" Component="Message" />
+            </div>
+            <div>
+                <strong> <RadzenLabel Text="Priorytet" Style="width: 100%; margin-bottom: 10px; " /></strong>
+            </div>
+            <div>
+                <RadzenDropDown @bind-Value="model.Priority" Data="@generalVm.Priorities" TextProperty="Number" ValueProperty="Number" Style="width: 100%; margin-bottom: 10px; " />
+            </div>
+            <div>
+                <strong><RadzenLabel Text="Termin procesowy" Style="margin: auto; margin-bottom: 10px; " /></strong>
+            </div>
+            <div>
+                <RadzenCheckBox @bind-Value="@model.IsDeadline" TValue="bool" Style="margin-bottom: 10px; width: 25px; " />
+            </div>
+            <div>
+                <strong><RadzenLabel Text="Start" Style="margin-bottom: 10px; width: 100%;" /></strong>
+            </div>
+            <div>
+                <RadzenDatePicker @bind-Value="@model.Start" Name="Start" ShowTime="true" Style="margin-bottom: 10px; width: 100%; " />
+                <RadzenRequiredValidator Text="Start is required" Component="Start" Style="margin-bottom: 10px; width: 100%;" />
+            </div>
+            <div>
+                <strong><RadzenLabel Text="Koniec" Style="margin-bottom: 10px; width: 100%;" /></strong>
+            </div>
+            <div>
+                <RadzenDatePicker Name="End" @bind-Value="@model.End" ShowTime="true" Style="margin-bottom: 10px; width: 100%; " />
+                <RadzenRequiredValidator Component="End" Text="End is required" />
+            </div>
+            <div>
+                <strong><RadzenLabel Text="@model.UpdatedDescription" Style="margin-top: 15px; width: 100%; " /></strong>
+            </div>
+            <div>
+                <strong> <RadzenLabel Text="@model.CreatedDescription" Style="margin-top: 15px; width: 100%; " /></strong>
+            </div>
+        </div>
+        <div class="form-btn">
+            <div class="btn-add">
+                <div Style="margin-top: 25px;">
+                    <RadzenButton ButtonType="ButtonType.Submit" Text="Zapisz" ButtonStyle="ButtonStyle.Secondary" />
+                    <RadzenButton Click="@(() => Delete())" Text="Usuń" ButtonStyle="ButtonStyle.Secondary" />
+                    <RadzenButton ButtonType="ButtonType.Submit" Click="Close" Text="Anuluj" ButtonStyle="ButtonStyle.Secondary" />
+                </div>
+            </div>
+        </div>
+    </RadzenTemplateForm>
+</div>

@@ -1,19 +1,14 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Radzen;
 using Radzen.Blazor;
 using SWP.Application.LegalSwp.CashMovements;
 using SWP.Application.LegalSwp.Clients;
 using SWP.Application.LegalSwp.TimeRecords;
 using SWP.UI.BlazorApp.LegalApp.Stores.Main;
-using SWP.UI.BlazorApp.LegalApp.Stores.UserManager.Actions;
-using SWP.UI.Components.LegalSwpBlazorComponents.Dialogs;
-using SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data;
-using SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data.Statistics;
+using SWP.UI.Components.ViewModels.LegalApp.Statistics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace SWP.UI.BlazorApp.LegalApp.Stores.MyApp

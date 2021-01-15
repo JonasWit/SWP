@@ -6,7 +6,7 @@ using SWP.Application.LegalSwp.TimeRecords;
 using SWP.UI.BlazorApp.LegalApp.Services.Reporting;
 using SWP.UI.BlazorApp.LegalApp.Stores.Main;
 using SWP.UI.BlazorApp.LegalApp.Stores.Productivity.Actions;
-using SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data;
+using SWP.UI.Components.ViewModels.LegalApp;
 using System;
 using System.Collections.Generic;
 using System.Linq;

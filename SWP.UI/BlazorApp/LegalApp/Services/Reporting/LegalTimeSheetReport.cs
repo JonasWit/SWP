@@ -2,7 +2,7 @@
 using iTextSharp.text.pdf;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.JSInterop;
-using SWP.UI.Components.LegalSwpBlazorComponents.ViewModels.Data;
+using SWP.UI.Components.ViewModels.LegalApp;
 using SWP.UI.Utilities;
 using System;
 using System.Collections.Generic;

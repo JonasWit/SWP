@@ -28,7 +28,7 @@ namespace SWP.Application.Maintenance
 
 
 
-            throw new NotImplementedException();
+            return Task.FromResult(0);
         }
     }
 }

@@ -22,7 +22,9 @@ namespace SWP.UI.Controllers
         public async Task<IActionResult> CleanupCall(
             [FromServices] ILogger<AutomationController> logger, 
             [FromServices] RunPortalMaintenance runPortalMaintenance)
-        {
+        {  
+            var result = await runPortalMaintenance.RunFullCleanup();
+
             //var resuest = new CreateLogRecord.Request { Message = "Crawlers Started", TimeStamp = DateTime.Now };
             //await createLogRecord.DoAsync(resuest);
 
@@ -31,7 +33,7 @@ namespace SWP.UI.Controllers
             //resuest = new CreateLogRecord.Request { Message = $"Scraping Finished, products found: {productsFound}", TimeStamp = DateTime.Now };
             //await createLogRecord.DoAsync(resuest);
 
-            logger.LogInformation($"{LogTags.AutomationLogPrefix} Clean Up Call.");
+            logger.LogInformation($"{LogTags.AutomationLogPrefix} Clean Up Finished.");
             return Ok(true);
         }
     }

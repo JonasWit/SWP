@@ -2,19 +2,16 @@
 @model SWP.UI.Pages.News.NewsDispalyModel
 @{
 }
-<h1>News Details</h1>
 
 <div class="container-fluid product">
 
     <div class="container">
-
-        <div class="jumbotron-news">
+       <div class="jumbotron-news">
             <div class="container">
                 <div class="row">
                     <div class="col-10">
-                        <h2 class="news-category">@Model.DataModel.Title</h2>
-                        <h3>@Model.DataModel.Category</h3>
-                        <p class="text-black-50">@Model.DataModel.Created</p>
+                        <h2 class="news-category pb-2">@Model.DataModel.Title</h2>
+                                              <p class="text-black-50">@Model.DataModel.Created</p>
                     </div>
                     <div class="col-2">
                         <div>
@@ -27,8 +24,8 @@
                     </div>
                 </div>
             </div>
-            <div>
-                <p class="text-uppercase">@Model.DataModel.Description</p>
+            <div class=" col-12">
+                <p class="text-uppercase"><strong>@Model.DataModel.Description</strong></p>
                 <p class="text-body">@Html.Raw(Model.DataModel.Body) </p>
             </div>
         </div>

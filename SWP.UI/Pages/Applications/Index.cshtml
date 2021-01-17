@@ -25,17 +25,17 @@
         break;
     case ApplicationType.NoApp:
         <h2>Witaj!</h2>
-        <h4 class="mt-3 mb-5">Zalogowano jako <span class="user-name">@Model.User.Identity.Name</span>.</h4>
+        <h4 class="py-3">Zalogowano jako <span class="user-name">@Model.User.Identity.Name</span>.</h4>
 
         @if ((await authService.AuthorizeAsync(User, PortalNames.Policies.LegalApplication)).Succeeded)
         {
             <div class="card app-card shadow-lg p-3 mb-5 bg-white rounded">
-                <h5 class="text-center mt-5 mb-3">Twoja Kancelaria</h5>
+                <h2 class="text-center mt-5 mb-3">Twoja Kancelaria</h2>
                 <i class="text-center"><img src="~/Images/icons8-courthouse-60.png" /></i>
                 <div class="card-body mt-4 mb-4">
                     <div class="row">
                         <div class="col-4 text-left">
-                            <p><strong>Użytkownik:</strong> </p>
+                            <p><strong>Nazwa użytkownika:</strong> </p>
                             <p><strong>Liczba powiązanych użytkowników:</strong></p>
                             <p><strong>Ważność licencji:</strong></p>
                             <p><strong>Profil:</strong></p>
@@ -76,17 +76,19 @@
                                     }
                                     else if (Model.AccessModel.LegalLicense.ValidTo <= DateTime.Now)
                                     {
-                                        <p class="text-center"><a class="btn" asp-page="/Communication/Request">Przedłuż Licencję</a></p>
+                                        <p class="text-center"><a class="btn py-2 px-3" asp-page="/Communication/Request">Przedłuż Licencję</a></p>
                                     }
                                     else
                                     {
-                                        <p class="text-center"><a class="btn" asp-page-handler="LegalApp">Przejdź do aplikacji</a></p>
-                                        @*<p class="text-center"><a class="btn-2" asp-page="/Applications/LegalApplication/Index">Przejdź do aplikacji</a></p>*@
+                                        <p class="text-center"><a class="btn py-2 px-4" asp-page-handler="LegalApp"><img class="r-btn" src="/Images/icons8-enter-24.png" />Przejdź do aplikacji</a></p>
+
                                     }
                                 }
                             }
-
-                            <p class="text-center"><a data-toggle="tooltip" data-placement="bottom" title="Przejdź do pomocy" asp-page="/Applications/Help"><img src="/Images/icons8-get-help-96.png" /></a></p>
+                            <p class="text-center">
+                                <a class="btn py-2 px-3" asp-page="/Communication/Index"><img class="r-btn" src="/Images/icons8-send-email-24.png" />Formularz kontaktowy</a>
+                            </p>
+                            @*<p class="text-center"><a data-toggle="tooltip" data-placement="bottom" title="Przejdź do pomocy" asp-page="/Applications/Help"><img src="/Images/icons8-get-help-96.png" /></a></p>*@
                         </div>
                     </div>
                 </div>
@@ -94,7 +96,30 @@
         }
         else
         {
-            <h4 class="mt-3 mb-5">Nie posiadasz obecnie dostępu do żadnych Aplikacji.</h4>
+            <h4 class="mt-3 pb-2">Nie posiadasz obecnie dostępu do żadnych Aplikacji.</h4>
+            <h5 class="py-3">Zapoznaj się z naszą ofertą:</h5>
+            <div class="edit-news py-3">
+                <div>
+                    <img class="mx-auto d-block p-2" src="/Images/icons8-application-window-50.png" />
+                    <p><a class="text-center main-links" asp-page="/DesktopSolutions/WebSolutions">Aplikacje webowe</a></p>
+                </div>
+                <div>
+                    <img class="mx-auto d-block p-2" src="/Images/icons8-computer-50.png" />
+                    <p><a class="text-center main-links" asp-page="/Marketing/DesktopSolutions">Aplikacje desktopowe</a></p>
+                </div>
+                <div>
+                    <img class="mx-auto d-block p-2" src="/Images/icons8-website-50.png" />
+                    <p><a class="text-center main-links" asp-page="/DesktopSolutions/WebPages">Strony internetowe</a></p>
+                </div>
+                <div>
+                    <img class="mx-auto d-block p-2" src="/Images/icons8-idea-sharing-50.png" />
+                    <p><a class="text-center main-links" asp-page="/DesktopSolutions/IndividualSolutions">Rozwiązania indywidualne</a></p>
+                </div>
+
+            </div>
+            <h5>Jeśli jesteś zainteresowany współpracą lub chcesz się dowiedzieć więcej na temat naszych produktów, zapraszamy do kontaku.</h5>
+            <p>Nasz adres email to: <a class="main-links" href="mailto:biuro@systemywp.pl">biuro@systemywp.pl</a></p>
+            <p>Zarejestrowani użytkownicy mogą skorzystać z <a class="main-links" asp-page="/Communication/Index">formularza kontaktowego</a>, który jest dostępny po zalogowaniu.</p>
         }
         break;
     default:

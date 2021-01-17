@@ -5,76 +5,72 @@
 }
 else
 {
-<EditForm Model="@Store.GetState().DataModel" OnValidSubmit="@SubmitNews">
-    <DataAnnotationsValidator />
+    <EditForm Model="@Store.GetState().DataModel" OnValidSubmit="@SubmitNews">
+        <DataAnnotationsValidator />
+        <div class="edit-news">
+            <div>
+                <label>Tytuł</label>
+                <InputText @bind-Value="@Store.GetState().DataModel.Title" Style="width: 350px;" />
+                <ValidationMessage For="@(() => Store.GetState().DataModel.Title)"></ValidationMessage>
+            </div>
+            <div>
+                <label>Tags</label>
+                <InputText @bind-Value="@Store.GetState().DataModel.Tags" Style="width: 350px;" />
+                <ValidationMessage For="@(() => Store.GetState().DataModel.Tags)"></ValidationMessage>
+            </div>
+        </div>
+        <div class="py-2">
+            <label>Opis</label>
+            <InputText @bind-Value="@Store.GetState().DataModel.Description" Style="height: 50px; width: 100%" />
+            <ValidationMessage For="@(() => Store.GetState().DataModel.Description)"></ValidationMessage>
+        </div>
 
-    <label>Title</label>
-    <InputText @bind-Value="@Store.GetState().DataModel.Title" />
-    <ValidationMessage For="@(() => Store.GetState().DataModel.Title)"></ValidationMessage>
 
-    <label>Description</label>
-    <InputText @bind-Value="@Store.GetState().DataModel.Description" />
-    <ValidationMessage For="@(() => Store.GetState().DataModel.Description)"></ValidationMessage>
+        <RadzenHtmlEditor Name="BodyEditor" @bind-Value=@Store.GetState().DataModel.Body style="height: 500px; margin-bottom: 1rem;">
+            <RadzenHtmlEditorUndo />
+            <RadzenHtmlEditorRedo />
+            <RadzenHtmlEditorSeparator />
+            <RadzenHtmlEditorBold />
+            <RadzenHtmlEditorItalic />
+            <RadzenHtmlEditorUnderline />
+            <RadzenHtmlEditorStrikeThrough />
+            <RadzenHtmlEditorSeparator />
+            <RadzenHtmlEditorAlignLeft />
+            <RadzenHtmlEditorAlignCenter />
+            <RadzenHtmlEditorAlignRight />
+            <RadzenHtmlEditorJustify />
+            <RadzenHtmlEditorSeparator />
+            <RadzenHtmlEditorIndent />
+            <RadzenHtmlEditorOutdent />
+            <RadzenHtmlEditorUnorderedList />
+            <RadzenHtmlEditorOrderedList />
+            <RadzenHtmlEditorSeparator />
+            <RadzenHtmlEditorColor />
+            <RadzenHtmlEditorBackground />
+            <RadzenHtmlEditorRemoveFormat />
+            <RadzenHtmlEditorSeparator />
+            <RadzenHtmlEditorSubscript />
+            <RadzenHtmlEditorSuperscript />
+            <RadzenHtmlEditorSeparator />
+            <RadzenHtmlEditorLink />
+            <RadzenHtmlEditorUnlink />
+            <RadzenHtmlEditorFontName />
+            <RadzenHtmlEditorFontSize />
+            <RadzenHtmlEditorFormatBlock />
+        </RadzenHtmlEditor>
+        <ValidationMessage For="@(() => Store.GetState().DataModel.Body)"></ValidationMessage>
 
-    <label>Tags</label>
-    <InputText @bind-Value="@Store.GetState().DataModel.Tags" />
-    <ValidationMessage For="@(() => Store.GetState().DataModel.Tags)"></ValidationMessage>
+        <p>
+            <InputFile OnChange="@OnInputFileChange" />
 
-    <label>
-        Category:
-    </label>
-    <InputSelect @bind-Value="@Store.GetState().DataModel.Category">
-        @foreach (var category in Store.GetState().DataModel.Categories)
-            {
-            <option value="@(category)">@category</option>
-            }
-    </InputSelect>
+        </p>
+        @if (string.IsNullOrEmpty(Store.GetState().DataModel.ImageName))
+        {
+            <p>Image is requred!</p>
+        }
 
-    <RadzenHtmlEditor Name="BodyEditor" @bind-Value=@Store.GetState().DataModel.Body style="height: 500px; margin-bottom: 1rem;">
-        <RadzenHtmlEditorUndo />
-        <RadzenHtmlEditorRedo />
-        <RadzenHtmlEditorSeparator />
-        <RadzenHtmlEditorBold />
-        <RadzenHtmlEditorItalic />
-        <RadzenHtmlEditorUnderline />
-        <RadzenHtmlEditorStrikeThrough />
-        <RadzenHtmlEditorSeparator />
-        <RadzenHtmlEditorAlignLeft />
-        <RadzenHtmlEditorAlignCenter />
-        <RadzenHtmlEditorAlignRight />
-        <RadzenHtmlEditorJustify />
-        <RadzenHtmlEditorSeparator />
-        <RadzenHtmlEditorIndent />
-        <RadzenHtmlEditorOutdent />
-        <RadzenHtmlEditorUnorderedList />
-        <RadzenHtmlEditorOrderedList />
-        <RadzenHtmlEditorSeparator />
-        <RadzenHtmlEditorColor />
-        <RadzenHtmlEditorBackground />
-        <RadzenHtmlEditorRemoveFormat />
-        <RadzenHtmlEditorSeparator />
-        <RadzenHtmlEditorSubscript />
-        <RadzenHtmlEditorSuperscript />
-        <RadzenHtmlEditorSeparator />
-        <RadzenHtmlEditorLink />
-        <RadzenHtmlEditorUnlink />
-        <RadzenHtmlEditorFontName />
-        <RadzenHtmlEditorFontSize />
-        <RadzenHtmlEditorFormatBlock />
-    </RadzenHtmlEditor>
-    <ValidationMessage For="@(() => Store.GetState().DataModel.Body)"></ValidationMessage>
-
-    <p>
-        <InputFile OnChange="@OnInputFileChange" />
-
-    </p>
-    @if (string.IsNullOrEmpty(Store.GetState().DataModel.ImageName))
-    {
-        <p>Image is requred!</p>
-    }
-
-    <button type="submit">Submit</button>
-</EditForm>
+        <button type="submit">Submit</button>
+    </EditForm>
 }
 
 @*<label>

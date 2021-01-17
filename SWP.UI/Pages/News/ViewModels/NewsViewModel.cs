@@ -24,7 +24,7 @@ namespace SWP.UI.Pages.News.ViewModels
         [StringLength(100, ErrorMessage = "Max 100 Chars.")]
         public string Description { get; set; }
         [Required]
-        [StringLength(100, ErrorMessage = "Max 100 Chars.")]
+        [StringLength(300, ErrorMessage = "Max 300 Chars.")]
         public string Tags { get; set; }
         [Required]
         [StringLength(100, ErrorMessage = "Max 100 Chars.")]

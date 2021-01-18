@@ -11,18 +11,18 @@
                 </ul>
                 <ul class="navigation">
 
-                    <li class="nav-item @(MainStore.GetState().ActivePanel == LegalAppPanels.Info ? "active" : "") " @onclick="@(() => MainStore.SetActivePanel(LegalAppPanels.Info))">
+                    <li class="nav-item @(MainStore.GetState().ActivePanel == LegalAppPanels.Info ? "active" : "") " @onclick="@(() => MainStore.SetActivePanel(LegalAppPanels.Info))" data-toggle="tooltip" data-placement="right" title="Informacje">
                         <a class="nav-link ">
-                            <i><img src="/Images/icons8-web-design-36.png" /></i>
+                            <i><img src="/Images/icons8-user-manual-36.png" /></i>
                             <span class="@(showSidebar ? "link-text" : "text-hidden")">Informacje</span>
                         </a>
                     </li>
 
                     @if (MainStore.GetState().AppActiveUserManager.IsRoot)
                     {
-                        <li class="nav-item @(MainStore.GetState().ActivePanel == LegalAppPanels.UserManager ? "active" : "") " @onclick="@(() => MainStore.SetActivePanel(LegalAppPanels.UserManager))">
+                        <li class="nav-item @(MainStore.GetState().ActivePanel == LegalAppPanels.UserManager ? "active" : "") " @onclick="@(() => MainStore.SetActivePanel(LegalAppPanels.UserManager))" data-toggle="tooltip" data-placement="right" title="Opcje">
                             <a class="nav-link ">
-                                <i><img src="/Images/icons8-web-design-36.png" /></i>
+                                <i><img src="/Images/icons8-administrative-tools-36.png" /></i>
                                 <span class="@(showSidebar ? "link-text" : "text-hidden")">Opcje</span>
                             </a>
                         </li>
@@ -30,20 +30,20 @@
 
                     @if (MainStore.GetState().AppActiveUserManager.IsRoot || MainStore.GetState().AppActiveUserManager.IsStatisticsVisible)
                     {
-                        <li class="nav-item @(MainStore.GetState().ActivePanel == LegalAppPanels.MyApp ? "active" : "") " @onclick="@(() => MainStore.SetActivePanel(LegalAppPanels.MyApp))">
+                        <li class="nav-item @(MainStore.GetState().ActivePanel == LegalAppPanels.MyApp ? "active" : "") " @onclick="@(() => MainStore.SetActivePanel(LegalAppPanels.MyApp))" data-toggle="tooltip" data-placement="right" title="Statystyki">
                             <a class="nav-link ">
-                                <i><img src="/Images/icons8-web-design-36.png" /></i>
+                                <i><img src="/Images/icons8-statistics-36.png" /></i>
                                 <span class="@(showSidebar ? "link-text" : "text-hidden")">Statystyki</span>
                             </a>
                         </li>
                     }
 
-                    <li class="nav-item  @(MainStore.GetState().ActivePanel == LegalAppPanels.Clients ? "active" : "") " @onclick="@(() => MainStore.SetActivePanel(LegalAppPanels.Clients))">
+                    <li class="nav-item  @(MainStore.GetState().ActivePanel == LegalAppPanels.Clients ? "active" : "") " @onclick="@(() => MainStore.SetActivePanel(LegalAppPanels.Clients))" data-toggle="tooltip" data-placement="right" title="Klienci">
                         <a class="nav-link ">
                             <i><img src="/Images/icons8-reception-36.png" /></i> <span class="@(showSidebar ? "link-text" : "text-hidden")">Klienci</span>
                         </a>
                     </li>
-                    <li class="nav-item  @(MainStore.GetState().ActivePanel == LegalAppPanels.Calendar ? "active" : "")" @onclick="@(() => MainStore.SetActivePanel(LegalAppPanels.Calendar))">
+                    <li class="nav-item  @(MainStore.GetState().ActivePanel == LegalAppPanels.Calendar ? "active" : "")" @onclick="@(() => MainStore.SetActivePanel(LegalAppPanels.Calendar))" data-toggle="tooltip" data-placement="right" title="Kalendarz">
                         <a class="nav-link ">
                             <i><img src="/Images/icons8-calendar-12-36.png" /></i> <span class="@(showSidebar ? "link-text" : "text-hidden")">Kalendarz</span>
                         </a>
@@ -54,7 +54,7 @@
 
                         @if (MainStore.GetState().AppActiveUserManager.IsRoot || MainStore.GetState().AppActiveUserManager.IsClientContactsVisible)
                         {
-                            <li class="nav-item @(MainStore.GetState().ActivePanel == LegalAppPanels.ClientDetails ? "active" : "")" @onclick="@(() => MainStore.SetActivePanel(LegalAppPanels.ClientDetails))">
+                            <li class="nav-item @(MainStore.GetState().ActivePanel == LegalAppPanels.ClientDetails ? "active" : "")" @onclick="@(() => MainStore.SetActivePanel(LegalAppPanels.ClientDetails))" data-toggle="tooltip" data-placement="right" title="Lista Kontaktów">
                                 <a class="nav-link ">
                                     <i><img src="/Images/icons8-address-book-40.png" /></i><span class="@(showSidebar ? "link-text" : "text-hidden")">Lista Kontaktów</span>
                                 </a>
@@ -63,14 +63,14 @@
 
                         @if (MainStore.GetState().AppActiveUserManager.IsRoot || MainStore.GetState().AppActiveUserManager.IsClientJobsVisible)
                         {
-                            <li class="nav-item @(MainStore.GetState().ActivePanel == LegalAppPanels.ClientJobs ? "active" : "") " @onclick="@(() => MainStore.SetActivePanel(LegalAppPanels.ClientJobs))">
+                            <li class="nav-item @(MainStore.GetState().ActivePanel == LegalAppPanels.ClientJobs ? "active" : "") " @onclick="@(() => MainStore.SetActivePanel(LegalAppPanels.ClientJobs))" data-toggle="tooltip" data-placement="right" title="Lista zadań">
                                 <a class="nav-link ">
                                     <i><img src="/Images/icons8-to-do-36.png" /></i> <span class="@(showSidebar ? "link-text" : "text-hidden")">Lista Zadań</span>
                                 </a>
                             </li>
                         }
 
-                        <li class="nav-item  @(MainStore.GetState().ActivePanel == LegalAppPanels.Cases ? "active" : "")" @onclick="@(() => MainStore.SetActivePanel(LegalAppPanels.Cases))">
+                        <li class="nav-item  @(MainStore.GetState().ActivePanel == LegalAppPanels.Cases ? "active" : "")" @onclick="@(() => MainStore.SetActivePanel(LegalAppPanels.Cases))" data-toggle="tooltip" data-placement="right" title="Sprawy">
                             <a class="nav-link ">
                                 <i><img src="/Images/icons8-documents-36.png" /></i><span class="@(showSidebar ? "link-text" : "text-hidden")">Sprawy</span>
                             </a>
@@ -78,7 +78,7 @@
 
                         @if (MainStore.GetState().AppActiveUserManager.IsRoot || MainStore.GetState().AppActiveUserManager.IsFinanceVisible)
                         {
-                            <li class="nav-item @(MainStore.GetState().ActivePanel == LegalAppPanels.Finance ? "active" : "") " @onclick="@(() => MainStore.SetActivePanel(LegalAppPanels.Finance))">
+                            <li class="nav-item @(MainStore.GetState().ActivePanel == LegalAppPanels.Finance ? "active" : "") " @onclick="@(() => MainStore.SetActivePanel(LegalAppPanels.Finance))" data-toggle="tooltip" data-placement="right" title="Finanse">
                                 <a class="nav-link ">
                                     <i><img src="/Images/icons8-money-box-36.png" /></i><span class="@(showSidebar ? "link-text" : "text-hidden")">Finanse</span>
                                 </a>
@@ -87,7 +87,7 @@
 
                         @if (MainStore.GetState().AppActiveUserManager.IsRoot || MainStore.GetState().AppActiveUserManager.IsProductivityVisible)
                         {
-                            <li class="nav-item @(MainStore.GetState().ActivePanel == LegalAppPanels.Productivity ? "active" : "")" @onclick="@(() => MainStore.SetActivePanel(LegalAppPanels.Productivity))">
+                            <li class="nav-item @(MainStore.GetState().ActivePanel == LegalAppPanels.Productivity ? "active" : "")" @onclick="@(() => MainStore.SetActivePanel(LegalAppPanels.Productivity))" data-toggle="tooltip" data-placement="right" title="Rozliczenia">
                                 <a class="nav-link ">
                                     <i><img src="/Images/icons8-combo-chart-36.png" /></i> <span class="@(showSidebar ? "link-text" : "text-hidden")">Rozliczenia</span>
                                 </a>
@@ -97,7 +97,7 @@
 
                     @if (MainStore.GetState().AppActiveUserManager.IsRoot || MainStore.GetState().AppActiveUserManager.IsArchiveVisible)
                     {
-                        <li class="nav-item @(MainStore.GetState().ActivePanel == LegalAppPanels.Archive ? "active" : "")" @onclick="@(() => MainStore.SetActivePanel(LegalAppPanels.Archive))">
+                        <li class="nav-item @(MainStore.GetState().ActivePanel == LegalAppPanels.Archive ? "active" : "")" @onclick="@(() => MainStore.SetActivePanel(LegalAppPanels.Archive))" data-toggle="tooltip" data-placement="right" title="Archiwum">
                             <a class="nav-link ">
                                 <i><img src="/Images/icons8-filing-cabinet-36.png" /></i><span class="@(showSidebar ? "link-text" : "text-hidden")"> Archiwum</span>
                             </a>

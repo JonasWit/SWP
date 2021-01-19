@@ -422,12 +422,18 @@ button {
     padding: 0 !important;
 }
 
+/*INFO*/
 
+.info-section{
+    display: block;
+}
 
+    .info-section-hidden {
+        display: none;
+    }
 
-
-@keyframes fadeInAnimation {
-    0% {
+    @keyframes fadeInAnimation {
+        0% {
         opacity: 0;
         transform: translate3d(0, -20%, 0);
     }

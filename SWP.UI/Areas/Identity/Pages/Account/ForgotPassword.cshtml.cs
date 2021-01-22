@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using SWP.UI.Utilities;
 
 namespace SWP.UI.Areas.Identity.Pages.Account
 {
@@ -58,9 +59,7 @@ namespace SWP.UI.Areas.Identity.Pages.Account
 
                 await _emailSender.SendEmailAsync(
                     Input.Email,
-                    "Reset Password",
-                    $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
-
+                    "Reset Password", EmailTemplates.GetPasswordResetTempalte(callbackUrl));
                 return RedirectToPage("./ForgotPasswordConfirmation");
             }
 

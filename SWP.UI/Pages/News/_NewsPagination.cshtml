@@ -1,9 +1,9 @@
 ﻿@using SWP.UI.Pages.News.ViewModels 
 @model NewsPageViewModel
 
-<div class="container ">
+<div class="container pt-2 ">
     <nav aria-label="Page navigation example">
-        <ul class="pagination pg-dark justify-content-center mb-4">
+        <ul class="pagination pg-dark justify-content-center">
             @{
                 List<int> pages = Model.PageNumbers(Model.PageNumber, Model.PageCount).ToList();
             }

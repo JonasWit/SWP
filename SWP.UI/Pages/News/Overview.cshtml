@@ -11,34 +11,32 @@
 
 }
 <div class="container-fluid product">
-    <div>
-        <h1 class="text-center py-3">Aktualności</h1>
-    </div>
-    <div class="container">
+   <div class="container">
         <div class="pb-4 pt-0"> <partial name="_NewsPagination" model="Model.DataModel" /></div>
-        <div class="row py-4">
+        <div class="row">
             @foreach (var singleNews in Model.DataModel.News)
             {
                 var imageNews = $"/Image/{singleNews.ImagePath}";
-                <div class="col-sm-6 p-4">
 
-                    <div class="hovereffect">
-                        <img class="img-responsive img-thumbnail" src="@imageNews" alt="Card image">
-                        <div class="overlay">
-                            <h2 class="text-center py-1">
-                                <span>
-                                    @singleNews.Title
-                                </span>
-                                <span>
-                                    @singleNews.Created.ToShortDateString()
-                                </span>
-                            </h2>
-                            <a class="info" asp-page="/News/NewsDetails" asp-route-id="@singleNews.Id">Zobacz</a>
-                        </div>
+                <div class="col-4 p-4">
+                    <img class="img-responsive img-thumbnail" src="@imageNews" alt="Card image">
+                            
+                    <div class="news-nav py-2">
+                        <h5 class="text-muted">
+                            @singleNews.Title
+                        </h5>
+                        <h5 class="text-muted">
+                            @singleNews.Created.ToShortDateString()
+                        </h5>
+                    </div>
+                    <div class="py-2">
+                        <p> @singleNews.Description<span>...</span></p>
+                        <a class="main-links pt-0" asp-page="/News/NewsDetails" asp-route-id="@singleNews.Id"> Czytaj więcej <i class="fas fa-chevron-right"></i></a>
                     </div>
                 </div>
             }
         </div>
+
     </div>
     <div><partial name="_NewsPagination" model="Model.DataModel" /></div>
 </div>

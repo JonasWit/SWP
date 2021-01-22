@@ -51,6 +51,7 @@ body {
     width: 7rem;
     z-index: 999;
     transition: all 0.5s;
+
 }
 
 
@@ -388,10 +389,51 @@ ul, li {
 
 button {
     caret-color: transparent;
+
 }
 
-@keyframes fadeInAnimation {
-    0% {
+.ui-button, .btn {
+    position: relative;
+    cursor: pointer;
+    display: inline-block;
+    padding: 5px 10px;
+    background: linear-gradient(to right,  #007bff 50%, #ff0000  50%) !important;
+    color: #fff !important;
+    outline: none !important;
+    background-size: 205% 100% !important;
+    background-position: left bottom !important;
+    transition: all .4s ease-in-out !important;
+    border: 0 !important;
+}
+
+    .ui-button:hover,
+    .btn:hover {
+        background-position: right bottom !important;
+        color: #fff !important;
+        outline: none !important;
+        border: 0 !important;
+    }
+.btn-link {
+    width: 100%;
+   
+}
+
+.card-header {
+    padding: 0 !important;
+}
+
+/*INFO*/
+
+.info-section{
+    display: block;
+}
+
+    .info-section-hidden {
+        display: none;
+    }
+
+    @keyframes fadeInAnimation {
+        0% {
         opacity: 0;
         transform: translate3d(0, -20%, 0);
     }

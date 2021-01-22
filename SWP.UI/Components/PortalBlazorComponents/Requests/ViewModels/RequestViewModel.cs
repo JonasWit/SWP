@@ -14,7 +14,6 @@ namespace SWP.UI.Components.PortalBlazorComponents.Requests.ViewModels
         public DateTime Updated { get; set; }
         public string UpdatedBy { get; set; }
         public string CreatedBy { get; set; }
-        public string RequestorId { get; set; }
         public RequestStatus Status { get; set; }
         public RequestReason Reason { get; set; }
         public ApplicationType Application { get; set; }
@@ -156,7 +155,6 @@ namespace SWP.UI.Components.PortalBlazorComponents.Requests.ViewModels
                 Updated = input.Updated,
                 UpdatedBy = input.UpdatedBy,
                 CreatedBy = input.CreatedBy,
-                RequestorId = input.RequestorId,
                 Status = (RequestStatus)input.Status,
                 Reason = (RequestReason)input.Reason,
                 Application = (ApplicationType)input.Application,

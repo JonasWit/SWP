@@ -22,5 +22,10 @@ namespace SWP.UI.Utilities
             public const string Users = nameof(Users);
             public const string Administrators = nameof(Administrators);
         }
+
+        public struct InternalEmail
+        {
+            public const string Office = "biuro@systemywp.pl";
+        }
     }
 }

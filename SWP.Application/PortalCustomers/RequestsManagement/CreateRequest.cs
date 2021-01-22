@@ -21,7 +21,6 @@ namespace SWP.Application.PortalCustomers.RequestsManagement
                 CreatedBy = request.CreatedBy,
                 Updated = request.Created,
                 UpdatedBy = request.CreatedBy,
-                RequestorId = request.RequestorId,
                 Reason = request.Reason,
                 LicenseMonths = request.LicenseMonths,
                 RelatedUsers = request.RelatedUsers,
@@ -60,7 +59,6 @@ namespace SWP.Application.PortalCustomers.RequestsManagement
 
         public class Request
         {
-            public string RequestorId { get; set; }
             public int Reason { get; set; }
             public int Application { get; set; }
             public int Status { get; set; }

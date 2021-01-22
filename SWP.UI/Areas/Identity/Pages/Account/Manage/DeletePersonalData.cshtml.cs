@@ -73,13 +73,6 @@ namespace SWP.UI.Areas.Identity.Pages.Account.Manage
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
-            var claims = await _userManager.GetClaimsAsync(user) as List<Claim>;
-
-            if (claims.Any(x => x.Type == "Root" && x.Value == "Creator"))
-            {
-                return NotFound($"Unable to delete Creator!");
-            }
-
             RequirePassword = await _userManager.HasPasswordAsync(user);
             if (RequirePassword)
             {
@@ -88,6 +81,13 @@ namespace SWP.UI.Areas.Identity.Pages.Account.Manage
                     ModelState.AddModelError(string.Empty, "Incorrect password.");
                     return Page();
                 }
+            }
+
+            var claims = await _userManager.GetClaimsAsync(user) as List<Claim>;
+
+            if (claims.Any(x => x.Type == "Root" && x.Value == "Creator"))
+            {
+                return NotFound($"Unable to delete Creator!");
             }
 
             try
@@ -102,11 +102,13 @@ namespace SWP.UI.Areas.Identity.Pages.Account.Manage
                 if (rootClientClaim is not null)
                 {
                     var claimsToRemove = new List<Claim>();
-                    var profileClaim = claims.FirstOrDefault(x => x.Type == ClaimType.Profile.ToString());
 
                     //Delete all licenses
                     var applicationClaims = claims.Where(x => x.Type == ClaimType.Application.ToString());
                     claimsToRemove.AddRange(applicationClaims);
+
+                    //Get Profile Claim if there is one
+                    var profileClaim = claims.FirstOrDefault(x => x.Type == ClaimType.Profile.ToString());
 
                     if (profileClaim is not null)
                     {

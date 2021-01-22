@@ -252,7 +252,7 @@ namespace SWP.DataBase.Managers
             _context.ClientRequests.Include(x => x.Messages).FirstOrDefault(x => x.Id == requestId);
  
         public List<ClientRequest> GetRequestsForClient(string userId) => 
-            _context.ClientRequests.Where(x => x.RequestorId == userId).ToList();
+            _context.ClientRequests.Where(x => x.CreatedBy == userId).ToList();
 
         public Task<int> CreateRequest(ClientRequest clientRequest)
         {
@@ -276,7 +276,7 @@ namespace SWP.DataBase.Managers
 
         public Task<int> DeleteRequest(string userId)
         {
-            _context.ClientRequests.RemoveRange(_context.ClientRequests.Where(x => x.RequestorId == userId));
+            _context.ClientRequests.RemoveRange(_context.ClientRequests.Where(x => x.CreatedBy == userId));
             return _context.SaveChangesAsync();
         }
 

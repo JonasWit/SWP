@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using SWP.Application.PortalCustomers.LicenseManagement;
 using SWP.Application.PortalCustomers.RequestsManagement;
@@ -6,6 +7,7 @@ using SWP.Domain.Enums;
 using SWP.Domain.Models.Portal;
 using SWP.UI.BlazorApp.PortalApp.Stores.Requests.RequestsPanel;
 using SWP.UI.BlazorApp.PortalApp.Stores.Requests.RequestsPanelCreate.Actions;
+using SWP.UI.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -104,15 +106,15 @@ namespace SWP.UI.BlazorApp.PortalApp.Stores.Requests.RequestsPanelCreate
             {
                 using var scope = _serviceProvider.CreateScope();
                 var createRequest = scope.ServiceProvider.GetRequiredService<CreateRequest>();
+                var emailSender = scope.ServiceProvider.GetRequiredService<IEmailSender>();
 
                 await createRequest.Create(new CreateRequest.Request
                 {
                     Application = (int)_state.StepsConfig.NewRequestApplication,
                     Created = DateTime.Now,
-                    CreatedBy = MainStore.GetState().ActiveUserName,
+                    CreatedBy = MainStore.GetState().ActiveUserId,
                     Reason = (int)_state.StepsConfig.NewRequestReason,
                     RelatedUsers = request.RelatedUsers,
-                    RequestorId = MainStore.GetState().ActiveUserId,
                     LicenseMonths = request.LicenseMonths,
                     Status = (int)RequestStatus.WaitingForAnswer,
                     RequestMessage = new CreateRequest.RequestMessage
@@ -123,6 +125,8 @@ namespace SWP.UI.BlazorApp.PortalApp.Stores.Requests.RequestsPanelCreate
                     AutoRenewal = request.AutoRenewal
                 });
 
+                //todo: test
+                await emailSender.SendEmailAsync(PortalNames.InternalEmail.Office, $"---Nowy request od {MainStore.GetState().ActiveUserName}---", $"Sprawdź panel admina, Reason: {"abc"}");
                 await MainStore.SetActiveComponent(RequestsMainPanelState.InnerComponents.Info);
             }
             catch (Exception ex)

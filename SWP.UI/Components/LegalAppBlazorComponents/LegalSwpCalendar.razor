@@ -8,27 +8,26 @@
 }
 else
 {
-<div>
-    @*<div class="list-row">
-        <i><img src="/Images/icons8-calendar-12-36.png" /></i>
-    </div>*@
-    <div class="help-box">
-        <i class="user-icon"><img src="/Images/icons8-calendar-12-36.png" /></i>
-        @if (addClientformVisible)
-        {
-            <div class="info-text">
-                <p>Sprawdź nadchodzące terminy i przypomnienia dodane do konkretnych spraw.</p>
-                <p>Kliknij na konkretne wejście w kalendarzu i edytuj dodane informacje lub usuń je całkowicie.</p>
-            </div>
-        }
-        <button class="info" @onclick="ShowHideClientFormI"></button>
+    <div>
+        @*<div class="list-row">
+                <i><img src="/Images/icons8-calendar-12-36.png" /></i>
+            </div>*@
+        <div class="help-box">
+            <i class="user-icon"><img src="/Images/icons8-calendar-12-36.png" /></i>
+            @if (addClientformVisible)
+            {
+                <div class="info-text">
+                    <p>Sprawdź nadchodzące terminy i przypomnienia dodane do konkretnych spraw.</p>
+                    <p>Kliknij na konkretne wejście w kalendarzu i edytuj dodane informacje lub usuń je całkowicie.</p>
+                </div>
+            }
+            <button class="info" @onclick="ShowHideClientFormI"></button>
+        </div>
+        @*<div class="list-row">
+                <button @onclick="RefreshCalendarData" class="refresher @(CalendarStore.Loading ? "spin" : "")"><img src="Images/icons8-synchronize-40.png" /></button>
+            </div>*@
     </div>
-    @*<div class="list-row">
-        <button @onclick="RefreshCalendarData" class="refresher @(CalendarStore.Loading ? "spin" : "")"><img src="Images/icons8-synchronize-40.png" /></button>
 
-    </div>*@
-</div>
-    
     <div class="calendar-main">
         <div>
             @if (MainStore.GetState().ActiveClient == null)
@@ -127,7 +126,6 @@ else
                     <p><strong>Daty:</strong> @CalendarStore.GetState().SelectedReminder.Start<span>-</span>@CalendarStore.GetState().SelectedReminder.End </p>
                 </div>
             }
-
 
         </RadzenCard>
     </div>

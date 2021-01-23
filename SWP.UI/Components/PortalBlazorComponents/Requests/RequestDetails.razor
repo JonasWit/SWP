@@ -6,24 +6,40 @@ else
 {
     <RadzenCard>
         <h2>Szczegóły zapytania</h2>
+        <p>Wybierz zapytanie, aby wyświetlić całą wiadomość.</p>
         <RadzenDataList WrapItems="true" AllowPaging="true" Data="@Store.GetState().ActiveRequest.Messages" TItem="RequestMessageViewModel" PageSize="5">
             <Template Context="message">
                 <RadzenCard Style="width:100%">
                     <div class="flex-column" @onclick="@(() => MessageSelected(message.Id))">
                         <div class="flex-column">
                             <div class="rodo-links py-1">
+                                <p><strong>Temat: </strong>@(MainStore.GetState().SelectedRequest.DisplaySubject)</p>
                                 <p class=""><strong>Data: </strong>@(message.Created.ToString("yyyy.MM.dd HH:mm:ss"))</p>
                                 <p class=""><strong>Autor: </strong>@(message.AuthorId)</p>
                             </div>
-                            <div>
-                                <p class=""><strong>Treść wiadomości: </strong>@(message.Message)</p>
-                            </div>
+                            @*<div>
+                                    <p class=""><strong>Treść wiadomości: </strong>@(message.Message)</p>
+                                </div>*@
                         </div>
                     </div>
                 </RadzenCard>
             </Template>
         </RadzenDataList>
+
     </RadzenCard>
+    if (Store.GetState().ActiveRequestMessage is not null)
+    {
+        <RadzenCard>
+            <RadzenCard Style="width:100%">
+                <div class="rodo-links py-3">
+                    <p><strong>Temat: </strong>@(MainStore.GetState().SelectedRequest.DisplaySubject)</p>
+                    <p class=""><strong>Data: </strong>@(MainStore.GetState().SelectedRequest.Created.ToString("yyyy.MM.dd HH:mm:ss"))</p>
+                </div>
+                <div class="card-text py-3">@(Store.GetState().ActiveRequestMessage.Message)</div>
+            </RadzenCard>
+        </RadzenCard>
+
+    }
 
     <RadzenTemplateForm Data="@Store.GetState().NewRequestMessage" Submit="@((CreateRequest.RequestMessage args) => SubmitNewRequest(args))">
         <RadzenFieldset Text="Dodaj nową wiadomość do zapytania">

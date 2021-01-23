@@ -21,6 +21,7 @@ namespace SWP.UI.BlazorApp.PortalApp.Stores.Requests.RequestsPanel
         public string ActiveUserId { get; set; }
         public string ActiveUserName { get; set; }
         public int SelectedRequestId { get; set; }
+        public RequestViewModel SelectedRequest { get; set; }
         public List<RequestViewModel> Requests { get; set; } = new List<RequestViewModel>();
         public RadzenGrid<RequestViewModel> RequestsGrid { get; set; }
 
@@ -108,6 +109,7 @@ namespace SWP.UI.BlazorApp.PortalApp.Stores.Requests.RequestsPanel
         private void ShowRequestDetails(RequestViewModel arg)
         {
             _state.SelectedRequestId = arg.Id;
+            _state.SelectedRequest = _state.Requests.FirstOrDefault(x => x.Id.Equals(arg.Id));
             _state.CurrentComponent = RequestsMainPanelState.InnerComponents.Details;
             BroadcastStateChange();
         }

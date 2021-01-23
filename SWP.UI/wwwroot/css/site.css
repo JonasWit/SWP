@@ -40,16 +40,17 @@ body {
 
 .carousel-text-3 {
     position: absolute;
+    background-color: #fff !important;
     width: 390px;
-    left: 10%;
-    top: 2%;
+    left: 33%;
+    top: 10%;
 }
 
 .carousel-text-4 {
     position: absolute;
     width: 350px;
-    left: 65%;
-    top: 2%;
+    left: 63%;
+    top: 1%;
     background-color: #fff !important;
 }
 
@@ -247,8 +248,7 @@ li {
 }
 
     .home-cards img {
-        width: 100%;
-        height: 50%;
+        width: 350px;
         margin-bottom: 20px;
     }
 
@@ -392,12 +392,13 @@ li {
 /*PRODUCT - WEB*/
 
 .module {
-    background: url(/Images/tingey-injury-law-firm-yCdPU73kGSc-unsplash.jpg);
+    background: url(/Images/bill-oxford-OXGhu60NwxU-unsplash.jpg);
     background-attachment: fixed;
     height: 550px;
-    background-position: center;
+    background-position: top;
     background-repeat: no-repeat;
-    background-size: cover;
+    background-color: #000;
+    background-size: auto 550px;
     position: relative;
     overflow: hidden;
 }
@@ -405,10 +406,11 @@ li {
 .module-2 {
     background: url(/Images/pexels-pixabay-60504.jpg);
     background-attachment: fixed;
+    background-color: #141313;
     height: 550px;
-    background-position: center;
+    background-position: top;
     background-repeat: no-repeat;
-    background-size: cover;
+    background-size: contain;
     position: relative;
     overflow: hidden;
 }
@@ -481,17 +483,21 @@ li {
     flex-direction: row;
     justify-content: space-between;
 }
+    .product-section div {
+        flex-basis: 450px;
+    }
 
-.pricing-table .card {
-    -webkit-transition: all 0.2s;
-    -o-transition: all 0.2s;
-    transition: all 0.2s;
-    -webkit-border-radius: 15px;
-    border-radius: 15px;
-    -webkit-box-shadow: 0 0.5rem 1rem 0 rgba(0, 0, 0, 0.3);
-    box-shadow: 0 0.5rem 1rem 0 rgba(0, 0, 0, 0.3);
-    height: 450px;
-}
+
+    .pricing-table .card {
+        -webkit-transition: all 0.2s;
+        -o-transition: all 0.2s;
+        transition: all 0.2s;
+        -webkit-border-radius: 15px;
+        border-radius: 15px;
+        -webkit-box-shadow: 0 0.5rem 1rem 0 rgba(0, 0, 0, 0.3);
+        box-shadow: 0 0.5rem 1rem 0 rgba(0, 0, 0, 0.3);
+        height: 450px;
+    }
 
     .pricing-table .card .card-title {
         font-size: 1rem;
@@ -550,6 +556,8 @@ li {
     flex-direction: row;
     justify-content: space-between;
 }
+
+
 
 
 

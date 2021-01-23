@@ -111,7 +111,7 @@ namespace SWP.UI.Components.LegalAppBlazorComponents
 
         private void OnSlotSelect(SchedulerSlotSelectEventArgs request) => ActionDispatcher.Dispatch(new OnSlotSelectAction { Arg = request });
 
-        private void OnAppointmentSelect(SchedulerAppointmentSelectEventArgs<ReminderViewModel> args) => ActionDispatcher.Dispatch(new OnAppointmentSelectAction { Arg = args });
+        private void OnAppointmentSelect(SchedulerAppointmentSelectEventArgs<ReminderViewModel> args) => ActionDispatcher.Dispatch(new OnCaseAppointmentSelectAction { Arg = args });
 
         private void OnAppointmentRender(SchedulerAppointmentRenderEventArgs<ReminderViewModel> args) => ActionDispatcher.Dispatch(new OnAppointmentRenderAction { Arg = args });
 

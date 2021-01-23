@@ -118,8 +118,8 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Cases
                     var onSlotSelectAction = (OnSlotSelectAction)action;
                     await OnSlotSelect(onSlotSelectAction.Arg);
                     break;
-                case OnAppointmentSelectAction.OnAppointmentSelect:
-                    var onAppointmentSelectAction = (OnAppointmentSelectAction)action;
+                case OnCaseAppointmentSelectAction.OnAppointmentSelect:
+                    var onAppointmentSelectAction = (OnCaseAppointmentSelectAction)action;
                     await OnAppointmentSelect(onAppointmentSelectAction.Arg);
                     break;
                 case OnAppointmentRenderAction.OnAppointmentRender:

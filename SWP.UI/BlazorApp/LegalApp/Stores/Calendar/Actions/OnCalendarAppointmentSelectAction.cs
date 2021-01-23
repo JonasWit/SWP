@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace SWP.UI.BlazorApp.LegalApp.Stores.Calendar.Actions
 {
-    public class OnAppointmentSelectAction: IAction
+    public class OnCalendarAppointmentSelectAction: IAction
     {
-        public const string OnAppointmentSelect = "ON_APPOINTMENT_SELECT";
+        public const string OnAppointmentSelect = "ON_CALENDAT_APPOINTMENT_SELECT";
         public string Name => OnAppointmentSelect;
         public SchedulerAppointmentSelectEventArgs<ReminderViewModel> Args{ get; set; }
     }

@@ -191,13 +191,13 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Calendar
         {
             switch (action.Name)
             {
-                case OnAppointmentSelectAction.OnAppointmentSelect:
-                    var actionTypeI = (OnAppointmentSelectAction)action;
-                    await OnAppointmentSelect(actionTypeI.Args);
+                case OnCalendarAppointmentSelectAction.OnAppointmentSelect:
+                    var onCalendarAppointmentSelectAction = (OnCalendarAppointmentSelectAction)action;
+                    await OnAppointmentSelect(onCalendarAppointmentSelectAction.Args);
                     break;
                 case ActiveReminderChangeAction.ActiveReminderChange:
-                    var actionTypeII = (ActiveReminderChangeAction)action;
-                    ActiveReminderChange(actionTypeII.Reminder);
+                    var activeReminderChangeAction = (ActiveReminderChangeAction)action;
+                    ActiveReminderChange(activeReminderChangeAction.Reminder);
                     break;
                 case RefreshCalendarDataAction.RefreshCalendarData:
                     RefreshCalendarData();

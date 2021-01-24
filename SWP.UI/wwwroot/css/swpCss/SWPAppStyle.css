@@ -51,7 +51,6 @@ body {
     width: 7rem;
     z-index: 999;
     transition: all 0.5s;
-
 }
 
 
@@ -70,11 +69,14 @@ body {
 }
 
 #top-menu {
+    position: fixed;
+    z-index: 999;
     grid-column: 1 / span 3;
     grid-row: 1;
     color: var(--secondary-font-color);
     background: #1a447a;
     padding-top: 1rem;
+    width: 100%;
 }
 
 
@@ -84,8 +86,7 @@ body {
 
 #main-window {
     grid-column: 2;
-    grid-row: 2 / span 8;
-    padding: 25px;
+    grid-row: 4 / span 8;
 }
 
 ul, li {
@@ -162,6 +163,7 @@ ul, li {
     justify-items: center;
     justify-content: space-between;
 }
+
 
     .top-items li {
         padding: 15px;
@@ -389,7 +391,6 @@ ul, li {
 
 button {
     caret-color: transparent;
-
 }
 
 .ui-button, .btn {
@@ -397,7 +398,7 @@ button {
     cursor: pointer;
     display: inline-block;
     padding: 5px 10px;
-    background: linear-gradient(to right,  #007bff 50%, #ff0000  50%) !important;
+    background: linear-gradient(to right, #007bff 50%, #ff0000 50%) !important;
     color: #fff !important;
     outline: none !important;
     background-size: 205% 100% !important;
@@ -413,9 +414,9 @@ button {
         outline: none !important;
         border: 0 !important;
     }
+
 .btn-link {
     width: 100%;
-   
 }
 
 .card-header {
@@ -424,16 +425,25 @@ button {
 
 /*INFO*/
 
-.info-section{
+.info-section {
     display: block;
 }
 
-    .info-section-hidden {
-        display: none;
-    }
+.info-section-hidden {
+    display: none;
+}
 
-    @keyframes fadeInAnimation {
-        0% {
+.info-menu {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+  
+
+
+@keyframes fadeInAnimation {
+    0% {
         opacity: 0;
         transform: translate3d(0, -20%, 0);
     }
@@ -876,7 +886,6 @@ button {
     }
 
     .popup-box {
-      
         animation: popUpAnimation ease 2s;
         animation-iteration-count: 1;
         animation-fill-mode: forwards;
@@ -899,11 +908,8 @@ button {
     }
 
     .ui-dialog-wrapper {
-        margin: auto !important ;
+        margin: auto !important;
         width: 73% !important;
         top: 0px !important;
     }
-
-    }
-
-
+}

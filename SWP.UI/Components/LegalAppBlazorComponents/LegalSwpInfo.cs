@@ -12,8 +12,21 @@ namespace SWP.UI.Components.LegalAppBlazorComponents
         {
 
         }
-        public bool switchSection = false;
 
-        public void SectionToggle() => switchSection = !switchSection;
+        private bool[] toggles = new bool[8];
+
+
+        private void ToggleSection(int sectionId)
+        {
+            for (int i = 0; i < toggles.Count(); i++)
+            {
+                toggles[i] = false;
+            }
+
+            toggles[sectionId] = true;
+
+            StateHasChanged();
+        }
+
     }
 }

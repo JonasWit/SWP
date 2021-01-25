@@ -12,17 +12,17 @@ else
             <RadzenGrid @ref="Store.GetState().RequestsGrid" AllowFiltering="true" AllowPaging="true" PageSize="20" AllowSorting="true" RowSelect="@(args => AdminRequestSelectedChange(args))"
                         Data="@Store.GetState().Requests" TItem="RequestViewModel">
                 <Columns>
-                    <RadzenGridColumn TItem="RequestViewModel" Property="Created" Title="Utworzono">
+                    <RadzenGridColumn TItem="RequestViewModel" Property="Created" Title="Created">
                         <Template Context="record">
                             @record.Created.ToString("yyyy/MM/dd HH:mm:ss")
                         </Template>
                     </RadzenGridColumn>
-                    <RadzenGridColumn TItem="RequestViewModel" Property="Updated" Title="Ostatnia zmiana">
+                    <RadzenGridColumn TItem="RequestViewModel" Property="Updated" Title="Last Change">
                         <Template Context="record">
                             @record.Updated.ToString("yyyy/MM/dd HH:mm:ss")
                         </Template>
                     </RadzenGridColumn>
-                    <RadzenGridColumn TItem="RequestViewModel" Property="UpdatedBy" Title="Zmienione przez">
+                    <RadzenGridColumn TItem="RequestViewModel" Property="RequestorName" Title="Requestor">
                     </RadzenGridColumn>
                     <RadzenGridColumn TItem="RequestViewModel" Property="Reason" Title="Temat">
                     </RadzenGridColumn>

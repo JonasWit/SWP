@@ -82,7 +82,7 @@ namespace SWP.UI.BlazorApp.PortalApp.Stores.Requests
 
                 await createRequest.Create(new CreateRequest.RequestMessage
                 {
-                    AuthorId = MainStore.GetState().ActiveUserName,
+                    AuthorName = MainStore.GetState().ActiveUserName,
                     Message = request.Message
                 }, _state.ActiveRequest.Id);
 

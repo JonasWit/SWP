@@ -25,14 +25,15 @@ namespace SWP.Application.PortalCustomers.RequestsManagement
                 LicenseMonths = request.LicenseMonths,
                 RelatedUsers = request.RelatedUsers,
                 Status = request.Status,
-                AutoRenewal = request.AutoRenewal
+                AutoRenewal = request.AutoRenewal,
+                RequestorName = request.RequestorName
             };
 
             changes += await _portalManager.CreateRequest(newRequestEntity);
 
             var newRequesrMessageEntity = new ClientRequestMessage
             {
-                AuthorId = request.RequestMessage.AuthorId,
+                AuthorName = request.RequestMessage.AuthorName,
                 Created = request.Created,
                 CreatedBy = request.CreatedBy,
                 Updated = request.Created,
@@ -48,17 +49,18 @@ namespace SWP.Application.PortalCustomers.RequestsManagement
         public Task<int> Create(RequestMessage request, int reuqestId) =>       
             _portalManager.CreateRequestMessage(new ClientRequestMessage
             {
-                AuthorId = request.AuthorId,
+                AuthorName = request.AuthorName,
                 Created = DateTime.Now,
-                CreatedBy = request.AuthorId,
+                CreatedBy = request.AuthorName,
                 Message = request.Message,
                 Updated = DateTime.Now,
-                UpdatedBy = request.AuthorId
+                UpdatedBy = request.AuthorName
             }, reuqestId);
         
 
         public class Request
         {
+            public string RequestorName { get; set; }
             public int Reason { get; set; }
             public int Application { get; set; }
             public int Status { get; set; }
@@ -74,7 +76,7 @@ namespace SWP.Application.PortalCustomers.RequestsManagement
 
         public class RequestMessage
         {
-            public string AuthorId { get; set; }
+            public string AuthorName { get; set; }
             public string Message { get; set; }
         }
     }

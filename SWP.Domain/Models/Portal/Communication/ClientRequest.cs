@@ -10,6 +10,7 @@ namespace SWP.Domain.Models.Portal.Communication
 {
     public class ClientRequest : BaseModel
     {
+        public string RequestorName { get; set; }
         public int Reason { get; set; }
         public int Application { get; set; }
         public int Status { get; set; }

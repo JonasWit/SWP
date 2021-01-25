@@ -110,6 +110,7 @@ namespace SWP.UI.BlazorApp.PortalApp.Stores.Requests.RequestsPanelCreate
 
                 await createRequest.Create(new CreateRequest.Request
                 {
+                    RequestorName = MainStore.GetState().ActiveUserName,
                     Application = (int)_state.StepsConfig.NewRequestApplication,
                     Created = DateTime.Now,
                     CreatedBy = MainStore.GetState().ActiveUserId,
@@ -119,7 +120,7 @@ namespace SWP.UI.BlazorApp.PortalApp.Stores.Requests.RequestsPanelCreate
                     Status = (int)RequestStatus.WaitingForAnswer,
                     RequestMessage = new CreateRequest.RequestMessage
                     {
-                        AuthorId = MainStore.GetState().ActiveUserName,
+                        AuthorName = MainStore.GetState().ActiveUserName,
                         Message = request.RequestMessage.Message
                     },
                     AutoRenewal = request.AutoRenewal

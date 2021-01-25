@@ -10,7 +10,7 @@ namespace SWP.Domain.Models.Portal.Communication
 {
     public class ClientRequestMessage : BaseModel
     {
-        public string AuthorId { get; set; }
+        public string AuthorName { get; set; }
         [MaxLength(1000)]
         public string Message { get; set; }
 

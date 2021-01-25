@@ -10,6 +10,7 @@ namespace SWP.UI.Components.PortalBlazorComponents.Requests.ViewModels
     public class RequestViewModel
     {
         public int Id { get; set; }
+        public string RequestorName { get; set; }
         public DateTime Created { get; set; }
         public DateTime Updated { get; set; }
         public string UpdatedBy { get; set; }
@@ -150,6 +151,7 @@ namespace SWP.UI.Components.PortalBlazorComponents.Requests.ViewModels
         {
             var result = new RequestViewModel
             {
+                RequestorName = input.RequestorName,
                 Id = input.Id,
                 Created = input.Created,
                 Updated = input.Updated,

@@ -36,12 +36,12 @@
                     <Columns>
                         <RadzenGridColumn TItem="RequestViewModel" Property="Created" Title="Utworzono">
                             <Template Context="record">
-                                @record.Created.ToString("yyyy.MM.dd HH:mm:ss");
+                                @record.Created.ToString("dd.MM.yyyy HH:mm:ss")
                             </Template>
                         </RadzenGridColumn>
                         <RadzenGridColumn TItem="RequestViewModel" Property="Updated" Title="Ostatnia zmiana">
                             <Template Context="record">
-                                @record.Updated.ToString("yyyy.MM.dd HH:mm:ss");
+                                @record.Updated.ToString("dd.MM.yyyy HH:mm:ss")
                             </Template>
                         </RadzenGridColumn>
                         <RadzenGridColumn TItem="RequestViewModel" Property="DisplaySubject" Title="Temat">

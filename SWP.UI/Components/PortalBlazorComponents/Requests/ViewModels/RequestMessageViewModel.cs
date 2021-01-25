@@ -13,7 +13,7 @@ namespace SWP.UI.Components.PortalBlazorComponents.Requests.ViewModels
         public DateTime Updated { get; set; }
         public string UpdatedBy { get; set; }
         public string CreatedBy { get; set; }
-        public string AuthorId { get; set; }
+        public string AuthorName { get; set; }
         public string Message { get; set; }
 
         public static implicit operator RequestMessageViewModel(ClientRequestMessage input) =>
@@ -24,7 +24,7 @@ namespace SWP.UI.Components.PortalBlazorComponents.Requests.ViewModels
                 Updated = input.Updated,
                 UpdatedBy = input.UpdatedBy,
                 CreatedBy = input.CreatedBy,
-                AuthorId = input.AuthorId,
+                AuthorName = input.AuthorName,
                 Message = input.Message
             };
     }

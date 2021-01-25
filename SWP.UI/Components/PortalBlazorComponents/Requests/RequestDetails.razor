@@ -15,7 +15,7 @@ else
                             <div class="rodo-links py-1">
                                 <p><strong>Temat: </strong>@(MainStore.GetState().SelectedRequest.DisplaySubject)</p>
                                 <p class=""><strong>Data: </strong>@(message.Created.ToString("yyyy.MM.dd HH:mm:ss"))</p>
-                                <p class=""><strong>Autor: </strong>@(message.AuthorId)</p>
+                                <p class=""><strong>Autor: </strong>@(message.AuthorName)</p>
                             </div>
                             @*<div>
                                     <p class=""><strong>Treść wiadomości: </strong>@(message.Message)</p>

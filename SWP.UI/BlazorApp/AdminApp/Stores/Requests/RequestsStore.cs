@@ -100,7 +100,7 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Communication
 
                 await createRequest.Create(new CreateRequest.RequestMessage
                 {
-                    AuthorId = MainStore.GetState().AppActiveUserManager.UserName,
+                    AuthorName = MainStore.GetState().AppActiveUserManager.UserName,
                     Message = arg.Message
                 }, _state.SelectedRequest.Id);
 
@@ -123,6 +123,8 @@ namespace SWP.UI.BlazorApp.AdminApp.Stores.Communication
 
                 var request = _state.SelectedRequest;
                 request.Status = (RequestStatus)_state.SelectedRequestStatus;
+                request.Updated = DateTime.Now;
+                request.UpdatedBy = MainStore.GetState().AppActiveUserManager.UserName;
 
                 var result = await updateRequest.Update(request);
 

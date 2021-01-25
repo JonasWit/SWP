@@ -1,14 +1,4 @@
-﻿@*//todo: Add Normal Form Here*@
-
-
-
-
-
-
-
-
-
-<div class="pt-3 pb-3">
+﻿<div class="pt-3 pb-3">
     <RadzenSteps NextText="Dalej" PreviousText="Wróć">
         <Steps>
             <RadzenStepsItem Text="Wybierz Aplikcaję, której dotyczy zgłoszenie">
@@ -101,8 +91,6 @@
                             //Automatyczne odnowienie
                             <p class="pt-2">Automatyczne Odnowienie</p>
                             <RadzenCheckBox @bind-Value="@Store.GetState().NewRequest.AutoRenewal" TValue="bool" />
-
-
                         }
 
                         <div class="text pb-4 pt-2">

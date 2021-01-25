@@ -1,10 +1,12 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using SWP.Application.PortalCustomers.RequestsManagement;
 using SWP.Domain.Models.Portal.Communication;
 using SWP.UI.BlazorApp.PortalApp.Stores.Requests.RequestsPanel;
 using SWP.UI.BlazorApp.PortalApp.Stores.Requests.RequestsPanelDetails.Actions;
 using SWP.UI.Components.PortalBlazorComponents.Requests.ViewModels;
+using SWP.UI.Utilities;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -76,6 +78,7 @@ namespace SWP.UI.BlazorApp.PortalApp.Stores.Requests
             {
                 using var scope = _serviceProvider.CreateScope();
                 var createRequest = scope.ServiceProvider.GetRequiredService<CreateRequest>();
+                var emailSender = scope.ServiceProvider.GetRequiredService<IEmailSender>();
 
                 await createRequest.Create(new CreateRequest.RequestMessage
                 {
@@ -83,6 +86,8 @@ namespace SWP.UI.BlazorApp.PortalApp.Stores.Requests
                     Message = request.Message
                 }, _state.ActiveRequest.Id);
 
+                _state.NewRequestMessage = new CreateRequest.RequestMessage();
+                await emailSender.SendEmailAsync(PortalNames.InternalEmail.Office, $"---New Message From: {MainStore.GetState().ActiveUserName}---", $"Check Admin Panel, Reason: {_state.ActiveRequest.Reason}, Status: {_state.ActiveRequest.Status}");
                 BroadcastStateChange();
             }
             catch (Exception ex)

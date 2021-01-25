@@ -125,8 +125,9 @@ namespace SWP.UI.BlazorApp.PortalApp.Stores.Requests.RequestsPanelCreate
                     AutoRenewal = request.AutoRenewal
                 });
 
-                //todo: test
-                await emailSender.SendEmailAsync(PortalNames.InternalEmail.Office, $"---Nowy request od {MainStore.GetState().ActiveUserName}---", $"Sprawdź panel admina, Reason: {"abc"}");
+                _state.NewRequest = new CreateRequest.Request(); 
+  
+                await emailSender.SendEmailAsync(PortalNames.InternalEmail.Office, $"---New Request From: {MainStore.GetState().ActiveUserName}---", $"Check Admin Panel, Reason: {"abc"}");
                 await MainStore.SetActiveComponent(RequestsMainPanelState.InnerComponents.Info);
             }
             catch (Exception ex)

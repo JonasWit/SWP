@@ -168,6 +168,24 @@ namespace SWP.UI.BlazorApp.LegalApp.Stores.Productivity
                 FontName = "Anonymous_Pro",
                 DisplayText = "Old-Computer"
             });
+            _state.FontsFilterData.Add(new ProductivityState.FontFilterRecord
+            {
+                Id = 2,
+                FontName = "Aller_Rg",
+                DisplayText = "Aller"
+            });
+            _state.FontsFilterData.Add(new ProductivityState.FontFilterRecord
+            {
+                Id = 3,
+                FontName = "Berylium",
+                DisplayText = "Berylium"
+            });
+            _state.FontsFilterData.Add(new ProductivityState.FontFilterRecord
+            {
+                Id = 4,
+                FontName = "Ribbons-and-banners",
+                DisplayText = "RnB"
+            });
         }
 
         private void SetSelectedTimeRecord(TimeRecordViewModel entity) => _state.SelectedTimeRecord = entity;

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.JSInterop;
 using Radzen;
 using SWP.Application.LegalSwp.TimeRecords;
 using SWP.Domain.Enums;
@@ -25,6 +26,8 @@ namespace SWP.UI.Components.LegalAppBlazorComponents
         [Inject]
         public GeneralViewModel Gvm { get; set; }
         [Inject]
+        public IJSRuntime JSInterop { get; set; }
+        [Inject]
         public TooltipService TooltipService { get; set; }
         [Inject]
         public IActionDispatcher ActionDispatcher { get; set; }
@@ -39,8 +42,6 @@ namespace SWP.UI.Components.LegalAppBlazorComponents
             ProductivityStore.RemoveStateChangeListener(RefreshView);
             ProductivityStore.CleanUpStore();
         }
-
-        private void UpdateView() => StateHasChanged();
 
         private void RefreshView()
         {
@@ -73,8 +74,6 @@ namespace SWP.UI.Components.LegalAppBlazorComponents
         public bool infoBoxVisibleIII = false;
         public void ShowHideInfoBoxIII() => infoBoxVisibleIII = !infoBoxVisibleIII;
 
-
-
         public async Task GenerateTimesheetReport(LegalTimeSheetReport.ReportData reportData)
         {
             try
@@ -84,7 +83,7 @@ namespace SWP.UI.Components.LegalAppBlazorComponents
 
                 var productivityRecords = new List<TimeRecordViewModel>();
 
-                if (ProductivityStore.GetState().SelectedFont != null)
+                if (ProductivityStore.GetState().SelectedFont is not null)
                 {
                     reportData.FontName = ProductivityStore.GetState().SelectedFont.FontName;
                 }
@@ -127,7 +126,8 @@ namespace SWP.UI.Components.LegalAppBlazorComponents
                 reportData.ClientName = MainStore.GetState().ActiveClient.Name;
                 reportData.Records = productivityRecords;
                 reportData.ReportName = $"Rozliczenie_{DateTime.Now:yyyy-MM-dd-hh-mm-ss}";
-                await legalTimeSheetReport.GeneratePDF(reportData);
+                await legalTimeSheetReport.GeneratePDF(reportData, JSInterop);
+                StateHasChanged();
             }
             catch (Exception ex)
             {

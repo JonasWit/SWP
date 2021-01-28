@@ -22,7 +22,7 @@ namespace SWP.UI.BlazorApp.LegalApp.Services.Reporting
         private MemoryStream _memoryStream = new MemoryStream();
         private ReportData _reportData;
         private readonly IWebHostEnvironment _env;
-        private readonly IJSRuntime _jSRuntime;
+        private IJSRuntime _jSRuntime;
 
         public class ReportData
         {
@@ -40,14 +40,14 @@ namespace SWP.UI.BlazorApp.LegalApp.Services.Reporting
 
         public string FontPath => Path.Combine(_env.WebRootPath, "Fonts");
 
-        public LegalTimeSheetReport(IWebHostEnvironment env, IJSRuntime jSRuntime)
+        public LegalTimeSheetReport(IWebHostEnvironment env)
         {
             _env = env;
-            _jSRuntime = jSRuntime;
         }
 
-        public async Task GeneratePDF(ReportData reportData)
+        public async Task GeneratePDF(ReportData reportData, IJSRuntime JSInterop)
         {
+            _jSRuntime = JSInterop;
             _reportData = reportData;
             await _jSRuntime.InvokeAsync<List<TimeRecordViewModel>>(
                     "saveAsFile",

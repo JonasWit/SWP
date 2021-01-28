@@ -128,7 +128,7 @@ namespace SWP.UI.BlazorApp.PortalApp.Stores.Requests.RequestsPanelCreate
 
                 _state.NewRequest = new CreateRequest.Request(); 
   
-                await emailSender.SendEmailAsync(PortalNames.InternalEmail.Office, $"---New Request From: {MainStore.GetState().ActiveUserName}---", $"Check Admin Panel, Reason: {"abc"}");
+                await emailSender.SendEmailAsync(PortalNames.InternalEmail.Office, $"---New Request From: {MainStore.GetState().ActiveUserName}---", $"Check Admin Panel, Reason: {(int)_state.StepsConfig.NewRequestReason}");
                 await MainStore.SetActiveComponent(RequestsMainPanelState.InnerComponents.Info);
             }
             catch (Exception ex)
